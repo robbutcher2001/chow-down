@@ -1,4 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-ReactDOM.render(<h1>Hello rob</h1>, document.getElementById('mnt'));
+import App from './structure/app';
+
+ReactDOM.render(<App />, document.getElementById('mnt'));

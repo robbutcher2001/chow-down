@@ -3,5 +3,6 @@
 npm-debug.log
 dist/
 node_modules/
+.vscode/
 .idea/
 db/chow-db
