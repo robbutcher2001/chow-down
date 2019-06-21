@@ -54,7 +54,7 @@ CREATE TABLE public."recipe-ingredients"
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     quantity double precision NOT NULL,
-    unit_id uuid NOT NULL,
+    unit_id uuid,
     ingredient_id uuid NOT NULL,
     recipe_id uuid NOT NULL,
     CONSTRAINT "recipe-ingredients_pkey" PRIMARY KEY (id),

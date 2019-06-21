@@ -3,7 +3,9 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 3000;
 
-const ingredients = require('./data/ingredients');
+const { success, fail } = require('./util/jsend');
+const { getIngredients, putIngredient } = require('./data/ingredients');
+const { getUnits, validatePayload, putUnit } = require('./data/units');
 
 app.use(bodyParser.json());
 
@@ -18,8 +20,36 @@ const wrapResponse = response => {
 app.get('/', (request, response) => response.send('Mock API server'));
 
 app.get('/api/ingredients', (request, response) =>
-  setTimeout(() => wrapResponse(response).json(ingredients()), 1000)
+  setTimeout(() => wrapResponse(response).json(success('ingredients', getIngredients())), 1000)
 );
+
+app.post('/api/ingredient', (request, response) => {
+  if (putIngredient(request.body.ingredient)) {
+    wrapResponse(response).json(success());
+  }
+  else {
+    wrapResponse(response).status(409).json(fail('ingredient', 'exists'));
+  }
+});
+
+app.get('/api/units', (request, response) =>
+  setTimeout(() => wrapResponse(response).json(success('units', getUnits())), 200)
+);
+
+app.post('/api/unit', (request, response) => {
+  const unit = request.body.unit;
+  if (validatePayload(unit)) {
+    if (putUnit(unit)) {
+      wrapResponse(response).json(success());
+    }
+    else {
+      wrapResponse(response).status(409).json(fail('unit', 'exists'));
+    }
+  }
+  else {
+    wrapResponse(response).status(409).json(fail('error', 'invalid_payload'));
+  }
+});
 
 app.listen(port, (err) => {
   if (err) {
