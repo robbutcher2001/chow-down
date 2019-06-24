@@ -23,6 +23,10 @@ app.get('/api/ingredients', (request, response) =>
   setTimeout(() => wrapResponse(response).json(success('ingredients', getIngredients())), 1000)
 );
 
+app.options('/api/ingredient', (request, response) => {
+  wrapResponse(response).status(200).send();
+});
+
 app.post('/api/ingredient', (request, response) => {
   if (putIngredient(request.body.ingredient)) {
     wrapResponse(response).json(success());
@@ -35,6 +39,10 @@ app.post('/api/ingredient', (request, response) => {
 app.get('/api/units', (request, response) =>
   setTimeout(() => wrapResponse(response).json(success('units', getUnits())), 200)
 );
+
+app.options('/api/unit', (request, response) => {
+  wrapResponse(response).status(200).send();
+});
 
 app.post('/api/unit', (request, response) => {
   const unit = request.body.unit;
