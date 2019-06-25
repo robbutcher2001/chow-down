@@ -7,8 +7,6 @@ export default function* watcherSaga() {
 }
 
 function* workerSaga({ payload }) {
-    const ingredient = payload.ingredient;
-
     try {
         const response = yield call(() => fetch(URL, {
             method: 'POST',
@@ -16,7 +14,7 @@ function* workerSaga({ payload }) {
                 'Content-Type': 'application/json; charset=utf-8',
             },
             body: JSON.stringify({
-                ingredient
+                ...payload
             })
         }).then(data => data.json()));
 

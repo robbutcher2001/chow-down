@@ -38,7 +38,10 @@ export default connect(null, dispatch => ({
 
     onSubmit(event) {
       event.preventDefault();
-      if (Object.keys(this.state.form).length > 0) {
+      const formPopulated = Object.keys(this.state.form).reduce((acc, formField) =>
+        this.state.form[formField].length > 0 ? true : acc, false);
+
+      if (formPopulated) {
         this.props.submitPayload(this.props.payloadType, this.state.form);
       }
     }
