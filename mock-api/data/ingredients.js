@@ -1,6 +1,6 @@
-const jsend = require('../util/jsend');
+const { success } = require('../util/jsend');
 
-module.exports = () => jsend('ingredients', [
+const ingredients = [
   'tomatoes',
   'mushrooms',
   'peppers',
@@ -11,4 +11,14 @@ module.exports = () => jsend('ingredients', [
   'noodles',
   'milk',
   'cheese'
-]);
+];
+
+const getIngredients = () => ingredients;
+
+const putIngredient = ingredient =>
+  !ingredients.includes(ingredient) ? ingredients.push(ingredient) && true : false;
+
+module.exports = {
+  getIngredients,
+  putIngredient
+};
