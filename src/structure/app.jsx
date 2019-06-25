@@ -39,6 +39,10 @@ class IngredientsPage extends Component {
                         name='ingredient'
                         placeholderText='New ingredient name'
                     />
+                    <InputBox
+                        name='new_field'
+                        placeholderText='Test'
+                    />
                 </Form>
             </div>
         );

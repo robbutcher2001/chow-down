@@ -8,9 +8,15 @@ export default connect(null, dispatch => ({
     constructor(props) {
       super(props);
 
+      const fieldNames = React.Children.map(this.props.children, child => child.props.name)
+        .reduce((names, name) => {
+          names[name] = '';
+          return names;
+        }, {});
+
       this.state = {
         form: {
-          ingredient: ''
+          ...fieldNames
         }
       };
 
@@ -21,17 +27,12 @@ export default connect(null, dispatch => ({
     onChange(field, event) {
       event.preventDefault();
       const value = event.target.value;
-      //TODO: dynamic assignment with prevState
-      // this.setState(prevState => {
-      //   const newState = { ...prevState };
-      //   newState.form[field] = value;
-      //   return newState;
-      // });
-
-      this.setState({
-        form: {
-          ingredient: value
-        }
+      this.setState(prevState => {
+        const newState = {
+          form: Object.assign({}, prevState.form)
+        };
+        newState.form[field] = value;
+        return newState;
       });
     }
 
@@ -48,7 +49,7 @@ export default connect(null, dispatch => ({
 
       return (
         <form onSubmit={event => this.onSubmit(event)}>
-          { children }
+          {children}
           <input type='submit' value={this.props.submitText} />
         </form>
       );
