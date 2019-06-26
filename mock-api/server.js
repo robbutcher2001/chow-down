@@ -32,7 +32,7 @@ app.options('/api/ingredient', (request, response) => {
 
 app.post('/api/ingredient', (request, response) => {
   if (putIngredient(request.body.ingredient)) {
-    wrapResponse(response).json(success());
+    setTimeout(() => wrapResponse(response).json(success()), 600)
   }
   else {
     wrapResponse(response).status(409).json(fail('ingredient', 'exists'));

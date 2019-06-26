@@ -8,6 +8,8 @@ export default function* watcherSaga() {
 
 function* workerSaga() {
     try {
+        yield put({ type: 'GET_INGREDIENTS_REQUEST_PENDING' });
+
         const payload = yield call(() => fetch(URL).then(data => data.json()));
         yield put({
             type: 'GET_INGREDIENTS_SUCCESS',

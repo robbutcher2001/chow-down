@@ -5,7 +5,8 @@ import Form from '../components/form';
 import InputBox from '../components/input-box';
 
 export default connect(state => ({
-    ingredients: state.ingredients
+    status: state.ingredients.status,
+    ingredients: state.ingredients.data
 }), dispatch => ({
     fireGetIngredientsRequest: payload => dispatch({ type: 'GET_INGREDIENTS_REQUEST', payload })
 }))(
@@ -16,6 +17,12 @@ export default connect(state => ({
             this.onButtonPress = this.onButtonPress.bind(this);
         }
 
+        componentDidMount() {
+            if (this.props.status === 'no_data') {
+                this.props.fireGetIngredientsRequest();
+            }
+        }
+
         onButtonPress(event) {
             event.preventDefault();
             console.log('Ingredients requested');
@@ -23,13 +30,16 @@ export default connect(state => ({
         }
 
         render() {
-            console.log(this.props.ingredients);
+            console.log(this.props.status);
             return (
                 <div>
                     <h4>List ingredients</h4>
                     <button onClick={event => this.onButtonPress(event)}>
-                        Press me to get ingredients
+                        Refresh ingredients
                     </button>
+                    {this.props.status === 'pending' &&
+                        <div>Loading ingredients..</div>
+                    }
                     <ul>
                         {this.props.ingredients.map((value, index) =>
                             <li key={index}>{value}</li>
@@ -48,6 +58,9 @@ export default connect(state => ({
                             placeholderText='Test'
                         />
                     </Form>
+                    {this.props.status === 'adding' &&
+                        <div>Adding your new ingredient..</div>
+                    }
                 </div>
             );
         }

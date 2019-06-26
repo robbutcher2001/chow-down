@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 
-import GetIngredientsReducer from './getIngredientsReducer';
+import IngredientsReducer from './ingredientsReducer';
 import GetRecipesReducer from './getRecipesReducer';
 
 export default combineReducers({
-    ingredients: GetIngredientsReducer,
+    ingredients: IngredientsReducer,
     recipes: GetRecipesReducer
 });
