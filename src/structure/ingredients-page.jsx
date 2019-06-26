@@ -61,6 +61,9 @@ export default connect(state => ({
                     {this.props.status === 'adding' &&
                         <div>Adding your new ingredient..</div>
                     }
+                    {this.props.status === 'exists' &&
+                        <div style={{color: 'red'}}>That already exists!</div>
+                    }
                 </div>
             );
         }

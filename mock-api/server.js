@@ -35,7 +35,7 @@ app.post('/api/ingredient', (request, response) => {
     setTimeout(() => wrapResponse(response).json(success()), 600)
   }
   else {
-    wrapResponse(response).status(409).json(fail('ingredient', 'exists'));
+    setTimeout(() => wrapResponse(response).status(409).json(fail('ingredient', 'exists')), 600)
   }
 });
 

@@ -25,6 +25,11 @@ export default function (state = {
                 ...state,
                 status: action.payload.status
             };
+        case 'PUT_INGREDIENT_FAILED':
+            return {
+                ...state,
+                status: action.payload.data.ingredient
+            };
         default:
             return state;
     }
