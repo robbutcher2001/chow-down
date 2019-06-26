@@ -18,7 +18,7 @@ export default connect(state => ({
 
         onButtonPress(event) {
             event.preventDefault();
-            console.log('button pressed');
+            console.log('Ingredients requested');
             this.props.fireGetIngredientsRequest();
         }
 
@@ -26,7 +26,6 @@ export default connect(state => ({
             console.log(this.props.ingredients);
             return (
                 <div>
-                    <h1>Test page</h1>
                     <h4>List ingredients</h4>
                     <button onClick={event => this.onButtonPress(event)}>
                         Press me to get ingredients

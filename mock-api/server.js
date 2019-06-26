@@ -6,9 +6,11 @@ const port = 3000;
 const { success, fail } = require('./util/jsend');
 const { getIngredients, putIngredient } = require('./data/ingredients');
 const { getUnits, validatePayload, putUnit } = require('./data/units');
+const { getRecipes } = require('./data/recipes');
 
 app.use(bodyParser.json());
 
+//TODO: reject if Accept header is not passed to server, maybe do with cors middleware: https://expressjs.com/en/resources/middleware/cors.html
 const wrapResponse = response => {
   response.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
   response.setHeader('Access-Control-Allow-Credentials', true);
@@ -19,6 +21,7 @@ const wrapResponse = response => {
 
 app.get('/', (request, response) => response.send('Mock API server'));
 
+// Ingredients
 app.get('/api/ingredients', (request, response) =>
   setTimeout(() => wrapResponse(response).json(success('ingredients', getIngredients())), 1000)
 );
@@ -36,6 +39,7 @@ app.post('/api/ingredient', (request, response) => {
   }
 });
 
+// Units
 app.get('/api/units', (request, response) =>
   setTimeout(() => wrapResponse(response).json(success('units', getUnits())), 200)
 );
@@ -59,6 +63,12 @@ app.post('/api/unit', (request, response) => {
   }
 });
 
+// Recipes
+app.get('/api/recipes', (request, response) =>
+  setTimeout(() => wrapResponse(response).json(success('recipes', getRecipes())), 1200)
+);
+
+// App
 app.listen(port, (err) => {
   if (err) {
     return console.log('Mock API server couldn\'t start', err);

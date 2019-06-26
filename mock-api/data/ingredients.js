@@ -1,5 +1,3 @@
-const { success } = require('../util/jsend');
-
 const ingredients = [
   'tomatoes',
   'mushrooms',
