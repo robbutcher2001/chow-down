@@ -2,8 +2,8 @@ RESTful URL Design
 
 - GET /api/ingredients ✓
 - PUT /api/ingredients/<id> ✓
-- GET /api/units
-- PUT /api/units/<id>
+- GET /api/units ✓
+- PUT /api/units/<id> ✓
 - GET /api/recipes
 - GET /api/recipes/<id>
 - GET /api/recipes/<id>/ingredients

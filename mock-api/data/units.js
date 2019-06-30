@@ -1,56 +1,64 @@
 'use strict';
 
 const units = [{
+  id: '',
   singular: 'gram',
   plural: 'grams'
 }, {
+  id: '',
   singular: 'ml',
   plural: 'ml'
 }, {
+  id: '',
   singular: 'cup',
   plural: 'cups'
 }, {
+  id: '',
   singular: 'teaspoon',
   plural: 'teaspoons'
 }, {
+  id: '',
   singular: 'tablespoon',
   plural: 'tablespoons'
 }, {
+  id: '',
   singular: 'large',
   plural: 'large'
 }, {
+  id: '',
   singular: 'medium',
   plural: 'medium'
 }, {
+  id: '',
   singular: 'small',
   plural: 'small'
 }, {
+  id: '',
   singular: 'pinch',
   plural: 'pinches'
 }, {
+  id: '',
   singular: 'bunch',
   plural: 'bunches'
 }, {
+  id: '',
   singular: 'punnet',
   plural: 'punnets'
 }, {
+  id: '',
   singular: 'cm',
   plural: 'cm'
 }];
 
-const validatePayload = payload => payload &&
-  payload.singular && payload.plural ? true : false;
-
 const getUnits = () => units;
 
-const putUnit = newUnit => !units.some(unit =>
-  unit.singular === newUnit.singular &&
-  unit.plural === newUnit.plural
-) ?
-  units.push(newUnit) && true : false;
+const createUnit = (id, singular, plural) => {
+  const newUnit = { id, singular, plural };
+  units.push(newUnit);
+  return newUnit;
+};
 
 module.exports = {
   getUnits,
-  validatePayload,
-  putUnit
+  createUnit
 };

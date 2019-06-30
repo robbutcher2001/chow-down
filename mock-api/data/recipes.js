@@ -62,17 +62,21 @@ const recipes = [{
   image: ''
 }];
 
-const validatePayload = payload => payload &&
-  payload.singular && payload.plural ? true : false;
-
 const getRecipes = () => recipes;
 
-const putUnit = newUnit => !units.some(unit =>
-  unit.singular === newUnit.singular &&
-  unit.plural === newUnit.plural
-) ?
-  units.push(newUnit) && true : false;
+const createRecipe = (
+  id,
+  title,
+  url,
+  description,
+  image
+) => {
+  const newRecipe = { id, title, url, description, image };
+  recipes.push(newRecipe);
+  return newRecipe;
+};
 
 module.exports = {
-  getRecipes
+  getRecipes,
+  createRecipe
 };
