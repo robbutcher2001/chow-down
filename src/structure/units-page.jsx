@@ -5,12 +5,12 @@ import Form from '../components/form';
 import InputBox from '../components/input-box';
 
 export default connect(state => ({
-    status: state.ingredients.status,
-    ingredients: state.ingredients.data
+    status: state.units.status,
+    units: state.units.data
 }), dispatch => ({
-    fireRequest: payload => dispatch({ type: 'GET_INGREDIENTS_REQUEST', payload })
+    fireRequest: payload => dispatch({ type: 'GET_UNITS_REQUEST', payload })
 }))(
-    class IngredientsPage extends Component {
+    class UnitsPage extends Component {
         constructor(props) {
             super(props);
 
@@ -25,7 +25,7 @@ export default connect(state => ({
 
         onButtonPress(event) {
             event.preventDefault();
-            console.log('Ingredients requested');
+            console.log('Units requested');
             this.props.fireRequest();
         }
 
@@ -33,33 +33,33 @@ export default connect(state => ({
             console.log(this.props.status);
             return (
                 <div>
-                    <h4>List ingredients</h4>
+                    <h4>List units</h4>
                     <button onClick={event => this.onButtonPress(event)}>
-                        Refresh ingredients
+                        Refresh units
                     </button>
                     {this.props.status === 'pending' &&
-                        <div>Loading ingredients..</div>
+                        <div>Loading units..</div>
                     }
                     <ul>
-                        {this.props.ingredients.map((ingredient, index) =>
-                            <li key={index}>{ingredient.name}</li>
+                        {this.props.units.map((unit, index) =>
+                            <li key={index}>{unit.singular}, {unit.plural}</li>
                         )}
                     </ul>
-                    <h4>Add ingredient</h4>
+                    <h4>Add unit</h4>
                     <Form
-                        payloadType='POST_INGREDIENT_REQUEST'
-                        submitText='Add ingredient'>
+                        payloadType='POST_UNIT_REQUEST'
+                        submitText='Add unit'>
                         <InputBox
-                            name='ingredient'
-                            placeholderText='New ingredient name'
+                            name='singular'
+                            placeholderText='Singular unit name'
                         />
                         <InputBox
-                            name='new_field'
-                            placeholderText='Test'
+                            name='plural'
+                            placeholderText='Plural unit name'
                         />
                     </Form>
                     {this.props.status === 'adding' &&
-                        <div>Adding your new ingredient..</div>
+                        <div>Adding your new unit..</div>
                     }
                     {this.props.status === 'exists' &&
                         <div style={{color: 'red'}}>That already exists!</div>

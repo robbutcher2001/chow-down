@@ -41,6 +41,7 @@ module.exports = app => {
 
       if (existingUnit) {
         console.log('Upserting [' + JSON.stringify(existingUnit) + ']');
+
         existingUnit.singular = singularInRequest ? singularInRequest : existingUnit.singular;
         existingUnit.plural = pluralInRequest ? pluralInRequest : existingUnit.plural;
         setTimeout(() => cors(response).json(success('unit', existingUnit)), 400);
@@ -48,6 +49,7 @@ module.exports = app => {
       else {
         const newUnit = createUnit(id, singularInRequest, pluralInRequest);
         console.log('Created new unit [' + JSON.stringify(newUnit) + ']');
+
         setTimeout(() => cors(response).json(success('unit', newUnit)), 800);
       }
     }

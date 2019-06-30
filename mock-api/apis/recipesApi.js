@@ -1,13 +1,16 @@
 'use strict';
 
 const { success, fail, cors } = require('../util/jsend');
-const { getRecipes, createRecipe } = require('../data/recipes');
+const { getRecipes, createRecipe, getRecipeIngredients } = require('../data/recipes');
 
 module.exports = app => {
   app.options('/api/recipes', (request, response) => cors(response).status(200).send());
 
   app.get('/api/recipes', (request, response) =>
     setTimeout(() => cors(response).json(success('recipes', getRecipes())), 1200));
+
+  app.get('/api/recipes/:id/ingredients', (request, response) =>
+    setTimeout(() => cors(response).json(success('ingredients', getRecipeIngredients())), 2000));
 
   app.post('/api/recipes', (request, response) => {
     const titleInRequest = request.body.title;
@@ -50,6 +53,7 @@ module.exports = app => {
 
       if (existingRecipe) {
         console.log('Upserting [' + JSON.stringify(existingRecipe) + ']');
+
         existingRecipe.title = titleInRequest ? titleInRequest : existingRecipe.title;
         existingRecipe.url = urlInRequest ? urlInRequest : existingRecipe.url;
         existingRecipe.description = descriptionInRequest ? descriptionInRequest : existingRecipe.description;
@@ -65,6 +69,7 @@ module.exports = app => {
           imageInRequest
         );
         console.log('Created new recipe [' + JSON.stringify(newRecipe) + ']');
+
         setTimeout(() => cors(response).json(success('recipe', newRecipe)), 1600);
       }
     }

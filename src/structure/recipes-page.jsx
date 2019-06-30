@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 export default connect(state => ({
     recipes: state.recipes
 }), dispatch => ({
-    fireGetRecipesRequest: () => dispatch({ type: 'GET_RECIPES_REQUEST' })
+    fireRequest: () => dispatch({ type: 'GET_RECIPES_REQUEST' })
 }))(
     class IngredientsPage extends Component {
         constructor(props) {
@@ -16,7 +16,7 @@ export default connect(state => ({
         onButtonPress(event) {
             event.preventDefault();
             console.log('Recipes requested');
-            this.props.fireGetRecipesRequest();
+            this.props.fireRequest();
         }
 
         render() {

@@ -39,12 +39,14 @@ module.exports = app => {
 
       if (existingIngredient) {
         console.log('Upserting [' + JSON.stringify(existingIngredient) + ']');
+
         existingIngredient.name = nameInRequest ? nameInRequest : existingIngredient.name;
         setTimeout(() => cors(response).json(success('ingredient', existingIngredient)), 600);
       }
       else {
         const newIngredient = createIngredient(id, nameInRequest);
         console.log('Created new ingredient [' + JSON.stringify(newIngredient) + ']');
+
         setTimeout(() => cors(response).json(success('ingredient', newIngredient)), 1200);
       }
     }

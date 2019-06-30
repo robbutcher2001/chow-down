@@ -1,5 +1,7 @@
 'use strict';
 
+const { getIngredients } = require('./ingredients');
+
 const recipes = [{
   id: '15a41870-b0fe-49da-a9aa-fa34660dcb55',
   title: 'Chilli con carne',
@@ -62,6 +64,8 @@ const recipes = [{
   image: ''
 }];
 
+const randomInt = max => Math.floor(Math.random() * Math.floor(max));
+
 const getRecipes = () => recipes;
 
 const createRecipe = (
@@ -76,7 +80,20 @@ const createRecipe = (
   return newRecipe;
 };
 
+const getRecipeIngredients = () => {
+  const recipeIngredients = [];
+  const ingredientCount = randomInt(6);
+  const ingredients = getIngredients();
+
+  for (let i = 0; i < ingredientCount; i++) {
+    recipeIngredients.push(ingredients[randomInt(ingredients.length)]);
+  }
+
+  return recipeIngredients;
+};
+
 module.exports = {
   getRecipes,
-  createRecipe
+  createRecipe,
+  getRecipeIngredients
 };

@@ -1,5 +1,5 @@
-export default (url, payload) => fetch(url, {
-    method: 'POST',
+export default (method, url, payload) => fetch(url, {
+    method,
     headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json; charset=utf-8',

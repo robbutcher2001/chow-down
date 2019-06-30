@@ -5,6 +5,9 @@ export default () => (
     <div>
         <h1>Skeleton Test Pages</h1>
         <div>
+            <Link to='/units'>Units Page</Link>
+        </div>
+        <div>
             <Link to='/ingredients'>Ingredients Page</Link>
         </div>
         <div>
