@@ -41,13 +41,13 @@ export default connect(state => ({
                         <div>Loading ingredients..</div>
                     }
                     <ul>
-                        {this.props.ingredients.map((value, index) =>
-                            <li key={index}>{value}</li>
+                        {this.props.ingredients.map((ingredient, index) =>
+                            <li key={index}>{ingredient.name}</li>
                         )}
                     </ul>
                     <h4>Add ingredient</h4>
                     <Form
-                        payloadType='PUT_INGREDIENT_REQUEST'
+                        payloadType='POST_INGREDIENT_REQUEST'
                         submitText='Add ingredient'>
                         <InputBox
                             name='ingredient'

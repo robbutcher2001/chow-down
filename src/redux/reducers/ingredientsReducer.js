@@ -15,17 +15,17 @@ export default function (state = {
                 status: action.payload.status,
                 data: action.payload.data.ingredients
             };
-        case 'PUT_INGREDIENT_REQUEST_PENDING':
+        case 'POST_INGREDIENT_REQUEST_PENDING':
             return {
                 ...state,
                 status: 'adding'
             };
-        case 'PUT_INGREDIENT_SUCCESS':
+        case 'POST_INGREDIENT_SUCCESS':
             return {
                 ...state,
                 status: action.payload.status
             };
-        case 'PUT_INGREDIENT_FAILED':
+        case 'POST_INGREDIENT_FAILED':
             return {
                 ...state,
                 status: action.payload.data.ingredient
