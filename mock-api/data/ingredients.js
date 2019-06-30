@@ -1,3 +1,5 @@
+'use strict';
+
 const ingredients = [
   'tomatoes',
   'mushrooms',

@@ -1,0 +1,14 @@
+RESTful URL Design
+
+- GET /api/ingredients ✓
+- PUT /api/ingredients/<id>
+- GET /api/units
+- PUT /api/units/<id>
+- GET /api/recipes
+- GET /api/recipes/<id>
+- GET /api/recipes/<id>/ingredients
+- PUT /api/recipes/<id>
+- GET /api/dinners (not needed?)
+- GET /api/dinners?from=20190620&to=20190627
+- GET /api/dinners/ingredients?from=20190620&to=20190627
+- PUT /api/dinners/20190701

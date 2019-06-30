@@ -1,3 +1,5 @@
+'use strict';
+
 const recipes = [{
   id: '15a41870-b0fe-49da-a9aa-fa34660dcb55',
   title: 'Chilli con carne',

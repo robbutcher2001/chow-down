@@ -1,3 +1,5 @@
+'use strict';
+
 const units = [{
   singular: 'gram',
   plural: 'grams'
