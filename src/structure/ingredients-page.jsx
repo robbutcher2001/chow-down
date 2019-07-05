@@ -50,12 +50,8 @@ export default connect(state => ({
                         payloadType='POST_INGREDIENT_REQUEST'
                         submitText='Add ingredient'>
                         <InputBox
-                            name='ingredient'
+                            name='name'
                             placeholderText='New ingredient name'
-                        />
-                        <InputBox
-                            name='new_field'
-                            placeholderText='Test'
                         />
                     </Form>
                     {this.props.status === 'adding' &&
