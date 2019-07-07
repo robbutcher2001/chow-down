@@ -1,7 +1,8 @@
+'use strict';
+
 import { call, put, takeLatest } from 'redux-saga/effects';
 
-import { Method } from '../../globals/constants';
-import api from '../../globals/api';
+import { post } from './api';
 
 const URL = 'http://localhost:3000/api/ingredients';
 
@@ -13,38 +14,15 @@ function* workerSaga({ payload }) {
     try {
         yield put({ type: 'POST_INGREDIENT_REQUEST_PENDING' });
 
-        const response = yield call(() => api(
-            Method.POST,
-            URL,
-            payload
-        ));
+        // const response = yield call(() => POST(
+        //     URL,
+        //     payload
+        // ));
 
-        if (response.status === 200) {
-            const json = yield response.json();
-            yield put({
-                type: 'POST_INGREDIENT_SUCCESS',
-                payload: json
-            });
-            yield put({ type: 'GET_INGREDIENTS_REQUEST' });
-        }
-        else {
-            throw response;
-        }
+        yield* post(URL, payload);
+
     } catch (err) {
-        if (err.status >= 400 && err.status < 500) {
-            const json = yield err.json();
-            yield put({
-                type: 'POST_INGREDIENT_FAILED',
-                payload: json
-            });
-
-            return;
-        }
-
-        //TODO: migrate this so what ever this returns, the reducer gives a useful message back to the components
-        yield put({
-            type: 'POST_INGREDIENT_FAILED',
-            payload: err.statusText
-        });
+        console.log('wkenrjnwerjknwejkr');
+        // console.log(err);
     }
 }

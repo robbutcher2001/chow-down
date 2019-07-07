@@ -30,6 +30,12 @@ export default function (state = {
                 ...state,
                 status: action.payload.data.ingredient
             };
+        case 'UNEXPECTED_SERVER_ERROR':
+        case 'UNEXPECTED_RESPONSE':
+            return {
+                ...state,
+                status: action.payload
+            }
         default:
             return state;
     }

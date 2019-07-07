@@ -54,6 +54,7 @@ export default connect(state => ({
                             placeholderText='New ingredient name'
                         />
                     </Form>
+                    <div>{this.props.status}</div>
                     {this.props.status === 'adding' &&
                         <div>Adding your new ingredient..</div>
                     }

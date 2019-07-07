@@ -2,7 +2,7 @@
 
 const success = (key, json) => common(key, json, 'success');
 
-const fail = (key, json) => common(key, json, 'failed');
+const fail = (key, json) => common(key, json, 'fail');
 
 const common = (key, json, status) => {
   const response = {
