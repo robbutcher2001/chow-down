@@ -1,6 +1,6 @@
 'use strict';
 
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 
 import { post } from './api';
 
@@ -11,18 +11,7 @@ export default function* watcherSaga() {
 }
 
 function* workerSaga({ payload }) {
-    try {
-        yield put({ type: 'POST_INGREDIENT_REQUEST_PENDING' });
-
-        // const response = yield call(() => POST(
-        //     URL,
-        //     payload
-        // ));
-
-        yield* post(URL, payload);
-
-    } catch (err) {
-        console.log('wkenrjnwerjknwejkr');
-        // console.log(err);
-    }
+    yield put({ type: 'POST_INGREDIENT_REQUEST_PENDING' });
+    yield post(URL, payload);
+    // yield put({ type: 'GET_INGREDIENTS_REQUEST' });
 }

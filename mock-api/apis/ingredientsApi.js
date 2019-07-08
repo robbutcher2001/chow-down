@@ -22,7 +22,7 @@ module.exports = app => {
         setTimeout(() => cors(response).json(success('ingredient', newIngredient)), 600);
       }
       else {
-        setTimeout(() => cors(response).status(500).json(fail('ingredient', 'exists')), 600);
+        setTimeout(() => cors(response).status(409).json(fail('ingredient', 'exists')), 600);
       }
     }
     else {

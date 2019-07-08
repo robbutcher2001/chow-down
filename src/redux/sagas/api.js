@@ -22,6 +22,24 @@ const callNoBody = (method, url) => fetch(url, {
     }
 });
 
+function* callBodyTest(method, url, payload) {
+    console.log('here');
+    try {
+        yield* handleResponse(yield call(() => fetch(url, {
+            method,
+            headers: {
+                'Accept': Headers.ACCEPT,
+                'Content-Type': Headers.CONTENT_TYPE
+            },
+            body: JSON.stringify({
+                ...payload
+            })
+        })));
+    } catch (err) {
+        yield* handleResponse(err);
+    }
+};
+
 // export function* post(url, payload) {
 //     // const response = ;
 
@@ -35,15 +53,9 @@ const callNoBody = (method, url) => fetch(url, {
 // };
 
 //TODO: logic check
-export function* post(url, payload) {
+function* handleResponse(response) {
     console.log('handling');
     try {
-        const response = yield call(() => callBody(
-            Method.POST,
-            url,
-            payload
-        ));
-
         if (response.status >= 200 && response.status < 500) {
             const json = yield response.json();
 
@@ -52,7 +64,6 @@ export function* post(url, payload) {
                     type: 'POST_INGREDIENT_SUCCESS',
                     payload: json
                 });
-                yield putSideEffect({ type: 'GET_INGREDIENTS_REQUEST' });
             }
             else if (response.status >= 400) {
                 yield putSideEffect({
@@ -95,7 +106,7 @@ export function* post(url, payload) {
     }
 };
 
-// export const post = (url, payload) => callBody(Method.POST, url, payload);
+export const post = (url, payload) => callBodyTest(Method.POST, url, payload);
 
 export const get = url => callNoBody(Method.GET, url);
 
