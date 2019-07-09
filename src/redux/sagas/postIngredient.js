@@ -1,7 +1,8 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+'use strict';
 
-import { Method } from '../../globals/constants';
-import api from '../../globals/api';
+import { put, takeLatest } from 'redux-saga/effects';
+
+import { post } from './api';
 
 const URL = 'http://localhost:3000/api/ingredients';
 
@@ -10,41 +11,23 @@ export default function* watcherSaga() {
 }
 
 function* workerSaga({ payload }) {
-    try {
-        yield put({ type: 'POST_INGREDIENT_REQUEST_PENDING' });
+    yield put({ type: 'POST_INGREDIENT_REQUEST_PENDING' });
+    yield post(URL, payload, successCallback, failCallback);
+}
 
-        const response = yield call(() => api(
-            Method.POST,
-            URL,
-            payload
-        ));
+function* successCallback(payload) {
+    console.log('Calling successCallback');
+    yield put({
+        type: 'POST_INGREDIENT_SUCCESS',
+        payload
+    });
+    yield put({ type: 'GET_INGREDIENTS_REQUEST' });
+}
 
-        if (response.status === 200) {
-            const json = yield response.json();
-            yield put({
-                type: 'POST_INGREDIENT_SUCCESS',
-                payload: json
-            });
-            yield put({ type: 'GET_INGREDIENTS_REQUEST' });
-        }
-        else {
-            throw response;
-        }
-    } catch (err) {
-        if (err.status >= 400 && err.status < 500) {
-            const json = yield err.json();
-            yield put({
-                type: 'POST_INGREDIENT_FAILED',
-                payload: json
-            });
-
-            return;
-        }
-
-        //TODO: migrate this so what ever this returns, the reducer gives a useful message back to the components
-        yield put({
-            type: 'POST_INGREDIENT_FAILED',
-            payload: err.statusText
-        });
-    }
+function* failCallback(payload) {
+    console.log('Calling failCallback');
+    yield put({
+        type: 'POST_INGREDIENT_FAILED',
+        payload
+    });
 }

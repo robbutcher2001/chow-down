@@ -1,13 +1,17 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+'use strict';
 
-import { Method } from '../../globals/constants';
-import api from '../../globals/api';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
+
+import { post } from './api';
 
 const URL = 'http://localhost:3000/api/units';
 
 export default function* watcherSaga() {
-    // yield takeLatest('GET_UNITS_REQUEST', test);
-    yield takeLatest('POST_UNIT_REQUEST', workerSaga);
+    console.log('[saga] Started units saga');
+    yield all([
+        takeLatest('GET_UNITS_REQUEST', test),
+        takeLatest('POST_UNIT_REQUEST', workerSaga)
+    ]);
 }
 
 function* test() {
@@ -28,8 +32,7 @@ function* workerSaga({ payload }) {
     try {
         yield put({ type: 'POST_UNIT_REQUEST_PENDING' });
 
-        const response = yield call(() => api(
-            Method.POST,
+        const response = yield call(() => post(
             URL,
             payload
         ));
