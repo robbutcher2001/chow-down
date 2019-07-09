@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 export default connect(state => ({
-    recipes: state.recipes
+    pending: state.recipes.status.pending,
+    recipes: state.recipes.data
 }), dispatch => ({
     fireRequest: () => dispatch({ type: 'GET_RECIPES_REQUEST' })
 }))(
@@ -27,6 +28,9 @@ export default connect(state => ({
                     <button onClick={event => this.onButtonPress(event)}>
                         Press me to get all recipes
                     </button>
+                    {this.props.pending &&
+                        <div style={{color: 'red'}}>Getting..</div>
+                    }
                     {this.props.recipes.map((recipe, index) =>
                         <div key={index} style={{backgroundColor: '#708090', marginBottom: '2px', padding: '4px',width: '50%'}}>
                             <h4>{ recipe.title }</h4>
