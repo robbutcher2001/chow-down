@@ -25,6 +25,18 @@ const callNoBody = (method, url) => fetch(url, {
 function* callBodyTest(method, url, payload) {
     console.log('here');
     try {
+        // const response = yield call(post, postParam1, postParam2);
+        // yield* handleResponse(yield call(fetch, url, {
+        //     method,
+        //     headers: {
+        //         'Accept': Headers.ACCEPT,
+        //         'Content-Type': Headers.CONTENT_TYPE
+        //     },
+        //     body: JSON.stringify({
+        //         ...payload
+        //     })
+        // }));
+
         yield* handleResponse(yield call(() => fetch(url, {
             method,
             headers: {
