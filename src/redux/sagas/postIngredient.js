@@ -12,11 +12,22 @@ export default function* watcherSaga() {
 
 function* workerSaga({ payload }) {
     yield put({ type: 'POST_INGREDIENT_REQUEST_PENDING' });
-    yield post(URL, payload, testCallback);
-    // yield put({ type: 'GET_INGREDIENTS_REQUEST' });
+    yield post(URL, payload, successCallback, failCallback);
 }
 
-function* testCallback() {
-    console.log('Calling back');
+function* successCallback(payload) {
+    console.log('Calling successCallback');
+    yield put({
+        type: 'POST_INGREDIENT_SUCCESS',
+        payload
+    });
     yield put({ type: 'GET_INGREDIENTS_REQUEST' });
+}
+
+function* failCallback(payload) {
+    console.log('Calling failCallback');
+    yield put({
+        type: 'POST_INGREDIENT_FAILED',
+        payload
+    });
 }

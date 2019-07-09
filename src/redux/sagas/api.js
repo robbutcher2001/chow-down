@@ -4,86 +4,17 @@ import { call, put as putSideEffect } from 'redux-saga/effects';
 
 import { Method, Headers } from '../../globals/constants';
 
-const callBody = (method, url, payload) => fetch(url, {
-    method,
-    headers: {
-        'Accept': Headers.ACCEPT,
-        'Content-Type': Headers.CONTENT_TYPE
-    },
-    body: JSON.stringify({
-        ...payload
-    })
-});
-
-const callNoBody = (method, url) => fetch(url, {
-    method,
-    headers: {
-        'Accept': Headers.ACCEPT
-    }
-});
-
-function* callBodyTest(method, url, payload, callback) {
-    console.log('here');
-    try {
-        // const response = yield call(post, postParam1, postParam2);
-        // yield* handleResponse(yield call(fetch, url, {
-        //     method,
-        //     headers: {
-        //         'Accept': Headers.ACCEPT,
-        //         'Content-Type': Headers.CONTENT_TYPE
-        //     },
-        //     body: JSON.stringify({
-        //         ...payload
-        //     })
-        // }));
-
-        yield* handleResponse(yield call(() => fetch(url, {
-            method,
-            headers: {
-                'Accept': Headers.ACCEPT,
-                'Content-Type': Headers.CONTENT_TYPE
-            },
-            body: JSON.stringify({
-                ...payload
-            })
-        })), callback);
-    } catch (err) {
-        yield* handleResponse(err);
-    }
-};
-
-// export function* post(url, payload) {
-//     // const response = ;
-
-//     console.log('handling initial');
-
-//     yield* handleResponse(yield call(() => callBody(
-//         Method.POST,
-//         url,
-//         payload
-//     )));
-// };
-
 //TODO: logic check
-function* handleResponse(response, callback) {
-    console.log('handling');
+function* handleResponse(response, success, failure) {
     try {
         if (response.status >= 200 && response.status < 500) {
             const json = yield response.json();
 
             if (response.status < 300) {
-                yield putSideEffect({
-                    type: 'POST_INGREDIENT_SUCCESS',
-                    payload: json
-                });
-                console.log('time to callback');
-                yield* callback();
+                yield* success(json);
             }
             else if (response.status >= 400) {
-                yield putSideEffect({
-                    type: 'POST_INGREDIENT_FAILED',
-                    payload: json
-                });
+                yield* failure(json);
             }
             else {
                 throw response;
@@ -92,11 +23,8 @@ function* handleResponse(response, callback) {
         else {
             throw response;
         }
-        console.log('HEHRHEHEr');
     } catch (err) {
-        console.log('GIT ERROE');
         if (err.status >= 500) {
-            console.log('got a 500 ' + err.statusText);
             yield putSideEffect({
                 type: 'UNEXPECTED_SERVER_ERROR',
                 payload: err.statusText
@@ -106,7 +34,6 @@ function* handleResponse(response, callback) {
         }
 
         let errorMessage = err.statusText;
-        console.log(err);
         if (err.toString().includes('Failed to fetch') ||
             err.toString().includes('Could not connect to the server')) {
             errorMessage = 'remote server is unreachable';
@@ -120,9 +47,57 @@ function* handleResponse(response, callback) {
     }
 };
 
-export const post = (url, payload, callback) => callBodyTest(Method.POST, url, payload, callback);
+function* callNoBody(method, url, success, failure) {
+    try {
+        yield* handleResponse(
+            yield call(fetch, url, {
+                method,
+                headers: {
+                    'Accept': Headers.ACCEPT
+                }
+            }),
+            success,
+            failure
+        );
+    } catch (err) {
+        yield* handleResponse(
+            err,
+            success,
+            failure
+        );
+    }
+};
 
-export const get = url => callNoBody(Method.GET, url);
+function* callBody(method, url, payload, success, failure) {
+    try {
+        yield* handleResponse(
+            yield call(fetch, url, {
+                method,
+                headers: {
+                    'Accept': Headers.ACCEPT,
+                    'Content-Type': Headers.CONTENT_TYPE
+                },
+                body: JSON.stringify({
+                    ...payload
+                })
+            }),
+            success,
+            failure
+        );
+    } catch (err) {
+        yield* handleResponse(
+            err,
+            success,
+            failure
+        );
+    }
+}
+
+export const post = (url, payload, successCallback, failCallback) =>
+    callBody(Method.POST, url, payload, successCallback, failCallback);
+
+export const get = (url, successCallback, failCallback) =>
+    callNoBody(Method.GET, url, successCallback, failCallback);
 
 export const put = () => 'no impl';
 

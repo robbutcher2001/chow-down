@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { put, takeLatest } from 'redux-saga/effects';
 
 import { get } from './api';
 
@@ -9,22 +9,22 @@ export default function* watcherSaga() {
 }
 
 function* workerSaga() {
-    try {
-        yield put({ type: 'GET_INGREDIENTS_REQUEST_PENDING' });
+    yield put({ type: 'GET_INGREDIENTS_REQUEST_PENDING' });
+    yield get(URL, successCallback, failCallback);
+}
 
-        const response = yield call(() => get(URL));
+function* successCallback(payload) {
+    console.log('Calling successCallback');
+    yield put({
+        type: 'GET_INGREDIENTS_SUCCESS',
+        payload
+    });
+}
 
-        if (response.status === 200) {
-            const payload = yield response.json();
-            yield put({
-                type: 'GET_INGREDIENTS_SUCCESS',
-                payload
-            });
-        }
-        else {
-            throw response;
-        }
-    } catch (error) {
-        console.error(error);
-    }
+function* failCallback(payload) {
+    console.log('Calling failCallback');
+    yield put({
+        type: 'POST_INGREDIENT_FAILED',
+        payload
+    });
 }
