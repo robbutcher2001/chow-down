@@ -7,10 +7,10 @@ import { get } from './api';
 const URL = 'http://localhost:3000/api/ingredients';
 
 export default function* watcherSaga() {
-    yield takeLatest('GET_INGREDIENTS_REQUEST', workerSaga);
+    yield takeLatest('GET_INGREDIENTS_REQUEST', getSaga);
 }
 
-function* workerSaga() {
+function* getSaga() {
     yield put({ type: 'GET_INGREDIENTS_REQUEST_PENDING' });
     yield get(URL, successCallback, failCallback);
 }

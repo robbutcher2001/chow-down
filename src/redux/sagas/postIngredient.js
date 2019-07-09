@@ -7,10 +7,10 @@ import { post } from './api';
 const URL = 'http://localhost:3000/api/ingredients';
 
 export default function* watcherSaga() {
-    yield takeLatest('POST_INGREDIENT_REQUEST', workerSaga);
+    yield takeLatest('POST_INGREDIENT_REQUEST', postSaga);
 }
 
-function* workerSaga({ payload }) {
+function* postSaga({ payload }) {
     yield put({ type: 'POST_INGREDIENT_REQUEST_PENDING' });
     yield post(URL, payload, successCallback, failCallback);
 }
