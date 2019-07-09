@@ -4,7 +4,6 @@ import { call, put as putSideEffect } from 'redux-saga/effects';
 
 import { Method, Headers } from '../../globals/constants';
 
-//TODO: logic check
 function* handleResponse(response, success, failure) {
     try {
         if (response.status >= 200 && response.status < 500) {
@@ -29,58 +28,37 @@ function* handleResponse(response, success, failure) {
                 type: 'UNEXPECTED_SERVER_ERROR',
                 payload: err.statusText
             });
-
-            return;
         }
+        else {
+            let errorMessage = err.statusText;
+            if (err.toString().includes('Failed to fetch') ||
+                err.toString().includes('Could not connect to the server')) {
+                errorMessage = 'remote server is unreachable';
+            }
 
-        let errorMessage = err.statusText;
-        if (err.toString().includes('Failed to fetch') ||
-            err.toString().includes('Could not connect to the server')) {
-            errorMessage = 'remote server is unreachable';
+            yield putSideEffect({
+                type: 'UNEXPECTED_RESPONSE',
+                payload: 'An error has occurred with message: ' +
+                    (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'
+            });
         }
-
-        yield putSideEffect({
-            type: 'UNEXPECTED_RESPONSE',
-            payload: 'An error has occurred with message: ' +
-                (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'
-        });
     }
 };
 
-function* callNoBody(method, url, success, failure) {
-    try {
-        yield* handleResponse(
-            yield call(fetch, url, {
-                method,
-                headers: {
-                    'Accept': Headers.ACCEPT
-                }
-            }),
-            success,
-            failure
-        );
-    } catch (err) {
-        yield* handleResponse(
-            err,
-            success,
-            failure
-        );
-    }
-};
+function* doFetch(method, url, payload, success, failure) {
+    const init = {
+        method,
+        headers: { 'Accept': Headers.ACCEPT }
+    };
 
-function* callBody(method, url, payload, success, failure) {
+    if (payload) {
+        init.body = JSON.stringify({ ...payload });
+        init.headers['Content-Type'] = Headers.CONTENT_TYPE;
+    }
+
     try {
         yield* handleResponse(
-            yield call(fetch, url, {
-                method,
-                headers: {
-                    'Accept': Headers.ACCEPT,
-                    'Content-Type': Headers.CONTENT_TYPE
-                },
-                body: JSON.stringify({
-                    ...payload
-                })
-            }),
+            yield call(fetch, url, init),
             success,
             failure
         );
@@ -94,11 +72,13 @@ function* callBody(method, url, payload, success, failure) {
 }
 
 export const post = (url, payload, successCallback, failCallback) =>
-    callBody(Method.POST, url, payload, successCallback, failCallback);
+    doFetch(Method.POST, url, payload, successCallback, failCallback);
 
 export const get = (url, successCallback, failCallback) =>
-    callNoBody(Method.GET, url, successCallback, failCallback);
+    doFetch(Method.GET, url, null, successCallback, failCallback);
 
-export const put = () => 'no impl';
+export const put = (url, payload, successCallback, failCallback) =>
+    doFetch(Method.PUT, url, payload, successCallback, failCallback);
 
-export const del = () => 'no impl';
+export const del = (url, successCallback, failCallback) =>
+    doFetch(Method.DELETE, url, null, successCallback, failCallback);
