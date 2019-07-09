@@ -1,3 +1,5 @@
+'use strict';
+
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 const URL = 'http://localhost:3000/api/recipes';

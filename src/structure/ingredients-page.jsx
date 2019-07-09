@@ -5,6 +5,7 @@ import Form from '../components/form';
 import InputBox from '../components/input-box';
 
 export default connect(state => ({
+    error: state.error,
     status: state.ingredients.status,
     ingredients: state.ingredients.data
 }), dispatch => ({
@@ -30,7 +31,7 @@ export default connect(state => ({
         }
 
         render() {
-            console.log(this.props.status);
+            console.log(this.props.error.isError);
             return (
                 <div>
                     <h4>List ingredients</h4>
@@ -54,7 +55,7 @@ export default connect(state => ({
                             placeholderText='New ingredient name'
                         />
                     </Form>
-                    <div>{this.props.status}</div>
+                    <div>{this.props.error.message}</div>
                     {this.props.status === 'adding' &&
                         <div>Adding your new ingredient..</div>
                     }

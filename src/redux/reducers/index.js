@@ -1,11 +1,15 @@
+'use strict';
+
 import { combineReducers } from 'redux';
 
-import UnitsReducer from './unitsReducer';
-import IngredientsReducer from './ingredientsReducer';
-import RecipesReducer from './recipesReducer';
+import errorReducer from './errorReducer';
+import unitsReducer from './unitsReducer';
+import ingredientsReducer from './ingredientsReducer';
+import recipesReducer from './recipesReducer';
 
 export default combineReducers({
-    units: UnitsReducer,
-    ingredients: IngredientsReducer,
-    recipes: RecipesReducer
+    error: errorReducer,
+    units: unitsReducer,
+    ingredients: ingredientsReducer,
+    recipes: recipesReducer
 });

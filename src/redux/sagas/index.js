@@ -1,3 +1,5 @@
+'use strict';
+
 import { all, fork } from 'redux-saga/effects';
 
 import getIngredients from './getIngredients';

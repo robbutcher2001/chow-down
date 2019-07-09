@@ -1,9 +1,11 @@
+'use strict';
+
 // import { GET_UNITS_SUCCESS } from '../../globals';
 
-export default function (state = {
+export default (state = {
     status: 'no_data',
     data: []
-}, action) {
+}, action) => {
     switch (action.type) {
         case 'GET_UNITS_REQUEST_PENDING':
             return {
@@ -33,4 +35,4 @@ export default function (state = {
         default:
             return state;
     }
-}
+};

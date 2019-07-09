@@ -1,3 +1,5 @@
+'use strict';
+
 import { put, takeLatest } from 'redux-saga/effects';
 
 import { get } from './api';

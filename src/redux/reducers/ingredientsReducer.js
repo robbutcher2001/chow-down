@@ -1,9 +1,11 @@
+'use strict';
+
 // import { GET_INGREDIENTS_SUCCESS } from '../../globals';
 
-export default function (state = {
+export default (state = {
     status: 'no_data',
     data: []
-}, action) {
+}, action) => {
     switch (action.type) {
         case 'GET_INGREDIENTS_REQUEST_PENDING':
             return {
@@ -30,13 +32,7 @@ export default function (state = {
                 ...state,
                 status: action.payload.data.ingredient
             };
-        case 'UNEXPECTED_SERVER_ERROR':
-        case 'UNEXPECTED_RESPONSE':
-            return {
-                ...state,
-                status: action.payload
-            }
         default:
             return state;
     }
-}
+};
