@@ -1,9 +1,11 @@
 'use strict';
 
-export default (state = {
+const initialState = {
     isError: false,
     message: ''
-}, action) => {
+};
+
+export default (state = initialState, action) => {
     switch (action.type) {
         case 'UNEXPECTED_SERVER_ERROR':
         case 'UNEXPECTED_RESPONSE':
@@ -11,13 +13,8 @@ export default (state = {
                 isError: true,
                 message: action.payload
             }
-        case 'CLEAR_ERROR':
-            console.log('Clearing global error');
-            return {
-                isError: false,
-                message: ''
-            }
         default:
-            return state;
+            console.log('Clearing global error as default');
+            return initialState;
     }
 };
