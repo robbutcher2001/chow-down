@@ -2,7 +2,7 @@
 
 import { call, put as putSideEffect } from 'redux-saga/effects';
 
-import { Method, Headers } from '../../globals/constants';
+import { Method, Headers, Actions } from '../../globals/constants';
 
 function* handleResponse(response, success, failure) {
     try {
@@ -25,7 +25,7 @@ function* handleResponse(response, success, failure) {
     } catch (err) {
         if (err.status >= 500) {
             yield putSideEffect({
-                type: 'UNEXPECTED_SERVER_ERROR',
+                type: Actions.error.UNEXPECTED_SERVER_ERROR,
                 payload: err.statusText
             });
         }
@@ -37,7 +37,7 @@ function* handleResponse(response, success, failure) {
             }
 
             yield putSideEffect({
-                type: 'UNEXPECTED_RESPONSE',
+                type: Actions.error.UNEXPECTED_RESPONSE,
                 payload: 'An error has occurred with message: ' +
                     (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'
             });

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Actions } from '../globals/constants';
+
 export default connect(state => ({
     pending: state.recipes.status.pending,
     recipes: state.recipes.data
 }), dispatch => ({
-    fireRequest: () => dispatch({ type: 'GET_RECIPES_REQUEST' })
+    fireRequest: () => dispatch({ type: Actions.recipes.GET_RECIPES_REQUEST })
 }))(
     class IngredientsPage extends Component {
         constructor(props) {

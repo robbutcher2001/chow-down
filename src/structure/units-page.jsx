@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Actions } from '../globals/constants';
+
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -8,7 +10,7 @@ export default connect(state => ({
     status: state.units.status,
     units: state.units.data
 }), dispatch => ({
-    fireRequest: payload => dispatch({ type: 'GET_UNITS_REQUEST', payload })
+    fireRequest: payload => dispatch({ type: Actions.units.GET_UNITS_REQUEST, payload })
 }))(
     class UnitsPage extends Component {
         constructor(props) {
@@ -47,7 +49,7 @@ export default connect(state => ({
                     </ul>
                     <h4>Add unit</h4>
                     <Form
-                        payloadType='POST_UNIT_REQUEST'
+                        payloadType={Actions.units.POST_UNIT_REQUEST}
                         submitText='Add unit'>
                         <InputBox
                             name='singular'

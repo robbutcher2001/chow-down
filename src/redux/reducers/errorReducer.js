@@ -1,5 +1,7 @@
 'use strict';
 
+import { Actions } from '../../globals/constants';
+
 const initialState = {
     isError: false,
     message: ''
@@ -7,8 +9,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'UNEXPECTED_SERVER_ERROR':
-        case 'UNEXPECTED_RESPONSE':
+        case Actions.error.UNEXPECTED_SERVER_ERROR:
+        case Actions.error.UNEXPECTED_RESPONSE:
             return {
                 isError: true,
                 message: action.payload

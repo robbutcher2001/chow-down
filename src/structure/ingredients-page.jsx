@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Actions } from '../globals/constants';
+
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -9,7 +11,7 @@ export default connect(state => ({
     status: state.ingredients.status,
     ingredients: state.ingredients.data
 }), dispatch => ({
-    fireRequest: payload => dispatch({ type: 'GET_INGREDIENTS_REQUEST', payload })
+    fireRequest: payload => dispatch({ type: Actions.ingredients.GET_INGREDIENTS_REQUEST, payload })
 }))(
     class IngredientsPage extends Component {
         constructor(props) {
@@ -48,7 +50,7 @@ export default connect(state => ({
                     </ul>
                     <h4>Add ingredient</h4>
                     <Form
-                        payloadType='POST_INGREDIENT_REQUEST'
+                        payloadType={Actions.ingredients.POST_INGREDIENT_REQUEST}
                         submitText='Add ingredient'>
                         <InputBox
                             name='name'

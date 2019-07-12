@@ -1,33 +1,33 @@
 'use strict';
 
-// import { GET_INGREDIENTS_SUCCESS } from '../../globals';
+import { Actions } from '../../globals/constants';
 
 export default (state = {
     status: 'no_data',
     data: []
 }, action) => {
     switch (action.type) {
-        case 'GET_INGREDIENTS_REQUEST_PENDING':
+        case Actions.ingredients.GET_INGREDIENTS_REQUEST_PENDING:
             return {
                 status: 'pending',
                 data: []
             };
-        case 'GET_INGREDIENTS_SUCCESS':
+        case Actions.ingredients.GET_INGREDIENTS_SUCCESS:
             return {
                 status: action.payload.status,
                 data: action.payload.data.ingredients
             };
-        case 'POST_INGREDIENT_REQUEST_PENDING':
+        case Actions.ingredients.POST_INGREDIENT_REQUEST_PENDING:
             return {
                 ...state,
                 status: 'adding'
             };
-        case 'POST_INGREDIENT_SUCCESS':
+        case Actions.ingredients.POST_INGREDIENT_SUCCESS:
             return {
                 ...state,
                 status: action.payload.status
             };
-        case 'POST_INGREDIENT_FAILED':
+        case Actions.ingredients.POST_INGREDIENT_FAILED:
             return {
                 ...state,
                 status: action.payload.data.ingredient

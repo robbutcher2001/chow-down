@@ -2,19 +2,20 @@
 
 import { put } from 'redux-saga/effects';
 
+import { Actions } from '../../../globals/constants';
 import { get } from '../api';
 
 const URL = 'http://localhost:3000/api/recipes';
 
 export default function* getSaga() {
-    yield put({ type: 'GET_RECIPES_REQUEST_PENDING' });
+    yield put({ type: Actions.recipes.GET_RECIPES_REQUEST_PENDING });
     yield get(URL, successCallback, failCallback);
 }
 
 function* successCallback(payload) {
     console.log('Calling successCallback');
     yield put({
-        type: 'GET_RECIPES_SUCCESS',
+        type: Actions.recipes.GET_RECIPES_SUCCESS,
         payload
     });
 }
@@ -22,7 +23,7 @@ function* successCallback(payload) {
 function* failCallback(payload) {
     console.log('Calling failCallback');
     yield put({
-        type: 'GET_RECIPES_FAILED',
+        type: Actions.recipes.GET_RECIPES_FAILED,
         payload
     });
 }

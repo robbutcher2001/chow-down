@@ -1,6 +1,6 @@
 'use strict';
 
-// import { GET_RECIPES_SUCCESS } from '../../globals';
+import { Actions } from '../../globals/constants';
 
 export default (state = {
     status: {
@@ -9,14 +9,14 @@ export default (state = {
     data: []
 }, action) => {
     switch (action.type) {
-        case 'GET_RECIPES_REQUEST_PENDING':
+        case Actions.recipes.GET_RECIPES_REQUEST_PENDING:
             return {
                 status: {
                     pending: true
                 },
                 data: []
             };
-        case 'GET_RECIPES_SUCCESS':
+        case Actions.recipes.GET_RECIPES_SUCCESS:
             return {
                 status: {
                     pending: false
