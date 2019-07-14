@@ -5,7 +5,7 @@ const Method = {
     DELETE: 'DELETE'
 };
 
-const Headers = {
+const HttpHeaders = {
     ACCEPT: 'application/json',
     CONTENT_TYPE: 'application/json; charset=utf-8'
 };
@@ -47,8 +47,8 @@ const Actions = {
     }
 };
 
-module.exports = {
+export {
     Method,
-    Headers,
+    HttpHeaders,
     Actions
 };

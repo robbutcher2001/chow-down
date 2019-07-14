@@ -2,7 +2,7 @@
 
 import { call, put as putSideEffect } from 'redux-saga/effects';
 
-import { Method, Headers, Actions } from '../../globals/constants';
+import { Method, HttpHeaders, Actions } from '../../globals/constants';
 
 function* handleResponse(response, success, failure) {
     try {
@@ -48,12 +48,12 @@ function* handleResponse(response, success, failure) {
 function* doFetch(method, url, payload, success, failure) {
     const init = {
         method,
-        headers: { 'Accept': Headers.ACCEPT }
+        headers: { 'Accept': HttpHeaders.ACCEPT }
     };
 
     if (payload) {
         init.body = JSON.stringify({ ...payload });
-        init.headers['Content-Type'] = Headers.CONTENT_TYPE;
+        init.headers['Content-Type'] = HttpHeaders.CONTENT_TYPE;
     }
 
     try {

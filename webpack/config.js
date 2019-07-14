@@ -5,7 +5,7 @@ const htmlWebpack = require('html-webpack-plugin');
 module.exports = {
   entry: [
     'babel-polyfill',
-    './src/index.jsx'
+    './src/index.tsx'
   ],
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -28,11 +28,25 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader'
+          }
+        ]
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader'
       }
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   plugins: [
     new htmlWebpack({

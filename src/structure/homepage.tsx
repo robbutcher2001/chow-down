@@ -1,5 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
+
+import { Hello } from './Hello';
 
 export default () => (
     <div>
@@ -13,5 +15,6 @@ export default () => (
         <div>
             <Link to='/recipes'>Recipes Page</Link>
         </div>
+        <Hello name='Rob' author='Butcher2' />
     </div>
 );
