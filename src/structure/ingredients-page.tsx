@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { Actions } from '../globals/constants';
@@ -13,7 +13,7 @@ export default connect(state => ({
 }), dispatch => ({
     fireRequest: payload => dispatch({ type: Actions.ingredients.GET_INGREDIENTS_REQUEST, payload })
 }))(
-    class IngredientsPage extends Component {
+    class IngredientsPage extends React.Component<any, any> {
         constructor(props) {
             super(props);
 

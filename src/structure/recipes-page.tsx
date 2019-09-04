@@ -1,17 +1,28 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { Actions } from '../globals/constants';
 
-export default connect(state => ({
+interface IngredientsProps {
+    onChange: (text: string) => void
+};
+
+interface IngredientsState {
+    recipes: string, // 'INIT', 'LOADING' | 'LOADED' | 'ERROR',
+    notes: NoteModel[],
+    errorMessage?: string
+};
+
+export default connect((state: IngredientsState) => ({
     pending: state.recipes.status.pending,
     recipes: state.recipes.data
-}), dispatch => ({
+}), (dispatch: Dispatch) => ({
     fireRequest: () => dispatch({ type: Actions.recipes.GET_RECIPES_REQUEST })
 }))(
     //convert this back to just Component<>
-    class IngredientsPage extends React.Component<any, any> {
-        constructor(props) {
+    class IngredientsPage extends React.Component<IngredientsProps, any> {
+        constructor(props: IngredientsProps) {
             super(props);
 
             this.onButtonPress = this.onButtonPress.bind(this);
@@ -32,13 +43,13 @@ export default connect(state => ({
                         Press me to get all recipes
                     </button>
                     {this.props.pending &&
-                        <div style={{color: 'red'}}>Getting..</div>
+                        <div style={{ color: 'red' }}>Getting..</div>
                     }
                     {this.props.recipes.map((recipe, index) =>
-                        <div key={index} style={{backgroundColor: '#708090', marginBottom: '2px', padding: '4px',width: '50%'}}>
-                            <h4>{ recipe.title }</h4>
-                            <a href={ recipe.url }>{ recipe.url }</a>
-                            <p>{ recipe.description }</p>
+                        <div key={index} style={{ backgroundColor: '#708090', marginBottom: '2px', padding: '4px', width: '50%' }}>
+                            <h4>{recipe.title}</h4>
+                            <a href={recipe.url}>{recipe.url}</a>
+                            <p>{recipe.description}</p>
                         </div>
                     )}
                 </div>

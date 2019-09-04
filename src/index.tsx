@@ -9,18 +9,17 @@ import sagas from './redux/sagas';
 
 import App from './structure/app';
 
-// const sagaMiddleware = createSagaMiddleware();
-// const store = createStore(
-//     reducers,
-//     applyMiddleware(sagaMiddleware)
-// );
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+    reducers,
+    applyMiddleware(sagaMiddleware)
+);
 
-// sagaMiddleware.run(sagas);
+sagaMiddleware.run(sagas);
 
 ReactDOM.render(
-    <App />,
-    // <Provider store={store}>
-    //     <App />
-    // </Provider>,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById('mnt')
 );

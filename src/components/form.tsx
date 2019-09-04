@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 export default connect(null, dispatch => ({
   submitPayload: (type, payload) => dispatch({ type, payload })
 }))(
-  class Form extends Component {
+  class Form extends React.Component<any, any> {
     constructor(props) {
       super(props);
 
