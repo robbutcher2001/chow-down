@@ -1,25 +1,17 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import React from 'react';
+import { createBrowserHistory } from 'history';
+import ReactDOM from 'react-dom';
 
-import reducers from './redux/reducers';
-import sagas from './redux/sagas';
+import App from './App';
+import { configureStore } from './store';
 
-import App from './structure/app';
-
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(
-    reducers,
-    applyMiddleware(sagaMiddleware)
-);
-
-sagaMiddleware.run(sagas);
+const history = createBrowserHistory();
+const store = configureStore(history);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider>,
-    document.getElementById('mnt')
+    <App
+        store={store}
+        history={history}
+    />
+    , document.getElementById('mnt')
 );

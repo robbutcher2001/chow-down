@@ -3,7 +3,7 @@
 import { put } from 'redux-saga/effects';
 
 import { Actions } from '../../../globals/constants';
-import { get } from '../api';
+import { get } from '../../../store/api';
 
 const URL = 'http://localhost:3000/api/recipes';
 
