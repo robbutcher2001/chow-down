@@ -24,7 +24,7 @@ export const postIngredientsRequest = (payload: object): PostIngredientApiReques
 });
 
 export const pendingPostIngredientsRequest = (): PendingIngredientsApiRequest => ({
-    type: IngredientActionTypes.POST_INGREDIENTS_REQUEST
+    type: IngredientActionTypes.POST_INGREDIENTS_REQUEST_PENDING
 });
 
 export const postIngredientsSuccess = (json: object): IngredientsSuccessApiResponse => ({
