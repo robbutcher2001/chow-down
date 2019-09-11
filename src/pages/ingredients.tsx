@@ -25,11 +25,15 @@ interface OwnState { };
 type CombinedProps = IngredientsState & DispatchProps & OwnProps;
 
 class IngredientsPage extends Component<CombinedProps, OwnState> {
+    constructor(props: CombinedProps) {
+        super(props);
+    }
+
     requestIngredients = () => this.props.getIngredients();
     addIngredient = (form: object) => this.props.postIngredient(form);
 
     componentDidMount = () => this.props.getIngredients();
-    
+
     render = () => {
         console.log(this.props.error);
         return (

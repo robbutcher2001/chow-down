@@ -1,7 +1,7 @@
 'use strict';
+const uuid = require('../util/uuid');
 
 const { success, fail, cors } = require('../util/jsend');
-const uuid = require('../util/uuid');
 const { getIngredients, createIngredient } = require('../data/ingredients');
 
 module.exports = app => {
