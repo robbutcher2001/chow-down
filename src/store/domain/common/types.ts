@@ -1,0 +1,4 @@
+export enum CommonActionTypes {
+    UNEXPECTED_SERVER_ERROR = '@@common/UNEXPECTED_SERVER_ERROR',
+    UNEXPECTED_RESPONSE = '@@common/UNEXPECTED_RESPONSE'
+}

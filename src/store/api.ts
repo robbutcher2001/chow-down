@@ -1,6 +1,6 @@
 import { call, put as putSideEffect } from 'redux-saga/effects';
 
-import { Actions } from '../globals/constants';
+import { CommonActionTypes } from './domain/common/types';
 
 enum Method {
     POST = 'POST',
@@ -49,7 +49,7 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
     } catch (err) {
         if (err.status >= 500) {
             yield putSideEffect({
-                type: Actions.error.UNEXPECTED_SERVER_ERROR,
+                type: CommonActionTypes.UNEXPECTED_SERVER_ERROR,
                 payload: err.statusText
             });
         }
@@ -61,10 +61,12 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
             }
 
             yield putSideEffect({
-                type: Actions.error.UNEXPECTED_RESPONSE,
+                type: CommonActionTypes.UNEXPECTED_RESPONSE,
                 payload: 'An error has occurred with message: ' +
                     (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'
             });
+
+            console.log('got here ' + errorMessage);
         }
     }
 };
