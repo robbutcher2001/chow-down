@@ -56,8 +56,8 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
                         placeholderText='New ingredient name'
                     />
                 </Form>
-                {/* <div>{this.props.error.message}</div>
-                {this.props.status === 'adding' &&
+                <div>{this.props.error}</div>
+                {/*this.props.status === 'adding' &&
                     <div>Adding your new ingredient..</div>
                 }
                 {this.props.status === 'exists' &&
@@ -68,8 +68,9 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
     }
 };
 
-const mapStateToProps = ({ domain }: GlobalState, ownProps: OwnProps): IngredientsState => ({
-    error: domain.ingredient.error,
+const mapStateToProps = ({ app, domain }: GlobalState, ownProps: OwnProps): IngredientsState => ({
+    //TODO: move application-wide errors to footer component for toast notification (feed down through page container)
+    error: app.error,
     ingredients: domain.ingredient.ingredients
 });
 

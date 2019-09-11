@@ -4,6 +4,8 @@ import { all, fork } from 'redux-saga/effects';
 import { routerMiddleware, connectRouter, RouterState } from 'connected-react-router';
 import { History } from 'history';
 
+import { AppState } from './app/types';
+import { appReducer } from './app/reducer';
 import { DomainState } from './domain';
 import { createDomainReducer } from './domain';
 // import { UiState } from './ui';
@@ -13,12 +15,14 @@ import ingredientsSaga from './domain/ingredients/sagas';
 import recipesSaga from './domain/recipes/sagas';
 
 export interface GlobalState {
+    app: AppState,
     domain: DomainState,
     // ui: UiState,
     router: RouterState
 }
 
 const createRootReducer = (history: History) => combineReducers<GlobalState>({
+    app: appReducer,
     domain: createDomainReducer(),
     // ui: createUiReducer(),
     router: connectRouter(history)

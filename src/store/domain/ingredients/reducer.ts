@@ -1,6 +1,5 @@
 import { Reducer } from 'redux';
 
-import { CommonActionTypes } from '../common/types';
 import { IngredientsState, IngredientActionTypes, GetIngredientsApiResponse, IngredientsSuccessApiResponse, IngredientsFailureApiResponse } from './types';
 
 const initialState: IngredientsState = {
@@ -32,12 +31,6 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
             return {
                 error: failureResponse.reason,
                 ingredients: []
-            };
-
-        case CommonActionTypes.UNEXPECTED_RESPONSE:
-        case CommonActionTypes.UNEXPECTED_SERVER_ERROR:
-            return {
-
             };
 
         default:

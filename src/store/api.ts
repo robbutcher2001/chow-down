@@ -1,6 +1,8 @@
-import { call, put as putSideEffect } from 'redux-saga/effects';
+import { call, put as putSideEffect, delay } from 'redux-saga/effects';
 
-import { CommonActionTypes } from './domain/common/types';
+import { unexpectedServerError, unexpectedResponse, clearError } from './app/actions';
+
+const clearErrorDelayMilli: number = 6000;
 
 enum Method {
     POST = 'POST',
@@ -48,10 +50,7 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
         }
     } catch (err) {
         if (err.status >= 500) {
-            yield putSideEffect({
-                type: CommonActionTypes.UNEXPECTED_SERVER_ERROR,
-                payload: err.statusText
-            });
+            yield putSideEffect(unexpectedServerError(err.statusText));
         }
         else {
             let errorMessage = err.statusText;
@@ -60,14 +59,12 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
                 errorMessage = 'remote server is unreachable';
             }
 
-            yield putSideEffect({
-                type: CommonActionTypes.UNEXPECTED_RESPONSE,
-                payload: 'An error has occurred with message: ' +
-                    (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'
-            });
-
-            console.log('got here ' + errorMessage);
+            yield putSideEffect(unexpectedResponse('An error has occurred with message: ' +
+                (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'));
         }
+
+        yield delay(clearErrorDelayMilli);
+        yield putSideEffect(clearError());
     }
 };
 
