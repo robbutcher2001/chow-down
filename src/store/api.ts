@@ -1,4 +1,4 @@
-import { call, put as putSideEffect, delay } from 'redux-saga/effects';
+import { call, put as putSideEffect } from 'redux-saga/effects';
 
 import { unexpectedServerError, unexpectedResponse, clearError } from './app/actions';
 
@@ -62,9 +62,6 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
             yield putSideEffect(unexpectedResponse('An error has occurred with message: ' +
                 (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'));
         }
-
-        yield delay(clearErrorDelayMilli);
-        yield putSideEffect(clearError());
     }
 };
 
@@ -84,6 +81,7 @@ function* doFetch(method: Method, url: string, success: SuccessCallback, failure
     }
 
     try {
+        yield putSideEffect(clearError());
         yield* handleResponse(
             yield call(fetch, url, init),
             success,
