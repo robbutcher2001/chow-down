@@ -13,6 +13,7 @@ import { createDomainReducer } from './domain';
 
 import ingredientsSaga from './domain/ingredients/sagas';
 import recipesSaga from './domain/recipes/sagas';
+import unitsSaga from './domain/units/sagas';
 
 export interface GlobalState {
     app: AppState,
@@ -31,7 +32,8 @@ const createRootReducer = (history: History) => combineReducers<GlobalState>({
 function* createRootSaga() {
     yield all([
         fork(ingredientsSaga),
-        fork(recipesSaga)
+        fork(recipesSaga),
+        fork(unitsSaga)
     ]);
 
     console.log('[rootSaga] App started');
