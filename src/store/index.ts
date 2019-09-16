@@ -8,8 +8,8 @@ import { AppState } from './app/types';
 import { appReducer } from './app/reducer';
 import { DomainState } from './domain';
 import { createDomainReducer } from './domain';
-// import { UiState } from './ui';
-// import { createUiReducer } from './ui';
+import { UiState } from './ui';
+import { createUiReducer } from './ui';
 
 import ingredientsSaga from './domain/ingredients/sagas';
 import recipesSaga from './domain/recipes/sagas';
@@ -18,14 +18,14 @@ import unitsSaga from './domain/units/sagas';
 export interface GlobalState {
     app: AppState,
     domain: DomainState,
-    // ui: UiState,
+    ui: UiState,
     router: RouterState
 }
 
 const createRootReducer = (history: History) => combineReducers<GlobalState>({
     app: appReducer,
     domain: createDomainReducer(),
-    // ui: createUiReducer(),
+    ui: createUiReducer(),
     router: connectRouter(history)
 });
 

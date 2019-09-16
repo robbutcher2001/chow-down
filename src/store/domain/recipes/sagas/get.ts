@@ -15,7 +15,7 @@ function* successCallback(json: object) {
     yield put(getRecipesSuccess(json));
 };
 
-function* failCallback(reason: string) {
+function* failCallback(code: number, json: object) {
     console.log('Calling getRecipeFailCallback');
-    yield put(getRecipesFailure(reason));
+    yield put(getRecipesFailure(code, json));
 };

@@ -3,15 +3,17 @@ import { Reducer } from 'redux';
 import { IngredientsState, IngredientActionTypes, GetIngredientsApiResponse, IngredientsSuccessApiResponse, IngredientsFailureApiResponse } from './types';
 
 const initialState: IngredientsState = {
-    error: null,
+    failure: null,
     ingredients: []
 }
 
-interface IngredientsResponse {
-    status: string,
-    data: {
-        ingredients: []
-    }
+//TODO: move the status field up to actions and ref in api.ts
+interface IngredientsSuccessResponse {
+    ingredients: []
+}
+
+interface IngredientsFailureResponse {
+    ingredient: string
 }
 
 //TODO: should we type-cast here?
@@ -20,16 +22,18 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
 
         case IngredientActionTypes.GET_INGREDIENTS_SUCCESS:
             const successResponse = action as IngredientsSuccessApiResponse;
-            const json = successResponse.json as IngredientsResponse;
+            const successJson = successResponse.json as IngredientsSuccessResponse;
             return {
-                error: null,
-                ingredients: json.data.ingredients
+                failure: null,
+                ingredients: successJson.ingredients
             };
 
         case IngredientActionTypes.GET_INGREDIENTS_FAILURE:
+        case IngredientActionTypes.POST_INGREDIENTS_FAILURE:
             const failureResponse = action as IngredientsFailureApiResponse;
+            const failureJson = failureResponse.json as IngredientsFailureResponse;
             return {
-                error: failureResponse.reason,
+                failure: failureJson.ingredient,
                 ingredients: []
             };
 

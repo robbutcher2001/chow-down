@@ -20,7 +20,7 @@ export interface Recipe {
 }
 
 export interface RecipesState {
-    readonly error: string,
+    readonly failure: string,
     readonly recipes: Recipe[]
 }
 
@@ -44,7 +44,8 @@ export interface RecipesSuccessApiResponse extends Action {
 
 export interface RecipesFailureApiResponse extends Action {
     type: RecipeActionTypes,
-    reason: string
+    code: number,
+    json: object
 }
 
 export type GetRecipesApiResponse = RecipesSuccessApiResponse | RecipesFailureApiResponse;

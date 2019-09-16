@@ -2,8 +2,6 @@ import { call, put as putSideEffect } from 'redux-saga/effects';
 
 import { unexpectedServerError, unexpectedResponse, clearError } from './app/actions';
 
-const clearErrorDelayMilli: number = 6000;
-
 enum Method {
     POST = 'POST',
     GET = 'GET',
@@ -20,26 +18,31 @@ interface RequestHeaders {
     [s: string]: string
 };
 
+interface ResponseBody {
+    status: string,
+    data: object
+};
+
 //TODO: need to type the return of the callbacks, any is not good
 export interface SuccessCallback {
     (json: object): any
 };
 
 export interface FailCallback {
-    (reason: string): any
+    (code: number, json: object): any
 };
 
 //TODO: need to type the response from fetch, any is not good
 function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback) {
     try {
         if (response.status >= 200 && response.status < 500) {
-            const json = yield response.json();
+            const json: ResponseBody = yield response.json();
 
             if (response.status < 300) {
-                yield* success(json);
+                yield* success(json.data);
             }
             else if (response.status >= 400) {
-                yield* failure(json);
+                yield* failure(response.status, json.data);
             }
             else {
                 throw response;

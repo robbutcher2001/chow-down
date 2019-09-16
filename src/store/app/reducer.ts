@@ -12,7 +12,6 @@ export const appReducer: Reducer<AppState, ErrorApiResponse> = (state = initialS
         case AppActionTypes.UNEXPECTED_SERVER_ERROR:
         case AppActionTypes.UNEXPECTED_RESPONSE:
         case AppActionTypes.CLEAR_ERROR:
-            console.log(action);
             return {
                 error: action.reason
             };

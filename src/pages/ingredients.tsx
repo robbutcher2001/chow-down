@@ -3,15 +3,23 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
-import { IngredientsState, GetIngredientsApiRequest, PostIngredientApiRequest } from '../store/domain/ingredients/types';
+import { Ingredient, GetIngredientsApiRequest, PostIngredientApiRequest } from '../store/domain/ingredients/types';
 import { getIngredientsRequest, postIngredientsRequest } from '../store/domain/ingredients/actions';
 
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
-// interface StateProps {
-//     ingredients: number
-// };
+interface StateProps {
+    error: string,
+    failure: string,
+    ingredients: Ingredient[],
+    ui: {
+        pending: {
+            get: boolean,
+            post: boolean
+        }
+    }
+};
 
 interface DispatchProps {
     getIngredients: () => GetIngredientsApiRequest,
@@ -22,7 +30,7 @@ interface OwnProps { };
 
 interface OwnState { };
 
-type CombinedProps = IngredientsState & DispatchProps & OwnProps;
+type CombinedProps = StateProps & DispatchProps & OwnProps;
 
 class IngredientsPage extends Component<CombinedProps, OwnState> {
     constructor(props: CombinedProps) {
@@ -35,13 +43,16 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
     componentDidMount = () => this.props.getIngredients();
 
     render = () => {
-        console.log(this.props.error);
+        console.log(this.props.ui.pending.post);
         return (
             <div>
                 <h4>List ingredients</h4>
                 <button onClick={this.requestIngredients}>
                     Refresh ingredients
                 </button>
+                {this.props.ui.pending.get &&
+                    <div style={{ color: 'red' }}>Getting..</div>
+                }
                 <ul>
                     {this.props.ingredients.map((ingredient, index) =>
                         <li key={index}>{ingredient.name}</li>
@@ -57,21 +68,28 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
                     />
                 </Form>
                 <div>{this.props.error}</div>
-                {/*this.props.status === 'adding' &&
+                {this.props.ui.pending.post &&
                     <div>Adding your new ingredient..</div>
                 }
-                {this.props.status === 'exists' &&
-                    <div style={{color: 'red'}}>That already exists!</div>
-                } */}
+                {this.props.failure &&
+                    <div style={{color: 'red'}}>{this.props.failure}</div>
+                }
             </div>
         );
     }
 };
 
-const mapStateToProps = ({ app, domain }: GlobalState, ownProps: OwnProps): IngredientsState => ({
+const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
     //TODO: move application-wide errors to footer component for toast notification (feed down through page container)
     error: app.error,
-    ingredients: domain.ingredient.ingredients
+    failure: domain.ingredient.failure,
+    ingredients: domain.ingredient.ingredients,
+    ui: {
+        pending: {
+            get: ui.ingredient.getPending,
+            post: ui.ingredient.postPending
+        }
+    }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
@@ -79,5 +97,5 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchPro
     postIngredient: (form: object) => dispatch(postIngredientsRequest(form))
 });
 
-export default connect<IngredientsState, DispatchProps, OwnProps, GlobalState>
+export default connect<StateProps, DispatchProps, OwnProps, GlobalState>
     (mapStateToProps, mapDispatchToProps)(IngredientsPage);

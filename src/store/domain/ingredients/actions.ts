@@ -1,11 +1,7 @@
-import { IngredientActionTypes, GetIngredientsApiRequest, PostIngredientApiRequest, PendingIngredientsApiRequest, IngredientsSuccessApiResponse, IngredientsFailureApiResponse } from './types';
+import { IngredientActionTypes, GetIngredientsApiRequest, PostIngredientApiRequest, IngredientsSuccessApiResponse, IngredientsFailureApiResponse } from './types';
 
 export const getIngredientsRequest = (): GetIngredientsApiRequest => ({
     type: IngredientActionTypes.GET_INGREDIENTS_REQUEST
-});
-
-export const pendingGetIngredientsRequest = (): PendingIngredientsApiRequest => ({
-    type: IngredientActionTypes.GET_INGREDIENTS_REQUEST_PENDING
 });
 
 export const getIngredientsSuccess = (json: object): IngredientsSuccessApiResponse => ({
@@ -13,9 +9,10 @@ export const getIngredientsSuccess = (json: object): IngredientsSuccessApiRespon
     json
 });
 
-export const getIngredientsFailure = (reason: string): IngredientsFailureApiResponse => ({
+export const getIngredientsFailure = (code: number, json: object): IngredientsFailureApiResponse => ({
     type: IngredientActionTypes.GET_INGREDIENTS_FAILURE,
-    reason
+    code,
+    json
 });
 
 export const postIngredientsRequest = (payload: object): PostIngredientApiRequest => ({
@@ -23,16 +20,13 @@ export const postIngredientsRequest = (payload: object): PostIngredientApiReques
     payload
 });
 
-export const pendingPostIngredientsRequest = (): PendingIngredientsApiRequest => ({
-    type: IngredientActionTypes.POST_INGREDIENTS_REQUEST_PENDING
-});
-
 export const postIngredientsSuccess = (json: object): IngredientsSuccessApiResponse => ({
     type: IngredientActionTypes.POST_INGREDIENTS_SUCCESS,
     json
 });
 
-export const postIngredientsFailure = (reason: string): IngredientsFailureApiResponse => ({
+export const postIngredientsFailure = (code: number, json: object): IngredientsFailureApiResponse => ({
     type: IngredientActionTypes.POST_INGREDIENTS_FAILURE,
-    reason
+    code,
+    json
 });

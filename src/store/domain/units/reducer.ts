@@ -3,14 +3,21 @@ import { Reducer } from 'redux';
 import { UnitsState, UnitActionTypes, GetUnitsApiResponse, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
 
 const initialState: UnitsState = {
-    error: null,
+    failure: null,
     units: []
 }
 
-interface UnitsResponse {
+interface UnitsSuccessResponse {
     status: string,
     data: {
         units: []
+    }
+}
+
+interface UnitsFailureResponse {
+    status: string,
+    data: {
+        unit: string
     }
 }
 
@@ -20,16 +27,17 @@ export const unitsReducer: Reducer<UnitsState, GetUnitsApiResponse> = (state = i
 
         case UnitActionTypes.GET_UNITS_SUCCESS:
             const successResponse = action as UnitsSuccessApiResponse;
-            const json = successResponse.json as UnitsResponse;
+            const successJson = successResponse.json as UnitsSuccessResponse;
             return {
-                error: null,
-                units: json.data.units
+                failure: null,
+                units: successJson.data.units
             };
 
         case UnitActionTypes.GET_UNITS_FAILURE:
             const failureResponse = action as UnitsFailureApiResponse;
+            const failureJson = failureResponse.json as UnitsFailureResponse;
             return {
-                error: failureResponse.reason,
+                failure: failureJson.data.unit,
                 units: []
             };
 

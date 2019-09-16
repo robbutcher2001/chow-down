@@ -73,7 +73,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 };
 
 const mapStateToProps = ({ domain }: GlobalState, ownProps: OwnProps): RecipesState => ({
-    error: domain.recipe.error,
+    failure: domain.recipe.failure,
     recipes: domain.recipe.recipes
 });
 

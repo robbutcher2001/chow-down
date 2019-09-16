@@ -63,7 +63,7 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
 };
 
 const mapStateToProps = ({ domain }: GlobalState, ownProps: OwnProps): UnitsState => ({
-    error: domain.unit.error,
+    failure: domain.unit.failure,
     units: domain.unit.units
 });
 

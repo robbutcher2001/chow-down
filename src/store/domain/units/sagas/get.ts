@@ -15,7 +15,7 @@ function* successCallback(json: object) {
     yield put(getUnitsSuccess(json));
 };
 
-function* failCallback(reason: string) {
+function* failCallback(code: number, json: object) {
     console.log('Calling getUnitFailCallback');
-    yield put(getUnitsFailure(reason));
+    yield put(getUnitsFailure(code, json));
 };

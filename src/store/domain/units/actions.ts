@@ -13,9 +13,10 @@ export const getUnitsSuccess = (json: object): UnitsSuccessApiResponse => ({
     json
 });
 
-export const getUnitsFailure = (reason: string): UnitsFailureApiResponse => ({
+export const getUnitsFailure = (code: number, json: object): UnitsFailureApiResponse => ({
     type: UnitActionTypes.GET_UNITS_FAILURE,
-    reason
+    code,
+    json
 });
 
 export const postUnitsRequest = (payload: object): PostUnitApiRequest => ({
@@ -32,7 +33,8 @@ export const postUnitsSuccess = (json: object): UnitsSuccessApiResponse => ({
     json
 });
 
-export const postUnitsFailure = (reason: string): UnitsFailureApiResponse => ({
+export const postUnitsFailure = (code: number, json: object): UnitsFailureApiResponse => ({
     type: UnitActionTypes.POST_UNITS_FAILURE,
-    reason
+    code,
+    json
 });

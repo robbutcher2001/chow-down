@@ -3,14 +3,21 @@ import { Reducer } from 'redux';
 import { RecipesState, RecipeActionTypes, GetRecipesApiResponse, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
 
 const initialState: RecipesState = {
-    error: null,
+    failure: null,
     recipes: []
 }
 
-interface RecipesResponse {
+interface RecipesSuccessResponse {
     status: string,
     data: {
         recipes: []
+    }
+}
+
+interface RecipesFailureResponse {
+    status: string,
+    data: {
+        recipe: string
     }
 }
 
@@ -20,16 +27,17 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
 
         case RecipeActionTypes.GET_RECIPES_SUCCESS:
             const successResponse = action as RecipesSuccessApiResponse;
-            const json = successResponse.json as RecipesResponse;
+            const successJson = successResponse.json as RecipesSuccessResponse;
             return {
-                error: null,
-                recipes: json.data.recipes
+                failure: null,
+                recipes: successJson.data.recipes
             };
 
         case RecipeActionTypes.GET_RECIPES_FAILURE:
             const failureResponse = action as RecipesFailureApiResponse;
+            const failureJson = failureResponse.json as RecipesFailureResponse;
             return {
-                error: failureResponse.reason,
+                failure: failureJson.data.recipe,
                 recipes: []
             };
 

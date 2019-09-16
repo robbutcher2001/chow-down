@@ -18,7 +18,7 @@ export interface Unit {
 }
 
 export interface UnitsState {
-    readonly error: string,
+    readonly failure: string,
     readonly units: Unit[]
 }
 
@@ -42,7 +42,8 @@ export interface UnitsSuccessApiResponse extends Action {
 
 export interface UnitsFailureApiResponse extends Action {
     type: UnitActionTypes,
-    reason: string
+    code: number,
+    json: object
 }
 
 export type GetUnitsApiResponse = UnitsSuccessApiResponse | UnitsFailureApiResponse;

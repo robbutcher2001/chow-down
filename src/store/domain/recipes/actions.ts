@@ -4,6 +4,7 @@ export const getRecipesRequest = (): GetRecipesApiRequest => ({
     type: RecipeActionTypes.GET_RECIPES_REQUEST
 });
 
+//TODO: remove all pending
 export const pendingGetRecipesRequest = (): PendingRecipesApiRequest => ({
     type: RecipeActionTypes.GET_RECIPES_REQUEST_PENDING
 });
@@ -13,9 +14,10 @@ export const getRecipesSuccess = (json: object): RecipesSuccessApiResponse => ({
     json
 });
 
-export const getRecipesFailure = (reason: string): RecipesFailureApiResponse => ({
+export const getRecipesFailure = (code: number, json: object): RecipesFailureApiResponse => ({
     type: RecipeActionTypes.GET_RECIPES_FAILURE,
-    reason
+    code,
+    json
 });
 
 export const postRecipesRequest = (payload: object): PostRecipeApiRequest => ({
@@ -32,7 +34,8 @@ export const postRecipesSuccess = (json: object): RecipesSuccessApiResponse => (
     json
 });
 
-export const postRecipesFailure = (reason: string): RecipesFailureApiResponse => ({
+export const postRecipesFailure = (code: number, json: object): RecipesFailureApiResponse => ({
     type: RecipeActionTypes.POST_RECIPES_FAILURE,
-    reason
+    code,
+    json
 });
