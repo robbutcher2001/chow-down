@@ -3,11 +3,22 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
-import { UnitsState, GetUnitsApiRequest, PostUnitApiRequest } from '../store/domain/units/types';
+import { Unit, GetUnitsApiRequest, PostUnitApiRequest } from '../store/domain/units/types';
 import { getUnitsRequest, postUnitsRequest } from '../store/domain/units/actions';
 
 import Form from '../components/form';
 import InputBox from '../components/input-box';
+
+interface StateProps {
+    failure: string,
+    units: Unit[],
+    ui: {
+        pending: {
+            get: boolean,
+            post: boolean
+        }
+    }
+};
 
 interface DispatchProps {
     getUnits: () => GetUnitsApiRequest,
@@ -18,7 +29,7 @@ interface OwnProps { };
 
 interface OwnState { };
 
-type CombinedProps = UnitsState & DispatchProps & OwnProps;
+type CombinedProps = StateProps & DispatchProps & OwnProps;
 
 class UnitsPage extends Component<CombinedProps, OwnState> {
     constructor(props: CombinedProps) {
@@ -38,9 +49,9 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
                 <button onClick={this.requestUnits}>
                     Press me to get all units
                 </button>
-                {/* {this.props.pending &&
+                {this.props.ui.pending.get &&
                     <div style={{ color: 'red' }}>Getting..</div>
-                } */}
+                }
                 {this.props.units.map((unit, index) =>
                     <li key={index}>{unit.singular}, {unit.plural}</li>
                 )}
@@ -57,14 +68,26 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
                         placeholderText='Plural unit name'
                     />
                 </Form>
+                {this.props.ui.pending.post &&
+                    <div>Adding your new unit..</div>
+                }
+                {this.props.failure &&
+                    <div style={{color: 'red'}}>{this.props.failure}</div>
+                }
             </div>
         );
     }
 };
 
-const mapStateToProps = ({ domain }: GlobalState, ownProps: OwnProps): UnitsState => ({
+const mapStateToProps = ({ domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
     failure: domain.unit.failure,
-    units: domain.unit.units
+    units: domain.unit.units,
+    ui: {
+        pending: {
+            get: ui.unit.getPending,
+            post: ui.unit.postPending
+        }
+    }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
@@ -72,5 +95,5 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchPro
     postUnit: (form: object) => dispatch(postUnitsRequest(form))
 });
 
-export default connect<UnitsState, DispatchProps, OwnProps, GlobalState>
+export default connect<StateProps, DispatchProps, OwnProps, GlobalState>
     (mapStateToProps, mapDispatchToProps)(UnitsPage);

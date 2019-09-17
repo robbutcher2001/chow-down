@@ -14,6 +14,7 @@ export default function* getSaga() {
 
 function* successCallback(json: object) {
     console.log('Calling getRecipeSuccessCallback');
+    console.log(json);
     yield put(getRecipesSuccess(json));
 };
 

@@ -8,17 +8,11 @@ const initialState: RecipesState = {
 }
 
 interface RecipesSuccessResponse {
-    status: string,
-    data: {
-        recipes: []
-    }
+    recipes: []
 }
 
 interface RecipesFailureResponse {
-    status: string,
-    data: {
-        recipe: string
-    }
+    recipe: string
 }
 
 //TODO: should we type-cast here?
@@ -30,14 +24,15 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
             const successJson = successResponse.json as RecipesSuccessResponse;
             return {
                 failure: null,
-                recipes: successJson.data.recipes
+                recipes: successJson.recipes
             };
 
         case RecipeActionTypes.GET_RECIPES_FAILURE:
+        case RecipeActionTypes.POST_RECIPES_FAILURE:
             const failureResponse = action as RecipesFailureApiResponse;
             const failureJson = failureResponse.json as RecipesFailureResponse;
             return {
-                failure: failureJson.data.recipe,
+                failure: failureJson.recipe,
                 recipes: []
             };
 

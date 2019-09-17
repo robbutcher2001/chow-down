@@ -3,11 +3,22 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
-import { RecipesState, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
+import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
 import Form from '../components/form';
 import InputBox from '../components/input-box';
+
+interface StateProps {
+    failure: string,
+    recipes: Recipe[],
+    ui: {
+        pending: {
+            get: boolean,
+            post: boolean
+        }
+    }
+};
 
 interface DispatchProps {
     getRecipes: () => GetRecipesApiRequest,
@@ -18,7 +29,7 @@ interface OwnProps { };
 
 interface OwnState { };
 
-type CombinedProps = RecipesState & DispatchProps & OwnProps;
+type CombinedProps = StateProps & DispatchProps & OwnProps;
 
 class RecipesPage extends Component<CombinedProps, OwnState> {
     constructor(props: CombinedProps) {
@@ -28,6 +39,8 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     requestRecipes = () => this.props.getRecipes();
     addRecipe = (form: object) => this.props.postRecipe(form);
 
+    componentDidMount = () => this.props.getRecipes();
+
     render = () => {
         console.log(this.props.recipes);
         return (
@@ -36,9 +49,9 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 <button onClick={this.requestRecipes}>
                     Press me to get all recipes
                 </button>
-                {/* {this.props.pending &&
+                {this.props.ui.pending.get &&
                     <div style={{ color: 'red' }}>Getting..</div>
-                } */}
+                }
                 {this.props.recipes.map((recipe, index) =>
                     <div key={index} style={{ backgroundColor: '#708090', marginBottom: '2px', padding: '4px', width: '50%' }}>
                         <h4>{recipe.title}</h4>
@@ -67,14 +80,26 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                         placeholderText='New recipe image'
                     />
                 </Form>
+                {this.props.ui.pending.post &&
+                    <div>Adding your new recipe..</div>
+                }
+                {this.props.failure &&
+                    <div style={{color: 'red'}}>{this.props.failure}</div>
+                }
             </div>
         );
     }
 };
 
-const mapStateToProps = ({ domain }: GlobalState, ownProps: OwnProps): RecipesState => ({
+const mapStateToProps = ({ domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
     failure: domain.recipe.failure,
-    recipes: domain.recipe.recipes
+    recipes: domain.recipe.recipes,
+    ui: {
+        pending: {
+            get: ui.recipe.getPending,
+            post: ui.recipe.postPending
+        }
+    }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
@@ -82,5 +107,5 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchPro
     postRecipe: (form: object) => dispatch(postRecipesRequest(form))
 });
 
-export default connect<RecipesState, DispatchProps, OwnProps, GlobalState>
+export default connect<StateProps, DispatchProps, OwnProps, GlobalState>
     (mapStateToProps, mapDispatchToProps)(RecipesPage);
