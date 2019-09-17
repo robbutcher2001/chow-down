@@ -1,34 +1,34 @@
 import { Reducer } from 'redux';
 
-import { IngredientsUiState, IngredientUiActionTypes, IngredientsUiChange } from './types';
+import { RecipesUiState, RecipeUiActionTypes, RecipesUiChange } from './types';
 
-const initialState: IngredientsUiState = {
+const initialState: RecipesUiState = {
     getPending: false,
     postPending: false
 }
 
-export const ingredientsUiReducer: Reducer<IngredientsUiState, IngredientsUiChange> = (state = initialState, action: IngredientsUiChange) => {
+export const recipesUiReducer: Reducer<RecipesUiState, RecipesUiChange> = (state = initialState, action: RecipesUiChange) => {
     switch (action.type) {
 
-        case IngredientUiActionTypes.GET_INGREDIENTS_PENDING:
+        case RecipeUiActionTypes.GET_RECIPES_PENDING:
             return {
                 ...state,
                 getPending: true
             };
 
-        case IngredientUiActionTypes.POST_INGREDIENTS_PENDING:
+        case RecipeUiActionTypes.POST_RECIPES_PENDING:
             return {
                 ...state,
                 postPending: true
             };
 
-        case IngredientUiActionTypes.CLEAR_GET_INGREDIENTS_PENDING:
+        case RecipeUiActionTypes.CLEAR_GET_RECIPES_PENDING:
             return {
                 ...state,
                 getPending: false
             };
 
-        case IngredientUiActionTypes.CLEAR_POST_INGREDIENTS_PENDING:
+        case RecipeUiActionTypes.CLEAR_POST_RECIPES_PENDING:
             return {
                 ...state,
                 postPending: false

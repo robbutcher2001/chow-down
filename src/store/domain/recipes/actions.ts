@@ -1,12 +1,7 @@
-import { RecipeActionTypes, GetRecipesApiRequest, PostRecipeApiRequest, PendingRecipesApiRequest, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
+import { RecipeActionTypes, GetRecipesApiRequest, PostRecipeApiRequest, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
 
 export const getRecipesRequest = (): GetRecipesApiRequest => ({
     type: RecipeActionTypes.GET_RECIPES_REQUEST
-});
-
-//TODO: remove all pending
-export const pendingGetRecipesRequest = (): PendingRecipesApiRequest => ({
-    type: RecipeActionTypes.GET_RECIPES_REQUEST_PENDING
 });
 
 export const getRecipesSuccess = (json: object): RecipesSuccessApiResponse => ({
@@ -23,10 +18,6 @@ export const getRecipesFailure = (code: number, json: object): RecipesFailureApi
 export const postRecipesRequest = (payload: object): PostRecipeApiRequest => ({
     type: RecipeActionTypes.POST_RECIPES_REQUEST,
     payload
-});
-
-export const pendingPostRecipesRequest = (): PendingRecipesApiRequest => ({
-    type: RecipeActionTypes.POST_RECIPES_REQUEST_PENDING
 });
 
 export const postRecipesSuccess = (json: object): RecipesSuccessApiResponse => ({

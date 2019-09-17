@@ -1,14 +1,16 @@
 import { put } from 'redux-saga/effects';
 
 import { PostUnitApiRequest } from '../types';
-import { getUnitsRequest, pendingPostUnitsRequest, postUnitsSuccess, postUnitsFailure } from '../actions';
+import { getUnitsRequest, postUnitsSuccess, postUnitsFailure } from '../actions';
+import { pendingPostUnits, clearPendingPostUnits } from '../../../ui/units/actions';
 import { post } from '../../../api';
 
 const URL = 'http://localhost:3000/api/units';
 
 export default function* postSaga(action: PostUnitApiRequest) {
-    yield put(pendingPostUnitsRequest());
+    yield put(pendingPostUnits());
     yield post(URL, successCallback, failCallback, action.payload);
+    yield put(clearPendingPostUnits());
 };
 
 function* successCallback(json: object) {

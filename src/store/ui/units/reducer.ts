@@ -1,34 +1,34 @@
 import { Reducer } from 'redux';
 
-import { IngredientsUiState, IngredientUiActionTypes, IngredientsUiChange } from './types';
+import { UnitsUiState, UnitActionTypes, UnitsUiChange } from './types';
 
-const initialState: IngredientsUiState = {
+const initialState: UnitsUiState = {
     getPending: false,
     postPending: false
 }
 
-export const ingredientsUiReducer: Reducer<IngredientsUiState, IngredientsUiChange> = (state = initialState, action: IngredientsUiChange) => {
+export const unitsUiReducer: Reducer<UnitsUiState, UnitsUiChange> = (state = initialState, action: UnitsUiChange) => {
     switch (action.type) {
 
-        case IngredientUiActionTypes.GET_INGREDIENTS_PENDING:
+        case UnitActionTypes.GET_UNITS_PENDING:
             return {
                 ...state,
                 getPending: true
             };
 
-        case IngredientUiActionTypes.POST_INGREDIENTS_PENDING:
+        case UnitActionTypes.POST_UNITS_PENDING:
             return {
                 ...state,
                 postPending: true
             };
 
-        case IngredientUiActionTypes.CLEAR_GET_INGREDIENTS_PENDING:
+        case UnitActionTypes.CLEAR_GET_UNITS_PENDING:
             return {
                 ...state,
                 getPending: false
             };
 
-        case IngredientUiActionTypes.CLEAR_POST_INGREDIENTS_PENDING:
+        case UnitActionTypes.CLEAR_POST_UNITS_PENDING:
             return {
                 ...state,
                 postPending: false

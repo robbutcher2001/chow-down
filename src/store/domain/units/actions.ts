@@ -1,11 +1,7 @@
-import { UnitActionTypes, GetUnitsApiRequest, PostUnitApiRequest, PendingUnitsApiRequest, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
+import { UnitActionTypes, GetUnitsApiRequest, PostUnitApiRequest, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
 
 export const getUnitsRequest = (): GetUnitsApiRequest => ({
     type: UnitActionTypes.GET_UNITS_REQUEST
-});
-
-export const pendingGetUnitsRequest = (): PendingUnitsApiRequest => ({
-    type: UnitActionTypes.GET_UNITS_REQUEST_PENDING
 });
 
 export const getUnitsSuccess = (json: object): UnitsSuccessApiResponse => ({
@@ -22,10 +18,6 @@ export const getUnitsFailure = (code: number, json: object): UnitsFailureApiResp
 export const postUnitsRequest = (payload: object): PostUnitApiRequest => ({
     type: UnitActionTypes.POST_UNITS_REQUEST,
     payload
-});
-
-export const pendingPostUnitsRequest = (): PendingUnitsApiRequest => ({
-    type: UnitActionTypes.POST_UNITS_REQUEST_PENDING
 });
 
 export const postUnitsSuccess = (json: object): UnitsSuccessApiResponse => ({

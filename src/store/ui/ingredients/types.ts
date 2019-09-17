@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-export enum IngredientActionTypes {
+export enum IngredientUiActionTypes {
     GET_INGREDIENTS_PENDING = '@@ingredients/GET_PENDING',
     POST_INGREDIENTS_PENDING = '@@ingredients/POST_PENDING',
     CLEAR_GET_INGREDIENTS_PENDING = '@@ingredients/CLEAR_ET_PENDING',
@@ -13,5 +13,5 @@ export interface IngredientsUiState {
 }
 
 export interface IngredientsUiChange extends Action {
-    type: IngredientActionTypes
+    type: IngredientUiActionTypes
 }

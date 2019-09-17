@@ -1,14 +1,16 @@
 import { put } from 'redux-saga/effects';
 
 import { PostRecipeApiRequest } from '../types';
-import { getRecipesRequest, pendingPostRecipesRequest, postRecipesSuccess, postRecipesFailure } from '../actions';
+import { getRecipesRequest, postRecipesSuccess, postRecipesFailure } from '../actions';
+import { pendingPostRecipes, clearPendingPostRecipes } from '../../../ui/recipes/actions';
 import { post } from '../../../api';
 
 const URL = 'http://localhost:3000/api/recipes';
 
 export default function* postSaga(action: PostRecipeApiRequest) {
-    yield put(pendingPostRecipesRequest());
+    yield put(pendingPostRecipes());
     yield post(URL, successCallback, failCallback, action.payload);
+    yield put(clearPendingPostRecipes());
 };
 
 function* successCallback(json: object) {
