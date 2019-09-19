@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const htmlWebpack = require('html-webpack-plugin');
 
 module.exports = {
@@ -25,6 +24,9 @@ module.exports = {
             presets: [
               '@babel/preset-env',
               '@babel/preset-react'
+            ],
+            plugins: [
+              'babel-plugin-styled-components'
             ]
           }
         }
