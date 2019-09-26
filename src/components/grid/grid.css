@@ -29,17 +29,27 @@ header>h1 {
     font-size: 3rem;
 }
 
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main>div {
+    max-width: 1100px;
+}
+
 main, footer {
     margin: 1rem 1rem 0rem 1rem;
 }
 
-main h3 {
+main h2 {
     font-size: 2rem;
     padding: 0rem .75rem;
     margin: 0;
 }
 
-main>ul {
+main ul {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1rem;
@@ -48,7 +58,7 @@ main>ul {
     list-style: none;
 }
 
-main>ul>li>figure {
+main ul>li>figure {
     max-height: 220px;
     overflow: hidden;
     border-top-left-radius: .5rem;
@@ -56,18 +66,31 @@ main>ul>li>figure {
     position: relative;
 }
 
-main>ul>li>figure>img {
+main ul>li>figure>img {
     width: 100%;
 }
 
-main>ul>li>figure>figcaption {
+main ul>li>figure>figcaption {
     position: absolute;
     bottom: 0;
     background-color: rgba(0, 0, 0, .7);
     width: 100%;
 }
 
-main>ul>li>figure>figcaption>h3 {
+main ul>li>figure>figcaption>h3 {
     color: white;
     padding: .75rem;
+}
+
+/* maybe whole body should be a grid container then you can do header as row 1, main as row 2 1fr then footer as row 3: https://codepen.io/trooperandz/pen/YRpKjo */
+/* footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+} */
+
+footer>p {
+    margin: 0;
 }
