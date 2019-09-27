@@ -10,8 +10,7 @@ body {
     margin: 0;
 }
 
-
-/* just for de */
+/* just for dev */
 .highlighter {
     border-width: 1px;
     border-color: black;
@@ -27,7 +26,7 @@ nav {
     top: 0;
     z-index: 100;
     background: #222;
-    padding: 0 0.75rem;
+    padding: 0 .75rem;
 }
 
 nav>button {
@@ -35,7 +34,7 @@ nav>button {
     font-size: 1rem;
     padding: 1rem 1rem 0.5rem 1rem;
     border: none;
-    border-bottom: 0.5rem solid #222;
+    border-bottom: .5rem solid #222;
     color: #fff;
     cursor: pointer;
 }
@@ -48,11 +47,6 @@ nav>button:focus {
     outline: none;
 }
 
-
-
-
-
-
 header {
     display: grid;
     align-items: flex-end;
@@ -61,7 +55,7 @@ header {
 
     background-color: grey;
     padding: 2rem 1rem;
-    min-width: 280px; /* needs to be 280px + 2rem when using Scss */
+    min-width: 280px; /* needs to be 280px + 2rem when using scss calculate */
 }
 
 header>* {
@@ -73,11 +67,6 @@ header>* {
 header>h1 {
     font-size: 3rem;
 }
-
-
-
-
-
 
 main {
     display: flex;
@@ -98,7 +87,7 @@ main h2 {
 main ul {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 0.25rem 1em;
+    gap: 0.25rem 2em;
     padding: 1rem 0rem 0rem 0rem;
     margin: 0;
     list-style: none;
@@ -127,9 +116,6 @@ main ul>li>figure>figcaption>h3 {
     color: white;
     padding: .75rem;
 }
-
-
-
 
 footer {
     display: flex;
