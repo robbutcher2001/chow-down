@@ -6,6 +6,7 @@ import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
+import Nav from '../components/nav';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -45,6 +46,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
         console.log(this.props.recipes);
         return (
             <div>
+                <Nav />
                 <h4>List recipes</h4>
                 <button onClick={this.requestRecipes}>
                     Press me to get all recipes
