@@ -3,7 +3,7 @@ import { Store } from 'redux';
 import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-// import './App.css';
+import './App.scss';
 
 import { GlobalState } from './store';
 import Routes from './Routes';

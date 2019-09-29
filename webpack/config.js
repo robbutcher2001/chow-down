@@ -41,6 +41,23 @@ module.exports = {
         ]
       },
       {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader'
+          }
+        ]
+      },
+      {
         enforce: 'pre',
         test: /\.js$/,
         loader: 'source-map-loader'
@@ -48,7 +65,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.jpg']
   },
   plugins: [
     new htmlWebpack({

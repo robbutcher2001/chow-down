@@ -95,6 +95,12 @@ main h2 {
     margin: 0;
 }
 
+
+
+
+/* copied up to here to Page component */
+
+
 main ul {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -103,15 +109,6 @@ main ul {
     margin: 0;
     list-style: none;
 }
-
-
-
-
-
-
-
-
-
 
 main ul>li {
     -webkit-box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);

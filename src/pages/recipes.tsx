@@ -6,7 +6,7 @@ import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
-import Nav from '../components/nav';
+import Page from '../components/page';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -45,8 +45,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     render = () => {
         console.log(this.props.recipes);
         return (
-            <div>
-                <Nav />
+            <Page title={'hello'}>
                 <h4>List recipes</h4>
                 <button onClick={this.requestRecipes}>
                     Press me to get all recipes
@@ -88,7 +87,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 {this.props.failure &&
                     <div style={{color: 'red'}}>{this.props.failure}</div>
                 }
-            </div>
+            </Page>
         );
     }
 };

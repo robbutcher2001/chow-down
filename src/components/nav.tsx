@@ -13,7 +13,7 @@ const Nav = styled.nav`
   background: #222;
   padding: 0 .75rem;
 
-  >button {
+  > button {
     background: #222;
     font-size: 1rem;
     padding: 1rem 1rem 0.5rem 1rem;
@@ -23,11 +23,11 @@ const Nav = styled.nav`
     cursor: pointer;
   }
 
-  >button:hover, >button.active {
+  > button:hover, > button.active {
     border-bottom-color: #4acaa8;
   }
 
-  >button:focus {
+  > button:focus {
     outline: none;
   }
 `
