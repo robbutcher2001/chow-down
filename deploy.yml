@@ -7,7 +7,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs8.10
-      CodeUri: s3://butch-videos/index.js
+      CodeUri: s3://butch-videos/index.js.zip
       Description: A starter AWS Lambda function.
       MemorySize: 128
       Timeout: 3
