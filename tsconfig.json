@@ -7,5 +7,9 @@
         "module": "commonjs",
         "target": "es6",
         "jsx": "react"
-    }
+    },
+    "include": [
+        "src",
+        "image-import.d.ts"
+    ]
 }
