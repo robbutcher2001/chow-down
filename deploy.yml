@@ -3,7 +3,7 @@ Transform: 'AWS::Serverless-2016-10-31'
 Description: A starter AWS Lambda function.
 Resources:
   ohheyrob:
-    Type: 'AWS::Serverless::Function'
+    Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
       Runtime: nodejs8.10
@@ -19,6 +19,42 @@ Resources:
             Method: get
             RestApiId: !Ref apithing
   apithing:
-    Type: "AWS::Serverless::Api"
+    Type: AWS::Serverless::Api
     Properties:
       StageName: deployed
+  cfdistro:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+        - DomainName:
+            Fn::Join: [ '', [ !Ref apithing, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+          Id:
+            Fn::Join: [ '', [ 'origin-', !Ref apithing, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+          OriginPath:
+            Fn::Join: [ '', [ '/', 'deployed' ] ]
+          CustomOriginConfig:
+            HTTPSPort: '443'
+            OriginProtocolPolicy: https-only
+            OriginSSLProtocols:
+            - 'TLSv1'
+            - 'TLSv1.1'
+            - 'TLSv1.2'
+        DefaultCacheBehavior:
+        - AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId:
+            Fn::Join: [ '', [ 'origin-', !Ref MusicLibraryApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+          PathPattern: '/api/*'
+          DefaultTTL: 60
+          MaxTTL: 3600
+          MinTTL: 60
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
