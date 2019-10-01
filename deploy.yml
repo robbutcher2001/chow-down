@@ -48,7 +48,7 @@ Resources:
           - HEAD
           - OPTIONS
           TargetOriginId:
-            Fn::Join: [ '', [ 'origin-', !Ref MusicLibraryApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+            Fn::Join: [ '', [ 'origin-', !Ref apithing, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
           PathPattern: '/api/*'
           DefaultTTL: 60
           MaxTTL: 3600
