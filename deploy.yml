@@ -42,7 +42,7 @@ Resources:
             - 'TLSv1'
             - 'TLSv1.1'
             - 'TLSv1.2'
-        CacheBehavior:
+        CacheBehaviors:
         - AllowedMethods:
           - GET
           - HEAD
