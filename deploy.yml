@@ -17,3 +17,8 @@ Resources:
           Properties:
             Path: /api/units/bob
             Method: get
+            RestApiId: !Ref apithing
+  apithing:
+    Type: "AWS::Serverless::Api"
+    Properties:
+      StageName: deployed
