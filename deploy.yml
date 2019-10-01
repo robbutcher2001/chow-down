@@ -43,18 +43,15 @@ Resources:
             - 'TLSv1.1'
             - 'TLSv1.2'
         DefaultCacheBehavior:
-        - AllowedMethods:
+          AllowedMethods:
           - GET
           - HEAD
           - OPTIONS
           TargetOriginId:
             Fn::Join: [ '', [ 'origin-', !Ref apithing, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
-          # PathPattern: '/api/*'
-          DefaultTTL: 60
-          MaxTTL: 3600
-          MinTTL: 60
           ForwardedValues:
             QueryString: true
             Cookies:
-              Forward: none
+              Forward: all
           ViewerProtocolPolicy: redirect-to-https
+          Compress: true
