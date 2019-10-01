@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const htmlWebpack = require('html-webpack-plugin');
 
 module.exports = {
@@ -25,6 +24,9 @@ module.exports = {
             presets: [
               '@babel/preset-env',
               '@babel/preset-react'
+            ],
+            plugins: [
+              'babel-plugin-styled-components'
             ]
           }
         }
@@ -39,6 +41,20 @@ module.exports = {
         ]
       },
       {
+        test: /\.scss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          'file-loader'
+        ]
+      },
+      {
         enforce: 'pre',
         test: /\.js$/,
         loader: 'source-map-loader'
@@ -46,7 +62,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.jpg']
   },
   plugins: [
     new htmlWebpack({

@@ -6,6 +6,10 @@ import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
+import Loading from '../components/loading';
+import Page from '../components/page';
+import PageGrid from '../components/page-grid';
+import GridItem from '../components/grid-item';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -41,52 +45,69 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
     componentDidMount = () => this.props.getRecipes();
 
+    buildRecipeGrid = (recipes: Recipe[]) =>
+        recipes.map((recipe, i) =>
+            <GridItem
+                key={i}
+                title={recipe.title}
+                description={recipe.description}
+                rating={8}
+                imageUrl={recipe.image}
+                imageAlt={recipe.title}
+            />
+        );
+
     render = () => {
         console.log(this.props.recipes);
+
+        if (this.props.ui.pending.get) {
+            return (
+                <Page title='Your recipes'>
+                    <Loading />
+                </Page>
+            )
+        };
+
         return (
-            <div>
-                <h4>List recipes</h4>
-                <button onClick={this.requestRecipes}>
-                    Press me to get all recipes
-                </button>
-                {this.props.ui.pending.get &&
-                    <div style={{ color: 'red' }}>Getting..</div>
-                }
-                {this.props.recipes.map((recipe, index) =>
-                    <div key={index} style={{ backgroundColor: '#708090', marginBottom: '2px', padding: '4px', width: '50%' }}>
-                        <h4>{recipe.title}</h4>
-                        <a href={recipe.url}>{recipe.url}</a>
-                        <p>{recipe.description}</p>
-                    </div>
-                )}
-                <h4>Add recipe</h4>
-                <Form
-                    dispatch={this.addRecipe}
-                    submitText='Add recipe'>
-                    <InputBox
-                        name='title'
-                        placeholderText='New recipe title'
-                    />
-                    <InputBox
-                        name='url'
-                        placeholderText='New recipe url'
-                    />
-                    <InputBox
-                        name='description'
-                        placeholderText='New recipe description'
-                    />
-                    <InputBox
-                        name='image'
-                        placeholderText='New recipe image'
-                    />
-                </Form>
-                {this.props.ui.pending.post &&
-                    <div>Adding your new recipe..</div>
-                }
-                {this.props.failure &&
-                    <div style={{color: 'red'}}>{this.props.failure}</div>
-                }
-            </div>
+            <Page title='Your recipes'>
+                <PageGrid>
+                    <h4>List recipes</h4>
+                    <button onClick={this.requestRecipes}>
+                        Press me to get all recipes
+                    </button>
+                    {this.props.ui.pending.get &&
+                        <div style={{ color: 'red' }}>Getting..</div>
+                    }
+                    {this.buildRecipeGrid(this.props.recipes)}
+                    <h4>Add recipe</h4>
+                    <Form
+                        dispatch={this.addRecipe}
+                        submitText='Add recipe'>
+                        <InputBox
+                            name='title'
+                            placeholderText='New recipe title'
+                        />
+                        <InputBox
+                            name='url'
+                            placeholderText='New recipe url'
+                        />
+                        <InputBox
+                            name='description'
+                            placeholderText='New recipe description'
+                        />
+                        <InputBox
+                            name='image'
+                            placeholderText='New recipe image'
+                        />
+                    </Form>
+                    {this.props.ui.pending.post &&
+                        <div>Adding your new recipe..</div>
+                    }
+                    {this.props.failure &&
+                        <div style={{ color: 'red' }}>{this.props.failure}</div>
+                    }
+                </PageGrid>
+            </Page>
         );
     }
 };
