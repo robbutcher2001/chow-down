@@ -2,7 +2,6 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 10
       java: openjdk8
   build:
     commands:

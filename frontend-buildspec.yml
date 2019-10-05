@@ -1,0 +1,13 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+  build:
+    commands:
+      - timestamp="`date +%s%N`"
+      - npm install
+      - npm run build
+artifacts:
+  files:
+    - dist/**/*
