@@ -6,20 +6,14 @@ phases:
   build:
     commands:
       - timestamp="`date +%s%N`"
-      # - cd lambda
+      - cd api
+      # will need to be Java later
       # - npm install
-      # - cd ..
-      # - zip -r lambda-source-${timestamp} lambda/*
-      # - aws s3 cp lambda-source-${timestamp}.zip s3://${LambdaSourceBucket}
-      # - sed -ie "s/%{LambdaSourceKey}/lambda-source-${timestamp}.zip/g" domain-apex-cf-descriptor.yml
-      # - aws s3 cp domain-apex-cf-descriptor.yml s3://${LambdaSourceBucket}
-      # - npm install
-      # - npm run build
-      # - mkdir dist/content
-      # - cp -r src/content/images/ dist/content/.
+      - cd ..
+      # - zip -r chow-down-api-source-${timestamp} api/*
+      # - aws s3 cp chow-down-api-source-${timestamp}.zip s3://${ChowDownApiSourceBucket}
+      # - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-source-${timestamp}.zip/g" stack-template.yml
 artifacts:
   files:
-    - ./**/*
-    # - dist/**/*
-    # - pipeline-params/**/*
-    # - domain-apex-cf-descriptor.yml
+    - pipeline-params/**/*
+    - stack-template.yml

@@ -5,13 +5,8 @@ phases:
       nodejs: 10
   build:
     commands:
-      - timestamp="`date +%s%N`"
       - npm install
       - npm run build
-      - cd dist
-      - mkdir robbie
-      - cd robbie
-      - touch file.txt
 artifacts:
   files:
     - '**/*'

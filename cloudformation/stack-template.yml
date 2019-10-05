@@ -4,6 +4,8 @@ Description: Chow Down Stack
 Parameters:
   Env:
     Type: String
+  ApiSourceCodeBucket:
+    Type: String
   PublicURL:
     Type: String
   HostedZoneId:
@@ -15,7 +17,7 @@ Parameters:
 Conditions:
   CreateProdResources: !Equals [ !Ref Env, 'prod' ]
 Resources:
-  #S3 FE Bucket
+  #S3 Buckets
   ChowDownFrontEndBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -45,86 +47,58 @@ Resources:
             Action:
               - 's3:ListBucket'
             Resource: !GetAtt ChowDownFrontEndBucket.Arn
-  # LambdaStaticDeploymentRole:
-  #   Type: AWS::IAM::Role
-  #   Properties:
-  #     RoleName:
-  #       Fn::Join: [ '-', [ 'chow-down-s3-static-deployment-role', !Ref Env ] ]
-  #     AssumeRolePolicyDocument:
-  #       Version: '2012-10-17'
-  #       Statement:
-  #         - Effect: Allow
-  #           Principal:
-  #             Service:
-  #               - 'lambda.amazonaws.com'
-  #           Action:
-  #             - 'sts:AssumeRole'
-  #     Path: /
-  #     ManagedPolicyArns:
-  #       - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-  #       - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
-  #       - 'arn:aws:iam::aws:policy/AWSCodePipelineFullAccess'
-  # ContactFormSubmissionRole:
-  #   Type: AWS::IAM::Role
-  #   Properties:
-  #     RoleName:
-  #       Fn::Join: [ '-', [ 'chow-down-contact-form-submission-role', !Ref Env ] ]
-  #     AssumeRolePolicyDocument:
-  #       Version: '2012-10-17'
-  #       Statement:
-  #         - Effect: Allow
-  #           Principal:
-  #             Service:
-  #               - 'lambda.amazonaws.com'
-  #           Action:
-  #             - 'sts:AssumeRole'
-  #     Path: /
-  #     ManagedPolicyArns:
-  #       - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-  #       - 'arn:aws:iam::aws:policy/AmazonSESFullAccess'
+  ChowDownApiSourceCodeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketName:
+        Fn::Join: [ '-', [ 'chow-down-api-source-code-bucket', !Ref Env ] ]
+      VersioningConfiguration:
+        Status: Enabled
+  #IAM roles
+  GetRecipesFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Join: [ '-', [ 'chow-down-get-recipes-role', !Ref Env ] ]
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - 'lambda.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
   #Lambda Function Definitions
-  # StaticS3DeploymentFunction:
-  #   Type: AWS::Lambda::Function
-  #   Properties:
-  #     FunctionName:
-  #       Fn::Join: [ '-', [ 'StaticS3DeployerFunction', !Ref Env ] ]
-  #     Handler: lambda/deployment/static-s3-deployer.handler
-  #     Runtime: nodejs10.x
-  #     Code:
-  #       S3Bucket: 'lambda-source-location'
-  #       S3Key: %{LambdaSourceKey}
-  #     Role:
-  #       Fn::GetAtt:
-  #         - LambdaStaticDeploymentRole
-  #         - Arn
-  #     Timeout: 30
-  # ContactFormSubmissionFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     FunctionName:
-  #       Fn::Join: [ '-', [ 'ContactFormSubmissionRole', !Ref Env ] ]
-  #     Handler: lambda/api/contact-form-submission.handler
-  #     Runtime: nodejs10.x
-  #     CodeUri: s3://lambda-source-location/%{LambdaSourceKey}
-  #     Role:
-  #       Fn::GetAtt:
-  #         - ContactFormSubmissionRole
-  #         - Arn
-  #     Timeout: 30
-  #     Environment:
-  #       Variables:
-  #         TO_EMAIL_ADDRESS: !Ref ToEmailAddress
-  #     Events:
-  #       BasicGet:
-  #         Type: Api
-  #         Properties:
-  #           Path: /api/contact
-  #           Method: post
-  #           RestApiId: !Ref Api
-  # Api:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     StageName: prod
+  GetRecipesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Join: [ '-', [ 'GetRecipesFunction', !Ref Env ] ]
+      Handler: api/fake-recipes.handler
+      Runtime: nodejs10.x
+      CodeUri:
+        Fn::Join: [ '', 's3://', !Ref ChowDownApiSourceCodeBucket, '/', '%{ChowDownApiSourceKey}' ]
+      Role:
+        Fn::GetAtt:
+          - GetRecipesFunctionRole
+          - Arn
+      Timeout: 30
+      Events:
+        BasicGet:
+          Type: Api
+          Properties:
+            Path: /api/recipes
+            Method: get
+            RestApiId: !Ref ChowDownApi
+  ChowDownApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Red Env
   #CloudFront distro to sit in front of bucket and reduce outbound cost
   ChowDownDistribution:
     Type: AWS::CloudFront::Distribution
@@ -135,7 +109,7 @@ Resources:
           Fn::Join: [ '', [ 'ChowDown Distro [', !Ref Env, ']' ] ]
         Aliases:
         - !Ref PublicURL
-        - !If [ CreateProdResources, !Join [ '.', [ 'www', !Ref PublicURL ] ], !Ref PublicURL ]
+        - !If [ CreateProdResources, !Join [ '.', [ 'www', !Ref PublicURL ] ], '' ]
         DefaultRootObject: index.html
         HttpVersion: http2
         ViewerCertificate:
