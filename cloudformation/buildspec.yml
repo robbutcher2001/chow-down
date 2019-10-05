@@ -15,5 +15,4 @@ phases:
       # - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-source-${timestamp}.zip/g" cloudformation/stack-template.yml
 artifacts:
   files:
-    - pipeline-params/**/*
-    - cloudformation/stack-template.yml
+    - cloudformation/**/*
