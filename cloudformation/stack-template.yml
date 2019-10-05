@@ -72,32 +72,32 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
   #Lambda Function Definitions
-  # GetRecipesFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     FunctionName:
-  #       Fn::Join: [ '-', [ 'GetRecipesFunction', !Ref Env ] ]
-  #     Handler: api/fake-recipes.handler
-  #     Runtime: nodejs10.x
-  #     CodeUri:
-  #       Bucket: !Ref ChowDownApiSourceCodeBucket
-  #       Key: %{ChowDownApiSourceKey}
-  #     Role:
-  #       Fn::GetAtt:
-  #         - GetRecipesFunctionRole
-  #         - Arn
-  #     Timeout: 30
-  #     Events:
-  #       BasicGet:
-  #         Type: Api
-  #         Properties:
-  #           Path: /api/recipes
-  #           Method: get
-  #           RestApiId: !Ref ChowDownApi
-  # ChowDownApi:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     StageName: !Ref Env
+  GetRecipesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Join: [ '-', [ 'GetRecipesFunction', !Ref Env ] ]
+      Handler: api/fake-recipes.handler
+      Runtime: nodejs10.x
+      CodeUri:
+        Bucket: !Ref ChowDownApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
+      Role:
+        Fn::GetAtt:
+          - GetRecipesFunctionRole
+          - Arn
+      Timeout: 30
+      Events:
+        BasicGet:
+          Type: Api
+          Properties:
+            Path: /api/recipes
+            Method: get
+            RestApiId: !Ref ChowDownApi
+  ChowDownApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Env
   #CloudFront distro to sit in front of bucket and reduce outbound cost
   ChowDownDistribution:
     Type: AWS::CloudFront::Distribution
