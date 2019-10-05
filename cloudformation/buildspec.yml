@@ -12,8 +12,8 @@ phases:
       - cd ..
       # - zip -r chow-down-api-source-${timestamp} api/*
       # - aws s3 cp chow-down-api-source-${timestamp}.zip s3://${ChowDownApiSourceBucket}
-      # - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-source-${timestamp}.zip/g" stack-template.yml
+      # - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-source-${timestamp}.zip/g" cloudformation/stack-template.yml
 artifacts:
   files:
     - pipeline-params/**/*
-    - stack-template.yml
+    - cloudformation/stack-template.yml
