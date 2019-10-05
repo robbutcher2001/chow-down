@@ -80,7 +80,8 @@ Resources:
       Handler: api/fake-recipes.handler
       Runtime: nodejs10.x
       CodeUri:
-        Fn::Join: [ '', 's3://', !Ref ChowDownApiSourceCodeBucket, '/', '%{ChowDownApiSourceKey}' ]
+        Bucket: !Ref ChowDownApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
       Role:
         Fn::GetAtt:
           - GetRecipesFunctionRole
