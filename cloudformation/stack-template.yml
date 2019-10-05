@@ -149,9 +149,9 @@ Resources:
           Fn::Join: ["", ["ChowDown Distro [", !Ref Env, "]"]]
         Aliases:
           - !Ref PublicURL
-          - Fn::If: [
+          - !If [
               CreateProdResources,
-              !Join: [".", ["www", !Ref PublicURL]],
+              !Join [".", ["www", !Ref PublicURL]],
               !Ref PublicURL,
             ]
         DefaultRootObject: index.html
@@ -251,9 +251,9 @@ Resources:
     Type: AWS::CertificateManager::Certificate
     Properties:
       DomainName:
-        Fn::If: [
+        !If [
           CreateProdResources,
-          !Join: [".", ["*", !Ref PublicURL]],
+          !Join [".", ["*", !Ref PublicURL]],
           !Ref PublicURL,
         ]
       SubjectAlternativeNames:
