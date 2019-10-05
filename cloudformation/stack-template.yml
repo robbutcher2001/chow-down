@@ -4,8 +4,6 @@ Description: Chow Down Stack
 Parameters:
   Env:
     Type: String
-  ApiSourceCodeBucket:
-    Type: String
   PublicURL:
     Type: String
   HostedZoneId:
