@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Transform: 'AWS::Serverless-2016-10-31'
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
 Description: Chow Down Stack
 Parameters:
   Env:
@@ -13,7 +13,7 @@ Parameters:
   S3OriginAccessIdentity:
     Type: String
 Conditions:
-  CreateProdResources: !Equals [ !Ref Env, 'prod' ]
+  CreateProdResources: !Equals [!Ref Env, "prod"]
 Resources:
   #S3 FE Bucket
   ChowDownFrontEndBucket:
@@ -21,7 +21,7 @@ Resources:
     Properties:
       AccessControl: Private
       BucketName:
-        Fn::Join: [ '-', [ 'chow-down-front-end', !Ref Env ] ]
+        Fn::Join: ["-", ["chow-down-front-end", !Ref Env]]
       VersioningConfiguration:
         Status: Enabled
   ChowDownFrontEndBucketPolicy:
@@ -33,17 +33,31 @@ Resources:
           - Effect: Allow
             Principal:
               AWS:
-                - Fn::Join: [ ' ', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity', !Ref S3OriginAccessIdentity ] ]
+                - Fn::Join:
+                    [
+                      " ",
+                      [
+                        "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity",
+                        !Ref S3OriginAccessIdentity,
+                      ],
+                    ]
             Action:
-              - 's3:GetObject'
+              - "s3:GetObject"
             Resource:
-              Fn::Join: [ '', [ !GetAtt ChowDownFrontEndBucket.Arn, '/*' ] ]
+              Fn::Join: ["", [!GetAtt ChowDownFrontEndBucket.Arn, "/*"]]
           - Effect: Allow
             Principal:
               AWS:
-                - Fn::Join: [ ' ', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity', !Ref S3OriginAccessIdentity ] ]
+                - Fn::Join:
+                    [
+                      " ",
+                      [
+                        "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity",
+                        !Ref S3OriginAccessIdentity,
+                      ],
+                    ]
             Action:
-              - 's3:ListBucket'
+              - "s3:ListBucket"
             Resource: !GetAtt ChowDownFrontEndBucket.Arn
   # LambdaStaticDeploymentRole:
   #   Type: AWS::IAM::Role
@@ -132,7 +146,7 @@ Resources:
       DistributionConfig:
         Enabled: true
         Comment:
-          Fn::Join: [ '', [ 'ChowDown Distro [', !Ref Env, ']' ] ]
+          Fn::Join: ["", ["ChowDown Distro [", !Ref Env, "]"]]
         Aliases:
           - !Ref PublicURL
           # - !If [ CreateProdResources, !Join: [ '.', [ 'www', !Ref PublicURL ] ], !Ref PublicURL ]
@@ -142,12 +156,20 @@ Resources:
           AcmCertificateArn: !Ref ChowDownCertificate
           SslSupportMethod: sni-only
         Origins:
-        - DomainName: !GetAtt ChowDownFrontEndBucket.DomainName
-          Id:
-            Fn::Join: [ '-', [ 'origin', !GetAtt ChowDownFrontEndBucket.DomainName ] ]
-          S3OriginConfig:
-            OriginAccessIdentity:
-              Fn::Join: [ '', [ 'origin-access-identity/cloudfront/', !Ref S3OriginAccessIdentity ] ]
+          - DomainName: !GetAtt ChowDownFrontEndBucket.DomainName
+            Id:
+              Fn::Join:
+                ["-", ["origin", !GetAtt ChowDownFrontEndBucket.DomainName]]
+            S3OriginConfig:
+              OriginAccessIdentity:
+                Fn::Join:
+                  [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      !Ref S3OriginAccessIdentity,
+                    ],
+                  ]
         # - DomainName:
         #     Fn::Join: [ '', [ !Ref Api, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
         #   Id:
@@ -162,16 +184,17 @@ Resources:
         #     - 'TLSv1.1'
         #     - 'TLSv1.2'
         CustomErrorResponses:
-        - ErrorCode: 404
-          ResponseCode: 200
-          ResponsePagePath: /index.html
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: /index.html
         DefaultCacheBehavior:
           AllowedMethods:
-          - GET
-          - HEAD
-          - OPTIONS
+            - GET
+            - HEAD
+            - OPTIONS
           TargetOriginId:
-            Fn::Join: [ '-', [ 'origin', !GetAtt ChowDownFrontEndBucket.DomainName ] ]
+            Fn::Join:
+              ["-", ["origin", !GetAtt ChowDownFrontEndBucket.DomainName]]
           ForwardedValues:
             QueryString: true
             Cookies:
@@ -214,7 +237,7 @@ Resources:
     Properties:
       HostedZoneId: !Ref HostedZoneId
       Name:
-        Fn::Join: [ '.', [ 'www', !Ref PublicURL ] ]
+        Fn::Join: [".", ["www", !Ref PublicURL]]
       Type: A
       AliasTarget:
         DNSName: !GetAtt ChowDownDistribution.DomainName
@@ -222,7 +245,12 @@ Resources:
         HostedZoneId: Z2FDTNDATAQYW2
   ChowDownCertificate:
     Type: AWS::CertificateManager::Certificate
-    Properties: 
-      DomainName: !If [ CreateProdResources, !Join: [ '.', [ '*', !Ref PublicURL ] ], !Ref PublicURL ]
-      SubjectAlternativeNames: 
+    Properties:
+      DomainName:
+        !If [
+          CreateProdResources,
+          !Join: [".", ["*", !Ref PublicURL]],
+          !Ref PublicURL,
+        ]
+      SubjectAlternativeNames:
         - !Ref PublicURL
