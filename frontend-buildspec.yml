@@ -8,6 +8,11 @@ phases:
       - timestamp="`date +%s%N`"
       - npm install
       - npm run build
+      - cd dist
+      - mkdir robbie
+      - cd robbie
+      - touch file.txt
 artifacts:
   files:
-    - dist/**/*
+    - '**/*'
+  base-directory: 'dist'
