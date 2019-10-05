@@ -135,7 +135,7 @@ Resources:
           Fn::Join: [ '', [ 'ChowDown Distro [', !Ref Env, ']' ] ]
         Aliases:
           - !Ref PublicURL
-          - !If [ CreateProdResources, !Join: [ '.', [ 'www', !Ref PublicURL ] ], !Ref PublicURL ]
+          # - !If [ CreateProdResources, !Join: [ '.', [ 'www', !Ref PublicURL ] ], !Ref PublicURL ]
         DefaultRootObject: index.html
         HttpVersion: http2
         ViewerCertificate:
