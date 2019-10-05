@@ -4,6 +4,7 @@ phases:
     runtime-versions:
       nodejs: 10
       java: openjdk8
+  build:
     commands:
       - timestamp="`date +%s%N`"
       # - cd lambda
