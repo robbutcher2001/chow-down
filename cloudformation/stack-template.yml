@@ -122,7 +122,7 @@ Resources:
             OriginAccessIdentity:
               Fn::Join: [ '', [ 'origin-access-identity/cloudfront/', !Ref S3OriginAccessIdentity ] ]
         - DomainName:
-            Fn::Join: [ '', [ !Ref Api, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+            Fn::Join: [ '', [ !Ref ChowDownApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
           Id:
             Fn::Join: [ '', [ 'origin-', !Ref ChowDownApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
           OriginPath:
