@@ -1,0 +1,7 @@
+{
+    "Parameters": {
+        "Env": "dev",
+        "PublicURL": "test.chowdown.recipes",
+        "HostedZoneId": "Z268NPBBWUJJOW"
+    }
+}

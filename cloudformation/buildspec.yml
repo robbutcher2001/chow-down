@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+  build:
+    commands:
+      - timestamp="`date +%s%N`"
+      - cd api
+      # will need to be Java later
+      # - npm install
+      - cd ..
+      - zip -r chow-down-api-source-${timestamp} api/*
+      - aws s3 cp chow-down-api-source-${timestamp}.zip s3://${ChowDownApiSourceBucket}
+      - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-source-${timestamp}.zip/g" cloudformation/stack-template.yml
+artifacts:
+  files:
+    - cloudformation/**/*
