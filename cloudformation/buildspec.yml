@@ -1,0 +1,22 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - timestamp="`date +%s%N`"
+      # - cd lambda
+      # - npm install
+      # - cd ..
+      # - zip -r lambda-source-${timestamp} lambda/*
+      # - aws s3 cp lambda-source-${timestamp}.zip s3://${LambdaSourceBucket}
+      # - sed -ie "s/%{LambdaSourceKey}/lambda-source-${timestamp}.zip/g" domain-apex-cf-descriptor.yml
+      # - aws s3 cp domain-apex-cf-descriptor.yml s3://${LambdaSourceBucket}
+      # - npm install
+      # - npm run build
+      # - mkdir dist/content
+      # - cp -r src/content/images/ dist/content/.
+artifacts:
+  files:
+    - ./**/*
+    # - dist/**/*
+    # - pipeline-params/**/*
+    # - domain-apex-cf-descriptor.yml
