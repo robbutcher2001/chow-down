@@ -134,8 +134,8 @@ Resources:
         Comment:
           Fn::Join: [ '', [ 'ChowDown Distro [', !Ref Env, ']' ] ]
         Aliases:
-        - !Ref PublicURL
-        - !If [ CreateProdResources, !Join: [ '.', [ 'www', !Ref PublicURL ] ], !Ref PublicURL ]
+          - !Ref PublicURL
+          - !If [ CreateProdResources, !Join: [ '.', [ 'www', !Ref PublicURL ] ], !Ref PublicURL ]
         DefaultRootObject: index.html
         HttpVersion: http2
         ViewerCertificate:
@@ -223,7 +223,6 @@ Resources:
   ChowDownCertificate:
     Type: AWS::CertificateManager::Certificate
     Properties: 
-      DomainName:
-        !If [ CreateProdResources, !Join: [ '.', [ '*', !Ref PublicURL ] ], !Ref PublicURL ]
+      DomainName: !If [ CreateProdResources, !Join: [ '.', [ '*', !Ref PublicURL ] ], !Ref PublicURL ]
       SubjectAlternativeNames: 
         - !Ref PublicURL
