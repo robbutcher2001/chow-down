@@ -121,19 +121,19 @@ Resources:
           S3OriginConfig:
             OriginAccessIdentity:
               Fn::Join: [ '', [ 'origin-access-identity/cloudfront/', !Ref S3OriginAccessIdentity ] ]
-        # - DomainName:
-        #     Fn::Join: [ '', [ !Ref Api, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
-        #   Id:
-        #     Fn::Join: [ '', [ 'origin-', !Ref Api, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
-        #   OriginPath:
-        #     Fn::Join: [ '', [ '/', 'prod' ] ]
-        #   CustomOriginConfig:
-        #     HTTPSPort: '443'
-        #     OriginProtocolPolicy: https-only
-        #     OriginSSLProtocols:
-        #     - 'TLSv1'
-        #     - 'TLSv1.1'
-        #     - 'TLSv1.2'
+        - DomainName:
+            Fn::Join: [ '', [ !Ref Api, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+          Id:
+            Fn::Join: [ '', [ 'origin-', !Ref ChowDownApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+          OriginPath:
+            Fn::Join: [ '', [ '/', !Ref Env ] ]
+          CustomOriginConfig:
+            HTTPSPort: '443'
+            OriginProtocolPolicy: https-only
+            OriginSSLProtocols:
+            - 'TLSv1'
+            - 'TLSv1.1'
+            - 'TLSv1.2'
         CustomErrorResponses:
         - ErrorCode: 404
           ResponseCode: 200
@@ -151,26 +151,26 @@ Resources:
               Forward: all
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
-        # CacheBehaviors:
-        # - AllowedMethods:
-        #   - GET
-        #   - HEAD
-        #   - OPTIONS
-        #   - PUT
-        #   - PATCH
-        #   - POST
-        #   - DELETE
-        #   TargetOriginId:
-        #     Fn::Join: [ '', [ 'origin-', !Ref Api, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
-        #   PathPattern: '/api/*'
-        #   DefaultTTL: 60
-        #   MaxTTL: 3600
-        #   MinTTL: 60
-        #   ForwardedValues:
-        #     QueryString: true
-        #     Cookies:
-        #       Forward: none
-        #   ViewerProtocolPolicy: redirect-to-https
+        CacheBehaviors:
+        - AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          - PUT
+          - PATCH
+          - POST
+          - DELETE
+          TargetOriginId:
+            Fn::Join: [ '', [ 'origin-', !Ref ChowDownApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
+          PathPattern: '/api/*'
+          DefaultTTL: 60
+          MaxTTL: 3600
+          MinTTL: 60
+          ForwardedValues:
+            QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
   ChowDownDistributionDNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
