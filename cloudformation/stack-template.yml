@@ -96,7 +96,7 @@ Resources:
   ChowDownApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: !Red Env
+      StageName: !Ref Env
   #CloudFront distro to sit in front of bucket and reduce outbound cost
   ChowDownDistribution:
     Type: AWS::CloudFront::Distribution
