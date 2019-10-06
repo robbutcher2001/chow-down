@@ -4,6 +4,8 @@ Description: Chow Down Stack
 Parameters:
   Env:
     Type: String
+  ApiSourceCodeBucket:
+    Type: String
   PublicURL:
     Type: String
   HostedZoneId:
@@ -45,14 +47,6 @@ Resources:
             Action:
               - 's3:ListBucket'
             Resource: !GetAtt ChowDownFrontEndBucket.Arn
-  ChowDownApiSourceCodeBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      AccessControl: Private
-      BucketName:
-        Fn::Join: [ '-', [ 'chow-down-api-source-code-bucket', !Ref Env ] ]
-      VersioningConfiguration:
-        Status: Enabled
   #IAM roles
   GetRecipesFunctionRole:
     Type: AWS::IAM::Role
@@ -80,7 +74,7 @@ Resources:
       Handler: api/fake-recipes.handler
       Runtime: nodejs10.x
       CodeUri:
-        Bucket: !Ref ChowDownApiSourceCodeBucket
+        Bucket: !Ref ApiSourceCodeBucket
         Key: %{ChowDownApiSourceKey}
       Role:
         Fn::GetAtt:
