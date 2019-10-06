@@ -14,7 +14,7 @@ const Main = styled.main`
 
   > div {
     max-width: 1100px;
-    width: 100vw; //can this be improved by using flexbox?
+    width: 100%; //can this be improved by using flexbox?
   }
 
   h2 {

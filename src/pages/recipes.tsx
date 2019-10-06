@@ -80,25 +80,25 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 {this.props.ui.pending.get &&
                     <div style={{ color: 'red' }}>Getting..</div>
                 }
-                <h4>Add recipe</h4>
+                <h2>Add a new recipe</h2>
                 <Form
                     dispatch={this.addRecipe}
                     submitText='Add recipe'>
                     <InputBox
                         name='title'
-                        placeholderText='New recipe title'
+                        placeholderText='Title'
                     />
                     <InputBox
                         name='url'
-                        placeholderText='New recipe url'
+                        placeholderText='Url'
                     />
                     <InputBox
                         name='description'
-                        placeholderText='New recipe description'
+                        placeholderText='Description'
                     />
                     <InputBox
                         name='image'
-                        placeholderText='New recipe image'
+                        placeholderText='Upload image'
                     />
                 </Form>
                 {this.props.ui.pending.post &&
