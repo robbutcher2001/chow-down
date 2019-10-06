@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import Nav from './nav';
 import Header from './header';
+import Main from './main';
 import Footer from './footer';
 
 export interface PageProps {
@@ -11,32 +12,20 @@ export interface PageProps {
   children: ReactNode
 };
 
-const Main = styled.main`
-  display: flex;
-  justify-content: center;
-  margin: 1rem 1rem 8rem 1rem;
-
-  > div {
-    max-width: 1100px;
-  }
-
-  h2 {
-    color: #4acaa8;
-    font-size: 2rem;
-    margin: 0;
-  }
+const Page = styled.div`
+  display: grid;
+  align-items: flex-start;
+  grid-template-rows: auto auto 1fr auto;
+  height: 100vh;
 `
 
 export default (props: PageProps) => (
-  <div>
+  <Page>
     <Nav />
     <Header />
-    <Main>
-      <div>
-        <h2>{props.title}</h2>
-        {props.children}
-      </div>
+    <Main title={props.title}>
+      {props.children}
     </Main>
     <Footer />
-  </div>
+  </Page>
 );

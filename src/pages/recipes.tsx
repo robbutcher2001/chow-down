@@ -8,8 +8,8 @@ import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/a
 
 import Loading from '../components/loading';
 import Page from '../components/page';
-import PageGrid from '../components/page-grid';
-import GridItem from '../components/grid-item';
+import GridUl from '../components/grid-ul';
+import GridLi from '../components/grid-li';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -45,9 +45,9 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
     componentDidMount = () => this.props.getRecipes();
 
-    buildRecipeGrid = (recipes: Recipe[]) =>
+    recipeGridListItems = (recipes: Recipe[]) =>
         recipes.map((recipe, i) =>
-            <GridItem
+            <GridLi
                 key={i}
                 title={recipe.title}
                 description={recipe.description}
@@ -70,43 +70,43 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
         return (
             <Page title='Your recipes'>
-                <PageGrid>
-                    <h4>List recipes</h4>
-                    <button onClick={this.requestRecipes}>
-                        Press me to get all recipes
+                <GridUl>
+                    {this.recipeGridListItems(this.props.recipes)}
+                </GridUl>
+                <h4>List recipes</h4>
+                <button onClick={this.requestRecipes}>
+                    Press me to get all recipes
                     </button>
-                    {this.props.ui.pending.get &&
-                        <div style={{ color: 'red' }}>Getting..</div>
-                    }
-                    {this.buildRecipeGrid(this.props.recipes)}
-                    <h4>Add recipe</h4>
-                    <Form
-                        dispatch={this.addRecipe}
-                        submitText='Add recipe'>
-                        <InputBox
-                            name='title'
-                            placeholderText='New recipe title'
-                        />
-                        <InputBox
-                            name='url'
-                            placeholderText='New recipe url'
-                        />
-                        <InputBox
-                            name='description'
-                            placeholderText='New recipe description'
-                        />
-                        <InputBox
-                            name='image'
-                            placeholderText='New recipe image'
-                        />
-                    </Form>
-                    {this.props.ui.pending.post &&
-                        <div>Adding your new recipe..</div>
-                    }
-                    {this.props.failure &&
-                        <div style={{ color: 'red' }}>{this.props.failure}</div>
-                    }
-                </PageGrid>
+                {this.props.ui.pending.get &&
+                    <div style={{ color: 'red' }}>Getting..</div>
+                }
+                <h4>Add recipe</h4>
+                <Form
+                    dispatch={this.addRecipe}
+                    submitText='Add recipe'>
+                    <InputBox
+                        name='title'
+                        placeholderText='New recipe title'
+                    />
+                    <InputBox
+                        name='url'
+                        placeholderText='New recipe url'
+                    />
+                    <InputBox
+                        name='description'
+                        placeholderText='New recipe description'
+                    />
+                    <InputBox
+                        name='image'
+                        placeholderText='New recipe image'
+                    />
+                </Form>
+                {this.props.ui.pending.post &&
+                    <div>Adding your new recipe..</div>
+                }
+                {this.props.failure &&
+                    <div style={{ color: 'red' }}>{this.props.failure}</div>
+                }
             </Page>
         );
     }
