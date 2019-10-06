@@ -1,6 +1,7 @@
 {
     "Parameters": {
         "Env": "dev",
+        "ApiSourceCodeBucket": "chow-down-api-source-code-bucket",
         "PublicURL": "test.chowdown.recipes",
         "HostedZoneId": "Z268NPBBWUJJOW"
     }
