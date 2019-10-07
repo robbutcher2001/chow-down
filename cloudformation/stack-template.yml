@@ -165,6 +165,7 @@ Resources:
             Cookies:
               Forward: none
           ViewerProtocolPolicy: redirect-to-https
+          Compress: true
   ChowDownDistributionDNSRecord:
     Type: AWS::Route53::RecordSet
     Properties:
