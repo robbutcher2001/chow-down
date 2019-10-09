@@ -1,21 +1,22 @@
-openapi: '3.0.1'
+openapi: "3.0.1"
 info:
   title:
-    Fn::Sub: 'chow-down-${Env}'
-#   title:
-#     # Ref: Env
-#     Sub:
-#       - 'ChowDown-${Env}'
-#       - Env: !Ref Env
-#       "Fn::Sub" : [ String, { Var1Name: Var1Value, Var2Name: Var2Value } ]
-  version: '1.0'
+    Fn::Sub: 'ChowDown-${Env}'
+  version: "1.0"
 paths:
   /api/recipes:
     get:
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations'
-        passthroughBehavior: 'when_no_match'
-        httpMethod: 'POST'
-        type: 'aws_proxy'
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+    post:
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
 components: {}

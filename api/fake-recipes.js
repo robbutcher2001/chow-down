@@ -74,6 +74,7 @@ const apiGatewayResp = payload => ({
 });
 
 exports.handler = (event, context, callback) => {
+    console.log(event);
     callback(null, apiGatewayResp({
         status: 'success',
         data: {
