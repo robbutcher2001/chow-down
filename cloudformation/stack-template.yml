@@ -65,6 +65,7 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AmazonRDSDataFullAccess'
   #Lambda Function Definitions
   GetRecipesFunction:
     Type: AWS::Serverless::Function
@@ -80,6 +81,7 @@ Resources:
         Fn::GetAtt:
           - GetRecipesFunctionRole
           - Arn
+      MemorySize: 1024
       Timeout: 30
   GetRecipesLambdaPermission:
     Type: AWS::Lambda::Permission
