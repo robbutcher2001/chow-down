@@ -1,9 +1,9 @@
 openapi: '3.0.1'
 info:
-  title: 'RobChow'
-    # Fn::Sub:
-    #   - 'ChowDown-${Env}'
-    #   - { Env: !Ref Env }
+  title:
+    Fn::Sub:
+      - 'ChowDown-${Env}'
+      - Env: !Ref Env
   version: '1.0'
 paths:
   /api/recipes:
