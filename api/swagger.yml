@@ -1,5 +1,7 @@
 openapi: '3.0.1'
 info:
+  title:
+    Fn::Sub: 'chow-down-${Env}'
 #   title:
 #     # Ref: Env
 #     Sub:
