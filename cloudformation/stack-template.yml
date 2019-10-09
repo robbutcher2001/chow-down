@@ -81,13 +81,13 @@ Resources:
           - GetRecipesFunctionRole
           - Arn
       Timeout: 30
-      Events:
-        BasicGet:
-          Type: Api
-          Properties:
-            Path: /api/recipes
-            Method: get
-            RestApiId: !Ref ChowDownApi
+      # Events:
+      #   BasicGet:
+      #     Type: Api
+      #     Properties:
+      #       Path: /api/recipes
+      #       Method: get
+      #       RestApiId: !Ref ChowDownApi
   ChowDownApi:
     Type: AWS::Serverless::Api
     Properties:
