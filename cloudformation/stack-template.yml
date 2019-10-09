@@ -96,7 +96,7 @@ Resources:
         'Fn::Transform':
           Name: 'AWS::Include'
           Parameters:
-            Location: s3://<bucket>/swagger.yaml
+            Location:
               Fn::Join: [ '', [ 's3://', !Ref ApiSourceCodeBucket, '/', '%{ChowDownApiSwaggerKey}' ] ]
   #CloudFront distro to sit in front of bucket and reduce outbound cost
   ChowDownDistribution:
