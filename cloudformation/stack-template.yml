@@ -81,6 +81,17 @@ Resources:
           - GetRecipesFunctionRole
           - Arn
       Timeout: 30
+  GetRecipesLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Fn::GetAtt:
+          - GetRecipesFunction
+          - Arn
+      SourceArn:
+        Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
       # Events:
       #   BasicGet:
       #     Type: Api
