@@ -1,0 +1,13 @@
+openapi: "3.0.1"
+info:
+  title: "ChowDown"
+  version: "1.0"
+paths:
+  /api/recipes:
+    get:
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+components: {}

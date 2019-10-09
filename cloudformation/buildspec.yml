@@ -13,6 +13,8 @@ phases:
       - zip -r chow-down-api-source-${timestamp} api/*
       - aws s3 cp chow-down-api-source-${timestamp}.zip s3://${ChowDownApiSourceBucket}
       - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-source-${timestamp}.zip/g" cloudformation/stack-template.yml
+      - aws s3 cp api/swagger.yml s3://${ChowDownApiSourceBucket}/chow-down-api-swagger-${timestamp}.yml
+      - sed -ie "s/%{ChowDownApiSwaggerKey}/chow-down-api-swagger-${timestamp}.yml/g" cloudformation/stack-template.yml
 artifacts:
   files:
     - cloudformation/**/*

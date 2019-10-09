@@ -92,6 +92,12 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: !Ref Env
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: s3://<bucket>/swagger.yaml
+              Fn::Join: [ '', [ 's3://', !Ref ApiSourceCodeBucket, '/', '%{ChowDownApiSwaggerKey}' ] ]
   #CloudFront distro to sit in front of bucket and reduce outbound cost
   ChowDownDistribution:
     Type: AWS::CloudFront::Distribution
