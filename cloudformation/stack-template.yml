@@ -104,7 +104,7 @@ Resources:
     Properties:
       StageName: !Ref Env
       DefinitionBody:
-        'Fn::Transform':
+        Fn::Transform:
           Name: 'AWS::Include'
           Parameters:
             Location:
