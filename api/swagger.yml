@@ -6,13 +6,13 @@ info:
 paths:
   /api/recipes:
     get:
-      x-amazon-apigateway-integration:
-        uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
-        passthroughBehavior: "when_no_match"
-        httpMethod: "POST"
-        type: "aws_proxy"
-    post:
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: "#/definitions/Empty"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
@@ -20,3 +20,7 @@ paths:
         httpMethod: "POST"
         type: "aws_proxy"
 components: {}
+definitions:
+  Empty:
+    type: object
+    title: Empty Schema

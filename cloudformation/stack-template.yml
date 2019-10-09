@@ -71,8 +71,8 @@ Resources:
     Properties:
       FunctionName:
         Fn::Join: [ '-', [ 'GetRecipesFunction', !Ref Env ] ]
-      Handler: api/fake-recipes.handler
-      Runtime: nodejs10.x
+      Handler: rob.AuroraServerlessExample::handleRequest
+      Runtime: java8
       CodeUri:
         Bucket: !Ref ApiSourceCodeBucket
         Key: %{ChowDownApiSourceKey}
