@@ -24,7 +24,8 @@ public class AuroraServerlessExample implements RequestHandler<Object, Object> {
 
     ExecuteStatementResult result = rdsData.executeStatement(request);
 
-    StringBuilder sb = new StringBuilder("[");
+    final String fakeWrapper = "{\"status\": \"success\", \"data\": {\"recipes\":[";
+    StringBuilder sb = new StringBuilder(fakeWrapper);
 
     int count = 1;
     for (List<Field> fields : result.getRecords()) {
@@ -50,7 +51,7 @@ public class AuroraServerlessExample implements RequestHandler<Object, Object> {
       count++;
     }
 
-    sb.append("]");
+    sb.append("]}}");
 
     return new ApigResponse(HttpStatus.SC_OK, sb.toString());
   }
