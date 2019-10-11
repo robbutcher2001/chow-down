@@ -1,13 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>rob</groupId>
-    <artifactId>aurora</artifactId>
-    <version>1.0-SNAPSHOT</version>
+
+    <groupId>recipes.chowdown</groupId>
+    <artifactId>chow-down-api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>chow-down-api</name>
+    <packaging>jar</packaging>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -25,6 +30,7 @@
             <version>4.4.12</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -34,7 +40,7 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>chow-down-api</finalName>
+                    <finalName>${project.artifactId}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>

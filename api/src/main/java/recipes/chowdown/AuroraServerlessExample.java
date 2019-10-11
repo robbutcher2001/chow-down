@@ -1,4 +1,4 @@
-package rob;
+package recipes.chowdown;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class AuroraServerlessExample implements RequestHandler<Object, Object> {
 
     ExecuteStatementResult result = rdsData.executeStatement(request);
 
-    final String fakeWrapper = "{\"status\": \"success\", \"data\": {\"recipes\":[";
+    final String fakeWrapper = "{\"status\": \"bosh\", \"data\": {\"recipes\":[";
     StringBuilder sb = new StringBuilder(fakeWrapper);
 
     int count = 1;
