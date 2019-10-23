@@ -12,11 +12,11 @@ import com.amazonaws.services.rdsdata.model.Field;
 
 import org.apache.http.HttpStatus;
 
-public class AuroraServerlessExample implements RequestHandler<Object, Object> {
+public class AuroraServerlessExample implements RequestHandler<Object, ApigResponse> {
   public static final String RESOURCE_ARN = System.getenv("RESOURCE_ARN");
   public static final String SECRET_ARN = System.getenv("SECRET_ARN");
 
-  public Object handleRequest(final Object input, final Context context) {
+  public ApigResponse handleRequest(final Object input, final Context context) {
     AWSRDSData rdsData = AWSRDSDataClient.builder().build();
 
     ExecuteStatementRequest request = new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)

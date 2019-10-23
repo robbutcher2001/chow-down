@@ -66,6 +66,23 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - 'arn:aws:iam::aws:policy/AmazonRDSDataFullAccess'
+  SwaggerTypedPostFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName:
+        Fn::Join: [ '-', [ 'swagger-typed-post-role', !Ref Env ] ]
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - 'lambda.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
   #Lambda Function Definitions
   GetRecipesFunction:
     Type: AWS::Serverless::Function
@@ -94,6 +111,34 @@ Resources:
           - Arn
       SourceArn:
         Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
+  SwaggerTypedPostFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Join: [ '-', [ 'SwaggerTypedPostFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.SwaggerTypedPost::handleRequest
+      Runtime: java8
+      CodeUri:
+        Bucket: !Ref ApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
+      Role:
+        Fn::GetAtt:
+          - SwaggerTypedPostFunctionRole
+          - Arn
+      MemorySize: 1024
+      Timeout: 30
+  SwaggerTypedPostLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Fn::GetAtt:
+          - SwaggerTypedPostFunction
+          - Arn
+      SourceArn:
+        Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
+  #Api
   ChowDownApi:
     Type: AWS::Serverless::Api
     Properties:
