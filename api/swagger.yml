@@ -25,7 +25,7 @@ paths:
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SwaggerTypedPostFunction.Arn}/invocations"
         passthroughBehavior: "never"
         httpMethod: "POST"
         requestTemplates:
