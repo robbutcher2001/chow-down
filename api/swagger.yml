@@ -28,6 +28,10 @@ paths:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
         passthroughBehavior: "never"
         httpMethod: "POST"
+        requestTemplates:
+          application/json: "#set($inputRoot = $input.path('$'))\n{\n  \"id\" : \"\
+            foo\",\n  \"title\" : \"foo\"\n}"
+        contentHandling: "CONVERT_TO_TEXT"
         type: "aws_proxy"
 components:
   schemas:

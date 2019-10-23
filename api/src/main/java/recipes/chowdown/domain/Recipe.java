@@ -1,8 +1,13 @@
 package recipes.chowdown.domain;
 
 public class Recipe {
-    private final String id;
-    private final String title;
+    private String id;
+    private String title;
+
+    public Recipe() {
+        this.id = "";
+        this.title = "";
+    }
 
     public Recipe(String id, String title) {
         this.id = id;
