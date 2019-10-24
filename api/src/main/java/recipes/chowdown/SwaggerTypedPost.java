@@ -11,11 +11,12 @@ import org.apache.http.HttpStatus;
 
 import recipes.chowdown.domain.Recipe;
 
-public class SwaggerTypedPost implements RequestHandler<String, ApigResponse> {
-  public ApigResponse handleRequest(final String object, final Context context) {
+public class SwaggerTypedPost implements RequestHandler<Recipe, ApigResponse> {
+  public ApigResponse handleRequest(final Recipe object, final Context context) {
     // context.getLogger().
     System.out.println("The recipe object:");
-    System.out.println(object);
+    System.out.println(object.getId());
+    System.out.println(object.getTitle());
 
     // ObjectMapper o = new ObjectMapper();
     // JsonNode jsonNode = null;

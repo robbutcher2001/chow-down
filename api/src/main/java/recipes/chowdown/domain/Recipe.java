@@ -5,8 +5,8 @@ public class Recipe {
     private String title;
 
     public Recipe() {
-        this.id = "";
-        this.title = "";
+        this.id = "none";
+        this.title = "none";
     }
 
     public Recipe(String id, String title) {
@@ -20,5 +20,13 @@ public class Recipe {
 
     public String getTitle() {
         return this.title;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
