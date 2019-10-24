@@ -8,17 +8,19 @@ import org.apache.http.HttpStatus;
 
 import recipes.chowdown.domain.Recipe;
 
-public class SwaggerTypedPost implements RequestHandler<Recipe, ApigResponse> {
+public class SwaggerTypedPost implements RequestHandler<Recipe, Recipe> {
 
   private static LambdaLogger Logger;
   
-  public ApigResponse handleRequest(final Recipe recipe, final Context context) {
+  public Recipe handleRequest(final Recipe recipe, final Context context) {
     Logger = context.getLogger();
 
     Logger.log("The recipe object:");
     Logger.log(recipe.getId());
     Logger.log(recipe.getTitle());
 
-    return new ApigResponse(HttpStatus.SC_OK, recipe.toString());
+    return recipe;
+
+    // return new ApigResponse(HttpStatus.SC_OK, recipe.toString());
   }
 }

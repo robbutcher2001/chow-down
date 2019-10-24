@@ -15,7 +15,7 @@ public class ApigResponse {
         this.body = body;
 
         this.headers = new HashMap<>();
-        this.headers.put("Content-Type", "application/jsonnn");
+        this.headers.put("Content-Type", "application/json");
         this.isBase64Encoded = false;
     }
 

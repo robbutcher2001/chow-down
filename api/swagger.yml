@@ -22,10 +22,23 @@ paths:
             schema:
               $ref: "#/components/schemas/Recipe"
         required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content: {}
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SwaggerTypedPostFunction.Arn}/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
         passthroughBehavior: "never"
         httpMethod: "POST"
         requestTemplates:
