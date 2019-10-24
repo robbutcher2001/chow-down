@@ -17,23 +17,23 @@ public class SwaggerTypedPost implements RequestHandler<String, ApigResponse> {
     System.out.println("The recipe object:");
     System.out.println(object);
 
-    ObjectMapper o = new ObjectMapper();
-    JsonNode jsonNode = null;
-    try {
-      jsonNode = o.readTree(object);
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    // ObjectMapper o = new ObjectMapper();
+    // JsonNode jsonNode = null;
+    // try {
+    //   jsonNode = o.readTree(object);
+    // } catch (IOException e) {
+    //   // TODO Auto-generated catch block
+    //   e.printStackTrace();
+    // }
 
     // Recipe recipe = (Recipe) object;
 
-    System.out.println("The recipe object:");
-    System.out.println(jsonNode.toString());
+    // System.out.println("The recipe object:");
+    // System.out.println(jsonNode.toString());
     // System.out.println("The recipe getters:");
     // System.out.println(recipe.getId());
     // System.out.println(recipe.getTitle());
 
-    return new ApigResponse(HttpStatus.SC_OK, jsonNode.toString());
+    return new ApigResponse(HttpStatus.SC_OK, "nothing");
   }
 }
