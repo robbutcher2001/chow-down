@@ -20,7 +20,8 @@ public class SwaggerTypedPost implements RequestHandler<Recipe, ApigResponse> {
     Logger.log(recipe.getId());
     Logger.log(recipe.getTitle());
 
-    if (recipe.getId() == "exception") {
+    if (recipe.getId().equals("exception")) {
+      Logger.log("Throwing a new exception");
       throw new ResourcesNotFoundException("can't find it");
     }
 
