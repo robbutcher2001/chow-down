@@ -7,10 +7,10 @@ import java.util.Map;
 public class ApigResponse {
     private final int statusCode;
     private final Map<String, String> headers;
-    private final String body;
+    private final Object body;
     private final boolean isBase64Encoded;
 
-    public ApigResponse(final int statusCode, final String body) {
+    public ApigResponse(final int statusCode, final Object body) {
         this.statusCode = statusCode;
         this.body = body;
 
@@ -27,7 +27,7 @@ public class ApigResponse {
         return Collections.unmodifiableMap(this.headers);
     }
 
-    public String getBody() {
+    public Object getBody() {
         return this.body;
     }
 
