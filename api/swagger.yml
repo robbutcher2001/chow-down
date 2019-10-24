@@ -19,7 +19,7 @@ paths:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
         responses:
           default:
-            statusCode: "201"
+            statusCode: "200"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
         passthroughBehavior: "when_no_match"
