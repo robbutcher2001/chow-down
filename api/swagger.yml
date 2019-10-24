@@ -26,15 +26,12 @@ paths:
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SwaggerTypedPostFunction.Arn}/invocations"
-        responses:
-          default:
-            statusCode: "200"
         passthroughBehavior: "never"
         httpMethod: "POST"
         requestTemplates:
           application/json: "$input.body"
         contentHandling: "CONVERT_TO_TEXT"
-        type: "aws_proxy"
+        type: "aws"
 components:
   schemas:
     Recipe:
