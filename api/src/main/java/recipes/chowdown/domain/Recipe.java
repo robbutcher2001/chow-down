@@ -3,10 +3,12 @@ package recipes.chowdown.domain;
 public class Recipe {
     private String id;
     private String title;
+    private String updated;
 
     public Recipe() {
         this.id = "none";
         this.title = "none";
+        this.updated = "I've been updated";
     }
 
     public Recipe(String id, String title) {
@@ -20,6 +22,10 @@ public class Recipe {
 
     public String getTitle() {
         return this.title;
+    }
+
+    public String getUpdated() {
+        return this.updated;
     }
 
     public void setId(String id) {

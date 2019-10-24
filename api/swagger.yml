@@ -23,20 +23,28 @@ paths:
               $ref: "#/components/schemas/Recipe"
         required: true
       responses:
-        200:
-          description: "200 response"
+        201:
+          description: "201 response"
           headers:
             Content-Type:
               schema:
                 type: "string"
+          content: {}
+        410:
+          description: "410 response"
           content: {}
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SwaggerTypedPostFunction.Arn}/invocations"
         responses:
+          .*ResourcesNotFoundException.*:
+            statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           default:
-            statusCode: "200"
+            statusCode: "201"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
         passthroughBehavior: "never"
