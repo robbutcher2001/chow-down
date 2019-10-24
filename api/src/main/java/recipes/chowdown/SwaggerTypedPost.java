@@ -29,9 +29,10 @@ public class SwaggerTypedPost implements RequestHandler<Recipe, List<Recipe>> {
 
     recipes.add(recipe);
 
-    Recipe newRecipe = new Recipe();
-    newRecipe.setId("fake id");
-    newRecipe.setTitle("fake title");
+    Recipe newRecipe = Recipe.builder()
+      .id("fake id")
+      .title("fake title")
+      .build();
 
     recipes.add(newRecipe);
 

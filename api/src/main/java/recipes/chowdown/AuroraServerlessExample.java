@@ -1,5 +1,6 @@
 package recipes.chowdown;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -10,13 +11,15 @@ import com.amazonaws.services.rdsdata.model.ExecuteStatementRequest;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
-import org.apache.http.HttpStatus;
+import recipes.chowdown.domain.Recipe;
 
-public class AuroraServerlessExample implements RequestHandler<Object, ApigResponse> {
+public class AuroraServerlessExample implements RequestHandler<Object, ApiRecipesResponse<Recipe>> {
   public static final String RESOURCE_ARN = System.getenv("RESOURCE_ARN");
   public static final String SECRET_ARN = System.getenv("SECRET_ARN");
 
-  public ApigResponse handleRequest(final Object input, final Context context) {
+  public ApiRecipesResponse<Recipe> handleRequest(final Object input, final Context context) {
+    final List<Recipe> recipes = new ArrayList<>();
+
     AWSRDSData rdsData = AWSRDSDataClient.builder().build();
 
     ExecuteStatementRequest request = new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
@@ -24,35 +27,16 @@ public class AuroraServerlessExample implements RequestHandler<Object, ApigRespo
 
     ExecuteStatementResult result = rdsData.executeStatement(request);
 
-    final String fakeWrapper = "{\"status\": \"bosh\", \"data\": {\"recipes\":[";
-    StringBuilder sb = new StringBuilder(fakeWrapper);
-
-    int count = 1;
     for (List<Field> fields : result.getRecords()) {
-
-      sb.append("{");
-
-      sb.append("\"id\": \"" + fields.get(0).getStringValue() + "\",");
-      sb.append("\"title\": \"" + fields.get(1).getStringValue() + "\",");
-      sb.append("\"url\": \"" + fields.get(2).getStringValue() + "\",");
-      sb.append("\"description\": \"" + fields.get(3).getStringValue() + "\",");
-      sb.append("\"image\": \"none\"");
-
-      System.out.println(result.getRecords().size());
-      if (count < result.getRecords().size()) {
-        sb.append("},");
-      }
-      else {
-        sb.append("}");
-      }
-
-      System.out.println(String.format("Fetched row: id [%s]", fields.get(0).getStringValue()));
-
-      count++;
+      recipes.add(Recipe.builder()
+        .id(fields.get(0).getStringValue())
+        .title(fields.get(1).getStringValue())
+        .url(fields.get(2).getStringValue())
+        .description(fields.get(3).getStringValue())
+        .image("none here")
+        .build());
     }
 
-    sb.append("]}}");
-
-    return new ApigResponse(HttpStatus.SC_OK, sb.toString());
+    return new ApiRecipesResponse<Recipe>(recipes);
   }
 }

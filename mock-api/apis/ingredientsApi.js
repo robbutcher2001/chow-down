@@ -1,14 +1,14 @@
 'use strict';
 const uuid = require('../util/uuid');
 
-const { success, fail, cors } = require('../util/jsend');
+const { respond, cors } = require('../util/jsend');
 const { getIngredients, createIngredient } = require('../data/ingredients');
 
 module.exports = app => {
   app.options('/api/ingredients', (request, response) => cors(response).status(200).send());
 
   app.get('/api/ingredients', (request, response) =>
-    setTimeout(() => cors(response).json(success('ingredients', getIngredients())), 1000));
+    setTimeout(() => cors(response).json(respond('ingredients', getIngredients())), 1000));
 
   app.post('/api/ingredients', (request, response) => {
     const nameInRequest = request.body.name;
@@ -19,14 +19,14 @@ module.exports = app => {
 
       if (!existingIngredient) {
         const newIngredient = createIngredient(uuid(), nameInRequest)
-        setTimeout(() => cors(response).json(success('ingredient', newIngredient)), 600);
+        setTimeout(() => cors(response).json(respond('ingredient', newIngredient)), 600);
       }
       else {
-        setTimeout(() => cors(response).status(409).json(fail('ingredient', 'exists')), 600);
+        setTimeout(() => cors(response).status(409).json(respond('ingredient', 'exists')), 600);
       }
     }
     else {
-      cors(response).status(409).json(fail('error', 'invalid_payload'));
+      cors(response).status(409).json(respond('error', 'invalid_payload'));
     }
   });
 
@@ -41,17 +41,17 @@ module.exports = app => {
         console.log('Upserting [' + JSON.stringify(existingIngredient) + ']');
 
         existingIngredient.name = nameInRequest ? nameInRequest : existingIngredient.name;
-        setTimeout(() => cors(response).json(success('ingredient', existingIngredient)), 600);
+        setTimeout(() => cors(response).json(respond('ingredient', existingIngredient)), 600);
       }
       else {
         const newIngredient = createIngredient(id, nameInRequest);
         console.log('Created new ingredient [' + JSON.stringify(newIngredient) + ']');
 
-        setTimeout(() => cors(response).json(success('ingredient', newIngredient)), 1200);
+        setTimeout(() => cors(response).json(respond('ingredient', newIngredient)), 1200);
       }
     }
     else {
-      cors(response).status(409).json(fail('error', 'invalid_payload'));
+      cors(response).status(409).json(respond('error', 'invalid_payload'));
     }
   });
 };

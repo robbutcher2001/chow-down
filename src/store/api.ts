@@ -19,7 +19,6 @@ interface RequestHeaders {
 };
 
 interface ResponseBody {
-    status: string,
     data: object
 };
 
