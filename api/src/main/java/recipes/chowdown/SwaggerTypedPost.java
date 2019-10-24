@@ -1,40 +1,24 @@
 package recipes.chowdown;
 
-import java.io.IOException;
-
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpStatus;
 
 import recipes.chowdown.domain.Recipe;
 
 public class SwaggerTypedPost implements RequestHandler<Recipe, ApigResponse> {
-  public ApigResponse handleRequest(final Recipe object, final Context context) {
-    // context.getLogger().
-    System.out.println("The recipe object:");
-    System.out.println(object.getId());
-    System.out.println(object.getTitle());
 
-    // ObjectMapper o = new ObjectMapper();
-    // JsonNode jsonNode = null;
-    // try {
-    //   jsonNode = o.readTree(object);
-    // } catch (IOException e) {
-    //   // TODO Auto-generated catch block
-    //   e.printStackTrace();
-    // }
+  private static LambdaLogger Logger;
+  
+  public ApigResponse handleRequest(final Recipe recipe, final Context context) {
+    Logger = context.getLogger();
 
-    // Recipe recipe = (Recipe) object;
+    Logger.log("The recipe object:");
+    Logger.log(recipe.getId());
+    Logger.log(recipe.getTitle());
 
-    // System.out.println("The recipe object:");
-    // System.out.println(jsonNode.toString());
-    // System.out.println("The recipe getters:");
-    // System.out.println(recipe.getId());
-    // System.out.println(recipe.getTitle());
-
-    return new ApigResponse(HttpStatus.SC_OK, "nothing");
+    return new ApigResponse(HttpStatus.SC_OK, recipe.toString());
   }
 }
