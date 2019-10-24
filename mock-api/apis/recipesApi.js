@@ -1,17 +1,17 @@
 'use strict';
 const uuid = require('../util/uuid');
 
-const { success, fail, cors } = require('../util/jsend');
+const { respond, cors } = require('../util/jsend');
 const { getRecipes, createRecipe, getRecipeIngredients } = require('../data/recipes');
 
 module.exports = app => {
   app.options('/api/recipes', (request, response) => cors(response).status(200).send());
 
   app.get('/api/recipes', (request, response) =>
-    setTimeout(() => cors(response).json(success('recipes', getRecipes())), 1200));
+    setTimeout(() => cors(response).json(respond('recipes', getRecipes())), 1200));
 
   app.get('/api/recipes/:id/ingredients', (request, response) =>
-    setTimeout(() => cors(response).json(success('ingredients', getRecipeIngredients())), 2000));
+    setTimeout(() => cors(response).json(respond('ingredients', getRecipeIngredients())), 2000));
 
   app.post('/api/recipes', (request, response) => {
     const titleInRequest = request.body.title;
@@ -31,14 +31,14 @@ module.exports = app => {
           descriptionInRequest,
           imageInRequest
         );
-        cors(response).json(success('recipe', newRecipe));
+        cors(response).json(respond('recipe', newRecipe));
       }
       else {
-        cors(response).status(409).json(fail('recipe', 'exists'));
+        cors(response).status(409).json(respond('recipe', 'exists'));
       }
     }
     else {
-      cors(response).status(409).json(fail('error', 'invalid_payload'));
+      cors(response).status(409).json(respond('error', 'invalid_payload'));
     }
   });
 
@@ -59,7 +59,7 @@ module.exports = app => {
         existingRecipe.url = urlInRequest ? urlInRequest : existingRecipe.url;
         existingRecipe.description = descriptionInRequest ? descriptionInRequest : existingRecipe.description;
         existingRecipe.image = imageInRequest ? imageInRequest : existingRecipe.image;
-        setTimeout(() => cors(response).json(success('recipe', existingRecipe)), 800);
+        setTimeout(() => cors(response).json(respond('recipe', existingRecipe)), 800);
       }
       else {
         const newRecipe = createRecipe(
@@ -71,11 +71,11 @@ module.exports = app => {
         );
         console.log('Created new recipe [' + JSON.stringify(newRecipe) + ']');
 
-        setTimeout(() => cors(response).json(success('recipe', newRecipe)), 1600);
+        setTimeout(() => cors(response).json(respond('recipe', newRecipe)), 1600);
       }
     }
     else {
-      cors(response).status(409).json(fail('error', 'invalid_payload'));
+      cors(response).status(409).json(respond('error', 'invalid_payload'));
     }
   });
 };

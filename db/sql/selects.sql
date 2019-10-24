@@ -43,3 +43,20 @@ SELECT *
 FROM "recipe-ingredients" ri
 INNER JOIN recipes r
     ON ri.recipe_id = r.id;
+
+-- Recipe chosen for a specific day:
+SELECT r.id, w.date, r.title, r.description, r.rating, r.image
+FROM recipes r
+INNER JOIN weeks w
+	ON w.recipe_id = r.id
+	AND w.date = '2019-10-17';
+
+SELECT date_trunc('day', now()) - interval '7 days';
+
+SELECT r.id, w.date, r.title, r.description, r.rating, r.image
+FROM recipes r
+INNER JOIN weeks w
+	ON w.recipe_id = r.id
+	AND w.date BETWEEN '2015-01-01' AND date_trunc('day', now());
+
+-- Foreign key contraints: http://www.postgresqltutorial.com/postgresql-foreign-key/

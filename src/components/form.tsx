@@ -1,4 +1,5 @@
 import React, { Component, FormEvent, ChangeEvent, ReactElement } from 'react';
+import styled from 'styled-components';
 
 import { InputBoxProps } from './input-box';
 
@@ -20,7 +21,44 @@ interface OwnState {
 
 type CombinedProps = StateProps & DispatchProps & OwnProps;
 
-class Form extends Component<CombinedProps, OwnState> {
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+
+  > input {
+    border: solid 2px #e4e4e4;
+  }
+
+  > input, button {
+    border-radius: 5px;
+    padding: 0 0.5em;
+    margin: 0.5rem 0;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  > .button-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0 2em;
+
+    > button {
+      border: none;
+      color: white;
+      cursor: pointer;
+  
+      &[type=submit] {
+        background-color: #4acaa8;
+      }
+  
+      &[type=reset] {
+        background-color: #989898;
+      }
+    }
+  }
+`
+
+class FormComponent extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
 
@@ -68,12 +106,19 @@ class Form extends Component<CombinedProps, OwnState> {
       React.cloneElement(child, { form: this.state.form, onChange: this.onChange }));
 
     return (
-      <form onSubmit={event => this.onSubmit(event)}>
+      <Form id='form' onSubmit={event => this.onSubmit(event)}>
         {children}
-        <input type='submit' value={this.props.submitText} />
-      </form>
+        <div className='button-group'>
+          <button type='submit' form='form' value={this.props.submitText}>
+            {this.props.submitText}
+          </button>
+          <button type='reset' form='form' value='Reset'>
+            Reset
+        </button>
+        </div>
+      </Form>
     );
   }
 };
 
-export default Form;
+export default FormComponent;

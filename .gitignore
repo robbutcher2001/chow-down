@@ -1,8 +1,13 @@
-**/.DS_Store
-**/.env
+.classpath
+.project
+*.prefs
+.DS_Store
+.env
 npm-debug.log
 dist/
 node_modules/
 .vscode/
 .idea/
-db/chow-db
+target/
+chow-db/
+api/.factorypath

@@ -1,14 +1,14 @@
 'use strict';
 const uuid = require('../util/uuid');
 
-const { success, fail, cors } = require('../util/jsend');
+const { respond, cors } = require('../util/jsend');
 const { getUnits, createUnit } = require('../data/units');
 
 module.exports = app => {
   app.options('/api/units', (request, response) => cors(response).status(200).send());
 
   app.get('/api/units', (request, response) =>
-    setTimeout(() => cors(response).json(success('units', getUnits())), 200));
+    setTimeout(() => cors(response).json(respond('units', getUnits())), 200));
 
   app.post('/api/units', (request, response) => {
     const singularInRequest = request.body.singular;
@@ -20,14 +20,14 @@ module.exports = app => {
 
       if (!existingUnit) {
         const newUnit = createUnit(uuid(), singularInRequest, pluralInRequest);
-        cors(response).json(success('unit', newUnit));
+        cors(response).json(respond('unit', newUnit));
       }
       else {
-        cors(response).status(409).json(fail('unit', 'exists'));
+        cors(response).status(409).json(respond('unit', 'exists'));
       }
     }
     else {
-      cors(response).status(409).json(fail('error', 'invalid_payload'));
+      cors(response).status(409).json(respond('error', 'invalid_payload'));
     }
   });
 
@@ -44,17 +44,17 @@ module.exports = app => {
 
         existingUnit.singular = singularInRequest ? singularInRequest : existingUnit.singular;
         existingUnit.plural = pluralInRequest ? pluralInRequest : existingUnit.plural;
-        setTimeout(() => cors(response).json(success('unit', existingUnit)), 400);
+        setTimeout(() => cors(response).json(respond('unit', existingUnit)), 400);
       }
       else {
         const newUnit = createUnit(id, singularInRequest, pluralInRequest);
         console.log('Created new unit [' + JSON.stringify(newUnit) + ']');
 
-        setTimeout(() => cors(response).json(success('unit', newUnit)), 800);
+        setTimeout(() => cors(response).json(respond('unit', newUnit)), 800);
       }
     }
     else {
-      cors(response).status(409).json(fail('error', 'invalid_payload'));
+      cors(response).status(409).json(respond('error', 'invalid_payload'));
     }
   });
 };

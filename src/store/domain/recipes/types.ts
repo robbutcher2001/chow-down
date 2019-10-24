@@ -12,8 +12,9 @@ export enum RecipeActionTypes {
 export interface Recipe {
     id: string,
     title: string,
-    url: string,
     description: string,
+    rating: number,
+    url: string,
     image: string
 }
 

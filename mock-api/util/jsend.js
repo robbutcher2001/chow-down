@@ -1,12 +1,7 @@
 'use strict';
 
-const success = (key, json) => common(key, json, 'success');
-
-const fail = (key, json) => common(key, json, 'fail');
-
-const common = (key, json, status) => {
+const respond = (key, json) => {
   const response = {
-    status,
     data: {}
   };
 
@@ -25,7 +20,6 @@ const cors = response => {
 };
 
 module.exports = {
-  success,
-  fail,
+  respond,
   cors
 };

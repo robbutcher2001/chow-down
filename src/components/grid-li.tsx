@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-export interface GridItemProps {
+export interface GridLiProps {
   title: string,
   description: string,
   rating: number,
@@ -10,7 +10,7 @@ export interface GridItemProps {
   imageAlt: string
 };
 
-const Li = styled.li`
+const GridLi = styled.li`
   -webkit-box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
   box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
   border: 1px solid rgba(0,0,0,.04);
@@ -63,8 +63,8 @@ const Li = styled.li`
   }
 `
 
-export default (props: GridItemProps) => (
-  <Li>
+export default (props: GridLiProps) => (
+  <GridLi>
     <figure>
       <img src={props.imageUrl} alt={props.imageAlt}></img>
       <figcaption>
@@ -81,5 +81,5 @@ export default (props: GridItemProps) => (
       }() }
     </section>
     <p>{props.description}</p>
-  </Li>
+  </GridLi>
 );
