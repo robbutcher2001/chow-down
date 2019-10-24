@@ -6,15 +6,25 @@ info:
 paths:
   /api/recipes:
     get:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content: {}
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
         responses:
           default:
-            statusCode: "200"
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
-        type: "aws_proxy"
+        type: "aws"
     post:
       requestBody:
         content:
