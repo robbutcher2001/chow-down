@@ -5,16 +5,10 @@ public class Recipe {
     private String title;
     private String updated;
 
-    public Recipe() {
-        this.id = "none";
-        this.title = "none";
-        this.updated = "I've been updated";
-    }
-
-    public Recipe(String id, String title) {
-        this.id = id;
-        this.title = title;
-    }
+    // public Recipe(String id, String title) {
+    //     this.id = id;
+    //     this.title = title;
+    // }
 
     public String getId() {
         return this.id;
@@ -36,8 +30,8 @@ public class Recipe {
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "Recipe [id=" + id + ", title=" + title + "]";
-    }
+    // @Override
+    // public String toString() {
+    //     return "Recipe [id=" + id + ", title=" + title + "]";
+    // }
 }
