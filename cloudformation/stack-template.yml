@@ -83,6 +83,7 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AmazonRDSDataFullAccess'
   #Lambda Function Definitions
   GetRecipesFunction:
     Type: AWS::Serverless::Function

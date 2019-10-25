@@ -35,7 +35,7 @@ public class SwaggerTypedPost implements RequestHandler<Recipe, Recipe> {
     }
 
     logger.log("New recipe persisted with id [" + returnedId + "]");
-    // recipe.setId(returnedId);
+    recipe.setId(returnedId);
 
     return recipe;
   }
