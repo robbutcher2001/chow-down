@@ -9,7 +9,7 @@ public class Recipe {
     private String id;
     private String title;
     private String description;
-    private String rating;
+    private long rating;
     private String url;
     private String image;
 }

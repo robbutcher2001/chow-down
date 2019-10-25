@@ -51,7 +51,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 key={i}
                 title={recipe.title}
                 description={recipe.description}
-                rating={8}
+                rating={recipe.rating}
                 imageUrl={recipe.image}
                 imageAlt={recipe.title}
             />
