@@ -1,11 +1,16 @@
 package recipes.chowdown.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-// @Setter
+@Setter
+// @Builder
+// @Data
 @Builder
 public class Recipe {
     private String id;
