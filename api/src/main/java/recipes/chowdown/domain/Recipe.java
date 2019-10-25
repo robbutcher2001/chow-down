@@ -13,7 +13,7 @@ import lombok.Setter;
 // @Builder
 @Data
 @Builder
-// @NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 public class Recipe {
     private String id;
