@@ -89,12 +89,16 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                         placeholderText='Title'
                     />
                     <InputBox
-                        name='url'
-                        placeholderText='Url'
-                    />
-                    <InputBox
                         name='description'
                         placeholderText='Description'
+                    />
+                    <InputBox
+                        name='rating'
+                        placeholderText='Rating'
+                    />
+                    <InputBox
+                        name='url'
+                        placeholderText='Url'
                     />
                     <InputBox
                         name='image'
