@@ -11,7 +11,7 @@ public class Recipe {
     private String id;
     private String title;
     private String description;
-    private long rating;
+    private Long rating;
     private String url;
     private String image;
 }
