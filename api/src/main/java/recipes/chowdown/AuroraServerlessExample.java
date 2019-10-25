@@ -31,9 +31,10 @@ public class AuroraServerlessExample implements RequestHandler<Object, ApiRecipe
       recipes.add(Recipe.builder()
         .id(fields.get(0).getStringValue())
         .title(fields.get(1).getStringValue())
-        .url(fields.get(2).getStringValue())
-        .description(fields.get(3).getStringValue())
-        .image("none here")
+        .description(fields.get(2).getStringValue())
+        .rating(fields.get(3).getStringValue())
+        .url(fields.get(4).getStringValue())
+        .image(fields.get(5).getStringValue())
         .build());
     }
 

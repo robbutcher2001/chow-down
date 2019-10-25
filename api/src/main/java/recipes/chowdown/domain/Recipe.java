@@ -8,7 +8,8 @@ import lombok.Getter;
 public class Recipe {
     private String id;
     private String title;
-    private String url;
     private String description;
+    private String rating;
+    private String url;
     private String image;
 }
