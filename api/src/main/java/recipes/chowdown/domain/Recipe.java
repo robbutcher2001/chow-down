@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
+// @Setter
 @Builder
 public class Recipe {
     private String id;
