@@ -5,13 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+// @Getter
+// @Setter
 // @Builder
-// @Data
+@Data
 @Builder
+// @NoArgsConstructor
+@AllArgsConstructor
 public class Recipe {
     private String id;
     private String title;
