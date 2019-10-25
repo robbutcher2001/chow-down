@@ -37,7 +37,7 @@ public class RecipeRepository {
 
         parameters.add(new SqlParameter().withName("title").withValue(new Field().withStringValue(recipe.getTitle())));
         parameters.add(new SqlParameter().withName("description").withValue(new Field().withStringValue(recipe.getDescription())));
-        parameters.add(new SqlParameter().withName("rating").withValue(new Field().withLongValue(recipe.getRating())));
+        // parameters.add(new SqlParameter().withName("rating").withValue(new Field().withLongValue(recipe.getRating())));
         parameters.add(new SqlParameter().withName("url").withValue(new Field().withStringValue(recipe.getUrl())));
         parameters.add(new SqlParameter().withName("image").withValue(new Field().withStringValue(recipe.getImage())));
 
