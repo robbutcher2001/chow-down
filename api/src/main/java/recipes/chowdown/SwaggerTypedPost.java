@@ -1,41 +1,42 @@
 package recipes.chowdown;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
 import recipes.chowdown.domain.Recipe;
-import recipes.chowdown.exceptions.ResourcesNotFoundException;
+import recipes.chowdown.exceptions.ResourceNotPersistedException;
+import recipes.chowdown.repository.RecipeRepository;
 
-public class SwaggerTypedPost implements RequestHandler<Recipe, List<Recipe>> {
+public class SwaggerTypedPost implements RequestHandler<Recipe, Recipe> {
 
-  private static LambdaLogger Logger;
-  
-  public List<Recipe> handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
-    List<Recipe> recipes = new ArrayList<>();
-    Logger = context.getLogger();
+  private static LambdaLogger logger;
 
-    Logger.log("The recipe object:");
-    Logger.log(recipe.getId());
-    Logger.log(recipe.getTitle());
+  private RecipeRepository repository;
 
-    if (recipe.getId().equals("exception")) {
-      Logger.log("Throwing a new exception");
-      throw new ResourcesNotFoundException("can't find it");
+  public SwaggerTypedPost() {
+    this.repository = new RecipeRepository();
+  }
+
+  public Recipe handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
+    logger = context.getLogger();
+
+    ExecuteStatementResult result = this.repository.putRecipe(recipe);
+
+    if (result.getRecords().size() != 1) {
+      throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
     }
 
-    recipes.add(recipe);
+    final String returnedId = result.getRecords().get(0).get(0).getStringValue();
 
-    Recipe newRecipe = Recipe.builder()
-      .id("fake id")
-      .title("fake title")
-      .build();
+    if (returnedId.isEmpty()) {
+      throw new ResourceNotPersistedException("no ID returned from database");
+    }
 
-    recipes.add(newRecipe);
+    logger.log("New recipe persisted with id [" + returnedId + "]");
+    recipe.setId(returnedId);
 
-    return recipes;
+    return recipe;
   }
 }

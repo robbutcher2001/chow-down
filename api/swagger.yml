@@ -69,13 +69,19 @@ components:
       title: "Recipe schema"
       type: object
       properties:
-        id:
-          type: string
         title:
           type: string
+        description:
+          type: string
+        url:
+          type: string
+        image:
+          type: string
       required:
-      - id
       - title
+      - description
+      - url
+      - image
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false
