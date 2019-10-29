@@ -43,6 +43,9 @@ paths:
         410:
           description: "410 response"
           content: {}
+        500:
+          description: "500 response"
+          content: {}
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         uri:
@@ -50,6 +53,11 @@ paths:
         responses:
           .*ResourcesNotFoundException.*:
             statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
             responseTemplates:
               application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
                 {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
