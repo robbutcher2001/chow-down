@@ -8,6 +8,7 @@ import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import recipes.chowdown.ApiResponse;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
+import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 
 public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Recipe>> {
@@ -21,25 +22,30 @@ public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Reci
   }
 
   public ApiResponse<Recipe> handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
-    logger = context.getLogger();
+    try {
+      logger = context.getLogger();
 
-    ExecuteStatementResult result = this.repository.putRecipe(recipe);
-
-    if (result.getRecords().size() != 1) {
-      throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
+      ExecuteStatementResult result = this.repository.putRecipe(recipe);
+  
+      if (result.getRecords().size() != 1) {
+        throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
+      }
+  
+      final int rowIndex = 0;
+      final int columnIndex = 0;
+      final String returnedId = result.getRecords().get(rowIndex).get(columnIndex).getStringValue();
+  
+      if (returnedId.isEmpty()) {
+        throw new ResourceNotPersistedException("no ID returned from database");
+      }
+  
+      logger.log("New recipe persisted with id [" + returnedId + "]");
+      recipe.setId(returnedId);
+  
+      return new ApiResponse<Recipe>("recipe", recipe);
     }
-
-    final int rowIndex = 0;
-    final int columnIndex = 0;
-    final String returnedId = result.getRecords().get(rowIndex).get(columnIndex).getStringValue();
-
-    if (returnedId.isEmpty()) {
-      throw new ResourceNotPersistedException("no ID returned from database");
+    catch (Exception ex) {
+      throw new ServerException(ex.getMessage(), ex);
     }
-
-    logger.log("New recipe persisted with id [" + returnedId + "]");
-    recipe.setId(returnedId);
-
-    return new ApiResponse<Recipe>("recipe", recipe);
   }
 }
