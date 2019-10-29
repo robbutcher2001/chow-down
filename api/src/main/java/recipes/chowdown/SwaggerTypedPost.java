@@ -28,7 +28,9 @@ public class SwaggerTypedPost implements RequestHandler<Recipe, Recipe> {
       throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
     }
 
-    final String returnedId = result.getRecords().get(0).get(0).getStringValue();
+    final int rowIndex = 0;
+    final int columnIndex = 0;
+    final String returnedId = result.getRecords().get(rowIndex).get(columnIndex).getStringValue();
 
     if (returnedId.isEmpty()) {
       throw new ResourceNotPersistedException("no ID returned from database");
