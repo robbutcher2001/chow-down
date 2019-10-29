@@ -1,4 +1,4 @@
-package recipes.chowdown;
+package recipes.chowdown.service.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +9,21 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
+import recipes.chowdown.ApiResponse;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourcesNotFoundException;
 import recipes.chowdown.repository.RecipeRepository;
 
-public class AuroraServerlessExample implements RequestHandler<Object, ApiRecipesResponse<Recipe>> {
+public class GetRecipesService implements RequestHandler<Object, ApiResponse<List<Recipe>>> {
   private static LambdaLogger logger;
 
   private RecipeRepository repository;
 
-  public AuroraServerlessExample() {
+  public GetRecipesService() {
     this.repository = new RecipeRepository();
   }
 
-  public ApiRecipesResponse<Recipe> handleRequest(final Object input, final Context context) {
+  public ApiResponse<List<Recipe>> handleRequest(final Object input, final Context context) {
     logger = context.getLogger();
 
     final List<Recipe> recipes = new ArrayList<>();
@@ -40,6 +41,6 @@ public class AuroraServerlessExample implements RequestHandler<Object, ApiRecipe
           .url(fields.get(4).getStringValue()).image(fields.get(5).getStringValue()).build());
     }
 
-    return new ApiRecipesResponse<Recipe>(recipes);
+    return new ApiResponse<List<Recipe>>("recipes", recipes);
   }
 }

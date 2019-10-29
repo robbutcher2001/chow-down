@@ -24,10 +24,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.repository.RecipeRepository;
+import recipes.chowdown.service.recipes.PutRecipeService;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class SwaggerTypedPostTest {
+public class PutRecipeServiceTest {
 
     @Mock
     private RecipeRepository repository;
@@ -39,13 +40,13 @@ public class SwaggerTypedPostTest {
     private LambdaLogger logger;
 
     @InjectMocks
-    private SwaggerTypedPost service;
+    private PutRecipeService service;
 
     @BeforeAll
     void beforeAll() {
         MockitoAnnotations.initMocks(this);
 
-        this.service = new SwaggerTypedPost();
+        this.service = new PutRecipeService();
     }
 
     @Test
@@ -60,8 +61,8 @@ public class SwaggerTypedPostTest {
         when(mockField.getStringValue()).thenReturn("fake_id");
         when(this.context.getLogger()).thenReturn(this.logger);
 
-        Recipe returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
+        ApiResponse<Recipe> returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
 
-        assertEquals("fake_id", returnedRecipe.getId());
+        assertEquals("fake_id", returnedRecipe.getData().get("recipe").getId());
     }
 }

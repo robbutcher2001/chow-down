@@ -1,25 +1,26 @@
-package recipes.chowdown;
+package recipes.chowdown.service.recipes;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
+import recipes.chowdown.ApiResponse;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.repository.RecipeRepository;
 
-public class SwaggerTypedPost implements RequestHandler<Recipe, Recipe> {
+public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Recipe>> {
 
   private static LambdaLogger logger;
 
   private RecipeRepository repository;
 
-  public SwaggerTypedPost() {
+  public PutRecipeService() {
     this.repository = new RecipeRepository();
   }
 
-  public Recipe handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
+  public ApiResponse<Recipe> handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
     logger = context.getLogger();
 
     ExecuteStatementResult result = this.repository.putRecipe(recipe);
@@ -39,6 +40,6 @@ public class SwaggerTypedPost implements RequestHandler<Recipe, Recipe> {
     logger.log("New recipe persisted with id [" + returnedId + "]");
     recipe.setId(returnedId);
 
-    return recipe;
+    return new ApiResponse<Recipe>("recipe", recipe);
   }
 }

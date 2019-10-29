@@ -66,11 +66,11 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - 'arn:aws:iam::aws:policy/AmazonRDSDataFullAccess'
-  SwaggerTypedPostFunctionRole:
+  PutRecipeFunctionRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName:
-        Fn::Join: [ '-', [ 'swagger-typed-post-role', !Ref Env ] ]
+        Fn::Join: [ '-', [ 'chow-down-put-recipe-role', !Ref Env ] ]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -90,7 +90,7 @@ Resources:
     Properties:
       FunctionName:
         Fn::Join: [ '-', [ 'GetRecipesFunction', !Ref Env ] ]
-      Handler: recipes.chowdown.AuroraServerlessExample::handleRequest
+      Handler: recipes.chowdown.service.recipes.GetRecipesService::handleRequest
       Runtime: java8
       CodeUri:
         Bucket: !Ref ApiSourceCodeBucket
@@ -112,30 +112,30 @@ Resources:
           - Arn
       SourceArn:
         Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
-  SwaggerTypedPostFunction:
+  PutRecipeFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName:
-        Fn::Join: [ '-', [ 'SwaggerTypedPostFunction', !Ref Env ] ]
-      Handler: recipes.chowdown.SwaggerTypedPost::handleRequest
+        Fn::Join: [ '-', [ 'PutRecipeFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.service.recipes.PutRecipeService::handleRequest
       Runtime: java8
       CodeUri:
         Bucket: !Ref ApiSourceCodeBucket
         Key: %{ChowDownApiSourceKey}
       Role:
         Fn::GetAtt:
-          - SwaggerTypedPostFunctionRole
+          - PutRecipeFunctionRole
           - Arn
       MemorySize: 1024
       Timeout: 30
-  SwaggerTypedPostLambdaPermission:
+  PutRecipeLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       FunctionName:
         Fn::GetAtt:
-          - SwaggerTypedPostFunction
+          - PutRecipeFunction
           - Arn
       SourceArn:
         Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
