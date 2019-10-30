@@ -1,24 +1,31 @@
 package recipes.chowdown;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
 import recipes.chowdown.schema.ApiApi;
 import recipes.chowdown.schema.Recipe;
-import org.springframework.http.ResponseEntity;
 
+@RestController
 public class GetRecipesServiceMock implements ApiApi {
 
-    public static void main(String[] a) {
+    @Override
+    public ResponseEntity<List<Recipe>> apiRecipesGet() {
         Recipe r = new Recipe();
-        r.setTitle("hi");
-        System.out.println("Mock running " + r.getTitle());
+        r.setTitle("fake thing");
+        return new ResponseEntity<List<Recipe>>(Collections.singletonList(r), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Void> apiRecipesGet() {
+    public ResponseEntity<Void> apiRecipesPost(@Valid Recipe body) {
+        // TODO Auto-generated method stub
         return null;
     }
-
-    @Override
-    public ResponseEntity<Void> apiRecipesPost(Recipe recipe) {
-        return null;
-    }
+    
 }
