@@ -25,6 +25,7 @@ public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Reci
     try {
       logger = context.getLogger();
 
+      recipe.setId(null);
       ExecuteStatementResult result = this.repository.putRecipe(recipe);
   
       if (result.getRecords().size() != 1) {
