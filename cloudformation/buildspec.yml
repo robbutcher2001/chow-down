@@ -6,12 +6,12 @@ phases:
   build:
     commands:
       - timestamp="`date +%s%N`"
-      - cd api
+      - cd api/lambda
       - mvn package
       - aws s3 cp target/chow-down-api.jar s3://${ChowDownApiSourceBucket}/chow-down-api-build-${timestamp}.jar
-      - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-build-${timestamp}.jar/g" ../cloudformation/stack-template.yml
-      - aws s3 cp swagger.yml s3://${ChowDownApiSourceBucket}/chow-down-api-swagger-${timestamp}.yml
-      - sed -ie "s/%{ChowDownApiSwaggerKey}/chow-down-api-swagger-${timestamp}.yml/g" ../cloudformation/stack-template.yml
+      - sed -ie "s/%{ChowDownApiSourceKey}/chow-down-api-build-${timestamp}.jar/g" ../../cloudformation/stack-template.yml
+      - aws s3 cp ../swagger.yml s3://${ChowDownApiSourceBucket}/chow-down-api-swagger-${timestamp}.yml
+      - sed -ie "s/%{ChowDownApiSwaggerKey}/chow-down-api-swagger-${timestamp}.yml/g" ../../cloudformation/stack-template.yml
 artifacts:
   files:
     - cloudformation/**/*

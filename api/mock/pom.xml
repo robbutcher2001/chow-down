@@ -59,7 +59,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/../api/swagger.yml</inputSpec>
+                            <inputSpec>${project.basedir}/../swagger.yml</inputSpec>
                             <language>spring</language>
                             <invokerPackage>${project.groupId}.${api.namespace}</invokerPackage>
                             <modelPackage>${project.groupId}.${api.namespace}</modelPackage>

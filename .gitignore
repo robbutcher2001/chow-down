@@ -10,5 +10,5 @@ node_modules/
 .idea/
 target/
 chow-db/
-api/.factorypath
-mock-api/.factorypath
+api/lambda/.factorypath
+api/mock/.factorypath
