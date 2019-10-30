@@ -44,7 +44,10 @@ paths:
             Content-Type:
               schema:
                 type: "string"
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
         410:
           description: "410 response"
           content: {}
@@ -82,10 +85,14 @@ components:
       title: "Recipe schema"
       type: object
       properties:
+        id:
+          type: string
         title:
           type: string
         description:
           type: string
+        rating:
+          type: integer
         url:
           type: string
         image:
