@@ -9,12 +9,14 @@ import com.github.javafaker.Faker;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import recipes.chowdown.schema.ApiApi;
 import recipes.chowdown.schema.Recipe;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8080")
 public class GetRecipesServiceMock implements ApiApi {
 
     final Faker faker;

@@ -13,9 +13,9 @@ export default function* postSaga(action: PostRecipeApiRequest) {
     yield put(clearPendingPostRecipes());
 };
 
-function* successCallback(json: object) {
+function* successCallback(recipes: []) {
     console.log('Calling postRecipeSuccessCallback');
-    yield put(postRecipesSuccess(json));
+    yield put(postRecipesSuccess(recipes));
     yield put(getRecipesRequest());
 };
 

@@ -35,7 +35,9 @@ export interface FailCallback {
 function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback) {
     try {
         if (response.status >= 200 && response.status < 500) {
-            const json: ResponseBody = yield response.json();
+            const json: ResponseBody = {
+                data: yield response.json()
+            };
 
             if (response.status < 300) {
                 yield* success(json.data);
