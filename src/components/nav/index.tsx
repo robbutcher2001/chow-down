@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styled from 'styled-components';
+import gearImg from './gear.svg';
 
 const Nav = styled.nav`
   display: flex;
@@ -30,12 +31,25 @@ const Nav = styled.nav`
   > button:focus {
     outline: none;
   }
+
+  > button:last-child {
+    margin-left: auto;
+    font-size: 0;
+    padding: 0.8rem 0.8rem 0.3rem 0.8rem;
+
+    img {
+      height: 1.4rem;
+      width: 1.4rem;
+    }
+  }
 `
 
 export default () => (
   <Nav>
-    <button>Home</button>
+    <button className='active'>This Week</button>
     <button>Recipes</button>
-    <button>Settings..</button>
+    <button>
+      <img src={gearImg}></img>
+    </button>
   </Nav>
 );
