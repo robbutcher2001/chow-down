@@ -1,0 +1,21 @@
+{
+    "roots": [
+        "<rootDir>/src"
+    ],
+    "transform": {
+        "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test))\\.(ts|tsx)$",
+    "collectCoverageFrom": [
+        "src/**/*.{ts,tsx}",
+        "!/node_modules/"
+    ],
+    "moduleFileExtensions": [
+        "js",
+        "ts",
+        "tsx"
+    ],
+    "moduleNameMapper": {
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/components/__mocks__/mock.js"
+    }
+}

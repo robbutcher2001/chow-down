@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header basic render 1`] = `
+<header
+  className="sc-bdVaJa jseUTN"
+>
+  <h1>
+    Chow Down
+  </h1>
+  <p>
+    Chow down on a weekly plan of your evening meals.
+  </p>
+</header>
+`;
