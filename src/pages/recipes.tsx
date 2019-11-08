@@ -6,7 +6,7 @@ import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
-import Loading from '../components/loading';
+import Loading from '../components/Loading';
 import Page from '../components/page';
 import GridUl from '../components/grid-ul';
 import GridLi from '../components/grid-li';
