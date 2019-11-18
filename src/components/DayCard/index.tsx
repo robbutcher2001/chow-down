@@ -23,26 +23,43 @@ const DayCard = styled.li`
         background-color: rgba(0,0,0,0.05);
     }
 
-    > figure {
-        max-height: 350px;
-        overflow: hidden;
-        margin: 0;
-        position: relative;
+    > section {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        background-color: rgba(0,0,0,0.05);
 
-        > img {
-            width: 100%;
+        > figure {
+            max-height: 350px;
+            max-width: 450px;
+            overflow: hidden;
+            margin: 0;
+            position: relative;
+    
+            > img {
+                width: 100%;
+            }
+    
+            > figcaption {
+                position: absolute;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, .7);
+                width: 100%;
+    
+                > h3 {
+                    color: white;
+                    padding: 1.5rem .5rem;
+                    margin: 0;
+                }
+            }
         }
 
-        > figcaption {
-            position: absolute;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, .7);
-            width: 100%;
+        > article {
+            flex-grow: 2;
+            padding: 2rem;
 
-            > h3 {
-                color: white;
-                padding: 1.5rem .5rem;
-                margin: 0;
+            table > tr:nth-child(even) {
+                background-color: rgba(0,0,0,0.05);
             }
         }
     }
@@ -51,11 +68,29 @@ const DayCard = styled.li`
 export default (props: DayCardProps) => (
     <DayCard>
         <h3>{props.day}</h3>
-        <figure>
-            <img src={props.imageUrl} alt={props.imageAlt}></img>
-            <figcaption>
-                <h3>{props.title}</h3>
-            </figcaption>
-        </figure>
+        <section>
+            <figure>
+                <img src={props.imageUrl} alt={props.imageAlt}></img>
+                <figcaption>
+                    <h3>{props.title}</h3>
+                </figcaption>
+            </figure>
+            <article>
+                <table>
+                    <tr>
+                        <td>1 large onion</td>
+                    </tr>
+                    <tr>
+                        <td>3 tbsp mild curry paste</td>
+                    </tr>
+                    <tr>
+                        <td>2 tsp vegetable bouillon powder</td>
+                    </tr>
+                    <tr>
+                        <td>400g can chopped tomatoes</td>
+                    </tr>
+                </table>
+            </article>
+        </section>
     </DayCard>
 );
