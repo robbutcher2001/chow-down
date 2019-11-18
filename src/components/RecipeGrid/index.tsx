@@ -2,11 +2,11 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-export interface GridUlProps {
+export interface RecipeGridProps {
   children: ReactNode
 };
 
-const GridUl = styled.ul`
+const RecipeGrid = styled.ul`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem 2em;
@@ -15,8 +15,8 @@ const GridUl = styled.ul`
   list-style: none;
 `
 
-export default (props: GridUlProps) => (
-  <GridUl>
+export default (props: RecipeGridProps) => (
+  <RecipeGrid>
     {props.children}
-  </GridUl>
+  </RecipeGrid>
 );

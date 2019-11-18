@@ -12,12 +12,12 @@ const Nav = styled.nav`
   top: 0;
   z-index: 100;
   background: #222;
-  padding: 0 .75rem;
 
   > button {
     background: #222;
     font-size: 1rem;
     padding: 1rem 1rem 0.5rem 1rem;
+    margin: 0;
     border: none;
     border-bottom: .5rem solid #222;
     color: #fff;

@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-export interface GridLiProps {
+export interface RecipeCardProps {
   title: string,
   description: string,
   rating: number,
@@ -10,7 +10,7 @@ export interface GridLiProps {
   imageAlt: string
 };
 
-const GridLi = styled.li`
+const RecipeCard = styled.li`
   -webkit-box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
   box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
   border: 1px solid rgba(0,0,0,.04);
@@ -63,8 +63,8 @@ const GridLi = styled.li`
   }
 `
 
-export default (props: GridLiProps) => (
-  <GridLi>
+export default (props: RecipeCardProps) => (
+  <RecipeCard>
     <figure>
       <img src={props.imageUrl} alt={props.imageAlt}></img>
       <figcaption>
@@ -81,5 +81,5 @@ export default (props: GridLiProps) => (
       }() }
     </section>
     <p>{props.description}</p>
-  </GridLi>
+  </RecipeCard>
 );

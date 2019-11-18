@@ -8,8 +8,8 @@ import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/a
 
 import Loading from '../components/Loading';
 import Page from '../components/page';
-import GridUl from '../components/grid-ul';
-import GridLi from '../components/grid-li';
+import RecipeGrid from '../components/RecipeGrid';
+import RecipeCard from '../components/RecipeCard';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -46,9 +46,9 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
     componentDidMount = () => this.props.getRecipes();
 
-    recipeGridListItems = (recipes: Recipe[]) =>
+    createRecipeCards = (recipes: Recipe[]) =>
         recipes.map((recipe, i) =>
-            <GridLi
+            <RecipeCard
                 key={i}
                 title={recipe.title}
                 description={recipe.description}
@@ -71,9 +71,9 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
         return (
             <Page title='Your recipes'>
-                <GridUl>
-                    {this.recipeGridListItems(this.props.recipes)}
-                </GridUl>
+                <RecipeGrid>
+                    {this.createRecipeCards(this.props.recipes)}
+                </RecipeGrid>
                 <h4>List recipes</h4>
                 <button onClick={this.requestRecipes}>
                     Press me to get all recipes
