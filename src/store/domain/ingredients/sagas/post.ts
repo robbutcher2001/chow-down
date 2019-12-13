@@ -5,7 +5,7 @@ import { getIngredientsRequest, postIngredientsSuccess, postIngredientsFailure }
 import { pendingPostIngredients, clearPendingPostIngredients } from '../../../ui/ingredients/actions';
 import { post } from '../../../api';
 
-const URL = 'http://localhost:3000/api/ingredients';
+const URL = `${process.env.API_BASE}/api/ingredients`;
 
 export default function* postSaga(action: PostIngredientApiRequest) {
     yield put(pendingPostIngredients());

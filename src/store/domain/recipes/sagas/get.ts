@@ -4,7 +4,7 @@ import { getRecipesSuccess, getRecipesFailure } from '../actions';
 import { pendingGetRecipes, clearPendingGetRecipes } from '../../../ui/recipes/actions';
 import { get } from '../../../api';
 
-const URL = 'http://localhost:3000/api/recipes';
+const URL = `${process.env.API_BASE}/api/recipes`;
 
 export default function* getSaga() {
     yield put(pendingGetRecipes());

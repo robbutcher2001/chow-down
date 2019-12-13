@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const htmlWebpack = require('html-webpack-plugin');
 
@@ -67,6 +68,9 @@ module.exports = {
   plugins: [
     new htmlWebpack({
       template: path.join(path.resolve(__dirname, '../src'), 'index.html')
+    }),
+    new webpack.EnvironmentPlugin({
+      API_BASE: process.env.API_BASE ? process.env.API_BASE : ''
     })
   ],
   devServer: {

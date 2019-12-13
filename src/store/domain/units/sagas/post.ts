@@ -5,7 +5,7 @@ import { getUnitsRequest, postUnitsSuccess, postUnitsFailure } from '../actions'
 import { pendingPostUnits, clearPendingPostUnits } from '../../../ui/units/actions';
 import { post } from '../../../api';
 
-const URL = 'http://localhost:3000/api/units';
+const URL = `${process.env.API_BASE}/api/units`;
 
 export default function* postSaga(action: PostUnitApiRequest) {
     yield put(pendingPostUnits());
