@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-import Nav from './Nav2';
-import Header from './Header2';
+import Nav from './Nav';
+import Header from './Header';
 import Main from './main';
 import Footer from './footer';
 
