@@ -9,12 +9,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
-import recipes.chowdown.ApiResponse;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourcesNotFoundException;
 import recipes.chowdown.repository.RecipeRepository;
 
-public class GetRecipesService implements RequestHandler<Object, ApiResponse<List<Recipe>>> {
+public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
   private static LambdaLogger logger;
 
   private RecipeRepository repository;
@@ -23,7 +22,7 @@ public class GetRecipesService implements RequestHandler<Object, ApiResponse<Lis
     this.repository = new RecipeRepository();
   }
 
-  public ApiResponse<List<Recipe>> handleRequest(final Object input, final Context context) {
+  public List<Recipe> handleRequest(final Object input, final Context context) {
     logger = context.getLogger();
 
     final List<Recipe> recipes = new ArrayList<>();
@@ -41,6 +40,6 @@ public class GetRecipesService implements RequestHandler<Object, ApiResponse<Lis
           .url(fields.get(4).getStringValue()).image(fields.get(5).getStringValue()).build());
     }
 
-    return new ApiResponse<List<Recipe>>("recipes", recipes);
+    return recipes;
   }
 }
