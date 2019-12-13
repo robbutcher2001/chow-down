@@ -23,12 +23,15 @@ class MouseScrollComponent extends Component<{}, OwnState> {
     onMouseScrollEvent = (event: React.WheelEvent<HTMLDivElement>) => {
         const deltaX: number = event.deltaX;
         this.setState(prevState => ({
-            scrollLocation: prevState.scrollLocation + deltaX
+            scrollLocation: prevState.scrollLocation + deltaX * -1
         }));
     }
 
     onTouchMoveEvent = (event: React.TouchEvent<HTMLDivElement>) => {
-        console.log(event);
+        const clientX = event.changedTouches[0] ? event.changedTouches[0].clientX : 0;
+        this.setState({
+            scrollLocation: clientX
+        });
     }
 
     render = () => {

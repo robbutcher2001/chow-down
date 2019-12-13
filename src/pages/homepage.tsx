@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 
 import Main from '../components/main';
 import DayCard from '../components/DayCard';
+import MouseScroll from '../components/MouseScroll';
 
 const Button = styled.button`
   background: transparent;
@@ -65,6 +66,7 @@ export default () => (
           imageUrl='https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe/recipe-image/2017/11/slow-cooker-thai-curry.jpg'
           imageAlt='fake_alt'
         />
+        <MouseScroll />
       </FlexContainer>
     </Main>
   </div>
