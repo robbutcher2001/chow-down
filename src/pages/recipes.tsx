@@ -14,6 +14,7 @@ import Form from '../components/form';
 import InputBox from '../components/input-box';
 
 interface StateProps {
+    error: string,
     failure: string,
     recipes: Recipe[],
     ui: {
@@ -51,7 +52,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 key={i}
                 title={recipe.title}
                 description={recipe.description}
-                rating={8}
+                rating={recipe.rating}
                 imageUrl={recipe.image}
                 imageAlt={recipe.title}
             />
@@ -89,12 +90,16 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                         placeholderText='Title'
                     />
                     <InputBox
-                        name='url'
-                        placeholderText='Url'
-                    />
-                    <InputBox
                         name='description'
                         placeholderText='Description'
+                    />
+                    <InputBox
+                        name='rating'
+                        placeholderText='Rating'
+                    />
+                    <InputBox
+                        name='url'
+                        placeholderText='Url'
                     />
                     <InputBox
                         name='image'
@@ -107,12 +112,16 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 {this.props.failure &&
                     <div style={{ color: 'red' }}>{this.props.failure}</div>
                 }
+                {this.props.error &&
+                    <div style={{ color: 'red' }}>{this.props.error}</div>
+                }
             </Page>
         );
     }
 };
 
-const mapStateToProps = ({ domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
+const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
+    error: app.error,
     failure: domain.recipe.failure,
     recipes: domain.recipe.recipes,
     ui: {

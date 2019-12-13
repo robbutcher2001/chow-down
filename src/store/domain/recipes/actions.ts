@@ -4,9 +4,9 @@ export const getRecipesRequest = (): GetRecipesApiRequest => ({
     type: RecipeActionTypes.GET_RECIPES_REQUEST
 });
 
-export const getRecipesSuccess = (json: object): RecipesSuccessApiResponse => ({
+export const getRecipesSuccess = (recipes: []): RecipesSuccessApiResponse => ({
     type: RecipeActionTypes.GET_RECIPES_SUCCESS,
-    json
+    recipes
 });
 
 export const getRecipesFailure = (code: number, json: object): RecipesFailureApiResponse => ({
@@ -20,9 +20,9 @@ export const postRecipesRequest = (payload: object): PostRecipeApiRequest => ({
     payload
 });
 
-export const postRecipesSuccess = (json: object): RecipesSuccessApiResponse => ({
+export const postRecipesSuccess = (recipes: []): RecipesSuccessApiResponse => ({
     type: RecipeActionTypes.POST_RECIPES_SUCCESS,
-    json
+    recipes
 });
 
 export const postRecipesFailure = (code: number, json: object): RecipesFailureApiResponse => ({

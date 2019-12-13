@@ -4,7 +4,7 @@ import { getRecipesSuccess, getRecipesFailure } from '../actions';
 import { pendingGetRecipes, clearPendingGetRecipes } from '../../../ui/recipes/actions';
 import { get } from '../../../api';
 
-const URL = '/api/recipes';
+const URL = 'http://localhost:3000/api/recipes';
 
 export default function* getSaga() {
     yield put(pendingGetRecipes());
@@ -12,10 +12,9 @@ export default function* getSaga() {
     yield put(clearPendingGetRecipes());
 };
 
-function* successCallback(json: object) {
+function* successCallback(recipes: []) {
     console.log('Calling getRecipeSuccessCallback');
-    console.log(json);
-    yield put(getRecipesSuccess(json));
+    yield put(getRecipesSuccess(recipes));
 };
 
 function* failCallback(code: number, json: object) {

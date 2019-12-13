@@ -13,7 +13,12 @@ paths:
             Content-Type:
               schema:
                 type: "string"
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Recipe"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
@@ -39,17 +44,28 @@ paths:
             Content-Type:
               schema:
                 type: "string"
-          content: {}
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Recipe"
         410:
           description: "410 response"
+          content: {}
+        500:
+          description: "500 response"
           content: {}
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SwaggerTypedPostFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutRecipeFunction.Arn}/invocations"
         responses:
           .*ResourcesNotFoundException.*:
             statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
             responseTemplates:
               application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
                 {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
@@ -73,9 +89,19 @@ components:
           type: string
         title:
           type: string
+        description:
+          type: string
+        rating:
+          type: integer
+        url:
+          type: string
+        image:
+          type: string
       required:
-      - id
       - title
+      - description
+      - url
+      - image
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false

@@ -21,10 +21,11 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
 
         case RecipeActionTypes.GET_RECIPES_SUCCESS:
             const successResponse = action as RecipesSuccessApiResponse;
-            const successJson = successResponse.json as RecipesSuccessResponse;
+            // to remove type-casting, we should be able to move to this once failure is implmented below
+            // const successResponse: RecipesSuccessApiResponse = action;
             return {
                 failure: null,
-                recipes: successJson.recipes
+                recipes: successResponse.recipes
             };
 
         case RecipeActionTypes.GET_RECIPES_FAILURE:

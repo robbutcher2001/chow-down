@@ -34,7 +34,7 @@ export interface PostRecipeApiRequest extends Action {
 
 export interface RecipesSuccessApiResponse extends Action {
     type: RecipeActionTypes,
-    json: object
+    recipes: []
 }
 
 export interface RecipesFailureApiResponse extends Action {

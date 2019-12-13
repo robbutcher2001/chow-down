@@ -5,7 +5,7 @@ import { getRecipesRequest, postRecipesSuccess, postRecipesFailure } from '../ac
 import { pendingPostRecipes, clearPendingPostRecipes } from '../../../ui/recipes/actions';
 import { post } from '../../../api';
 
-const URL = 'http://localhost:3000/api/recipes';
+const URL = '/api/recipes';
 
 export default function* postSaga(action: PostRecipeApiRequest) {
     yield put(pendingPostRecipes());
@@ -13,9 +13,9 @@ export default function* postSaga(action: PostRecipeApiRequest) {
     yield put(clearPendingPostRecipes());
 };
 
-function* successCallback(json: object) {
+function* successCallback(recipes: []) {
     console.log('Calling postRecipeSuccessCallback');
-    yield put(postRecipesSuccess(json));
+    yield put(postRecipesSuccess(recipes));
     yield put(getRecipesRequest());
 };
 
