@@ -46,7 +46,7 @@ const Nav = styled.nav`
 
 export default () => (
   <Nav>
-    <button className='active'>This Week</button>
+    <button className='active' >This Week</button>
     <button>Recipes</button>
     <button>
       <img src={gearImg}></img>
