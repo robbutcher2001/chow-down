@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import Nav from './Nav2';
-import Header from './Header';
+import Header from './Header2';
 import Main from './main';
 import Footer from './footer';
 
