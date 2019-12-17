@@ -7,6 +7,7 @@ import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/dom
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
 import Loading from '../components/Loading';
+import MessageBox from '../components/MessageBox';
 import Page from '../components/page';
 import RecipeGrid from '../components/RecipeGrid';
 import RecipeCard from '../components/RecipeCard';
@@ -69,6 +70,14 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             )
         };
 
+        if (this.props.failure) {
+            return (
+                <Page title='Your recipes'>
+                    <MessageBox message={this.props.failure} />
+                </Page>
+            )
+        };
+
         return (
             <Page title='Your recipes'>
                 <RecipeGrid>
@@ -77,10 +86,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 <h4>List recipes</h4>
                 <button onClick={this.requestRecipes}>
                     Press me to get all recipes
-                    </button>
-                {this.props.ui.pending.get &&
-                    <div style={{ color: 'red' }}>Getting..</div>
-                }
+                </button>
                 <h2>Add a new recipe</h2>
                 <Form
                     dispatch={this.addRecipe}
@@ -110,7 +116,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                     <div>Adding your new recipe..</div>
                 }
                 {this.props.failure &&
-                    <div style={{ color: 'red' }}>{this.props.failure}</div>
+                    <div style={{ color: 'orange' }}>{this.props.failure}</div>
                 }
                 {this.props.error &&
                     <div style={{ color: 'red' }}>{this.props.error}</div>

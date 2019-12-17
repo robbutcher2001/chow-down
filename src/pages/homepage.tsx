@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styled, { css } from 'styled-components';
 
+import Page from '../components/page';
 import Main from '../components/main';
 import DayCard from '../components/DayCard';
 import MouseScroll from '../components/MouseScroll';
@@ -35,8 +36,7 @@ const FlexContainer = styled.ul`
 `
 
 export default () => (
-  <div>
-    <h1>Skeleton Test Pages</h1>
+  <Page title='Skeleton Test Pages'>
     <div>
       <Link to='/units'>Units Page</Link>
     </div>
@@ -69,5 +69,5 @@ export default () => (
         <MouseScroll />
       </FlexContainer>
     </Main>
-  </div>
+  </Page>
 );

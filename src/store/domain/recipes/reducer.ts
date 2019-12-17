@@ -32,6 +32,15 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
         case RecipeActionTypes.POST_RECIPES_FAILURE:
             const failureResponse = action as RecipesFailureApiResponse;
             const failureJson = failureResponse.json as RecipesFailureResponse;
+            console.log(failureResponse.code);
+
+            if (failureResponse.code === 410) {
+                return {
+                    failure: 'No recipes found',
+                    recipes: []
+                };
+            }
+
             return {
                 failure: failureJson.recipe,
                 recipes: []

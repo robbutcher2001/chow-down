@@ -1,6 +1,7 @@
 package recipes.chowdown;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ public class GetRecipesServiceMock implements ApiApi {
 
     final Faker faker;
     final List<Recipe> recipes = new ArrayList<>();
+    boolean initRequest = true;
 
     public GetRecipesServiceMock() {
         this.faker = new Faker();
@@ -40,6 +42,11 @@ public class GetRecipesServiceMock implements ApiApi {
 
     @Override
     public ResponseEntity<List<Recipe>> apiRecipesGet() {
+        if (initRequest) {
+            initRequest = !initRequest;
+            return new ResponseEntity<List<Recipe>>(Collections.emptyList(), HttpStatus.GONE);
+        }
+
         return new ResponseEntity<List<Recipe>>(this.recipes, HttpStatus.OK);
     }
 
