@@ -29,7 +29,7 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
 
     ExecuteStatementResult result = this.repository.getRecipes();
 
-    if (result.getRecords().size() < 1 || true) {
+    if (result.getRecords().size() < 1) {
       logger.log("No recipes found");
       throw new ResourcesNotFoundException("No recipes found");
     }

@@ -5,14 +5,16 @@ import HomePage from './pages/homepage';
 import UnitsPage from './pages/units';
 import IngredientsPage from './pages/ingredients';
 import RecipesPage from './pages/recipes';
+import NotFoundPage from './pages/not_found';
 
+// TODO: SFC is deprecated
 const Routes: SFC = () => (
     <Switch>
-        <Route path='/units' component={UnitsPage} />
-        <Route path='/ingredients' component={IngredientsPage} />
-        <Route path='/recipes' component={RecipesPage} />
-        <Route path='/' component={HomePage} />
-        <Route component={() => <h1>Page not found</h1>} />
+        <Route exact path='/units' component={UnitsPage} />
+        <Route exact path='/ingredients' component={IngredientsPage} />
+        <Route exact path='/recipes' component={RecipesPage} />
+        <Route exact path='/' component={HomePage} />
+        <Route path='*' component={NotFoundPage} />
     </Switch>
 );
 
