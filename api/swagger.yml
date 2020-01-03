@@ -43,11 +43,8 @@ paths:
             statusCode: "200"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
-        passthroughBehavior: "never"
         httpMethod: "POST"
-        requestTemplates:
-          text/html: ""
-        contentHandling: "CONVERT_TO_TEXT"
+        passthroughBehavior: "when_no_match"
         type: "aws"
     post:
       requestBody:
@@ -92,8 +89,8 @@ paths:
             statusCode: "201"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
-        passthroughBehavior: "never"
         httpMethod: "POST"
+        passthroughBehavior: "never"
         requestTemplates:
           application/json: "$input.body"
         contentHandling: "CONVERT_TO_TEXT"
