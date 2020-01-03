@@ -19,15 +19,31 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Recipe"
+        410:
+          description: "410 response"
+          content: {}
+        500:
+          description: "500 response"
+          content: {}
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
         responses:
+          .*ResourcesNotFoundException.*:
+            statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
-        passthroughBehavior: "when_no_match"
+        passthroughBehavior: "never"
         httpMethod: "POST"
         type: "aws"
     post:
