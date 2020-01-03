@@ -45,6 +45,9 @@ paths:
               method.response.header.Content-Type: "'application/json'"
         passthroughBehavior: "never"
         httpMethod: "POST"
+        requestTemplates:
+          text/html: ""
+        contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
     post:
       requestBody:
