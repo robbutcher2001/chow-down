@@ -304,7 +304,7 @@ components:
         ingredient:
           type: string
       required:
-      - name
+      - ingredient
     Recipe:
       title: "Recipe schema"
       type: object
