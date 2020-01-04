@@ -33,6 +33,13 @@ export const unitsReducer: Reducer<UnitsState, GetUnitsApiResponse> = (state = i
             const failureJson = failureResponse.json as UnitsFailureResponse;
             console.log(failureResponse.code);
 
+            if (failureResponse.code === 410) {
+                return {
+                    failure: 'No units found',
+                    units: []
+                };
+            }
+
             return {
                 failure: failureJson.unit,
                 units: []
