@@ -5,6 +5,7 @@ import styled from 'styled-components';
 interface DayCardProps {
     day: string,
     title: string,
+    description?: string,
     rating: number,
     imageUrl: string,
     imageAlt: string
@@ -61,6 +62,11 @@ const DayCard = styled.li`
             table > tr:nth-child(even) {
                 background-color: rgba(0,0,0,0.05);
             }
+
+            section {
+                font-style: italic;
+                margin: 1.5rem 0 0 0;
+            }
         }
     }
 `
@@ -77,19 +83,22 @@ export default (props: DayCardProps) => (
             </figure>
             <article>
                 <table>
-                    <tr>
-                        <td>1 large onion</td>
-                    </tr>
-                    <tr>
-                        <td>3 tbsp mild curry paste</td>
-                    </tr>
-                    <tr>
-                        <td>2 tsp vegetable bouillon powder</td>
-                    </tr>
-                    <tr>
-                        <td>400g can chopped tomatoes</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>1 large onion</td>
+                        </tr>
+                        <tr>
+                            <td>3 tbsp mild curry paste</td>
+                        </tr>
+                        <tr>
+                            <td>2 tsp vegetable bouillon powder</td>
+                        </tr>
+                        <tr>
+                            <td>400g can chopped tomatoes</td>
+                        </tr>
+                    </tbody>
                 </table>
+                <section>{props.description}</section>
             </article>
         </section>
     </DayCard>

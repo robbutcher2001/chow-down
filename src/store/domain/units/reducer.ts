@@ -35,7 +35,7 @@ export const unitsReducer: Reducer<UnitsState, GetUnitsApiResponse> = (state = i
 
             if (failureResponse.code === 410) {
                 return {
-                    failure: 'No units found',
+                    failure: 'No units yet!',
                     units: []
                 };
             }
