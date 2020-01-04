@@ -21,14 +21,14 @@ const DayCard = styled.li`
         padding: 1rem .5rem;
         border-top-left-radius: .2rem;
         border-top-right-radius: .2rem;
-        background-color: rgba(0,0,0,0.05);
+        background-color: rgba(0,0,0,0.2);
     }
 
     > section {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        background-color: rgba(0,0,0,0.05);
+        background-color: rgba(0,0,0,0.2);
 
         > figure {
             max-height: 350px;
@@ -60,7 +60,7 @@ const DayCard = styled.li`
             padding: 2rem;
 
             table > tr:nth-child(even) {
-                background-color: rgba(0,0,0,0.05);
+                background-color: rgba(0,0,0,0.2);
             }
 
             section {
