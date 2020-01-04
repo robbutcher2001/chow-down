@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+
 import MessageBox from '../components/MessageBox';
 import Page from '../components/page';
 
