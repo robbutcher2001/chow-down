@@ -28,7 +28,7 @@ interface StateProps {
 
 interface DispatchProps {
     getRecipes: () => GetRecipesApiRequest,
-    postRecipe: (form: object) => PostRecipeApiRequest
+    postRecipe: (form: Recipe) => PostRecipeApiRequest
 };
 
 interface OwnProps { };
@@ -43,7 +43,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     }
 
     requestRecipes = () => this.props.getRecipes();
-    addRecipe = (form: object) => this.props.postRecipe(form);
+    addRecipe = (form: Recipe) => this.props.postRecipe(form);
 
     componentDidMount = () => this.props.getRecipes();
 
@@ -145,7 +145,7 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): 
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
     getRecipes: () => dispatch(getRecipesRequest()),
-    postRecipe: (form: object) => dispatch(postRecipesRequest(form))
+    postRecipe: (form: Recipe) => dispatch(postRecipesRequest(form))
 });
 
 export default connect<StateProps, DispatchProps, OwnProps, GlobalState>

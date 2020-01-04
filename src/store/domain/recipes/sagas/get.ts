@@ -1,5 +1,6 @@
 import { put } from 'redux-saga/effects';
 
+import { Recipe } from '../types';
 import { getRecipesSuccess, getRecipesFailure } from '../actions';
 import { pendingGetRecipes, clearPendingGetRecipes } from '../../../ui/recipes/actions';
 import { get } from '../../../api';
@@ -12,7 +13,7 @@ export default function* getSaga() {
     yield put(clearPendingGetRecipes());
 };
 
-function* successCallback(recipes: []) {
+function* successCallback(recipes: Recipe[]) {
     console.log('Calling getRecipeSuccessCallback');
     yield put(getRecipesSuccess(recipes));
 };
