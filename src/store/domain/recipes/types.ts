@@ -29,7 +29,7 @@ export interface GetRecipesApiRequest extends Action {
 
 export interface PostRecipeApiRequest extends Action {
     type: RecipeActionTypes,
-    payload: Recipe
+    recipe: Recipe
 }
 
 // TODO: maybe have a separate interface for POST success as it doesn't return an array of recipes, only the new one

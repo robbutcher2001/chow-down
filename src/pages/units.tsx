@@ -6,6 +6,7 @@ import { GlobalState } from '../store';
 import { Unit, GetUnitsApiRequest, PostUnitApiRequest } from '../store/domain/units/types';
 import { getUnitsRequest, postUnitsRequest } from '../store/domain/units/actions';
 
+import Page from '../components/page';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -22,7 +23,7 @@ interface StateProps {
 
 interface DispatchProps {
     getUnits: () => GetUnitsApiRequest,
-    postUnit: (form: object) => PostUnitApiRequest
+    postUnit: (form: Unit) => PostUnitApiRequest
 };
 
 interface OwnProps { };
@@ -36,49 +37,43 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
         super(props);
     }
 
-    requestUnits = () => this.props.getUnits();
-    addUnit = (form: object) => this.props.postUnit(form);
+    // requestUnits = () => this.props.getUnits();
+    addUnit = (form: Unit) => this.props.postUnit(form);
 
     componentDidMount = () => this.props.getUnits();
 
-    render = () => {
-        console.log(this.props.units);
-        return (
-            <div>
-                <h4>List units</h4>
-                <button onClick={this.requestUnits}>
-                    Press me to get all units
-                </button>
-                {this.props.ui.pending.get &&
-                    <div style={{ color: 'red' }}>Getting..</div>
-                }
-                {this.props.units.map((unit, index) =>
-                    <li key={index}>{unit.singular}, {unit.plural}</li>
-                )}
-                <h4>Add unit</h4>
-                <Form
-                    dispatch={this.addUnit}
-                    submitText='Add unit'>
-                    <InputBox
-                        name='singular'
-                        type='text'
-                        placeholderText='Singular unit name'
-                    />
-                    <InputBox
-                        name='plural'
-                        type='text'
-                        placeholderText='Plural unit name'
-                    />
-                </Form>
-                {this.props.ui.pending.post &&
-                    <div>Adding your new unit..</div>
-                }
-                {this.props.failure &&
-                    <div style={{color: 'red'}}>{this.props.failure}</div>
-                }
-            </div>
-        );
-    }
+    render = () => (
+        <Page
+            title='Units'
+            loading={this.props.ui.pending.get}
+            message={this.props.failure}
+        >
+            <h3>New unit</h3>
+            <Form
+                dispatch={this.addUnit}
+                submitText='Add unit'>
+                <InputBox
+                    name='singular'
+                    type='text'
+                    placeholderText='Singular unit name'
+                />
+                <InputBox
+                    name='plural'
+                    type='text'
+                    placeholderText='Plural unit name'
+                />
+            </Form>
+            {this.props.ui.pending.post &&
+                <div>Adding your new unit..</div>
+            }
+            {this.props.failure &&
+                <div style={{ color: 'red' }}>{this.props.failure}</div>
+            }
+            {this.props.units.map((unit, index) =>
+                <li key={index}>{unit.singular}, {unit.plural}</li>
+            )}
+        </Page>
+    );
 };
 
 const mapStateToProps = ({ domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
@@ -94,7 +89,7 @@ const mapStateToProps = ({ domain, ui }: GlobalState, ownProps: OwnProps): State
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
     getUnits: () => dispatch(getUnitsRequest()),
-    postUnit: (form: object) => dispatch(postUnitsRequest(form))
+    postUnit: (form: Unit) => dispatch(postUnitsRequest(form))
 });
 
 export default connect<StateProps, DispatchProps, OwnProps, GlobalState>

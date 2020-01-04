@@ -1,4 +1,4 @@
-package recipes.chowdown.service.recipes;
+package recipes.chowdown.service.units;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -6,27 +6,27 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
 import recipes.chowdown.ApiResponse;
-import recipes.chowdown.domain.Recipe;
+import recipes.chowdown.domain.Unit;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
-import recipes.chowdown.repository.RecipeRepository;
+import recipes.chowdown.repository.UnitRepository;
 
-public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Recipe>> {
+public class PutUnitService implements RequestHandler<Unit, ApiResponse<Unit>> {
 
   private static LambdaLogger logger;
 
-  private RecipeRepository repository;
+  private UnitRepository repository;
 
-  public PutRecipeService() {
-    this.repository = new RecipeRepository();
+  public PutUnitService() {
+    this.repository = new UnitRepository();
   }
 
-  public ApiResponse<Recipe> handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
+  public ApiResponse<Unit> handleRequest(final Unit unit, final Context context) throws RuntimeException {
     try {
       logger = context.getLogger();
 
-      recipe.setId(null);
-      ExecuteStatementResult result = this.repository.putRecipe(recipe);
+      unit.setId(null);
+      ExecuteStatementResult result = this.repository.putUnit(unit);
 
       if (result.getRecords().size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
@@ -40,10 +40,10 @@ public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Reci
         throw new ResourceNotPersistedException("no ID returned from database");
       }
 
-      logger.log("New recipe persisted with id [" + returnedId + "]");
-      recipe.setId(returnedId);
+      logger.log("New unit persisted with id [" + returnedId + "]");
+      unit.setId(returnedId);
 
-      return new ApiResponse<Recipe>("recipe", recipe);
+      return new ApiResponse<Unit>("unit", unit);
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }

@@ -15,9 +15,9 @@ export const getRecipesFailure = (code: number, json: object): RecipesFailureApi
     json
 });
 
-export const postRecipesRequest = (payload: Recipe): PostRecipeApiRequest => ({
+export const postRecipesRequest = (recipe: Recipe): PostRecipeApiRequest => ({
     type: RecipeActionTypes.POST_RECIPES_REQUEST,
-    payload
+    recipe
 });
 
 export const postRecipesSuccess = (recipes: Recipe[]): RecipesSuccessApiResponse => ({

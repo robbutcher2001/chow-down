@@ -5,10 +5,14 @@ import styled from 'styled-components';
 import Nav from './Nav';
 import Header from './Header';
 import Main from './main';
+import Loading from './Loading';
+import MessageBox from './MessageBox';
 import Footer from './footer';
 
 export interface PageProps {
   title: string,
+  loading?: boolean,
+  message?: string,
   children: ReactNode
 };
 
@@ -24,7 +28,12 @@ export default (props: PageProps) => (
     <Nav />
     <Header />
     <Main title={props.title}>
-      {props.children}
+      {props.loading ?
+        <Loading /> :
+        props.message ?
+          <MessageBox message={props.message} /> :
+          props.children
+      }
     </Main>
     <Footer />
   </Page>

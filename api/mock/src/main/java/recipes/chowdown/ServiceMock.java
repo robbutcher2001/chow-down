@@ -15,16 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import recipes.chowdown.schema.ApiApi;
 import recipes.chowdown.schema.Recipe;
+import recipes.chowdown.schema.Unit;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
-public class GetRecipesServiceMock implements ApiApi {
+public class ServiceMock implements ApiApi {
 
     final Faker faker;
+    final List<Unit> units = new ArrayList<>();
     final List<Recipe> recipes = new ArrayList<>();
     boolean initRequest = true;
 
-    public GetRecipesServiceMock() {
+    public ServiceMock() {
         this.faker = new Faker();
 
         for (int i = 0; i < 20; i++) {
@@ -38,6 +40,38 @@ public class GetRecipesServiceMock implements ApiApi {
 
             recipes.add(recipe);
         }
+
+        for (int i = 0; i < 12; i++) {
+            Unit unit = new Unit();
+            unit.setId(this.faker.internet().uuid());
+
+            String measurement = this.faker.food().measurement();
+            if (measurement.contains(" ")) {
+                measurement = measurement.split(" ")[1];
+            }
+
+            unit.setSingular(measurement);
+            unit.setPlural(measurement.concat("s"));
+
+            units.add(unit);
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Unit>> apiUnitsGet() {
+        if (initRequest) {
+            initRequest = !initRequest;
+            return new ResponseEntity<List<Unit>>(Collections.emptyList(), HttpStatus.GONE);
+        }
+
+        return new ResponseEntity<List<Unit>>(this.units, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Unit> apiUnitsPost(@Valid Unit unit) {
+        unit.setId(this.faker.internet().uuid());
+        this.units.add(unit);
+        return new ResponseEntity<>(unit, HttpStatus.CREATED);
     }
 
     @Override
@@ -54,6 +88,6 @@ public class GetRecipesServiceMock implements ApiApi {
     public ResponseEntity<Recipe> apiRecipesPost(@Valid Recipe recipe) {
         recipe.setId(this.faker.internet().uuid());
         this.recipes.add(recipe);
-        return new ResponseEntity<>(recipe, HttpStatus.ALREADY_REPORTED);
+        return new ResponseEntity<>(recipe, HttpStatus.CREATED);
     }
 }

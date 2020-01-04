@@ -10,15 +10,16 @@ const URL = `${process.env.API_BASE}/api/recipes`;
 export default function* getSaga() {
     yield put(pendingGetRecipes());
     yield get(URL, successCallback, failCallback);
-    yield put(clearPendingGetRecipes());
 };
 
 function* successCallback(recipes: Recipe[]) {
     console.log('Calling getRecipeSuccessCallback');
+    yield put(clearPendingGetRecipes());
     yield put(getRecipesSuccess(recipes));
 };
 
 function* failCallback(code: number, json: object) {
     console.log('Calling getRecipeFailCallback');
+    yield put(clearPendingGetRecipes());
     yield put(getRecipesFailure(code, json));
 };
