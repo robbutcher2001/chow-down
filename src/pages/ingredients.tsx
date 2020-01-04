@@ -64,6 +64,7 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
                     submitText='Add ingredient'>
                     <InputBox
                         name='name'
+                        type='text'
                         placeholderText='New ingredient name'
                     />
                 </Form>

@@ -15,7 +15,7 @@ interface OwnProps {
 
 interface OwnState {
   form: {
-    [key: string]: string
+    [key: string]: string | number
   }
 };
 
@@ -79,14 +79,14 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     };
   }
 
-  onChange = (field: string, event: ChangeEvent<HTMLInputElement>) => {
+  onChange = (field: string, type: 'text' | 'number', event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const value = event.currentTarget.value;
     this.setState(prevState => {
       const newState = {
         form: Object.assign({}, prevState.form)
       };
-      newState.form[field] = value;
+      newState.form[field] = type === 'number' && value ? parseInt(value) : value;
       return newState;
     });
   }
@@ -94,7 +94,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formPopulated = Object.keys(this.state.form).reduce((acc, formField) =>
-      this.state.form[formField].length > 0 ? true : acc, false);
+      this.state.form[formField] ? true : acc, false);
 
     if (formPopulated) {
       this.props.dispatch(this.state.form);

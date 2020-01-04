@@ -93,22 +93,27 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                     submitText='Add recipe'>
                     <InputBox
                         name='title'
+                        type='text'
                         placeholderText='Title'
                     />
                     <InputBox
                         name='description'
+                        type='text'
                         placeholderText='Description'
                     />
                     <InputBox
                         name='rating'
+                        type='number'
                         placeholderText='Rating'
                     />
                     <InputBox
                         name='url'
+                        type='text'
                         placeholderText='Url'
                     />
                     <InputBox
                         name='image'
+                        type='text'
                         placeholderText='Upload image'
                     />
                 </Form>

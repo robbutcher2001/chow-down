@@ -61,10 +61,12 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
                     submitText='Add unit'>
                     <InputBox
                         name='singular'
+                        type='text'
                         placeholderText='Singular unit name'
                     />
                     <InputBox
                         name='plural'
+                        type='text'
                         placeholderText='Plural unit name'
                     />
                 </Form>
