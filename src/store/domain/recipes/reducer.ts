@@ -1,14 +1,10 @@
 import { Reducer } from 'redux';
 
-import { Recipe, RecipesState, RecipeActionTypes, GetRecipesApiResponse, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
+import { RecipesState, RecipeActionTypes, GetRecipesApiResponse, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
 
 const initialState: RecipesState = {
     failure: null,
     recipes: []
-}
-
-interface RecipesSuccessResponse {
-    recipes: Recipe[]
 }
 
 interface RecipesFailureResponse {

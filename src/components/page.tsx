@@ -13,6 +13,7 @@ export interface PageProps {
   title: string,
   loading?: boolean,
   message?: string,
+  error?: string,
   children: ReactNode
 };
 
@@ -22,6 +23,7 @@ const Page = styled.div`
   grid-template-rows: auto auto 1fr auto;
 `
 
+// TODO: need to display error
 export default (props: PageProps) => (
   <Page>
     <Nav />

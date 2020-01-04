@@ -7,11 +7,6 @@ const initialState: IngredientsState = {
     ingredients: []
 }
 
-//TODO: move the status field up to actions and ref in api.ts
-interface IngredientsSuccessResponse {
-    ingredients: []
-}
-
 interface IngredientsFailureResponse {
     ingredient: string
 }
@@ -22,16 +17,25 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
 
         case IngredientActionTypes.GET_INGREDIENTS_SUCCESS:
             const successResponse = action as IngredientsSuccessApiResponse;
-            const successJson = successResponse.json as IngredientsSuccessResponse;
+            // const successJson = successResponse.json as IngredientsSuccessResponse;
             return {
                 failure: null,
-                ingredients: successJson.ingredients
+                ingredients: successResponse.ingredients
             };
 
         case IngredientActionTypes.GET_INGREDIENTS_FAILURE:
         case IngredientActionTypes.POST_INGREDIENTS_FAILURE:
             const failureResponse = action as IngredientsFailureApiResponse;
             const failureJson = failureResponse.json as IngredientsFailureResponse;
+            console.log(failureResponse.code);
+
+            if (failureResponse.code === 410) {
+                return {
+                    failure: 'No ingredients yet!',
+                    ingredients: []
+                };
+            }
+
             return {
                 failure: failureJson.ingredient,
                 ingredients: []

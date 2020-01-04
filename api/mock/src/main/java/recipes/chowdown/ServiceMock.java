@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import recipes.chowdown.schema.ApiApi;
+import recipes.chowdown.schema.Ingredient;
 import recipes.chowdown.schema.Recipe;
 import recipes.chowdown.schema.Unit;
 
@@ -23,6 +24,7 @@ public class ServiceMock implements ApiApi {
 
     final Faker faker;
     final List<Unit> units = new ArrayList<>();
+    final List<Ingredient> ingredients = new ArrayList<>();
     final List<Recipe> recipes = new ArrayList<>();
     boolean initRequest = true;
 
@@ -38,7 +40,7 @@ public class ServiceMock implements ApiApi {
             recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
             recipe.setImage(this.faker.internet().image());
 
-            recipes.add(recipe);
+            this.recipes.add(recipe);
         }
 
         for (int i = 0; i < 12; i++) {
@@ -53,7 +55,15 @@ public class ServiceMock implements ApiApi {
             unit.setSingular(measurement);
             unit.setPlural(measurement.concat("s"));
 
-            units.add(unit);
+            this.units.add(unit);
+        }
+
+        for (int i = 0; i < 120; i++) {
+            Ingredient ingredient = new Ingredient();
+            ingredient.setId(this.faker.internet().uuid());
+            ingredient.setIngredient(this.faker.food().ingredient());
+
+            this.ingredients.add(ingredient);
         }
     }
 
@@ -72,6 +82,23 @@ public class ServiceMock implements ApiApi {
         unit.setId(this.faker.internet().uuid());
         this.units.add(unit);
         return new ResponseEntity<>(unit, HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<List<Ingredient>> apiIngredientsGet() {
+        if (initRequest) {
+            initRequest = !initRequest;
+            return new ResponseEntity<List<Ingredient>>(Collections.emptyList(), HttpStatus.GONE);
+        }
+
+        return new ResponseEntity<List<Ingredient>>(this.ingredients, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Ingredient> apiIngredientsPost(@Valid Ingredient ingredient) {
+        ingredient.setId(this.faker.internet().uuid());
+        this.ingredients.add(ingredient);
+        return new ResponseEntity<>(ingredient, HttpStatus.CREATED);
     }
 
     @Override

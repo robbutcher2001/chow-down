@@ -11,6 +11,7 @@ import Form from '../components/form';
 import InputBox from '../components/input-box';
 
 interface StateProps {
+    error: string,
     failure: string,
     units: Unit[],
     ui: {
@@ -47,6 +48,7 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
             title='Units'
             loading={this.props.ui.pending.get}
             message={this.props.failure}
+            error={this.props.error}
         >
             <h3>New unit</h3>
             <Form
@@ -69,14 +71,17 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
             {this.props.failure &&
                 <div style={{ color: 'red' }}>{this.props.failure}</div>
             }
-            {this.props.units.map((unit, index) =>
-                <li key={index}>{unit.singular}, {unit.plural}</li>
-            )}
+            <ul>
+                {this.props.units.map((unit, index) =>
+                    <li key={index}>{unit.singular}, {unit.plural}</li>
+                )}
+            </ul>
         </Page>
     );
 };
 
-const mapStateToProps = ({ domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
+const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
+    error: app.error,
     failure: domain.unit.failure,
     units: domain.unit.units,
     ui: {

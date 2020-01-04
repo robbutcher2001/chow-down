@@ -1,5 +1,6 @@
 import { put } from 'redux-saga/effects';
 
+import { Ingredient } from '../types';
 import { getIngredientsSuccess, getIngredientsFailure } from '../actions';
 import { pendingGetIngredients, clearPendingGetIngredients } from '../../../ui/ingredients/actions';
 import { get } from '../../../api';
@@ -11,10 +12,10 @@ export default function* getSaga() {
     yield get(URL, successCallback, failCallback);
 };
 
-function* successCallback(json: object) {
+function* successCallback(ingredients: Ingredient[]) {
     console.log('Calling getIngredientSuccessCallback');
     yield put(clearPendingGetIngredients());
-    yield put(getIngredientsSuccess(json));
+    yield put(getIngredientsSuccess(ingredients));
 };
 
 function* failCallback(code: number, json: object) {

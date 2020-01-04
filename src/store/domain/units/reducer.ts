@@ -1,14 +1,10 @@
 import { Reducer } from 'redux';
 
-import { Unit, UnitsState, UnitActionTypes, GetUnitsApiResponse, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
+import { UnitsState, UnitActionTypes, GetUnitsApiResponse, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
 
 const initialState: UnitsState = {
     failure: null,
     units: []
-}
-
-interface UnitsSuccessResponse {
-    units: Unit[]
 }
 
 interface UnitsFailureResponse {

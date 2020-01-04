@@ -62,6 +62,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             title='Your recipes'
             loading={this.props.ui.pending.get}
             message={this.props.failure}
+            error={this.props.error}
         >
             <RecipeGrid>
                 {this.createRecipeCards(this.props.recipes)}
