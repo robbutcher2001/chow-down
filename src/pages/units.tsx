@@ -41,7 +41,11 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
     // requestUnits = () => this.props.getUnits();
     addUnit = (form: Unit) => this.props.postUnit(form);
 
-    componentDidMount = () => this.props.getUnits();
+    componentDidMount = () => {
+        if (!this.props.units.length) {
+            this.props.getUnits();
+        }
+    };
 
     render = () => (
         <Main

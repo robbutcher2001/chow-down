@@ -23,6 +23,12 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
                 ingredients: successResponse.ingredients
             };
 
+        case IngredientActionTypes.POST_INGREDIENTS_SUCCESS:
+            return {
+                failure: null,
+                ingredients: state.ingredients.concat((action as IngredientsSuccessApiResponse).ingredients)
+            };
+
         case IngredientActionTypes.GET_INGREDIENTS_FAILURE:
         case IngredientActionTypes.POST_INGREDIENTS_FAILURE:
             const failureResponse = action as IngredientsFailureApiResponse;

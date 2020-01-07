@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 
 import { Unit, PostUnitApiRequest } from '../types';
-import { getUnitsRequest, postUnitsSuccess, postUnitsFailure } from '../actions';
+import { postUnitsSuccess, postUnitsFailure } from '../actions';
 import { pendingPostUnits, clearPendingPostUnits } from '../../../ui/units/actions';
 import { post } from '../../../api';
 
@@ -16,7 +16,6 @@ function* successCallback(units: Unit[]) {
     console.log('Calling postUnitSuccessCallback');
     yield put(clearPendingPostUnits());
     yield put(postUnitsSuccess(units));
-    yield put(getUnitsRequest());
 };
 
 function* failCallback(code: number, json: object) {

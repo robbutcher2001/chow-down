@@ -24,6 +24,12 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
                 recipes: successResponse.recipes
             };
 
+        case RecipeActionTypes.POST_RECIPES_SUCCESS:
+            return {
+                failure: null,
+                recipes: state.recipes.concat((action as RecipesSuccessApiResponse).recipes)
+            };
+
         case RecipeActionTypes.GET_RECIPES_FAILURE:
         case RecipeActionTypes.POST_RECIPES_FAILURE:
             const failureResponse = action as RecipesFailureApiResponse;

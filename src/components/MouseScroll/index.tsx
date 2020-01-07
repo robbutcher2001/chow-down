@@ -8,7 +8,7 @@ interface OwnState {
 const MouseScroll = styled.div`
     width: 100px;
     height: 100px;
-    background-color: green;
+    background-color: cadetblue;
 `
 
 class MouseScrollComponent extends Component<{}, OwnState> {
@@ -32,6 +32,10 @@ class MouseScrollComponent extends Component<{}, OwnState> {
         this.setState({
             scrollLocation: clientX
         });
+
+        if (window.navigator.vibrate) {
+            window.navigator.vibrate(50);
+        }
     }
 
     render = () => {

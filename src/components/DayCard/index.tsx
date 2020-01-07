@@ -13,7 +13,11 @@ interface DayCardProps {
 
 const DayCard = styled.li`
     cursor: pointer;
+    padding: 0.5rem;
     margin-bottom: 2rem;
+    box-shadow: inset 0 0 0 2px rgba(144, 144, 144, 0.25);
+    border: 0;
+    border-radius: 0.825rem;
 
     > h3 {
         font-size: 1.2rem;
@@ -21,14 +25,12 @@ const DayCard = styled.li`
         padding: 1rem .5rem;
         border-top-left-radius: .2rem;
         border-top-right-radius: .2rem;
-        background-color: rgba(0,0,0,0.2);
     }
 
     > section {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        background-color: rgba(0,0,0,0.2);
 
         > figure {
             max-height: 350px;
@@ -59,8 +61,12 @@ const DayCard = styled.li`
             flex-grow: 2;
             padding: 2rem;
 
-            table > tr:nth-child(even) {
-                background-color: rgba(0,0,0,0.2);
+            table {
+                width: 100%;
+
+                tbody > tr:nth-child(even) {
+                    background-color: rgba(0,0,0,0.05);
+                }
             }
 
             section {

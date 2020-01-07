@@ -41,7 +41,11 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
     // requestIngredients = () => this.props.getIngredients();
     addIngredient = (form: Ingredient) => this.props.postIngredient(form);
 
-    componentDidMount = () => this.props.getIngredients();
+    componentDidMount = () => {
+        if (!this.props.ingredients.length) {
+            this.props.getIngredients();
+        }
+    };
 
     render = () => {
         console.log(this.props.error);

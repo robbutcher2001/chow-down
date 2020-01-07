@@ -23,6 +23,12 @@ export const unitsReducer: Reducer<UnitsState, GetUnitsApiResponse> = (state = i
                 units: successResponse.units
             };
 
+        case UnitActionTypes.POST_UNITS_SUCCESS:
+            return {
+                failure: null,
+                units: state.units.concat((action as UnitsSuccessApiResponse).units)
+            };
+
         case UnitActionTypes.GET_UNITS_FAILURE:
         case UnitActionTypes.POST_UNITS_FAILURE:
             const failureResponse = action as UnitsFailureApiResponse;

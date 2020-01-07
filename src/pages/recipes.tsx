@@ -42,7 +42,11 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     requestRecipes = () => this.props.getRecipes();
     addRecipe = (form: Recipe) => this.props.postRecipe(form);
 
-    componentDidMount = () => this.props.getRecipes();
+    componentDidMount = () => {
+        if (!this.props.recipes.length) {
+            this.props.getRecipes();
+        }
+    };
 
     render = () => (
         <Main

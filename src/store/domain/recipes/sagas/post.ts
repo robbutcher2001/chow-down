@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 
 import { Recipe, PostRecipeApiRequest } from '../types';
-import { getRecipesRequest, postRecipesSuccess, postRecipesFailure } from '../actions';
+import { postRecipesSuccess, postRecipesFailure } from '../actions';
 import { pendingPostRecipes, clearPendingPostRecipes } from '../../../ui/recipes/actions';
 import { post } from '../../../api';
 
@@ -16,7 +16,6 @@ function* successCallback(recipes: Recipe[]) {
     console.log('Calling postRecipeSuccessCallback');
     yield put(clearPendingPostRecipes());
     yield put(postRecipesSuccess(recipes));
-    yield put(getRecipesRequest());
 };
 
 function* failCallback(code: number, json: object) {
