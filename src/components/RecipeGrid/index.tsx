@@ -1,9 +1,11 @@
-import React, { ReactNode } from 'react';
-
+import React from 'react';
 import styled from 'styled-components';
 
-export interface RecipeGridProps {
-  children: ReactNode
+import { Recipe } from '../../store/domain/recipes/types';
+import RecipeCard from '../RecipeCard';
+
+interface RecipeGridProps {
+  recipes: Recipe[]
 };
 
 const RecipeGrid = styled.ul`
@@ -17,6 +19,16 @@ const RecipeGrid = styled.ul`
 
 export default (props: RecipeGridProps) => (
   <RecipeGrid>
-    {props.children}
+    {props.recipes.map((recipe, i) =>
+      <RecipeCard
+        key={i}
+        title={recipe.title}
+        description={recipe.description}
+        rating={recipe.rating}
+        imageUrl={recipe.image}
+        imageAlt={recipe.title}
+      />
+    )
+    }
   </RecipeGrid>
 );

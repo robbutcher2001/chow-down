@@ -8,7 +8,6 @@ import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/a
 
 import Page from '../components/page';
 import RecipeGrid from '../components/RecipeGrid';
-import RecipeCard from '../components/RecipeCard';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -45,18 +44,6 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
     componentDidMount = () => this.props.getRecipes();
 
-    createRecipeCards = (recipes: Recipe[]) =>
-        recipes.map((recipe, i) =>
-            <RecipeCard
-                key={i}
-                title={recipe.title}
-                description={recipe.description}
-                rating={recipe.rating}
-                imageUrl={recipe.image}
-                imageAlt={recipe.title}
-            />
-        );
-
     render = () => (
         <Page
             title='Your recipes'
@@ -64,9 +51,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             message={this.props.failure}
             error={this.props.error}
         >
-            <RecipeGrid>
-                {this.createRecipeCards(this.props.recipes)}
-            </RecipeGrid>
+            <RecipeGrid recipes={this.props.recipes} />
             <h4>List recipes</h4>
             <button onClick={this.requestRecipes}>
                 Press me to get all recipes
