@@ -1,9 +1,14 @@
 import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
+import Loading from './Loading';
+import MessageBox from './MessageBox';
 
-export interface MainProps {
-  title: string,
+interface MainProps {
+  title?: string,
+  loading?: boolean,
+  message?: string,
+  error?: string,
   children: ReactNode
 };
 
@@ -24,11 +29,17 @@ const Main = styled.main`
   }
 `
 
+// TODO: need to display error
 export default (props: MainProps) => (
   <Main>
     <div>
       <h2>{props.title}</h2>
-      {props.children}
+      {props.loading ?
+        <Loading /> :
+        props.message ?
+          <MessageBox message={props.message} /> :
+          props.children
+      }
     </div>
   </Main>
 );

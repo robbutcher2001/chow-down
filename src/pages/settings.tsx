@@ -1,17 +1,17 @@
 import React, { FunctionComponent } from 'react';
 
-import Page from '../components/page';
+import Main from '../components/main';
 import SettingsLink from '../components/SettingsLink';
 
 const SettingsPage: FunctionComponent = () => (
-    <Page title='Settings'>
+    <Main title='Settings'>
         <SettingsLink to='/units'>
             Edit units
         </SettingsLink>
         <SettingsLink to='/ingredients'>
             Edit ingredients
         </SettingsLink>
-    </Page>
+    </Main>
 );
 
 export default SettingsPage;

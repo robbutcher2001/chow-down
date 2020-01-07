@@ -6,7 +6,7 @@ import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
-import Page from '../components/page';
+import Main from '../components/main';
 import RecipeGrid from '../components/RecipeGrid';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
@@ -45,7 +45,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     componentDidMount = () => this.props.getRecipes();
 
     render = () => (
-        <Page
+        <Main
             title='Your recipes'
             loading={this.props.ui.pending.get}
             message={this.props.failure}
@@ -95,7 +95,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             {this.props.error &&
                 <div style={{ color: 'red' }}>{this.props.error}</div>
             }
-        </Page>
+        </Main>
     );
 };
 

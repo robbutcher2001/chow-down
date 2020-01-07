@@ -6,7 +6,7 @@ import { GlobalState } from '../store';
 import { Ingredient, GetIngredientsApiRequest, PostIngredientApiRequest } from '../store/domain/ingredients/types';
 import { getIngredientsRequest, postIngredientsRequest } from '../store/domain/ingredients/actions';
 
-import Page from '../components/page';
+import Main from '../components/main';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -46,7 +46,7 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
     render = () => {
         console.log(this.props.error);
         return (
-            <Page
+            <Main
                 title='Ingredients'
                 loading={this.props.ui.pending.get}
                 message={this.props.failure}
@@ -73,7 +73,7 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
                         <li key={index}>{ingredient.ingredient}</li>
                     )}
                 </ul>
-            </Page>
+            </Main>
         );
     }
 };

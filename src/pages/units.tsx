@@ -6,7 +6,7 @@ import { GlobalState } from '../store';
 import { Unit, GetUnitsApiRequest, PostUnitApiRequest } from '../store/domain/units/types';
 import { getUnitsRequest, postUnitsRequest } from '../store/domain/units/actions';
 
-import Page from '../components/page';
+import Main from '../components/main';
 import Form from '../components/form';
 import InputBox from '../components/input-box';
 
@@ -44,7 +44,7 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
     componentDidMount = () => this.props.getUnits();
 
     render = () => (
-        <Page
+        <Main
             title='Units'
             loading={this.props.ui.pending.get}
             message={this.props.failure}
@@ -76,7 +76,7 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
                     <li key={index}>{unit.singular}, {unit.plural}</li>
                 )}
             </ul>
-        </Page>
+        </Main>
     );
 };
 

@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from 'react';
 
+import Main from '../components/page';
 import MessageBox from '../components/MessageBox';
-import Page from '../components/page';
 
 const NotFoundPage: FunctionComponent = () => (
-    <Page title=''>
+    <Main>
         <MessageBox message='Page not found' />
-    </Page>
+    </Main>
 );
 
 export default NotFoundPage;

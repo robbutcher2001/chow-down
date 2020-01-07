@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 
-import Page from '../components/page';
+import Main from '../components/main';
 import DayCard from '../components/DayCard';
 import MouseScroll from '../components/MouseScroll';
 
@@ -20,7 +20,7 @@ const FlexContainer = styled.ul`
 `
 
 export default () => (
-  <Page title='Week Ahead'>
+  <Main title='Week Ahead'>
     <FlexContainer>
       <DayCard
         day='Today'
@@ -40,5 +40,5 @@ export default () => (
       />
       <MouseScroll />
     </FlexContainer>
-  </Page>
+  </Main>
 );
