@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { GlobalState } from '../store';
-import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
-import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
+import { GlobalState } from '../../store';
+import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../../store/domain/recipes/types';
+import { getRecipesRequest, postRecipesRequest } from '../../store/domain/recipes/actions';
 
-import Main from '../components/Main';
-import RecipeGrid from '../components/Recipes/RecipeGrid';
-import Form from '../components/Form';
-import InputBox from '../components/InputBox';
+import Main from '../../components/Main';
+import RecipeGrid from '../../components/Recipes/RecipeGrid';
+import Form from '../../components/Form';
+import InputBox from '../../components/InputBox';
 
 interface StateProps {
     error: string,

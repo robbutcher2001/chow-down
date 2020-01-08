@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import styled, { css } from 'styled-components';
 
-import Main from '../components/Main';
-import DayCard from '../components/DayCard';
-import MouseScroll from '../components/MouseScroll';
+import Main from '../../components/Main';
+import DayCard from '../../components/DayCard';
+import MouseScroll from '../../components/MouseScroll';
 
 const FlexContainer = styled.ul`
     display: flex;
