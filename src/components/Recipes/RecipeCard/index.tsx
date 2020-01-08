@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-export interface RecipeCardProps {
+interface RecipeCardProps {
   title: string,
   description: string,
   rating: number,

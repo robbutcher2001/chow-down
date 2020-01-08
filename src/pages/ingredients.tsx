@@ -7,6 +7,7 @@ import { Ingredient, GetIngredientsApiRequest, PostIngredientApiRequest } from '
 import { getIngredientsRequest, postIngredientsRequest } from '../store/domain/ingredients/actions';
 
 import Main from '../components/Main';
+import IngredientGrid from '../components/Ingredients/IngredientGrid';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
 
@@ -72,11 +73,7 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
                 {this.props.failure &&
                     <div style={{ color: 'red' }}>{this.props.failure}</div>
                 }
-                <ul>
-                    {this.props.ingredients.map((ingredient, index) =>
-                        <li key={index}>{ingredient.ingredient}</li>
-                    )}
-                </ul>
+                <IngredientGrid ingredients={this.props.ingredients} />
             </Main>
         );
     }
