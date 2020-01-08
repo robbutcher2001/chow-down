@@ -5,13 +5,12 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
-import recipes.chowdown.ApiResponse;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 
-public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Recipe>> {
+public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
   private static LambdaLogger logger;
 
@@ -21,7 +20,7 @@ public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Reci
     this.repository = new RecipeRepository();
   }
 
-  public ApiResponse<Recipe> handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
+  public Recipe handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
     try {
       logger = context.getLogger();
 
@@ -43,7 +42,7 @@ public class PutRecipeService implements RequestHandler<Recipe, ApiResponse<Reci
       logger.log("New recipe persisted with id [" + returnedId + "]");
       recipe.setId(returnedId);
 
-      return new ApiResponse<Recipe>("recipe", recipe);
+      return recipe;
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }
