@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { GlobalState } from '../../store';
-import { Unit, GetUnitsApiRequest, PostUnitApiRequest } from '../../store/domain/units/types';
-import { getUnitsRequest, postUnitsRequest } from '../../store/domain/units/actions';
+import { GlobalState } from '../store';
+import { Unit, GetUnitsApiRequest, PostUnitApiRequest } from '../store/domain/units/types';
+import { getUnitsRequest, postUnitsRequest } from '../store/domain/units/actions';
 
-import Main from '../../components/Main';
-import Form from '../../components/Form';
-import InputBox from '../../components/InputBox';
+import Main from '../components/Main';
+import Form from '../components/Form';
+import InputBox from '../components/InputBox';
 
 interface StateProps {
     error: string,

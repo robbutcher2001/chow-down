@@ -3,12 +3,12 @@ import { Route, Switch } from 'react-router-dom';
 
 import Page from './components/Page';
 
-import Home from './pages/temp/Home';
-import Recipes from './pages/temp/Recipes';
-import Units from './pages/temp/Units';
-import Ingredients from './pages/temp/Ingredients';
-import Settings from './pages/temp/Settings';
-import NotFound from './pages/temp/NotFound';
+import Home from './pages/Home';
+import Recipes from './pages/Recipes';
+import Units from './pages/Units';
+import Ingredients from './pages/Ingredients';
+import Settings from './pages/Settings';
+import NotFound from './pages/NotFound';
 
 const Routes: FunctionComponent = () => (
     <Page>
