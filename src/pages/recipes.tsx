@@ -6,10 +6,10 @@ import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
 
-import Main from '../components/main';
-import RecipeGrid from '../components/RecipeGrid';
-import Form from '../components/form';
-import InputBox from '../components/input-box';
+import Main from '../components/Main';
+import RecipeGrid from '../components/Recipes/RecipeGrid';
+import Form from '../components/Form';
+import InputBox from '../components/InputBox';
 
 interface StateProps {
     error: string,

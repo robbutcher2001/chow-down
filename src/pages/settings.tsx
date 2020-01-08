@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import Main from '../components/main';
+import Main from '../components/Main';
 import SettingsLink from '../components/SettingsLink';
 
 const SettingsPage: FunctionComponent = () => (

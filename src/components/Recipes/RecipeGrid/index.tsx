@@ -1,7 +1,8 @@
 import React from 'react';
+
 import styled from 'styled-components';
 
-import { Recipe } from '../../store/domain/recipes/types';
+import { Recipe } from '../../../store/domain/recipes/types';
 import RecipeCard from '../RecipeCard';
 
 interface RecipeGridProps {

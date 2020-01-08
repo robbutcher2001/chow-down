@@ -1,7 +1,8 @@
 import React, { Component, FormEvent, ChangeEvent, ReactElement } from 'react';
+
 import styled from 'styled-components';
 
-import { InputBoxProps } from './input-box';
+import { InputBoxProps } from '../InputBox';
 
 interface StateProps { };
 

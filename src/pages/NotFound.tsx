@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import Main from '../components/page';
+import Main from '../components/Page';
 import MessageBox from '../components/MessageBox';
 
 const NotFoundPage: FunctionComponent = () => (

@@ -2,9 +2,9 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
-import Footer from './footer';
-import Header from './Header';
-import Nav from './Nav';
+import Footer from '../Footer';
+import Header from '../Header';
+import Nav from '../Nav';
 
 interface PageProps {
   children: ReactNode

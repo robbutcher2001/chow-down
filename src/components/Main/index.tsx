@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
-import Loading from './Loading';
-import MessageBox from './MessageBox';
+
+import Loading from '../Loading';
+import MessageBox from '../MessageBox';
 
 interface MainProps {
   title?: string,

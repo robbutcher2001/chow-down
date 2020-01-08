@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Page from './components/page';
+import Page from './components/Page';
 
-import Home from './pages/home';
-import Recipes from './pages/recipes';
-import Units from './pages/units';
-import Ingredients from './pages/ingredients';
-import Settings from './pages/settings';
-import NotFound from './pages/not_found';
+import Home from './pages/Home';
+import Recipes from './pages/Recipes';
+import Units from './pages/Units';
+import Ingredients from './pages/Ingredients';
+import Settings from './pages/Settings';
+import NotFound from './pages/NotFound';
 
 const Routes: FunctionComponent = () => (
     <Page>
