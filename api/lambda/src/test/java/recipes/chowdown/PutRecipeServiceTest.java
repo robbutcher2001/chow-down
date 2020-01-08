@@ -61,8 +61,8 @@ public class PutRecipeServiceTest {
         when(mockField.getStringValue()).thenReturn("fake_id");
         when(this.context.getLogger()).thenReturn(this.logger);
 
-        ApiResponse<Recipe> returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
+        Recipe returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
 
-        assertEquals("fake_id", returnedRecipe.getData().get("recipe").getId());
+        assertEquals("fake_id", returnedRecipe.getId());
     }
 }
