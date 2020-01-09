@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
@@ -21,28 +21,32 @@ const IngredientGrid = styled.ul`
 
 export default (props: IngredientGridProps) => (
   <IngredientGrid>
-    {props.ingredients.map((ingredient, i) =>
-      <IngredientCard
-        key={i}
-        ingredient={ingredient.ingredient}
-      />
-    )
-    }
-    <IngredientMarker mark='B' />
-    {props.ingredients.map((ingredient, i) =>
-      <IngredientCard
-        key={i}
-        ingredient={ingredient.ingredient}
-      />
-    )
-    }
-    <IngredientMarker mark='C' />
-    {props.ingredients.map((ingredient, i) =>
-      <IngredientCard
-        key={i}
-        ingredient={ingredient.ingredient}
-      />
-    )
-    }
+    {ingredientsWithMarkers(props.ingredients)}
   </IngredientGrid>
 );
+
+const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
+  let previousLetter: string;
+  const nodes: ReactNode[] = [];
+
+  return ingredients.reduce((arr, ingredient, i) => {
+    if (ingredient.ingredient) {
+      const currentLetter: string = ingredient.ingredient.charAt(0).toLocaleLowerCase();
+
+      if (currentLetter !== previousLetter) {
+        previousLetter = currentLetter;
+        arr.push(<IngredientMarker
+          key={currentLetter}
+          mark={currentLetter.toLocaleUpperCase()}
+        />);
+      }
+
+      arr.push(<IngredientCard
+        key={i}
+        ingredient={ingredient.ingredient}
+      />);
+    }
+
+    return arr;
+  }, nodes);
+};

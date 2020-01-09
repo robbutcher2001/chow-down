@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { IngredientsState, IngredientActionTypes, GetIngredientsApiResponse, IngredientsSuccessApiResponse, IngredientsFailureApiResponse } from './types';
+import { Ingredient, IngredientsState, IngredientActionTypes, GetIngredientsApiResponse, IngredientsSuccessApiResponse, IngredientsFailureApiResponse } from './types';
 
 const initialState: IngredientsState = {
     failure: null,
@@ -18,6 +18,8 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
         case IngredientActionTypes.GET_INGREDIENTS_SUCCESS:
             const successResponse = action as IngredientsSuccessApiResponse;
             // const successJson = successResponse.json as IngredientsSuccessResponse;
+            ingredientsSort(successResponse.ingredients);
+
             return {
                 failure: null,
                 ingredients: successResponse.ingredients
@@ -51,3 +53,6 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
             return state;
     }
 };
+
+const ingredientsSort = (ingredients: Ingredient[]) =>
+    ingredients.sort((a, b) => a.ingredient.localeCompare(b.ingredient));
