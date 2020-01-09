@@ -11,7 +11,7 @@ const IngredientMarker = styled.li`
   border-left-style: solid;
   border-left-width: 0.5rem;
   border-left-color: #ca4a6c;
-  margin: 0.5rem;
+  margin: 3rem 0.5rem 0.5rem 0.5rem;
   padding: 1rem;
   flex: 0 1 100%;
 `

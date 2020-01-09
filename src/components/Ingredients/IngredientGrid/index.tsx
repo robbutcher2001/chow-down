@@ -19,12 +19,6 @@ const IngredientGrid = styled.ul`
   padding: 0;
 `
 
-export default (props: IngredientGridProps) => (
-  <IngredientGrid>
-    {ingredientsWithMarkers(props.ingredients)}
-  </IngredientGrid>
-);
-
 const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
   let previousLetter: string;
   const nodes: ReactNode[] = [];
@@ -50,3 +44,9 @@ const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
     return arr;
   }, nodes);
 };
+
+export default (props: IngredientGridProps) => (
+  <IngredientGrid>
+    {ingredientsWithMarkers(props.ingredients)}
+  </IngredientGrid>
+);

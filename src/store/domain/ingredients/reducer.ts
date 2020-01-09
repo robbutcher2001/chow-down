@@ -15,20 +15,25 @@ interface IngredientsFailureResponse {
 export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResponse> = (state = initialState, action: GetIngredientsApiResponse) => {
     switch (action.type) {
 
+        // TODO: split into a GET reducer and a POST reducer
         case IngredientActionTypes.GET_INGREDIENTS_SUCCESS:
-            const successResponse = action as IngredientsSuccessApiResponse;
+            const successResponseGet = action as IngredientsSuccessApiResponse;
             // const successJson = successResponse.json as IngredientsSuccessResponse;
-            ingredientsSort(successResponse.ingredients);
+            ingredientsSort(successResponseGet.ingredients);
 
             return {
                 failure: null,
-                ingredients: successResponse.ingredients
+                ingredients: successResponseGet.ingredients
             };
 
         case IngredientActionTypes.POST_INGREDIENTS_SUCCESS:
+            const successResponsePost = action as IngredientsSuccessApiResponse;
+            const ingredients = state.ingredients.concat(successResponsePost.ingredients);
+            ingredientsSort(ingredients);
+
             return {
                 failure: null,
-                ingredients: state.ingredients.concat((action as IngredientsSuccessApiResponse).ingredients)
+                ingredients
             };
 
         case IngredientActionTypes.GET_INGREDIENTS_FAILURE:
