@@ -17,6 +17,10 @@ const IngredientGrid = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
+
+  li:first-child {
+    margin-top: 0.5rem;
+  }
 `
 
 const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {

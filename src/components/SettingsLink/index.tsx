@@ -32,7 +32,6 @@ const Navigation = styled.nav`
     border-width: 0 2px 2px 0;
     display: inline-block;
     padding: 6px;
-    // margin-right: 1rem;
     transform: rotate(-45deg);
   }
 `

@@ -34,7 +34,7 @@ interface OwnState { };
 
 type CombinedProps = StateProps & DispatchProps & OwnProps;
 
-class IngredientsPage extends Component<CombinedProps, OwnState> {
+class NewIngredientPage extends Component<CombinedProps, OwnState> {
     constructor(props: CombinedProps) {
         super(props);
     }
@@ -42,11 +42,7 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
     // requestIngredients = () => this.props.getIngredients();
     addIngredient = (form: Ingredient) => this.props.postIngredient(form);
 
-    componentDidMount = () => {
-        if (!this.props.ingredients.length) {
-            this.props.getIngredients();
-        }
-    };
+    componentDidMount = () => this.props.getIngredients();
 
     render = () => {
         console.log(this.props.error);
@@ -57,7 +53,6 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
                 message={this.props.failure}
                 error={this.props.error}
             >
-                <h3>New ingredient</h3>
                 <Form
                     dispatch={this.addIngredient}
                     submitText='Add ingredient'>
@@ -73,6 +68,7 @@ class IngredientsPage extends Component<CombinedProps, OwnState> {
                 {this.props.failure &&
                     <div style={{ color: 'red' }}>{this.props.failure}</div>
                 }
+                <h3>Existing ingredients</h3>
                 <IngredientGrid ingredients={this.props.ingredients} />
             </Main>
         );
@@ -98,4 +94,4 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchPro
 });
 
 export default connect<StateProps, DispatchProps, OwnProps, GlobalState>
-    (mapStateToProps, mapDispatchToProps)(IngredientsPage);
+    (mapStateToProps, mapDispatchToProps)(NewIngredientPage);

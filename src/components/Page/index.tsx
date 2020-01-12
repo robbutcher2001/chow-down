@@ -14,6 +14,7 @@ const Page = styled.div`
   display: grid;
   align-items: flex-start;
   grid-template-rows: auto auto 1fr auto;
+  min-height: 100vh;
 `
 
 export default (props: PageProps) => (

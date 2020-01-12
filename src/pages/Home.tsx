@@ -2,9 +2,14 @@ import * as React from 'react';
 
 import styled, { css } from 'styled-components';
 
-import Main from '../components/Main';
+import Main, { CallToAction } from '../components/Main';
 import DayCard from '../components/DayCard';
 import MouseScroll from '../components/MouseScroll';
+
+const cta: CallToAction = {
+  text: 'Get week\'s ingredients',
+  link: '/ingredients/week/this'
+};
 
 const FlexContainer = styled.ul`
     display: flex;
@@ -21,7 +26,10 @@ const FlexContainer = styled.ul`
 `
 
 export default () => (
-  <Main title='Week Ahead'>
+  <Main
+    title='Week Ahead'
+    cta={cta}
+  >
     <FlexContainer>
       <DayCard
         day='Today'

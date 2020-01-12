@@ -115,7 +115,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
           </button>
           <button type='reset' form='form' value='Reset'>
             Reset
-        </button>
+          </button>
         </div>
       </Form>
     );

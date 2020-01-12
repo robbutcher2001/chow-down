@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
-import { Recipe, GetRecipesApiRequest, PostRecipeApiRequest } from '../store/domain/recipes/types';
-import { getRecipesRequest, postRecipesRequest } from '../store/domain/recipes/actions';
+import { Recipe, GetRecipesApiRequest } from '../store/domain/recipes/types';
+import { getRecipesRequest } from '../store/domain/recipes/actions';
 
-import Main from '../components/Main';
+import Main, { CallToAction } from '../components/Main';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
-import Form from '../components/Form';
-import InputBox from '../components/InputBox';
+
+const cta: CallToAction = {
+    text: 'New recipe',
+    link: '/recipes/new'
+};
 
 interface StateProps {
     error: string,
@@ -17,15 +20,13 @@ interface StateProps {
     recipes: Recipe[],
     ui: {
         pending: {
-            get: boolean,
-            post: boolean
+            get: boolean
         }
     }
 };
 
 interface DispatchProps {
-    getRecipes: () => GetRecipesApiRequest,
-    postRecipe: (form: Recipe) => PostRecipeApiRequest
+    getRecipes: () => GetRecipesApiRequest
 };
 
 interface OwnProps { };
@@ -39,60 +40,17 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
         super(props);
     }
 
-    requestRecipes = () => this.props.getRecipes();
-    addRecipe = (form: Recipe) => this.props.postRecipe(form);
-
-    componentDidMount = () => {
-        if (!this.props.recipes.length) {
-            this.props.getRecipes();
-        }
-    };
+    componentDidMount = () => this.props.getRecipes();
 
     render = () => (
         <Main
             title='Your recipes'
             loading={this.props.ui.pending.get}
+            cta={cta}
             message={this.props.failure}
             error={this.props.error}
         >
             <RecipeGrid recipes={this.props.recipes} />
-            <h4>List recipes</h4>
-            <button onClick={this.requestRecipes}>
-                Press me to get all recipes
-                </button>
-            <h2>Add a new recipe</h2>
-            <Form
-                dispatch={this.addRecipe}
-                submitText='Add recipe'>
-                <InputBox
-                    name='title'
-                    type='text'
-                    placeholderText='Title'
-                />
-                <InputBox
-                    name='description'
-                    type='text'
-                    placeholderText='Description'
-                />
-                <InputBox
-                    name='rating'
-                    type='number'
-                    placeholderText='Rating'
-                />
-                <InputBox
-                    name='url'
-                    type='text'
-                    placeholderText='Url'
-                />
-                <InputBox
-                    name='image'
-                    type='text'
-                    placeholderText='Upload image'
-                />
-            </Form>
-            {this.props.ui.pending.post &&
-                <div>Adding your new recipe..</div>
-            }
             {this.props.failure &&
                 <div style={{ color: 'orange' }}>{this.props.failure}</div>
             }
@@ -109,15 +67,13 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): 
     recipes: domain.recipe.recipes,
     ui: {
         pending: {
-            get: ui.recipe.getPending,
-            post: ui.recipe.postPending
+            get: ui.recipe.getPending
         }
     }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
-    getRecipes: () => dispatch(getRecipesRequest()),
-    postRecipe: (form: Recipe) => dispatch(postRecipesRequest(form))
+    getRecipes: () => dispatch(getRecipesRequest())
 });
 
 export default connect<StateProps, DispatchProps, OwnProps, GlobalState>

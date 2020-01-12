@@ -19,7 +19,7 @@ const Footer = styled.footer`
 
 export default () => (
   <Footer>
-    <p>&copy; Rob Butcher 2019.</p>
+    <p>&copy; Rob Butcher 2020.</p>
     <p>Images: <a href="https://unsplash.com/" target="_blank">Unsplash</a> and various recipe websites.</p>
   </Footer>
 );

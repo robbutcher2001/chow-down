@@ -34,7 +34,7 @@ interface OwnState { };
 
 type CombinedProps = StateProps & DispatchProps & OwnProps;
 
-class UnitsPage extends Component<CombinedProps, OwnState> {
+class NewUnitPage extends Component<CombinedProps, OwnState> {
     constructor(props: CombinedProps) {
         super(props);
     }
@@ -42,20 +42,15 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
     // requestUnits = () => this.props.getUnits();
     addUnit = (form: Unit) => this.props.postUnit(form);
 
-    componentDidMount = () => {
-        if (!this.props.units.length) {
-            this.props.getUnits();
-        }
-    };
+    componentDidMount = () => this.props.getUnits();
 
     render = () => (
         <Main
-            title='Units'
+            title='New unit'
             loading={this.props.ui.pending.get}
             message={this.props.failure}
             error={this.props.error}
         >
-            <h3>New unit</h3>
             <Form
                 dispatch={this.addUnit}
                 submitText='Add unit'>
@@ -76,6 +71,7 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
             {this.props.failure &&
                 <div style={{ color: 'red' }}>{this.props.failure}</div>
             }
+            <h3>Existing units</h3>
             <UnitGrid units={this.props.units} />
         </Main>
     );
@@ -99,4 +95,4 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchPro
 });
 
 export default connect<StateProps, DispatchProps, OwnProps, GlobalState>
-    (mapStateToProps, mapDispatchToProps)(UnitsPage);
+    (mapStateToProps, mapDispatchToProps)(NewUnitPage);

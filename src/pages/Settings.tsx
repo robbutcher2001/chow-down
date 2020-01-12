@@ -5,11 +5,14 @@ import SettingsLink from '../components/SettingsLink';
 
 const SettingsPage: FunctionComponent = () => (
     <Main title='Settings'>
-        <SettingsLink to='/units'>
-            Edit units
+        <SettingsLink to='/units/new'>
+            New unit
         </SettingsLink>
-        <SettingsLink to='/ingredients'>
-            Edit ingredients
+        <SettingsLink to='/ingredients/new'>
+            New ingredient
+        </SettingsLink>
+        <SettingsLink to='/recipes/new'>
+            New recipe
         </SettingsLink>
     </Main>
 );

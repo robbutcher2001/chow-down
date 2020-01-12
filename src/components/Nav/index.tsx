@@ -22,25 +22,24 @@ const Nav = styled.nav`
     border-bottom: .5rem solid #222;
     color: #fff;
     text-decoration: none;
-    cursor: pointer;
-  }
 
-  > a:hover, > a.active {
-    border-bottom-color: #4acaa8;
-  }
-
-  > a:focus {
-    outline: none;
-  }
-
-  > a:last-child {
-    margin-left: auto;
-    font-size: 0;
-    padding: 0.8rem 0.8rem 0.3rem 0.8rem;
-
-    img {
-      height: 1.4rem;
-      width: 1.4rem;
+    &:hover, &.active {
+      border-bottom-color: #4acaa8;
+    }
+  
+    &:focus {
+      outline: none;
+    }
+  
+    &:last-child {
+      margin-left: auto;
+      font-size: 0;
+      padding: 0.8rem 0.8rem 0.3rem 0.8rem;
+  
+      img {
+        height: 1.4rem;
+        width: 1.4rem;
+      }
     }
   }
 `
@@ -63,12 +62,12 @@ export default () => {
         className={isActive(routes.thisWeek)}
         to={routes.thisWeek}>
         This Week
-    </Link>
+      </Link>
       <Link
         className={isActive(routes.recipes)}
         to={routes.recipes}>
         Recipes
-    </Link>
+      </Link>
       <Link
         className={isActive(routes.settings)}
         to={routes.settings}>
