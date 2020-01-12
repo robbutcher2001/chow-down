@@ -44,10 +44,8 @@ public class PutIngredientService implements RequestHandler<Ingredient, Ingredie
       logger.log("New ingredient persisted with id [" + returnedId + "]");
       ingredient.setId(returnedId);
 
-      long start = System.currentTimeMillis();
-      final String response = CacheInvalidator.invalidate(Endpoint.INGREDIENT);
-      long end = System.currentTimeMillis();
-      logger.log("Ingredient cache purge status [" + response + "], time taken: " + (end - start));
+      String response = CacheInvalidator.invalidate(Endpoint.INGREDIENT);
+      logger.log("Ingredient cache purge status [" + response + "]");
 
       return ingredient;
     } catch (Exception ex) {
