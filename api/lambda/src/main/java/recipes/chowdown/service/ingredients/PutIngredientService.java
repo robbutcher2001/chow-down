@@ -9,6 +9,7 @@ import recipes.chowdown.domain.Ingredient;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.IngredientRepository;
+import recipes.chowdown.service.cache.CacheInvalidator;
 
 public class PutIngredientService implements RequestHandler<Ingredient, Ingredient> {
 
@@ -41,6 +42,9 @@ public class PutIngredientService implements RequestHandler<Ingredient, Ingredie
 
       logger.log("New ingredient persisted with id [" + returnedId + "]");
       ingredient.setId(returnedId);
+
+      final String response = CacheInvalidator.invalidate("/api/ingredients");
+      logger.log("Ingredient cache purge status [" + response + "]");
 
       return ingredient;
     } catch (Exception ex) {
