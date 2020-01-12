@@ -7,6 +7,7 @@ import { Unit, GetUnitsApiRequest, PostUnitApiRequest } from '../store/domain/un
 import { getUnitsRequest, postUnitsRequest } from '../store/domain/units/actions';
 
 import Main from '../components/Main';
+import UnitGrid from '../components/Units/UnitGrid';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
 
@@ -75,11 +76,7 @@ class UnitsPage extends Component<CombinedProps, OwnState> {
             {this.props.failure &&
                 <div style={{ color: 'red' }}>{this.props.failure}</div>
             }
-            <ul>
-                {this.props.units.map((unit, index) =>
-                    <li key={index}>{unit.singular}, {unit.plural}</li>
-                )}
-            </ul>
+            <UnitGrid units={this.props.units} />
         </Main>
     );
 };

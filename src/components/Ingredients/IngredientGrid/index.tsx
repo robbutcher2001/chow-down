@@ -21,7 +21,6 @@ const IngredientGrid = styled.ul`
 
 const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
   let previousLetter: string;
-  const nodes: ReactNode[] = [];
 
   return ingredients.reduce((arr, ingredient, i) => {
     if (ingredient.ingredient) {
@@ -37,12 +36,12 @@ const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
 
       arr.push(<IngredientCard
         key={i}
-        ingredient={ingredient.ingredient}
+        ingredient={ingredient}
       />);
     }
 
     return arr;
-  }, nodes);
+  }, [] as ReactNode[]);
 };
 
 export default (props: IngredientGridProps) => (

@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { UnitsState, UnitActionTypes, GetUnitsApiResponse, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
+import { Unit, UnitsState, UnitActionTypes, GetUnitsApiResponse, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
 
 const initialState: UnitsState = {
     failure: null,
@@ -18,6 +18,8 @@ export const unitsReducer: Reducer<UnitsState, GetUnitsApiResponse> = (state = i
         case UnitActionTypes.GET_UNITS_SUCCESS:
             const successResponse = action as UnitsSuccessApiResponse;
             // const successJson = successResponse.json as UnitsSuccessResponse;
+            unitsSort(successResponse.units);
+
             return {
                 failure: null,
                 units: successResponse.units
@@ -51,3 +53,6 @@ export const unitsReducer: Reducer<UnitsState, GetUnitsApiResponse> = (state = i
             return state;
     }
 };
+
+const unitsSort = (units: Unit[]) =>
+    units.sort((a, b) => a.singular.localeCompare(b.singular));

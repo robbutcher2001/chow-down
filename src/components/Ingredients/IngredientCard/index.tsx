@@ -2,8 +2,10 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { Ingredient } from '../../../store/domain/ingredients/types';
+
 interface IngredientCardProps {
-  ingredient: string
+  ingredient: Ingredient
 };
 
 const IngredientCard = styled.li`
@@ -17,6 +19,6 @@ const IngredientCard = styled.li`
 
 export default (props: IngredientCardProps) => (
   <IngredientCard>
-    {props.ingredient}
+    {props.ingredient.ingredient}
   </IngredientCard>
 );
