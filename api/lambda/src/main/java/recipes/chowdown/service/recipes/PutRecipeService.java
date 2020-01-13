@@ -3,6 +3,7 @@ package recipes.chowdown.service.recipes;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
 import recipes.chowdown.domain.Recipe;
@@ -48,6 +49,8 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       logger.log("Recipe cache purge status [" + response + "]");
 
       return recipe;
+    } catch (BadRequestException bre) {
+      throw new ServerException("unable to complete request, issue communicating with database");
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }
