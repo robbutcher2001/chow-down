@@ -84,7 +84,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   GetUnitsLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -111,7 +111,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   PutUnitLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -139,7 +139,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   GetIngredientsLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -166,7 +166,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   PutIngredientLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -194,7 +194,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   GetRecipesLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -221,7 +221,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   PutRecipeLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -276,6 +276,7 @@ Resources:
           CustomOriginConfig:
             HTTPSPort: '443'
             OriginProtocolPolicy: https-only
+            OriginReadTimeout: 60
             OriginSSLProtocols:
             - 'TLSv1'
             - 'TLSv1.1'
@@ -309,9 +310,8 @@ Resources:
           TargetOriginId:
             Fn::Join: [ '', [ 'origin-', !Ref ChowDownApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
           PathPattern: '/api/*'
-          DefaultTTL: 86400
-          MaxTTL: 604800
-          MinTTL: 86400
+          DefaultTTL: 604800
+          MinTTL: 604800
           ForwardedValues:
             QueryString: true
             Cookies:
