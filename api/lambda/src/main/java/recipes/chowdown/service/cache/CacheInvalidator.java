@@ -10,14 +10,14 @@ import com.amazonaws.services.cloudfront.model.InvalidationBatch;
 import com.amazonaws.services.cloudfront.model.Paths;
 
 public class CacheInvalidator {
-    static final String distributionId = System.getenv("DISTRIBUTION_ID");
+    static final String DISTRIBUTION_ID = System.getenv("DISTRIBUTION_ID");
 
-    public static String invalidate(final Endpoint endpoint) {
+    public String invalidate(final Endpoint endpoint) {
         AmazonCloudFront cloudFront = null;
 
         try {
             cloudFront = AmazonCloudFrontClientBuilder.defaultClient();
-            CreateInvalidationRequest invalidationRequest = new CreateInvalidationRequest(distributionId,
+            CreateInvalidationRequest invalidationRequest = new CreateInvalidationRequest(DISTRIBUTION_ID,
                     createInvalidationBatch(endpoint.getPath()));
             CreateInvalidationResult result = cloudFront.createInvalidation(invalidationRequest);
 
@@ -29,7 +29,7 @@ public class CacheInvalidator {
         }
     }
 
-    private static InvalidationBatch createInvalidationBatch(final String path) {
+    private InvalidationBatch createInvalidationBatch(final String path) {
         Paths paths = new Paths().withQuantity(1).withItems(path);
 
         return new InvalidationBatch(paths, UUID.randomUUID().toString());

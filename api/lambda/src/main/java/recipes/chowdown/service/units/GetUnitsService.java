@@ -16,7 +16,8 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.UnitRepository;
 
 public class GetUnitsService implements RequestHandler<Object, List<Unit>> {
-  private static LambdaLogger logger;
+
+  private static LambdaLogger LOGGER;
 
   private UnitRepository repository;
 
@@ -25,7 +26,7 @@ public class GetUnitsService implements RequestHandler<Object, List<Unit>> {
   }
 
   public List<Unit> handleRequest(final Object input, final Context context) {
-    logger = context.getLogger();
+    LOGGER = context.getLogger();
 
     final List<Unit> units = new ArrayList<>();
 
@@ -33,7 +34,7 @@ public class GetUnitsService implements RequestHandler<Object, List<Unit>> {
       ExecuteStatementResult result = this.repository.getUnits();
 
       if (result.getRecords().size() < 1) {
-        logger.log("No units found");
+        LOGGER.log("No units found");
         throw new ResourcesNotFoundException("no units found");
       }
 

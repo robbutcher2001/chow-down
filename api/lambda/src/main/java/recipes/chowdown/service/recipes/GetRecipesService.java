@@ -16,7 +16,8 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 
 public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
-  private static LambdaLogger logger;
+
+  private static LambdaLogger LOGGER;
 
   private RecipeRepository repository;
 
@@ -25,7 +26,7 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
   }
 
   public List<Recipe> handleRequest(final Object input, final Context context) {
-    logger = context.getLogger();
+    LOGGER = context.getLogger();
 
     final List<Recipe> recipes = new ArrayList<>();
 
@@ -33,7 +34,7 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
       ExecuteStatementResult result = this.repository.getRecipes();
 
       if (result.getRecords().size() < 1) {
-        logger.log("No recipes found");
+        LOGGER.log("No recipes found");
         throw new ResourcesNotFoundException("no recipes found");
       }
 

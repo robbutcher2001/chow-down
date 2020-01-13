@@ -15,17 +15,20 @@ import recipes.chowdown.service.cache.Endpoint;
 
 public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
-  private static LambdaLogger logger;
+  private static LambdaLogger LOGGER;
 
   private RecipeRepository repository;
 
+  private CacheInvalidator cacheInvalidator;
+
   public PutRecipeService() {
     this.repository = new RecipeRepository();
+    this.cacheInvalidator = new CacheInvalidator();
   }
 
   public Recipe handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
     try {
-      logger = context.getLogger();
+      LOGGER = context.getLogger();
 
       recipe.setId(null);
       ExecuteStatementResult result = this.repository.putRecipe(recipe);
@@ -42,11 +45,11 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
         throw new ResourceNotPersistedException("no ID returned from database");
       }
 
-      logger.log("New recipe persisted with id [" + returnedId + "]");
+      LOGGER.log("New recipe persisted with id [" + returnedId + "]");
       recipe.setId(returnedId);
 
-      String response = CacheInvalidator.invalidate(Endpoint.RECIPE);
-      logger.log("Recipe cache purge status [" + response + "]");
+      String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
+      LOGGER.log("Recipe cache purge status [" + response + "]");
 
       return recipe;
     } catch (BadRequestException bre) {

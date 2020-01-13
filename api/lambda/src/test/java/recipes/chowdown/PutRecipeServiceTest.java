@@ -24,6 +24,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.repository.RecipeRepository;
+import recipes.chowdown.service.cache.CacheInvalidator;
+import recipes.chowdown.service.cache.Endpoint;
 import recipes.chowdown.service.recipes.PutRecipeService;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,13 +33,16 @@ import recipes.chowdown.service.recipes.PutRecipeService;
 public class PutRecipeServiceTest {
 
     @Mock
-    private RecipeRepository repository;
-
-    @Mock
     private Context context;
 
     @Mock
     private LambdaLogger logger;
+
+    @Mock
+    private RecipeRepository repository;
+
+    @Mock
+    private CacheInvalidator cacheInvalidator;
 
     @InjectMocks
     private PutRecipeService service;
@@ -49,7 +54,7 @@ public class PutRecipeServiceTest {
         this.service = new PutRecipeService();
     }
 
-    // @Test
+    @Test
     void handleRequest_shouldReturnPopulatedRecipe_whenNewRecipePut() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
@@ -60,6 +65,7 @@ public class PutRecipeServiceTest {
         when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake_id");
+        when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
 
         Recipe returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
 
