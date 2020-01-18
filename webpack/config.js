@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const htmlWebpack = require('html-webpack-plugin');
+const webpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
   entry: [
@@ -71,6 +72,22 @@ module.exports = {
     }),
     new webpack.EnvironmentPlugin({
       API_BASE: process.env.API_BASE ? process.env.API_BASE : ''
+    }),
+    new webpackPwaManifest({
+      name: 'Chow Down',
+      short_name: 'Chow Down',
+      description: 'Chow down on a weekly plan of your evening meals',
+      background_color: '#ffffff',
+      icons: [
+        {
+          src: path.resolve('src/splash.png'),
+          sizes: [96, 128, 192, 256, 384, 512]
+        },
+        {
+          src: path.resolve('src/splash.png'),
+          size: '1024x1024'
+        }
+      ]
     })
   ],
   devServer: {
