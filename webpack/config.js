@@ -83,7 +83,7 @@ module.exports = {
       ios: {
         'apple-mobile-web-app-title': 'Chow Down',
         'apple-mobile-web-app-capable': 'yes',
-        'apple-mobile-web-app-status-bar-style': '#222'
+        'apple-mobile-web-app-status-bar-style': 'black-translucent'
       },
       icons: [
         {
