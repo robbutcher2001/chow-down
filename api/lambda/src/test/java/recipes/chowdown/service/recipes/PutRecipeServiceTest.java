@@ -1,8 +1,10 @@
-package recipes.chowdown;
+package recipes.chowdown.service.recipes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,6 +25,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import recipes.chowdown.domain.Recipe;
+import recipes.chowdown.exceptions.ResourceNotPersistedException;
+import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
@@ -70,5 +74,31 @@ public class PutRecipeServiceTest {
         Recipe returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
 
         assertEquals("fake_id", returnedRecipe.getId());
+    }
+
+    // Fix code so this test eventually passes - this test is correct
+    @Test
+    void handleRequest_shouldThrowException_whenMultipleRecipePut() throws Exception {
+        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+        Field mockField = Mockito.mock(Field.class);
+        List<Field> columns = Collections.singletonList(mockField);
+        List<List<Field>> rows = new ArrayList<>();
+
+        // Fake two rows returned
+        rows.add(columns);
+        rows.add(columns);
+
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+        when(mockResult.getRecords()).thenReturn(rows);
+
+        assertThrows(ResourceNotPersistedException.class, () -> this.service.handleRequest(new Recipe(), this.context));
+    }
+
+    @Test
+    void handleRequest_shouldThrowException_whenNullRecipePut() throws Exception {
+        when(this.context.getLogger()).thenReturn(this.logger);
+
+        assertThrows(ResourceNotPersistedException.class, () -> this.service.handleRequest(null, this.context));
     }
 }
