@@ -78,14 +78,19 @@ module.exports = {
       short_name: 'Chow Down',
       description: 'Chow down on a weekly plan of your evening meals',
       background_color: '#ffffff',
+      inject: true,
+      fingerprints: true,
+      ios: true,
       icons: [
         {
           src: path.resolve('src/splash.png'),
-          sizes: [96, 128, 192, 256, 384, 512]
+          sizes: [96, 128, 192, 256, 384, 512],
+          ios: true
         },
         {
           src: path.resolve('src/splash.png'),
-          size: '1024x1024'
+          size: '1024x1024',
+          ios: 'startup'
         }
       ]
     })
