@@ -77,7 +77,7 @@ module.exports = {
       name: 'Chow Down',
       short_name: 'Chow Down',
       description: 'Chow down on a weekly plan of your evening meals',
-      background_color: '#ffffff',
+      background_color: '#222',
       inject: true,
       fingerprints: true,
       ios: true,
