@@ -80,11 +80,7 @@ module.exports = {
       background_color: '#222',
       inject: true,
       fingerprints: true,
-      ios: {
-        'apple-mobile-web-app-title': 'Chow Down',
-        'apple-mobile-web-app-capable': 'yes',
-        'apple-mobile-web-app-status-bar-style': 'black-translucent'
-      },
+      ios: true,
       icons: [
         {
           src: path.resolve('src/splash.png'),
