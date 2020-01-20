@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const htmlWebpack = require('html-webpack-plugin');
 const webpackPwaManifest = require('webpack-pwa-manifest');
+const offlinePlugin = require('offline-plugin');
 
 module.exports = {
   entry: [
@@ -77,7 +78,7 @@ module.exports = {
       name: 'Chow Down',
       short_name: 'Chow Down',
       description: 'Chow down on a weekly plan of your evening meals',
-      background_color: '#222',
+      background_color: '#000',
       inject: true,
       fingerprints: true,
       ios: true,
@@ -89,9 +90,15 @@ module.exports = {
         },
         {
           src: path.resolve('src/splash.png'),
-          size: '1024x1024',
+          size: '1242x2688',
           ios: 'startup'
         }
+      ]
+    }),
+    new offlinePlugin({
+      responseStrategy: 'network-first',
+      externals: [
+        '/api/recipes'
       ]
     })
   ],

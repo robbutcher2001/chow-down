@@ -12,14 +12,14 @@ const Nav = styled.nav`
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #222;
+  background: #000;
 
   > a {
-    background: #222;
+    background: #000;
     font-size: 1rem;
     padding: 1rem 1rem 0.5rem 1rem;
     border: none;
-    border-bottom: .5rem solid #222;
+    border-bottom: .5rem solid #000;
     color: #fff;
     text-decoration: none;
 
