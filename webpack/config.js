@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const htmlWebpack = require('html-webpack-plugin');
 const webpackPwaManifest = require('webpack-pwa-manifest');
+const faviconsWebpackPlugin = require('favicons-webpack-plugin');
 const offlinePlugin = require('offline-plugin');
 
 module.exports = {
@@ -74,26 +75,38 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       API_BASE: process.env.API_BASE ? process.env.API_BASE : ''
     }),
-    new webpackPwaManifest({
-      name: 'Chow Down',
-      short_name: 'Chow Down',
-      description: 'Chow down on a weekly plan of your evening meals',
-      background_color: '#000',
+    // new webpackPwaManifest({
+    //   name: 'Chow Down',
+    //   short_name: 'Chow Down',
+    //   description: 'Chow down on a weekly plan of your evening meals',
+    //   background_color: '#000',
+    //   inject: true,
+    //   fingerprints: true,
+    //   ios: true,
+    //   icons: [
+    //     {
+    //       src: path.resolve('src/splash.png'),
+    //       sizes: [96, 128, 192, 256, 384, 512],
+    //       ios: true
+    //     },
+    //     {
+    //       src: path.resolve('src/splash.png'),
+    //       size: '1242x2688',
+    //       ios: 'startup'
+    //     }
+    //   ]
+    // }),
+    new faviconsWebpackPlugin({
+      logo: './src/splash.png',
+      cache: true,
       inject: true,
-      fingerprints: true,
-      ios: true,
-      icons: [
-        {
-          src: path.resolve('src/splash.png'),
-          sizes: [96, 128, 192, 256, 384, 512],
-          ios: true
-        },
-        {
-          src: path.resolve('src/splash.png'),
-          size: '1242x2688',
-          ios: 'startup'
-        }
-      ]
+      favicons: {
+        appName: 'Chow Down',
+        appDescription: 'Chow down on a weekly plan of your evening meals',
+        developerName: 'Rob Butcher',
+        background: '#000',
+        theme_color: '#222'
+      }
     }),
     new offlinePlugin({
       responseStrategy: 'network-first',
