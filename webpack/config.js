@@ -98,7 +98,9 @@ module.exports = {
     new offlinePlugin({
       responseStrategy: 'network-first',
       externals: [
-        '/api/*'
+        '/api/recipes',
+        '/api/ingredients',
+        '/api/units'
       ],
       autoUpdate: true
     })
