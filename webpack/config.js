@@ -83,7 +83,7 @@ module.exports = {
         appDescription: 'Chow down on a weekly plan of your evening meals',
         developerName: 'Rob Butcher',
         background: '#cccc99',
-        theme_color: '#cccc99',
+        theme_color: '#000',
         start_url: '/',
         appleStatusBarStyle: 'default'
       }
