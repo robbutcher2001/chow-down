@@ -52,8 +52,10 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       LOGGER.log("Recipe cache purge status [" + response + "]");
 
       return recipe;
+      //TODO: maybe BadRequestException needs to move down to the repository
     } catch (BadRequestException bre) {
       throw new ServerException("unable to complete request, issue communicating with database");
+      //TODO: maybe this needs to not catch ResourceNotPersistedException and instead handle it separately
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }
