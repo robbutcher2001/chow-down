@@ -75,17 +75,6 @@ public class PutUnitServiceTest {
     }
 
     @Test
-    void handleRequest_shouldThrowException_whenNoUnitPut() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putUnit(Mockito.any(Unit.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
-
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Unit(), this.context));
-    }
-
-    @Test
     void handleRequest_shouldThrowException_whenMultipleUnitPut() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
@@ -99,6 +88,17 @@ public class PutUnitServiceTest {
         when(this.context.getLogger()).thenReturn(this.logger);
         when(this.repository.putUnit(Mockito.any(Unit.class))).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
+
+        assertThrows(ServerException.class, () -> this.service.handleRequest(new Unit(), this.context));
+    }
+
+    @Test
+    void handleRequest_shouldThrowException_whenNoUnitPut() throws Exception {
+        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.putUnit(Mockito.any(Unit.class))).thenReturn(mockResult);
+        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
         assertThrows(ServerException.class, () -> this.service.handleRequest(new Unit(), this.context));
     }

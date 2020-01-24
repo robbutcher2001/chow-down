@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,14 +26,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import recipes.chowdown.domain.Ingredient;
+import recipes.chowdown.exceptions.ResourcesNotFoundException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.IngredientRepository;
-import recipes.chowdown.service.cache.CacheInvalidator;
-import recipes.chowdown.service.cache.Endpoint;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class PutIngredientServiceTest {
+public class GetIngredientsServiceTest {
 
     @Mock
     private Context context;
@@ -43,38 +43,62 @@ public class PutIngredientServiceTest {
     @Mock
     private IngredientRepository repository;
 
-    @Mock
-    private CacheInvalidator cacheInvalidator;
-
     @InjectMocks
-    private PutIngredientService service;
+    private GetIngredientsService service;
 
     @BeforeAll
     void beforeAll() {
         MockitoAnnotations.initMocks(this);
 
-        this.service = new PutIngredientService();
+        this.service = new GetIngredientsService();
     }
 
     @Test
-    void handleRequest_shouldReturnPopulatedIngredient_whenNewIngredientPut() throws Exception {
+    void handleRequest_shouldReturnIngredient_whenExistsSingle() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Collections.singletonList(mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putIngredient(Mockito.any(Ingredient.class))).thenReturn(mockResult);
+        when(this.repository.getIngredients()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake_id");
-        when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+        when(mockField.getStringValue()).thenReturn("fake");
 
-        Ingredient returnedIngredient = this.service.handleRequest(new Ingredient(), this.context);
+        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals("fake_id", returnedIngredient.getId());
+        assertEquals(1, returnedIngredients.size());
     }
 
     @Test
+    void handleRequest_shouldReturnIngredients_whenExistsMultiple() throws Exception {
+        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+        Field mockField = Mockito.mock(Field.class);
+        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<List<Field>> rows = Arrays.asList(columns, columns);
+
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(mockResult.getRecords()).thenReturn(rows);
+        when(mockField.getStringValue()).thenReturn("fake");
+
+        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+
+        assertEquals(2, returnedIngredients.size());
+    }
+
+    @Test
+    void handleRequest_shouldThrowException_whenNoIngredientsExist() throws Exception {
+        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
+
+        assertThrows(ResourcesNotFoundException.class, () -> this.service.handleRequest(new Object(), this.context));
+    }
+
+    // @Test
     void handleRequest_shouldThrowException_whenMultipleIngredientPut() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
@@ -92,18 +116,7 @@ public class PutIngredientServiceTest {
         assertThrows(ServerException.class, () -> this.service.handleRequest(new Ingredient(), this.context));
     }
 
-    @Test
-    void handleRequest_shouldThrowException_whenNoIngredientPut() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putIngredient(Mockito.any(Ingredient.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
-
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Ingredient(), this.context));
-    }
-
-    @Test
+    // @Test
     void handleRequest_shouldThrowException_whenNoIdReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
@@ -118,7 +131,7 @@ public class PutIngredientServiceTest {
         assertThrows(ServerException.class, () -> this.service.handleRequest(new Ingredient(), this.context));
     }
 
-    @Test
+    // @Test
     void handleRequest_shouldThrowException_whenNullReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
@@ -133,19 +146,19 @@ public class PutIngredientServiceTest {
         assertThrows(ServerException.class, () -> this.service.handleRequest(new Ingredient(), this.context));
     }
 
-    @Test
+    // @Test
     void handleRequest_shouldThrowException_whenNullIngredientPut() throws Exception {
         when(this.context.getLogger()).thenReturn(this.logger);
 
         assertThrows(ServerException.class, () -> this.service.handleRequest(null, this.context));
     }
 
-    @Test
+    // @Test
     void handleRequest_shouldThrowException_whenNullContent() throws Exception {
         assertThrows(ServerException.class, () -> this.service.handleRequest(new Ingredient(), null));
     }
 
-    @Test
+    // @Test
     void handleRequest_shouldThrowException_whenAllNullInput() throws Exception {
         assertThrows(ServerException.class, () -> this.service.handleRequest(null, null));
     }

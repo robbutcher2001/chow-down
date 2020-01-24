@@ -75,17 +75,6 @@ public class PutRecipeServiceTest {
     }
 
     @Test
-    void handleRequest_shouldThrowException_whenNoRecipePut() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
-
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
-    }
-
-    @Test
     void handleRequest_shouldThrowException_whenMultipleRecipePut() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
@@ -99,6 +88,17 @@ public class PutRecipeServiceTest {
         when(this.context.getLogger()).thenReturn(this.logger);
         when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
+
+        assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
+    }
+
+    @Test
+    void handleRequest_shouldThrowException_whenNoRecipePut() throws Exception {
+        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
         assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
     }
