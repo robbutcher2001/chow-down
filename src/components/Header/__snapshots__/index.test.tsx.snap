@@ -1,11 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Header basic render 1`] = `
+exports[`Header basic snapshot render 1`] = `
 <header
-  className="sc-bdVaJa jseUTN"
+  className="sc-bdVaJa gEKKMn"
 >
   <h1>
-    Chow Down
+    <a
+      href="/"
+      onClick={[Function]}
+    >
+      Chow Down
+    </a>
   </h1>
   <p>
     Chow down on a weekly plan of your evening meals.

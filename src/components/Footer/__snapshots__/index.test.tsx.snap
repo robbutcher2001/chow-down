@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer basic snapshot render 1`] = `
+<footer
+  className="sc-bdVaJa hZcchM"
+>
+  <p>
+    © Rob Butcher 2020.
+  </p>
+  <p>
+    Images: 
+    <a
+      href="https://unsplash.com/"
+      target="_blank"
+    >
+      Unsplash
+    </a>
+     and various recipe websites.
+  </p>
+</footer>
+`;

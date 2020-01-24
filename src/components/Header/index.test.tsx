@@ -1,23 +1,28 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import Header from '.';
 
-test('Header basic render', () => {
+test('Header basic snapshot render', () => {
   const header = renderer.create(
-    <Header />
+    <Router history={createMemoryHistory()}>
+      <Header />
+    </Router>
   );
 
   expect(header.toJSON()).toMatchSnapshot();
-  expect(header.root.props).toEqual({});
-  // expect(header.root.children).toBeFalsy();
 });
 
-test('Header correct tag assertion', () => {
+test('Header correct tag content assertion', () => {
   const { getByText } = render(
-    <Header />
+    <Router history={createMemoryHistory()}>
+      <Header />
+    </Router>
   );
 
-  expect(getByText(/Chow Down/).textContent).toContain('Chow Down');
+  expect(getByText(/Chow Down/).textContent).toEqual('Chow Down');
+  expect(getByText(/Chow down on/).textContent).toEqual('Chow down on a weekly plan of your evening meals.');
 });
