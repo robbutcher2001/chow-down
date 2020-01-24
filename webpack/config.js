@@ -84,7 +84,7 @@ module.exports = {
         developerName: 'Rob Butcher',
         background: '#cccc99',
         theme_color: '#000',
-        start_url: '/',
+        start_url: '.',
         appleStatusBarStyle: 'default'
       }
     }),

@@ -1,6 +1,6 @@
 {
   "name": "chow-down",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Chow Down on a weekly plan of your evening meals",
   "main": "index.js",
   "scripts": {
