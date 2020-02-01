@@ -10,6 +10,7 @@ import Main from '../components/Main';
 import IngredientGrid from '../components/Ingredients/IngredientGrid';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
+import { LoadingBox, ErrorBox } from '../components/MessageBox';
 
 interface StateProps {
     error: string,
@@ -39,37 +40,38 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
         super(props);
     }
 
-    // requestIngredients = () => this.props.getIngredients();
     addIngredient = (form: Ingredient) => this.props.postIngredient(form);
 
     componentDidMount = () => this.props.getIngredients();
 
     render = () => {
-        console.log(this.props.error);
         return (
-            <Main
-                title='Ingredients'
-                loading={this.props.ui.pending.get}
-                message={this.props.failure}
-                error={this.props.error}
-            >
-                <Form
-                    dispatch={this.addIngredient}
-                    submitText='Add ingredient'>
-                    <InputBox
-                        name='ingredient'
-                        type='text'
-                        placeholderText='Ingredient name'
-                    />
-                </Form>
-                {this.props.ui.pending.post &&
-                    <div>Adding your new ingredient..</div>
+            <Main title='New ingredient' >
+                {this.props.error ?
+                    <ErrorBox message={this.props.error} /> :
+                    <div>
+                        {this.props.ui.pending.post ?
+                            <LoadingBox message='Creating new ingredient' /> :
+                            <Form
+                                dispatch={this.addIngredient}
+                                submitText='Add ingredient'>
+                                <InputBox
+                                    name='ingredient'
+                                    type='text'
+                                    placeholderText='Ingredient name'
+                                />
+                            </Form>
+                        }
+                        <h3>Existing ingredients</h3>
+                        {this.props.ui.pending.get ?
+                            <LoadingBox message='Fetching ingredients' /> :
+                            <IngredientGrid ingredients={this.props.ingredients} />
+                        }
+                    </div>
                 }
                 {this.props.failure &&
-                    <div style={{ color: 'red' }}>{this.props.failure}</div>
+                    <ErrorBox message={this.props.failure} />
                 }
-                <h3>Existing ingredients</h3>
-                <IngredientGrid ingredients={this.props.ingredients} />
             </Main>
         );
     }

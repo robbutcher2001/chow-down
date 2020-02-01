@@ -9,6 +9,7 @@ import { postRecipesRequest } from '../store/domain/recipes/actions';
 import Main from '../components/Main';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
+import { LoadingBox, ErrorBox } from '../components/MessageBox';
 
 interface StateProps {
     error: string,
@@ -38,49 +39,46 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
     addRecipe = (form: Recipe) => this.props.postRecipe(form);
 
     render = () => (
-        <Main
-            title='New recipe'
-            loading={this.props.ui.pending.post}
-            message={this.props.failure}
-            error={this.props.error}
-        >
-            <Form
-                dispatch={this.addRecipe}
-                submitText='Add recipe'>
-                <InputBox
-                    name='title'
-                    type='text'
-                    placeholderText='Title'
-                />
-                <InputBox
-                    name='description'
-                    type='text'
-                    placeholderText='Description'
-                />
-                <InputBox
-                    name='rating'
-                    type='number'
-                    placeholderText='Rating'
-                />
-                <InputBox
-                    name='url'
-                    type='text'
-                    placeholderText='Url'
-                />
-                <InputBox
-                    name='image'
-                    type='text'
-                    placeholderText='Upload image'
-                />
-            </Form>
-            {this.props.ui.pending.post &&
-                <div>Adding your new recipe..</div>
+        <Main title='New recipe' >
+            {this.props.error ?
+                <ErrorBox message={this.props.error} /> :
+                <div>
+                    {this.props.ui.pending.post ?
+                        <LoadingBox message='Creating your recipe' /> :
+                        <Form
+                            dispatch={this.addRecipe}
+                            submitText='Add recipe'>
+                            <InputBox
+                                name='title'
+                                type='text'
+                                placeholderText='Title'
+                            />
+                            <InputBox
+                                name='description'
+                                type='text'
+                                placeholderText='Description'
+                            />
+                            <InputBox
+                                name='rating'
+                                type='number'
+                                placeholderText='Rating'
+                            />
+                            <InputBox
+                                name='url'
+                                type='text'
+                                placeholderText='Url'
+                            />
+                            <InputBox
+                                name='image'
+                                type='text'
+                                placeholderText='Upload image'
+                            />
+                        </Form>
+                    }
+                </div>
             }
             {this.props.failure &&
-                <div style={{ color: 'orange' }}>{this.props.failure}</div>
-            }
-            {this.props.error &&
-                <div style={{ color: 'red' }}>{this.props.error}</div>
+                <ErrorBox message={this.props.failure} />
             }
         </Main>
     );

@@ -10,6 +10,7 @@ import Main from '../components/Main';
 import UnitGrid from '../components/Units/UnitGrid';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
+import { LoadingBox, ErrorBox } from '../components/MessageBox';
 
 interface StateProps {
     error: string,
@@ -39,40 +40,42 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
         super(props);
     }
 
-    // requestUnits = () => this.props.getUnits();
     addUnit = (form: Unit) => this.props.postUnit(form);
 
     componentDidMount = () => this.props.getUnits();
 
     render = () => (
-        <Main
-            title='New unit'
-            loading={this.props.ui.pending.get}
-            message={this.props.failure}
-            error={this.props.error}
-        >
-            <Form
-                dispatch={this.addUnit}
-                submitText='Add unit'>
-                <InputBox
-                    name='singular'
-                    type='text'
-                    placeholderText='Singular unit name'
-                />
-                <InputBox
-                    name='plural'
-                    type='text'
-                    placeholderText='Plural unit name'
-                />
-            </Form>
-            {this.props.ui.pending.post &&
-                <div>Adding your new unit..</div>
+        <Main title='New unit' >
+            {this.props.error ?
+                <ErrorBox message={this.props.error} /> :
+                <div>
+                    {this.props.ui.pending.post ?
+                        <LoadingBox message='Creating new unit' /> :
+                        <Form
+                            dispatch={this.addUnit}
+                            submitText='Add unit'>
+                            <InputBox
+                                name='singular'
+                                type='text'
+                                placeholderText='Singular unit name'
+                            />
+                            <InputBox
+                                name='plural'
+                                type='text'
+                                placeholderText='Plural unit name'
+                            />
+                        </Form>
+                    }
+                    <h3>Existing units</h3>
+                    {this.props.ui.pending.get ?
+                        <LoadingBox message='Fetching units' /> :
+                        <UnitGrid units={this.props.units} />
+                    }
+                </div>
             }
             {this.props.failure &&
-                <div style={{ color: 'red' }}>{this.props.failure}</div>
+                <ErrorBox message={this.props.failure} />
             }
-            <h3>Existing units</h3>
-            <UnitGrid units={this.props.units} />
         </Main>
     );
 };

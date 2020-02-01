@@ -8,6 +8,7 @@ import { getRecipesRequest } from '../store/domain/recipes/actions';
 
 import Main, { CallToAction } from '../components/Main';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
+import { ErrorBox, LoadingBox } from '../components/MessageBox';
 
 const cta: CallToAction = {
     text: 'New recipe',
@@ -43,19 +44,18 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     componentDidMount = () => this.props.getRecipes();
 
     render = () => (
-        <Main
-            title='Your recipes'
-            loading={this.props.ui.pending.get}
-            cta={cta}
-            message={this.props.failure}
-            error={this.props.error}
-        >
-            <RecipeGrid recipes={this.props.recipes} />
-            {this.props.failure &&
-                <div style={{ color: 'orange' }}>{this.props.failure}</div>
+        <Main title='Your recipes' cta={cta} >
+            {this.props.error ?
+                <ErrorBox message={this.props.error} /> :
+                <div>
+                    {this.props.ui.pending.get ?
+                        <LoadingBox message='Fetching recipes' /> :
+                        <RecipeGrid recipes={this.props.recipes} />
+                    }
+                </div>
             }
-            {this.props.error &&
-                <div style={{ color: 'red' }}>{this.props.error}</div>
+            {this.props.failure &&
+                <ErrorBox message={this.props.failure} />
             }
         </Main>
     );

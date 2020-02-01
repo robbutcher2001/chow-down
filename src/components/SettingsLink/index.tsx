@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-export interface SettingsLinkProps {
+interface SettingsLinkProps {
   to: string,
   children: ReactNode
 };
