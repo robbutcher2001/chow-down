@@ -57,16 +57,8 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
                         <Form
                             dispatch={this.addUnit}
                             submitText='Add unit'>
-                            <InputBox
-                                name='singular'
-                                type='text'
-                                placeholderText='Singular unit name'
-                            />
-                            <InputBox
-                                name='plural'
-                                type='text'
-                                placeholderText='Plural unit name'
-                            />
+                            <InputBox name='singular' type='text' label='Singular unit name' />
+                            <InputBox name='plural' type='text' label='Plural unit name' />
                         </Form>
                     }
                     <h3>Existing units</h3>

@@ -10,6 +10,7 @@ import Main from '../components/Main';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
 import { LoadingBox, ErrorBox } from '../components/MessageBox';
+import Textarea from '../components/Textarea';
 
 interface StateProps {
     error: string,
@@ -51,31 +52,11 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
                         <Form
                             dispatch={this.addRecipe}
                             submitText='Add recipe'>
-                            <InputBox
-                                name='title'
-                                type='text'
-                                placeholderText='Title'
-                            />
-                            <InputBox
-                                name='description'
-                                type='text'
-                                placeholderText='Description'
-                            />
-                            <InputBox
-                                name='rating'
-                                type='number'
-                                placeholderText='Rating'
-                            />
-                            <InputBox
-                                name='url'
-                                type='text'
-                                placeholderText='Url'
-                            />
-                            <InputBox
-                                name='image'
-                                type='text'
-                                placeholderText='Upload image'
-                            />
+                            <InputBox name='title' type='text' label='Title' />
+                            <Textarea name='description' label='Description' />
+                            <InputBox name='rating' type='number' label='Rating' />
+                            <InputBox name='url' type='text' label='Url' />
+                            <InputBox name='image' type='text' label='Upload image' />
                         </Form>
                     }
                 </div>

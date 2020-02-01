@@ -57,11 +57,7 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
                         <Form
                             dispatch={this.addIngredient}
                             submitText='Add ingredient'>
-                            <InputBox
-                                name='ingredient'
-                                type='text'
-                                placeholderText='Ingredient name'
-                            />
+                            <InputBox name='ingredient' type='text' label='Ingredient name' />
                         </Form>
                     }
                     <h4>Existing ingredients</h4>

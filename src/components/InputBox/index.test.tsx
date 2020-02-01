@@ -12,7 +12,7 @@ test('InputBox basic snapshot render', () => {
     <InputBox
       name='title'
       type='text'
-      placeholderText='The Input Title'
+      label='The Input Title'
       form={mockFormState}
     />
   );

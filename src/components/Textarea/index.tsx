@@ -4,12 +4,15 @@ import styled from 'styled-components';
 
 export interface InputBoxProps {
   name: string,
-  type: 'text' | 'number',
   label: string,
   form?: {
     [key: string]: string | number
   },
-  onChange?: (field: string, type: 'text' | 'number', event: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (
+    field: string,
+    type: 'text' | 'number',
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => void
 };
 
 const Label = styled.label`
@@ -17,15 +20,14 @@ const Label = styled.label`
   flex-direction: column;
   margin-bottom: 0.75rem;
 
-  > input {
+  > textarea {
     border: solid 2px #e4e4e4;
   }
 
-  > input {
+  > textarea {
     border-radius: 5px;
-    padding: 0 0.5em;
+    padding: 0.5em;
     margin: 0.5rem 0;
-    height: 2rem;
     font-size: 1rem;
   }
 `
@@ -33,12 +35,12 @@ const Label = styled.label`
 export default (props: InputBoxProps) => (
   <Label htmlFor={props.name}>
     {props.label}
-    <input
+    <textarea
       id={props.name}
       name={props.name}
-      type={props.type}
       value={props.form[props.name]}
-      onChange={event => props.onChange(props.name, props.type, event)}
+      onChange={event => props.onChange(props.name, 'text', event)}
+      rows={4}
     />
   </Label>
 );
