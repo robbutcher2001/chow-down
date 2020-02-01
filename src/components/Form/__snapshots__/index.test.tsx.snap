@@ -4,6 +4,7 @@ exports[`Form basic snapshot render 1`] = `
 <form
   className="sc-bdVaJa hujrcZ"
   id="form"
+  onReset={[Function]}
   onSubmit={[Function]}
 >
   <div

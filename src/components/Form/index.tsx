@@ -4,6 +4,10 @@ import styled from 'styled-components';
 
 import { InputBoxProps } from '../InputBox';
 
+interface FieldNames {
+  [key: string]: string
+};
+
 interface StateProps { };
 
 interface DispatchProps { };
@@ -55,16 +59,7 @@ const Form = styled.form`
 class FormComponent extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
-
-    interface Names {
-      [key: string]: string
-    }
-
-    const fieldNames = React.Children.map(this.props.children, (child: ReactElement<InputBoxProps>) => child.props.name)
-      .reduce((names, name) => {
-        names[name] = '';
-        return names;
-      }, {} as Names);
+    const fieldNames: FieldNames = this.getFieldNames();
 
     this.state = {
       form: {
@@ -72,6 +67,12 @@ class FormComponent extends Component<CombinedProps, OwnState> {
       }
     };
   }
+
+  getFieldNames = () => React.Children.map(this.props.children, (child: ReactElement<InputBoxProps>) => child.props.name)
+    .reduce((names, name) => {
+      names[name] = '';
+      return names;
+    }, {} as FieldNames);
 
   onChange = (
     field: string,
@@ -99,12 +100,23 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     }
   }
 
+  onReset = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const fieldNames: FieldNames = this.getFieldNames();
+
+    this.setState({
+      form: {
+        ...fieldNames
+      }
+    });
+  };
+
   render = () => {
     const children = React.Children.map(this.props.children, (child: ReactElement<InputBoxProps>) =>
       React.cloneElement(child, { form: this.state.form, onChange: this.onChange }));
 
     return (
-      <Form id='form' onSubmit={event => this.onSubmit(event)}>
+      <Form id='form' onSubmit={this.onSubmit} onReset={this.onReset} >
         {children}
         <div className='button-group'>
           <button type='submit' form='form' value={this.props.submitText}>
