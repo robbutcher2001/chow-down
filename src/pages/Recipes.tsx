@@ -45,6 +45,9 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
     render = () => (
         <Main title='Your recipes' cta={cta} >
+            {this.props.failure &&
+                <ErrorBox message={this.props.failure} />
+            }
             {this.props.error ?
                 <ErrorBox message={this.props.error} /> :
                 <div>
@@ -53,9 +56,6 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                         <RecipeGrid recipes={this.props.recipes} />
                     }
                 </div>
-            }
-            {this.props.failure &&
-                <ErrorBox message={this.props.failure} />
             }
         </Main>
     );

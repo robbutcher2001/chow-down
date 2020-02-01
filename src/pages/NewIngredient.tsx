@@ -44,37 +44,35 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
 
     componentDidMount = () => this.props.getIngredients();
 
-    render = () => {
-        return (
-            <Main title='New ingredient' >
-                {this.props.error ?
-                    <ErrorBox message={this.props.error} /> :
-                    <div>
-                        {this.props.ui.pending.post ?
-                            <LoadingBox message='Creating new ingredient' /> :
-                            <Form
-                                dispatch={this.addIngredient}
-                                submitText='Add ingredient'>
-                                <InputBox
-                                    name='ingredient'
-                                    type='text'
-                                    placeholderText='Ingredient name'
-                                />
-                            </Form>
-                        }
-                        <h3>Existing ingredients</h3>
-                        {this.props.ui.pending.get ?
-                            <LoadingBox message='Fetching ingredients' /> :
-                            <IngredientGrid ingredients={this.props.ingredients} />
-                        }
-                    </div>
-                }
-                {this.props.failure &&
-                    <ErrorBox message={this.props.failure} />
-                }
-            </Main>
-        );
-    }
+    render = () => (
+        <Main title='New ingredient' >
+            {this.props.failure &&
+                <ErrorBox message={this.props.failure} />
+            }
+            {this.props.error ?
+                <ErrorBox message={this.props.error} /> :
+                <div>
+                    {this.props.ui.pending.post ?
+                        <LoadingBox message='Creating new ingredient' /> :
+                        <Form
+                            dispatch={this.addIngredient}
+                            submitText='Add ingredient'>
+                            <InputBox
+                                name='ingredient'
+                                type='text'
+                                placeholderText='Ingredient name'
+                            />
+                        </Form>
+                    }
+                    <h4>Existing ingredients</h4>
+                    {this.props.ui.pending.get ?
+                        <LoadingBox message='Fetching ingredients' /> :
+                        <IngredientGrid ingredients={this.props.ingredients} />
+                    }
+                </div>
+            }
+        </Main>
+    )
 };
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({

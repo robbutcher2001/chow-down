@@ -26,6 +26,7 @@ const Section = styled.section`
   }
 `
 
+//TODO: base64 inline the loading and error images as they sometimes don't download quickly
 //TODO: should these be of type FunctionComponent e.g. Box: FunctionComponent<MessageBoxProps> = () =>
 export const LoadingBox = (props: MessageBoxProps) => (
   <Section>

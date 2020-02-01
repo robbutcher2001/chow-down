@@ -40,6 +40,9 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
 
     render = () => (
         <Main title='New recipe' >
+            {this.props.failure &&
+                <ErrorBox message={this.props.failure} />
+            }
             {this.props.error ?
                 <ErrorBox message={this.props.error} /> :
                 <div>
@@ -76,9 +79,6 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
                         </Form>
                     }
                 </div>
-            }
-            {this.props.failure &&
-                <ErrorBox message={this.props.failure} />
             }
         </Main>
     );

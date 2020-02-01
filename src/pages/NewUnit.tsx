@@ -46,6 +46,9 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
 
     render = () => (
         <Main title='New unit' >
+            {this.props.failure &&
+                <ErrorBox message={this.props.failure} />
+            }
             {this.props.error ?
                 <ErrorBox message={this.props.error} /> :
                 <div>
@@ -72,9 +75,6 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
                         <UnitGrid units={this.props.units} />
                     }
                 </div>
-            }
-            {this.props.failure &&
-                <ErrorBox message={this.props.failure} />
             }
         </Main>
     );
