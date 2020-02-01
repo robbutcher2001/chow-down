@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnitCard basic snapshot render 1`] = `
+<li
+  className="sc-bdVaJa fEuTXX"
+>
+  fake_singular
+  <aside>
+    fake_plural
+  </aside>
+</li>
+`;

@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
 
+//TODO: should this just be a recipe type from the store?
 interface RecipeCardProps {
   title: string,
   description: string,

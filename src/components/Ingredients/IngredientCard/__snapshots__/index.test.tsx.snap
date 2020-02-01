@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IngredientCard basic snapshot render 1`] = `
+<li
+  className="sc-bdVaJa dFyiMu"
+>
+  fake_ingredient
+</li>
+`;

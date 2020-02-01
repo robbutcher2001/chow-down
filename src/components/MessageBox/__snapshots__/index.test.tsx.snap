@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorBox basic snapshot render 1`] = `
+<section
+  className="sc-bdVaJa fFWgtU"
+>
+  <img
+    src="test-file-stub"
+  />
+  <div
+    className="error"
+  >
+    test_error
+  </div>
+</section>
+`;
+
+exports[`LoadingBox basic snapshot render 1`] = `
+<section
+  className="sc-bdVaJa fFWgtU"
+>
+  <img
+    src="test-file-stub"
+  />
+  test_message
+</section>
+`;
