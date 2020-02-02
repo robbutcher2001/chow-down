@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page basic snapshot render 1`] = `
+<div
+  className="sc-bxivhb jUPexl"
+>
+  <nav
+    className="sc-htpNat jdDbLS"
+  >
+    <a
+      className="active"
+      href="/"
+      onClick={[Function]}
+    >
+      This Week
+    </a>
+    <a
+      className=""
+      href="/recipes"
+      onClick={[Function]}
+    >
+      Recipes
+    </a>
+    <a
+      className=""
+      href="/settings"
+      onClick={[Function]}
+    >
+      <img
+        src="test-file-stub"
+      />
+    </a>
+  </nav>
+  <header
+    className="sc-bwzfXH jplHBp"
+  >
+    <h1>
+      <a
+        href="/"
+        onClick={[Function]}
+      >
+        Chow Down
+      </a>
+    </h1>
+    <p>
+      Chow down on a weekly plan of your evening meals.
+    </p>
+  </header>
+  <div>
+    fake_child
+  </div>
+  <footer
+    className="sc-bdVaJa hZcchM"
+  >
+    <p>
+      © Rob Butcher 2020.
+    </p>
+    <p>
+      Images: 
+      <a
+        href="https://unsplash.com/"
+        target="_blank"
+      >
+        Unsplash
+      </a>
+       and various recipe websites.
+    </p>
+  </footer>
+</div>
+`;
