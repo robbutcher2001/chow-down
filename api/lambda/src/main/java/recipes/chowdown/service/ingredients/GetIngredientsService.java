@@ -26,11 +26,11 @@ public class GetIngredientsService implements RequestHandler<Object, List<Ingred
   }
 
   public List<Ingredient> handleRequest(final Object input, final Context context) {
-    LOGGER = context.getLogger();
-
-    final List<Ingredient> ingredients = new ArrayList<>();
-
     try {
+      LOGGER = context.getLogger();
+
+      final List<Ingredient> ingredients = new ArrayList<>();
+
       ExecuteStatementResult result = this.repository.getIngredients();
 
       if (result.getRecords().size() < 1) {
@@ -42,10 +42,12 @@ public class GetIngredientsService implements RequestHandler<Object, List<Ingred
         ingredients.add(
             Ingredient.builder().id(fields.get(0).getStringValue()).ingredient(fields.get(1).getStringValue()).build());
       }
+
+      return ingredients;
     } catch (BadRequestException bre) {
       throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (Exception ex) {
+      throw new ServerException(ex.getMessage(), ex);
     }
-
-    return ingredients;
   }
 }

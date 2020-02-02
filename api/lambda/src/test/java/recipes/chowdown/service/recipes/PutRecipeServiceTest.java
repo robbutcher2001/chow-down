@@ -2,6 +2,7 @@ package recipes.chowdown.service.recipes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
@@ -134,6 +136,16 @@ public class PutRecipeServiceTest {
     }
 
     @Test
+    void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenThrow(BadRequestException.class);
+
+        ServerException returnedException = assertThrows(ServerException.class,
+                () -> this.service.handleRequest(new Recipe(), this.context));
+        assertTrue(returnedException.getMessage().contains("issue communicating with database"));
+    }
+
+    @Test
     void handleRequest_shouldThrowException_whenNullRecipePut() throws Exception {
         when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -141,7 +153,7 @@ public class PutRecipeServiceTest {
     }
 
     @Test
-    void handleRequest_shouldThrowException_whenNullContent() throws Exception {
+    void handleRequest_shouldThrowException_whenNullContext() throws Exception {
         assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), null));
     }
 

@@ -34,7 +34,7 @@ public class PutIngredientService implements RequestHandler<Ingredient, Ingredie
       ExecuteStatementResult result = this.repository.putIngredient(ingredient);
 
       // TODO; ResourceNotPersistedException is not caught in Swagger so has no
-      // response code mapping in APIG
+      // response code mapping in APIG - do this and change tests to asset for ResourceNotPersistedException instead of ServerException
       if (result.getRecords().size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
       }
