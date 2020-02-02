@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingsLink basic snapshot render 1`] = `
+<nav
+  className="sc-bdVaJa kfPdAV"
+>
+  <a
+    href="/fake_link"
+    onClick={[Function]}
+  >
+    <div>
+      fake_child
+    </div>
+    <i />
+  </a>
+</nav>
+`;

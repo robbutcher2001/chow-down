@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form basic snapshot render 1`] = `
+<form
+  className="sc-bdVaJa hujrcZ"
+  id="form"
+  onReset={[Function]}
+  onSubmit={[Function]}
+>
+  <div
+    form={Object {}}
+    onChange={[Function]}
+  >
+    fake_child
+  </div>
+  <div
+    className="button-group"
+  >
+    <button
+      form="form"
+      type="submit"
+      value="Submit Button"
+    >
+      Submit Button
+    </button>
+    <button
+      form="form"
+      type="reset"
+      value="Reset"
+    >
+      Reset
+    </button>
+  </div>
+</form>
+`;

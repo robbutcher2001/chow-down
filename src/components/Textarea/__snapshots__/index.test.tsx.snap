@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Textarea basic snapshot render 1`] = `
+<label
+  className="sc-bdVaJa fadCrU"
+  htmlFor="title"
+>
+  The Textarea Title
+  <textarea
+    id="title"
+    name="title"
+    onChange={[Function]}
+    rows={4}
+  />
+</label>
+`;

@@ -1,10 +1,10 @@
-import { RecipeActionTypes, GetRecipesApiRequest, PostRecipeApiRequest, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
+import { Recipe, RecipeActionTypes, GetRecipesApiRequest, PostRecipeApiRequest, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
 
 export const getRecipesRequest = (): GetRecipesApiRequest => ({
     type: RecipeActionTypes.GET_RECIPES_REQUEST
 });
 
-export const getRecipesSuccess = (recipes: []): RecipesSuccessApiResponse => ({
+export const getRecipesSuccess = (recipes: Recipe[]): RecipesSuccessApiResponse => ({
     type: RecipeActionTypes.GET_RECIPES_SUCCESS,
     recipes
 });
@@ -15,12 +15,12 @@ export const getRecipesFailure = (code: number, json: object): RecipesFailureApi
     json
 });
 
-export const postRecipesRequest = (payload: object): PostRecipeApiRequest => ({
+export const postRecipesRequest = (recipe: Recipe): PostRecipeApiRequest => ({
     type: RecipeActionTypes.POST_RECIPES_REQUEST,
-    payload
+    recipe
 });
 
-export const postRecipesSuccess = (recipes: []): RecipesSuccessApiResponse => ({
+export const postRecipesSuccess = (recipes: Recipe[]): RecipesSuccessApiResponse => ({
     type: RecipeActionTypes.POST_RECIPES_SUCCESS,
     recipes
 });

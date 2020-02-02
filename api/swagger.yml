@@ -4,6 +4,191 @@ info:
     Fn::Sub: 'ChowDown-${Env}'
   version: "1.0"
 paths:
+  # Units
+  /api/units:
+    get:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Unit"
+        410:
+          description: "410 response"
+          content: {}
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetUnitsFunction.Arn}/invocations"
+        responses:
+          .*ResourcesNotFoundException.*:
+            statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Unit"
+        required: true
+      responses:
+        201:
+          description: "201 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unit"
+        410:
+          description: "410 response"
+          content: {}
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutUnitFunction.Arn}/invocations"
+        responses:
+          .*ResourcesNotFoundException.*:
+            statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "$input.body"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+  # Ingredients
+  /api/ingredients:
+    get:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ingredient"
+        410:
+          description: "410 response"
+          content: {}
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIngredientsFunction.Arn}/invocations"
+        responses:
+          .*ResourcesNotFoundException.*:
+            statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws"
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ingredient"
+        required: true
+      responses:
+        201:
+          description: "201 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ingredient"
+        410:
+          description: "410 response"
+          content: {}
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutIngredientFunction.Arn}/invocations"
+        responses:
+          .*ResourcesNotFoundException.*:
+            statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "$input.body"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+  # Recipes
   /api/recipes:
     get:
       responses:
@@ -19,16 +204,32 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Recipe"
+        410:
+          description: "410 response"
+          content: {}
+        500:
+          description: "500 response"
+          content: {}
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
         responses:
+          .*ResourcesNotFoundException.*:
+            statusCode: "410"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
-        passthroughBehavior: "when_no_match"
         httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
         type: "aws"
     post:
       requestBody:
@@ -73,14 +274,37 @@ paths:
             statusCode: "201"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
-        passthroughBehavior: "never"
         httpMethod: "POST"
+        passthroughBehavior: "never"
         requestTemplates:
           application/json: "$input.body"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
 components:
   schemas:
+    Unit:
+      title: "Unit schema"
+      type: object
+      properties:
+        id:
+          type: string
+        singular:
+          type: string
+        plural:
+          type: string
+      required:
+      - singular
+      - plural
+    Ingredient:
+      title: "Ingredient schema"
+      type: object
+      properties:
+        id:
+          type: string
+        ingredient:
+          type: string
+      required:
+      - ingredient
     Recipe:
       title: "Recipe schema"
       type: object

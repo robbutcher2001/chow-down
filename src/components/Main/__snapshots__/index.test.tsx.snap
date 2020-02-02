@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Main basic snapshot render 1`] = `
+<main
+  className="sc-bdVaJa kzVlbP"
+>
+  <div>
+    <section>
+      <h2>
+        fake_title
+      </h2>
+      <a
+        href="/fake_link"
+        onClick={[Function]}
+      >
+        fake_cta
+      </a>
+    </section>
+    <div>
+      fake_child
+    </div>
+  </div>
+</main>
+`;

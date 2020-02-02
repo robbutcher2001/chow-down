@@ -1,12 +1,12 @@
-import { UnitActionTypes, GetUnitsApiRequest, PostUnitApiRequest, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
+import { Unit, UnitActionTypes, GetUnitsApiRequest, PostUnitApiRequest, UnitsSuccessApiResponse, UnitsFailureApiResponse } from './types';
 
 export const getUnitsRequest = (): GetUnitsApiRequest => ({
     type: UnitActionTypes.GET_UNITS_REQUEST
 });
 
-export const getUnitsSuccess = (json: object): UnitsSuccessApiResponse => ({
+export const getUnitsSuccess = (units: Unit[]): UnitsSuccessApiResponse => ({
     type: UnitActionTypes.GET_UNITS_SUCCESS,
-    json
+    units
 });
 
 export const getUnitsFailure = (code: number, json: object): UnitsFailureApiResponse => ({
@@ -15,14 +15,14 @@ export const getUnitsFailure = (code: number, json: object): UnitsFailureApiResp
     json
 });
 
-export const postUnitsRequest = (payload: object): PostUnitApiRequest => ({
+export const postUnitsRequest = (unit: Unit): PostUnitApiRequest => ({
     type: UnitActionTypes.POST_UNITS_REQUEST,
-    payload
+    unit
 });
 
-export const postUnitsSuccess = (json: object): UnitsSuccessApiResponse => ({
+export const postUnitsSuccess = (units: Unit[]): UnitsSuccessApiResponse => ({
     type: UnitActionTypes.POST_UNITS_SUCCESS,
-    json
+    units
 });
 
 export const postUnitsFailure = (code: number, json: object): UnitsFailureApiResponse => ({

@@ -17,7 +17,7 @@ Parameters:
 Conditions:
   CreateProdResources: !Equals [ !Ref Env, 'prod' ]
 Resources:
-  #S3 Buckets
+  # S3 Buckets
   ChowDownFrontEndBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -47,12 +47,12 @@ Resources:
             Action:
               - 's3:ListBucket'
             Resource: !GetAtt ChowDownFrontEndBucket.Arn
-  #IAM roles
-  GetRecipesFunctionRole:
+  # IAM roles
+  LambdaFunctionRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName:
-        Fn::Join: [ '-', [ 'chow-down-get-recipes-role', !Ref Env ] ]
+        Fn::Join: [ '-', [ 'chow-down-lambda-role', !Ref Env ] ]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -66,25 +66,119 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
         - 'arn:aws:iam::aws:policy/AmazonRDSDataFullAccess'
-  PutRecipeFunctionRole:
-    Type: AWS::IAM::Role
+        - 'arn:aws:iam::aws:policy/CloudFrontFullAccess'
+  # Lambda Function Definitions
+  ## Units
+  GetUnitsFunction:
+    Type: AWS::Serverless::Function
     Properties:
-      RoleName:
-        Fn::Join: [ '-', [ 'chow-down-put-recipe-role', !Ref Env ] ]
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - 'lambda.amazonaws.com'
-            Action:
-              - 'sts:AssumeRole'
-      Path: /
-      ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-        - 'arn:aws:iam::aws:policy/AmazonRDSDataFullAccess'
-  #Lambda Function Definitions
+      FunctionName:
+        Fn::Join: [ '-', [ 'GetUnitsFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.service.units.GetUnitsService::handleRequest
+      Runtime: java8
+      CodeUri:
+        Bucket: !Ref ApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
+      Role:
+        Fn::GetAtt:
+          - LambdaFunctionRole
+          - Arn
+      MemorySize: 1024
+      Timeout: 60
+  GetUnitsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Fn::GetAtt:
+          - GetUnitsFunction
+          - Arn
+      SourceArn:
+        Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
+  PutUnitFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Join: [ '-', [ 'PutUnitFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.service.units.PutUnitService::handleRequest
+      Runtime: java8
+      CodeUri:
+        Bucket: !Ref ApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
+      Role:
+        Fn::GetAtt:
+          - LambdaFunctionRole
+          - Arn
+      MemorySize: 1024
+      Timeout: 60
+  PutUnitLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Fn::GetAtt:
+          - PutUnitFunction
+          - Arn
+      SourceArn:
+        Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
+  ## Ingredients
+  GetIngredientsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Join: [ '-', [ 'GetIngredientsFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.service.ingredients.GetIngredientsService::handleRequest
+      Runtime: java8
+      CodeUri:
+        Bucket: !Ref ApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
+      Role:
+        Fn::GetAtt:
+          - LambdaFunctionRole
+          - Arn
+      MemorySize: 1024
+      Timeout: 60
+  GetIngredientsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Fn::GetAtt:
+          - GetIngredientsFunction
+          - Arn
+      SourceArn:
+        Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
+  PutIngredientFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Join: [ '-', [ 'PutIngredientFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.service.ingredients.PutIngredientService::handleRequest
+      Runtime: java8
+      CodeUri:
+        Bucket: !Ref ApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
+      Role:
+        Fn::GetAtt:
+          - LambdaFunctionRole
+          - Arn
+      MemorySize: 1024
+      Timeout: 60
+  PutIngredientLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Fn::GetAtt:
+          - PutIngredientFunction
+          - Arn
+      SourceArn:
+        Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
+  ## Recipes
   GetRecipesFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -97,10 +191,10 @@ Resources:
         Key: %{ChowDownApiSourceKey}
       Role:
         Fn::GetAtt:
-          - GetRecipesFunctionRole
+          - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   GetRecipesLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -124,10 +218,10 @@ Resources:
         Key: %{ChowDownApiSourceKey}
       Role:
         Fn::GetAtt:
-          - PutRecipeFunctionRole
+          - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 30
+      Timeout: 60
   PutRecipeLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -139,7 +233,7 @@ Resources:
           - Arn
       SourceArn:
         Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
-  #Api
+  # Api
   ChowDownApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -150,7 +244,7 @@ Resources:
           Parameters:
             Location:
               Fn::Join: [ '', [ 's3://', !Ref ApiSourceCodeBucket, '/', '%{ChowDownApiSwaggerKey}' ] ]
-  #CloudFront distro to sit in front of bucket and reduce outbound cost
+  # CloudFront distro to sit in front of bucket and reduce outbound cost
   ChowDownDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -182,6 +276,7 @@ Resources:
           CustomOriginConfig:
             HTTPSPort: '443'
             OriginProtocolPolicy: https-only
+            OriginReadTimeout: 60
             OriginSSLProtocols:
             - 'TLSv1'
             - 'TLSv1.1'
@@ -215,9 +310,8 @@ Resources:
           TargetOriginId:
             Fn::Join: [ '', [ 'origin-', !Ref ChowDownApi, '.execute-api.', !Ref 'AWS::Region', '.amazonaws.com' ] ]
           PathPattern: '/api/*'
-          DefaultTTL: 60
-          MaxTTL: 3600
-          MinTTL: 60
+          DefaultTTL: 604800
+          MinTTL: 604800
           ForwardedValues:
             QueryString: true
             Cookies:

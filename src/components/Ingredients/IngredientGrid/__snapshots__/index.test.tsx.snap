@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IngredientGrid basic snapshot render 1`] = `
+<ul
+  className="sc-htpNat kCpzqj"
+>
+  <li
+    className="sc-bwzfXH fOOqCi"
+  >
+    F
+  </li>
+  <li
+    className="sc-bdVaJa dFyiMu"
+  >
+    fake_ingredient1
+  </li>
+  <li
+    className="sc-bdVaJa dFyiMu"
+  >
+    fake_ingredient2
+  </li>
+</ul>
+`;

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputBox basic snapshot render 1`] = `
+<label
+  className="sc-bdVaJa cXQnaz"
+  htmlFor="title"
+>
+  The Input Title
+  <input
+    id="title"
+    name="title"
+    onChange={[Function]}
+    type="text"
+  />
+</label>
+`;

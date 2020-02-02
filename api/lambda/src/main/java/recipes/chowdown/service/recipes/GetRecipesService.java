@@ -6,16 +6,18 @@ import java.util.List;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
-import recipes.chowdown.ApiResponse;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourcesNotFoundException;
+import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 
-public class GetRecipesService implements RequestHandler<Object, ApiResponse<List<Recipe>>> {
-  private static LambdaLogger logger;
+public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
+
+  private static LambdaLogger LOGGER;
 
   private RecipeRepository repository;
 
@@ -23,24 +25,30 @@ public class GetRecipesService implements RequestHandler<Object, ApiResponse<Lis
     this.repository = new RecipeRepository();
   }
 
-  public ApiResponse<List<Recipe>> handleRequest(final Object input, final Context context) {
-    logger = context.getLogger();
+  public List<Recipe> handleRequest(final Object input, final Context context) {
+    try {
+      LOGGER = context.getLogger();
 
-    final List<Recipe> recipes = new ArrayList<>();
+      final List<Recipe> recipes = new ArrayList<>();
 
-    ExecuteStatementResult result = this.repository.getRecipes();
+      ExecuteStatementResult result = this.repository.getRecipes();
 
-    if (result.getRecords().size() < 1) {
-      logger.log("No recipes found");
-      throw new ResourcesNotFoundException("No recipes found");
+      if (result.getRecords().size() < 1) {
+        LOGGER.log("No recipes found");
+        throw new ResourcesNotFoundException("no recipes found");
+      }
+
+      for (List<Field> fields : result.getRecords()) {
+        recipes.add(Recipe.builder().id(fields.get(0).getStringValue()).title(fields.get(1).getStringValue())
+            .description(fields.get(2).getStringValue()).rating(fields.get(3).getLongValue())
+            .url(fields.get(4).getStringValue()).image(fields.get(5).getStringValue()).build());
+      }
+
+      return recipes;
+    } catch (BadRequestException bre) {
+      throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (Exception ex) {
+      throw new ServerException(ex.getMessage(), ex);
     }
-
-    for (List<Field> fields : result.getRecords()) {
-      recipes.add(Recipe.builder().id(fields.get(0).getStringValue()).title(fields.get(1).getStringValue())
-          .description(fields.get(2).getStringValue()).rating(fields.get(3).getLongValue())
-          .url(fields.get(4).getStringValue()).image(fields.get(5).getStringValue()).build());
-    }
-
-    return new ApiResponse<List<Recipe>>("recipes", recipes);
   }
 }

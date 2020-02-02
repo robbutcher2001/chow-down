@@ -7,10 +7,6 @@ const initialState: RecipesState = {
     recipes: []
 }
 
-interface RecipesSuccessResponse {
-    recipes: []
-}
-
 interface RecipesFailureResponse {
     recipe: string
 }
@@ -28,10 +24,25 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
                 recipes: successResponse.recipes
             };
 
+        case RecipeActionTypes.POST_RECIPES_SUCCESS:
+            return {
+                failure: null,
+                recipes: state.recipes.concat((action as RecipesSuccessApiResponse).recipes)
+            };
+
         case RecipeActionTypes.GET_RECIPES_FAILURE:
         case RecipeActionTypes.POST_RECIPES_FAILURE:
             const failureResponse = action as RecipesFailureApiResponse;
             const failureJson = failureResponse.json as RecipesFailureResponse;
+            console.log(failureResponse.code);
+
+            if (failureResponse.code === 410) {
+                return {
+                    failure: 'No recipes found',
+                    recipes: []
+                };
+            }
+
             return {
                 failure: failureJson.recipe,
                 recipes: []

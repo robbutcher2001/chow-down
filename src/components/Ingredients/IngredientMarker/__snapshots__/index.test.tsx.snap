@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IngredientMarker basic snapshot render 1`] = `
+<li
+  className="sc-bdVaJa bnvtbd"
+>
+  A_MARKER
+</li>
+`;

@@ -11,7 +11,7 @@ export enum IngredientActionTypes {
 
 export interface Ingredient {
     id: string,
-    name: string
+    ingredient: string
 }
 
 export interface IngredientsState {
@@ -25,12 +25,12 @@ export interface GetIngredientsApiRequest extends Action {
 
 export interface PostIngredientApiRequest extends Action {
     type: IngredientActionTypes,
-    payload: object
+    ingredient: Ingredient
 }
 
 export interface IngredientsSuccessApiResponse extends Action {
     type: IngredientActionTypes,
-    json: object
+    ingredients: Ingredient[]
 }
 
 export interface IngredientsFailureApiResponse extends Action {

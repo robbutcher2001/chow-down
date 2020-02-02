@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnitGrid basic snapshot render 1`] = `
+<ul
+  className="sc-bwzfXH hKcgRx"
+>
+  <li
+    className="sc-bdVaJa fEuTXX"
+  >
+    fake_singular1
+    <aside>
+      fake_plural1
+    </aside>
+  </li>
+  <li
+    className="sc-bdVaJa fEuTXX"
+  >
+    fake_singular2
+    <aside>
+      fake_plural2
+    </aside>
+  </li>
+</ul>
+`;

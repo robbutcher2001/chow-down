@@ -1,5 +1,8 @@
+const webpack = require('webpack');
 const path = require('path');
 const htmlWebpack = require('html-webpack-plugin');
+const faviconsWebpackPlugin = require('favicons-webpack-plugin');
+const offlinePlugin = require('offline-plugin');
 
 module.exports = {
   entry: [
@@ -67,6 +70,32 @@ module.exports = {
   plugins: [
     new htmlWebpack({
       template: path.join(path.resolve(__dirname, '../src'), 'index.html')
+    }),
+    new webpack.EnvironmentPlugin({
+      API_BASE: process.env.API_BASE ? process.env.API_BASE : ''
+    }),
+    new faviconsWebpackPlugin({
+      logo: './src/avocado.png',
+      cache: true,
+      inject: true,
+      favicons: {
+        appName: 'Chow Down',
+        appDescription: 'Chow down on a weekly plan of your evening meals',
+        developerName: 'Rob Butcher',
+        background: '#cccc99',
+        theme_color: '#000',
+        start_url: '/',
+        appleStatusBarStyle: 'default'
+      }
+    }),
+    new offlinePlugin({
+      responseStrategy: 'network-first',
+      externals: [
+        '/api/recipes',
+        '/api/ingredients',
+        '/api/units'
+      ],
+      autoUpdate: true
     })
   ],
   devServer: {

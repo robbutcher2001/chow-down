@@ -26,12 +26,12 @@ export interface GetUnitsApiRequest extends Action {
 
 export interface PostUnitApiRequest extends Action {
     type: UnitActionTypes,
-    payload: object
+    unit: Unit
 }
 
 export interface UnitsSuccessApiResponse extends Action {
     type: UnitActionTypes,
-    json: object
+    units: Unit[]
 }
 
 export interface UnitsFailureApiResponse extends Action {
