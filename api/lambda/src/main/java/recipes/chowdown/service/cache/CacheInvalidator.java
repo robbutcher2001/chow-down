@@ -9,6 +9,7 @@ import com.amazonaws.services.cloudfront.model.CreateInvalidationResult;
 import com.amazonaws.services.cloudfront.model.InvalidationBatch;
 import com.amazonaws.services.cloudfront.model.Paths;
 
+//TODO: test but need to mock static AmazonCloudFrontClientBuilder
 public class CacheInvalidator {
     static final String DISTRIBUTION_ID = System.getenv("DISTRIBUTION_ID");
 
