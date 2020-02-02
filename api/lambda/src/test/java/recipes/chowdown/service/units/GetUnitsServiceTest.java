@@ -1,4 +1,4 @@
-package recipes.chowdown.service.ingredients;
+package recipes.chowdown.service.units;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -27,13 +27,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import recipes.chowdown.domain.Ingredient;
+import recipes.chowdown.domain.Unit;
 import recipes.chowdown.exceptions.ServerException;
-import recipes.chowdown.repository.IngredientRepository;
+import recipes.chowdown.repository.UnitRepository;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class GetIngredientsServiceTest {
+public class GetUnitsServiceTest {
 
     @Mock
     private Context context;
@@ -42,58 +42,58 @@ public class GetIngredientsServiceTest {
     private LambdaLogger logger;
 
     @Mock
-    private IngredientRepository repository;
+    private UnitRepository repository;
 
     @InjectMocks
-    private GetIngredientsService service;
+    private GetUnitsService service;
 
     @BeforeAll
     void beforeAll() {
         MockitoAnnotations.initMocks(this);
 
-        this.service = new GetIngredientsService();
+        this.service = new GetUnitsService();
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenExistsSingle() throws Exception {
+    void handleRequest_shouldReturnUnit_whenExistsSingle() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Unit> returnedUnits = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedIngredients.size());
+        assertEquals(1, returnedUnits.size());
     }
 
     @Test
-    void handleRequest_shouldReturnIngredients_whenExistsMultiple() throws Exception {
+    void handleRequest_shouldReturnUnits_whenExistsMultiple() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField);
         List<List<Field>> rows = Arrays.asList(columns, columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Unit> returnedUnits = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(2, returnedIngredients.size());
+        assertEquals(2, returnedUnits.size());
     }
 
     @Test
-    void handleRequest_shouldThrowException_whenNoIngredientsExist() throws Exception {
+    void handleRequest_shouldThrowException_whenNoUnitsExist() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
         // TODO: see PutIngredientService, need to put this in APIG
@@ -107,12 +107,12 @@ public class GetIngredientsServiceTest {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
 
-        // only return one column (id) and not ingredient name
+        // only return one column (id) and no other unit fields
         List<Field> columns = Collections.singletonList(mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
@@ -120,68 +120,71 @@ public class GetIngredientsServiceTest {
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenTooManyRowsReturnedFromDb() throws Exception {
+    void handleRequest_shouldReturnUnit_whenTooManyRowsReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
 
-        // return three columns (too many for query)
+        // return four columns (too many for query)
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField);
+        List<List<Field>> rows = Collections.singletonList(columns);
+
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.getUnits()).thenReturn(mockResult);
+        when(mockResult.getRecords()).thenReturn(rows);
+        when(mockField.getStringValue()).thenReturn("fake");
+
+        List<Unit> returnedUnits = this.service.handleRequest(new Object(), this.context);
+
+        assertEquals(1, returnedUnits.size());
+        assertEquals("fake", returnedUnits.get(0).getId());
+        assertEquals("fake", returnedUnits.get(0).getSingular());
+        assertEquals("fake", returnedUnits.get(0).getPlural());
+    }
+
+    @Test
+    void handleRequest_shouldReturnUnit_whenNoRowDataReturnedFromDb() throws Exception {
+        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+        Field mockField = Mockito.mock(Field.class);
         List<Field> columns = Arrays.asList(mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake");
-
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
-
-        assertEquals(1, returnedIngredients.size());
-        assertEquals("fake", returnedIngredients.get(0).getId());
-        assertEquals("fake", returnedIngredients.get(0).getIngredient());
-    }
-
-    @Test
-    void handleRequest_shouldReturnIngredient_whenNoRowDataReturnedFromDb() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
-
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("");
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Unit> returnedUnits = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedIngredients.size());
-        assertEquals("", returnedIngredients.get(0).getId());
-        assertEquals("", returnedIngredients.get(0).getIngredient());
+        assertEquals(1, returnedUnits.size());
+        assertEquals("", returnedUnits.get(0).getId());
+        assertEquals("", returnedUnits.get(0).getSingular());
+        assertEquals("", returnedUnits.get(0).getPlural());
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenNullReturnedFromDb() throws Exception {
+    void handleRequest_shouldReturnUnit_whenNullReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn(null);
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Unit> returnedUnits = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedIngredients.size());
-        assertNull(returnedIngredients.get(0).getId());
-        assertNull(returnedIngredients.get(0).getIngredient());
+        assertEquals(1, returnedUnits.size());
+        assertNull(returnedUnits.get(0).getId());
+        assertNull(returnedUnits.get(0).getSingular());
+        assertNull(returnedUnits.get(0).getPlural());
     }
 
     @Test
     void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenThrow(BadRequestException.class);
+        when(this.repository.getUnits()).thenThrow(BadRequestException.class);
 
         ServerException returnedException = assertThrows(ServerException.class,
                 () -> this.service.handleRequest(new Object(), this.context));
@@ -189,20 +192,20 @@ public class GetIngredientsServiceTest {
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenNullInputObject() throws Exception {
+    void handleRequest_shouldReturnUnit_whenNullInputObject() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(null, this.context);
+        List<Unit> returnedUnits = this.service.handleRequest(null, this.context);
 
-        assertEquals(1, returnedIngredients.size());
+        assertEquals(1, returnedUnits.size());
     }
 
     @Test

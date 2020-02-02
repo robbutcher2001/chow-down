@@ -26,11 +26,11 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
   }
 
   public List<Recipe> handleRequest(final Object input, final Context context) {
-    LOGGER = context.getLogger();
-
-    final List<Recipe> recipes = new ArrayList<>();
-
     try {
+      LOGGER = context.getLogger();
+
+      final List<Recipe> recipes = new ArrayList<>();
+
       ExecuteStatementResult result = this.repository.getRecipes();
 
       if (result.getRecords().size() < 1) {
@@ -43,10 +43,12 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
             .description(fields.get(2).getStringValue()).rating(fields.get(3).getLongValue())
             .url(fields.get(4).getStringValue()).image(fields.get(5).getStringValue()).build());
       }
+
+      return recipes;
     } catch (BadRequestException bre) {
       throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (Exception ex) {
+      throw new ServerException(ex.getMessage(), ex);
     }
-
-    return recipes;
   }
 }

@@ -26,11 +26,11 @@ public class GetUnitsService implements RequestHandler<Object, List<Unit>> {
   }
 
   public List<Unit> handleRequest(final Object input, final Context context) {
-    LOGGER = context.getLogger();
-
-    final List<Unit> units = new ArrayList<>();
-
     try {
+      LOGGER = context.getLogger();
+
+      final List<Unit> units = new ArrayList<>();
+
       ExecuteStatementResult result = this.repository.getUnits();
 
       if (result.getRecords().size() < 1) {
@@ -42,10 +42,12 @@ public class GetUnitsService implements RequestHandler<Object, List<Unit>> {
         units.add(Unit.builder().id(fields.get(0).getStringValue()).singular(fields.get(1).getStringValue())
             .plural(fields.get(2).getStringValue()).build());
       }
+
+      return units;
     } catch (BadRequestException bre) {
       throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (Exception ex) {
+      throw new ServerException(ex.getMessage(), ex);
     }
-
-    return units;
   }
 }

@@ -1,4 +1,4 @@
-package recipes.chowdown.service.ingredients;
+package recipes.chowdown.service.recipes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -27,13 +27,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import recipes.chowdown.domain.Ingredient;
+import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ServerException;
-import recipes.chowdown.repository.IngredientRepository;
+import recipes.chowdown.repository.RecipeRepository;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class GetIngredientsServiceTest {
+public class GetRecipesServiceTest {
 
     @Mock
     private Context context;
@@ -42,58 +42,58 @@ public class GetIngredientsServiceTest {
     private LambdaLogger logger;
 
     @Mock
-    private IngredientRepository repository;
+    private RecipeRepository repository;
 
     @InjectMocks
-    private GetIngredientsService service;
+    private GetRecipesService service;
 
     @BeforeAll
     void beforeAll() {
         MockitoAnnotations.initMocks(this);
 
-        this.service = new GetIngredientsService();
+        this.service = new GetRecipesService();
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenExistsSingle() throws Exception {
+    void handleRequest_shouldReturnRecipe_whenExistsSingle() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedIngredients.size());
+        assertEquals(1, returnedRecipes.size());
     }
 
     @Test
-    void handleRequest_shouldReturnIngredients_whenExistsMultiple() throws Exception {
+    void handleRequest_shouldReturnRecipes_whenExistsMultiple() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Arrays.asList(columns, columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(2, returnedIngredients.size());
+        assertEquals(2, returnedRecipes.size());
     }
 
     @Test
-    void handleRequest_shouldThrowException_whenNoIngredientsExist() throws Exception {
+    void handleRequest_shouldThrowException_whenNoRecipesExist() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
         // TODO: see PutIngredientService, need to put this in APIG
@@ -107,12 +107,12 @@ public class GetIngredientsServiceTest {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
 
-        // only return one column (id) and not ingredient name
+        // only return one column (id) and no other recipe fields
         List<Field> columns = Collections.singletonList(mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
@@ -120,68 +120,84 @@ public class GetIngredientsServiceTest {
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenTooManyRowsReturnedFromDb() throws Exception {
+    void handleRequest_shouldReturnRecipe_whenTooManyRowsReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
 
-        // return three columns (too many for query)
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField);
+        // return seven columns (too many for query)
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+                mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
+        when(mockField.getLongValue()).thenReturn(123l);
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedIngredients.size());
-        assertEquals("fake", returnedIngredients.get(0).getId());
-        assertEquals("fake", returnedIngredients.get(0).getIngredient());
+        assertEquals(1, returnedRecipes.size());
+        assertEquals("fake", returnedRecipes.get(0).getId());
+        assertEquals("fake", returnedRecipes.get(0).getTitle());
+        assertEquals("fake", returnedRecipes.get(0).getDescription());
+        assertEquals(123l, returnedRecipes.get(0).getRating());
+        assertEquals("fake", returnedRecipes.get(0).getUrl());
+        assertEquals("fake", returnedRecipes.get(0).getImage());
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenNoRowDataReturnedFromDb() throws Exception {
+    void handleRequest_shouldReturnRecipe_whenNoRowDataReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("");
+        when(mockField.getLongValue()).thenReturn(0l);
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedIngredients.size());
-        assertEquals("", returnedIngredients.get(0).getId());
-        assertEquals("", returnedIngredients.get(0).getIngredient());
+        assertEquals(1, returnedRecipes.size());
+        assertEquals("", returnedRecipes.get(0).getId());
+        assertEquals("", returnedRecipes.get(0).getTitle());
+        assertEquals("", returnedRecipes.get(0).getDescription());
+        assertEquals(0l, returnedRecipes.get(0).getRating());
+        assertEquals("", returnedRecipes.get(0).getUrl());
+        assertEquals("", returnedRecipes.get(0).getImage());
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenNullReturnedFromDb() throws Exception {
+    void handleRequest_shouldReturnRecipe_whenNullReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn(null);
+        when(mockField.getLongValue()).thenReturn(null);
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedIngredients.size());
-        assertNull(returnedIngredients.get(0).getId());
-        assertNull(returnedIngredients.get(0).getIngredient());
+        assertEquals(1, returnedRecipes.size());
+        assertNull(returnedRecipes.get(0).getId());
+        assertNull(returnedRecipes.get(0).getTitle());
+        assertNull(returnedRecipes.get(0).getDescription());
+        assertNull(returnedRecipes.get(0).getRating());
+        assertNull(returnedRecipes.get(0).getUrl());
+        assertNull(returnedRecipes.get(0).getImage());
     }
 
     @Test
     void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenThrow(BadRequestException.class);
+        when(this.repository.getRecipes()).thenThrow(BadRequestException.class);
 
         ServerException returnedException = assertThrows(ServerException.class,
                 () -> this.service.handleRequest(new Object(), this.context));
@@ -189,20 +205,20 @@ public class GetIngredientsServiceTest {
     }
 
     @Test
-    void handleRequest_shouldReturnIngredient_whenNullInputObject() throws Exception {
+    void handleRequest_shouldReturnRecipe_whenNullInputObject() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getIngredients()).thenReturn(mockResult);
+        when(this.repository.getRecipes()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(rows);
         when(mockField.getStringValue()).thenReturn("fake");
 
-        List<Ingredient> returnedIngredients = this.service.handleRequest(null, this.context);
+        List<Recipe> returnedRecipes = this.service.handleRequest(null, this.context);
 
-        assertEquals(1, returnedIngredients.size());
+        assertEquals(1, returnedRecipes.size());
     }
 
     @Test
