@@ -11,6 +11,7 @@ import com.amazonaws.services.rdsdata.model.Field;
 import com.amazonaws.services.rdsdata.model.SqlParameter;
 
 import recipes.chowdown.domain.Unit;
+import recipes.chowdown.exceptions.ResourceNotPersistedException;
 
 public class UnitRepository {
     static final String RESOURCE_ARN = System.getenv("RESOURCE_ARN");
@@ -21,7 +22,7 @@ public class UnitRepository {
     static final String PUT_SQL = "INSERT INTO public.units (id, singular, plural) "
             + "VALUES (DEFAULT, :singular, :plural) RETURNING id";
 
-    final AWSRDSData rdsData;
+    private AWSRDSData rdsData;
 
     public UnitRepository() {
         this.rdsData = AWSRDSDataClient.builder().build();
@@ -35,8 +36,14 @@ public class UnitRepository {
     public ExecuteStatementResult putUnit(final Unit unit) {
         Collection<SqlParameter> parameters = new ArrayList<>();
 
-        parameters.add(new SqlParameter().withName("singular").withValue(new Field().withStringValue(unit.getSingular())));
-        parameters.add(new SqlParameter().withName("plural").withValue(new Field().withStringValue(unit.getPlural())));
+        try {
+            parameters.add(
+                    new SqlParameter().withName("singular").withValue(new Field().withStringValue(unit.getSingular())));
+            parameters.add(
+                    new SqlParameter().withName("plural").withValue(new Field().withStringValue(unit.getPlural())));
+        } catch (NullPointerException npe) {
+            throw new ResourceNotPersistedException("part or all of the input Unit was null");
+        }
 
         return this.rdsData.executeStatement(new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
                 .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(PUT_SQL).withParameters(parameters));
