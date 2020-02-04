@@ -1,36 +1,50 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: DB Test for Chow
+Parameters:
+  Env:
+    Type: String
+  Username:
+    Type: String
 Resources:
-  ChowDbPassword:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      GenerateSecretString:
-        SecretStringTemplate: '{"username": "rob"}'
-        GenerateStringKey: 'password'
-        PasswordLength: 32
-        ExcludeCharacters: '"@/\'
-  ChowDb:
+  ChowDownDatabase:
     Type: AWS::RDS::DBCluster
     Properties:
-      DatabaseName: chowtestrob
-      DBClusterIdentifier: chow-test-rob-cluster
+      DatabaseName: chowdown
+      DBClusterIdentifier:
+        Fn::Join: [ '-', [ 'chowdown', 'cluster', !Ref Env ] ]
       DeletionProtection: true
       Engine: aurora-postgresql
       EngineMode: serverless
       EngineVersion: 10.7
-      MasterUsername: !Join ['', ['{{resolve:secretsmanager:', !Ref ChowDbPassword, ':SecretString:username}}' ]]
-      MasterUserPassword: !Join ['', ['{{resolve:secretsmanager:', !Ref ChowDbPassword, ':SecretString:password}}' ]]
+      MasterUsername:
+        Fn::Join: [ '', [ '{{resolve:secretsmanager:', !Ref ChowDownDatabasePassword, ':SecretString:username}}' ] ]
+      MasterUserPassword:
+        Fn::Join: [ '', [ '{{resolve:secretsmanager:', !Ref ChowDownDatabasePassword, ':SecretString:password}}' ] ]
+      BackupRetentionPeriod: 7
+      PreferredBackupWindow: 03:00-03:30
+      PreferredMaintenanceWindow: mon:03:30-mon:04:00
       ScalingConfiguration:
         AutoPause: true
         MaxCapacity: 2
         MinCapacity: 2
         SecondsUntilAutoPause: 900
-  ChowDbPasswordAttachment:
+  ChowDownDatabasePassword:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name:
+        Fn::Join: [ '/', [ 'chowdown', 'databases', !Ref Env ] ]
+      GenerateSecretString:
+        SecretStringTemplate:
+          Fn::Join: [ '', [ '{"username": "', !Ref Username, '"}' ] ]
+        GenerateStringKey: 'password'
+        PasswordLength: 32
+        ExcludeCharacters: '"@/\'
+  ChowDownDatabasePasswordAttachment:
     Type: AWS::SecretsManager::SecretTargetAttachment
     Properties:
-      SecretId: !Ref ChowDbPassword
-      TargetId: !Ref ChowDb
+      SecretId: !Ref ChowDownDatabasePassword
+      TargetId: !Ref ChowDownDatabase
       TargetType: AWS::RDS::DBCluster
   # MySecretResourcePolicy:
   #   Type: AWS::SecretsManager::ResourcePolicy
