@@ -1,6 +1,7 @@
 package recipes.chowdown.service.recipes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.rdsdata.model.AWSRDSDataException;
 import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
@@ -142,7 +144,20 @@ public class PutRecipeServiceTest {
 
         ServerException returnedException = assertThrows(ServerException.class,
                 () -> this.service.handleRequest(new Recipe(), this.context));
-        assertTrue(returnedException.getMessage().contains("issue communicating with database"));
+        assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    }
+
+    @Test
+    void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenThrow(new AWSRDSDataException(
+                "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
+
+        ServerException returnedException = assertThrows(ServerException.class,
+                () -> this.service.handleRequest(new Recipe(), this.context));
+        assertTrue(returnedException.getMessage().contains("unable to complete request"));
+        assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
+        assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
     }
 
     @Test

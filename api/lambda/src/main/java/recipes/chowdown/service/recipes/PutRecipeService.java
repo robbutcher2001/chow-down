@@ -1,9 +1,9 @@
 package recipes.chowdown.service.recipes;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
 import recipes.chowdown.domain.Recipe;
@@ -52,10 +52,13 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       LOGGER.log("Recipe cache purge status [" + response + "]");
 
       return recipe;
-      //TODO: maybe BadRequestException needs to move down to the repository
-    } catch (BadRequestException bre) {
-      throw new ServerException("unable to complete request, issue communicating with database");
-      //TODO: maybe this needs to not catch ResourceNotPersistedException and instead handle it separately
+      // TODO: maybe BadRequestException / AmazonServiceException needs to move down
+      // to the repository
+    } catch (AmazonServiceException ase) {
+      LOGGER.log(ase.getMessage());
+      throw new ServerException("unable to complete request");
+      // TODO: maybe this needs to not catch ResourceNotPersistedException and instead
+      // handle it separately
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }

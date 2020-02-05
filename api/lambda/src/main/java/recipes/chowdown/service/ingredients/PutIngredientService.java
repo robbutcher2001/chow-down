@@ -1,9 +1,9 @@
 package recipes.chowdown.service.ingredients;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
 import recipes.chowdown.domain.Ingredient;
@@ -34,7 +34,8 @@ public class PutIngredientService implements RequestHandler<Ingredient, Ingredie
       ExecuteStatementResult result = this.repository.putIngredient(ingredient);
 
       // TODO; ResourceNotPersistedException is not caught in Swagger so has no
-      // response code mapping in APIG - do this and change tests to asset for ResourceNotPersistedException instead of ServerException
+      // response code mapping in APIG - do this and change tests to asset for
+      // ResourceNotPersistedException instead of ServerException
       if (result.getRecords().size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
       }
@@ -54,8 +55,9 @@ public class PutIngredientService implements RequestHandler<Ingredient, Ingredie
       LOGGER.log("Ingredient cache purge status [" + response + "]");
 
       return ingredient;
-    } catch (BadRequestException bre) {
-      throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (AmazonServiceException ase) {
+      LOGGER.log(ase.getMessage());
+      throw new ServerException("unable to complete request");
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }

@@ -16,7 +16,7 @@ import recipes.chowdown.exceptions.ResourceNotPersistedException;
 public class IngredientRepository {
     static final String RESOURCE_ARN = System.getenv("RESOURCE_ARN");
     static final String SECRET_ARN = System.getenv("SECRET_ARN");
-    static final String DATABASE = "postgres";
+    static final String DATABASE = System.getenv("DATABASE_NAME");
 
     static final String GET_SQL = "SELECT i.id, i.ingredient FROM public.ingredients i";
     static final String PUT_SQL = "INSERT INTO public.ingredients (id, ingredient) "

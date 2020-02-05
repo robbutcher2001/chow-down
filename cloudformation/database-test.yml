@@ -33,7 +33,7 @@ Resources:
     Type: AWS::SecretsManager::Secret
     Properties:
       Name:
-        Fn::Join: [ '/', [ 'chowdown', 'databases', !Ref Env ] ]
+        Fn::Join: [ '/', [ 'rds-db-credentials', 'chowdown', 'databases', !Ref Env ] ]
       GenerateSecretString:
         SecretStringTemplate:
           Fn::Join: [ '', [ '{"username": "', !Ref Username, '"}' ] ]
