@@ -3,10 +3,10 @@ package recipes.chowdown.service.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
@@ -45,8 +45,9 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
       }
 
       return recipes;
-    } catch (BadRequestException bre) {
-      throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (AmazonServiceException ase) {
+      LOGGER.log(ase.getMessage());
+      throw new ServerException("unable to complete request");
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }
