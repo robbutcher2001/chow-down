@@ -1,6 +1,7 @@
 import { call, put as putSideEffect } from 'redux-saga/effects';
 
 import { unexpectedServerError, unexpectedResponse, clearError } from './app/actions';
+import { ErrorMessageApiResponse } from './app/types';
 
 enum Method {
     POST = 'POST',
@@ -54,7 +55,11 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
         }
     } catch (err) {
         if (err.status >= 500) {
-            yield putSideEffect(unexpectedServerError(err.statusText));
+            const error: ErrorMessageApiResponse = {
+                message: err.statusText
+            };
+
+            yield putSideEffect(unexpectedServerError(error));
         }
         else {
             let errorMessage = err.statusText;
@@ -63,8 +68,12 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
                 errorMessage = 'remote server is unreachable';
             }
 
-            yield putSideEffect(unexpectedResponse('An error has occurred with message: ' +
-                (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'));
+            const error: ErrorMessageApiResponse = {
+                message: 'An error has occurred with message: ' +
+                    (errorMessage ? errorMessage.toLowerCase() : '<no message provided by server>') + '.'
+            };
+
+            yield putSideEffect(unexpectedResponse(error));
         }
     }
 };

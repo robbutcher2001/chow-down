@@ -10,9 +10,11 @@ export interface AppState {
     readonly error: string
 }
 
+export interface ErrorMessageApiResponse {
+    message: string
+}
+
 export interface ErrorApiResponse extends Action {
     type: AppActionTypes,
-    json: {
-        message: string
-    }
+    json: ErrorMessageApiResponse
 }
