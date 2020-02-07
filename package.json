@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "API_BASE=http://localhost:3000 NODE_ENV=development webpack-dev-server --config webpack/config.js",
     "mock-api": "mvn -f api/mock spring-boot:run",
-    "test": "jest --config jest.config.json",
+    "test": "mvn clean test -f api/lambda && jest --config jest.config.json",
     "build": "NODE_ENV=production webpack --config webpack/config.js"
   },
   "repository": {

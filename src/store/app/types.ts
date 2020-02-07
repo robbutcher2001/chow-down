@@ -12,5 +12,7 @@ export interface AppState {
 
 export interface ErrorApiResponse extends Action {
     type: AppActionTypes,
-    reason: string
+    json: {
+        message: string
+    }
 }
