@@ -91,17 +91,16 @@ public class GetUnitsServiceTest {
     }
 
     @Test
-    void handleRequest_shouldThrowException_whenNoUnitsExist() throws Exception {
+    void handleRequest_shouldNotReturnUnits_whenNoUnitsExist() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
         when(this.context.getLogger()).thenReturn(this.logger);
         when(this.repository.getUnits()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
-        // TODO: see PutIngredientService, need to put this in APIG
-        // assertThrows(ResourcesNotFoundException.class, () ->
-        // this.service.handleRequest(new Object(), this.context));
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), this.context));
+        List<Unit> returnedUnits = this.service.handleRequest(new Object(), this.context);
+
+        assertEquals(0, returnedUnits.size());
     }
 
     @Test

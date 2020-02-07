@@ -71,7 +71,7 @@ public class ServiceMock implements ApiApi {
     public ResponseEntity<List<Unit>> apiUnitsGet() {
         if (initRequest) {
             initRequest = !initRequest;
-            return new ResponseEntity<List<Unit>>(Collections.emptyList(), HttpStatus.GONE);
+            return new ResponseEntity<List<Unit>>(Collections.emptyList(), HttpStatus.OK);
         }
 
         return new ResponseEntity<List<Unit>>(this.units, HttpStatus.OK);
@@ -88,7 +88,7 @@ public class ServiceMock implements ApiApi {
     public ResponseEntity<List<Ingredient>> apiIngredientsGet() {
         if (initRequest) {
             initRequest = !initRequest;
-            return new ResponseEntity<List<Ingredient>>(Collections.emptyList(), HttpStatus.GONE);
+            return new ResponseEntity<List<Ingredient>>(Collections.emptyList(), HttpStatus.OK);
         }
 
         return new ResponseEntity<List<Ingredient>>(this.ingredients, HttpStatus.OK);
@@ -105,7 +105,7 @@ public class ServiceMock implements ApiApi {
     public ResponseEntity<List<Recipe>> apiRecipesGet() {
         if (initRequest) {
             initRequest = !initRequest;
-            return new ResponseEntity<List<Recipe>>(Collections.emptyList(), HttpStatus.GONE);
+            return new ResponseEntity<List<Recipe>>(Collections.emptyList(), HttpStatus.OK);
         }
 
         return new ResponseEntity<List<Recipe>>(this.recipes, HttpStatus.OK);
