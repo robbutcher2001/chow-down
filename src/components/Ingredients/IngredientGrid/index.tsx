@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Ingredient } from '../../../store/domain/ingredients/types';
 import IngredientCard from '../IngredientCard';
 import IngredientMarker from '../IngredientMarker';
-import { ErrorBox } from '../../MessageBox';
+import { NegativeBox } from '../../MessageBox';
 
 interface IngredientGridProps {
   ingredients: Ingredient[]
@@ -54,4 +54,4 @@ export default (props: IngredientGridProps) =>
     <IngredientGrid>
       {ingredientsWithMarkers(props.ingredients)}
     </IngredientGrid> :
-    <ErrorBox message='No ingredients yet!' />;
+    <NegativeBox message='No ingredients yet!' />;

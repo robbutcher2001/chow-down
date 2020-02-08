@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Recipe } from '../../../store/domain/recipes/types';
 import RecipeCard from '../RecipeCard';
-import { ErrorBox } from '../../MessageBox';
+import { NegativeBox } from '../../MessageBox';
 
 interface RecipeGridProps {
   recipes: Recipe[]
@@ -33,4 +33,4 @@ export default (props: RecipeGridProps) =>
         />
       )}
     </RecipeGrid> :
-    <ErrorBox message='No recipes yet!' />;
+    <NegativeBox message='No recipes yet!' />;

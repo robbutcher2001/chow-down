@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Unit } from '../../../store/domain/units/types';
 import UnitCard from '../UnitCard';
-import { ErrorBox } from '../../MessageBox';
+import { NegativeBox } from '../../MessageBox';
 
 interface UnitGridProps {
   units: Unit[]
@@ -29,4 +29,4 @@ export default (props: UnitGridProps) =>
         />
       )}
     </UnitGrid> :
-    <ErrorBox message='No units yet!' />;
+    <NegativeBox message='No units yet!' />;
