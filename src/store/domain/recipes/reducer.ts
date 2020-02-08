@@ -7,8 +7,9 @@ const initialState: RecipesState = {
     recipes: []
 }
 
+//TODO: when we separate out the success and failure reducers, we should be able to get rid of this interface as it'll just be RecipesFailureApiResponse
 interface RecipesFailureResponse {
-    recipe: string
+    message: string
 }
 
 //TODO: should we type-cast here?
@@ -18,6 +19,7 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
         case RecipeActionTypes.GET_RECIPES_SUCCESS:
             const successResponse = action as RecipesSuccessApiResponse;
             // to remove type-casting, we should be able to move to this once failure is implmented below
+            // need a separate failure reducer so we don't need to use GetRecipesApiResponse anymore
             // const successResponse: RecipesSuccessApiResponse = action;
             return {
                 failure: null,
@@ -34,17 +36,9 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
         case RecipeActionTypes.POST_RECIPES_FAILURE:
             const failureResponse = action as RecipesFailureApiResponse;
             const failureJson = failureResponse.json as RecipesFailureResponse;
-            console.log(failureResponse.code);
-
-            if (failureResponse.code === 410) {
-                return {
-                    failure: 'No recipes found',
-                    recipes: []
-                };
-            }
 
             return {
-                failure: failureJson.recipe,
+                failure: failureJson.message,
                 recipes: []
             };
 

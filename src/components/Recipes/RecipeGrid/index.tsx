@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Recipe } from '../../../store/domain/recipes/types';
 import RecipeCard from '../RecipeCard';
+import { ErrorBox } from '../../MessageBox';
 
 interface RecipeGridProps {
   recipes: Recipe[]
@@ -18,18 +19,18 @@ const RecipeGrid = styled.ul`
   list-style: none;
 `
 
-export default (props: RecipeGridProps) => (
-  <RecipeGrid>
-    {props.recipes.map((recipe, i) =>
-      <RecipeCard
-        key={i}
-        title={recipe.title}
-        description={recipe.description}
-        rating={recipe.rating}
-        imageUrl={recipe.image}
-        imageAlt={recipe.title}
-      />
-    )
-    }
-  </RecipeGrid>
-);
+export default (props: RecipeGridProps) =>
+  props.recipes && props.recipes.length > 0 ?
+    <RecipeGrid>
+      {props.recipes.map((recipe, i) =>
+        <RecipeCard
+          key={i}
+          title={recipe.title}
+          description={recipe.description}
+          rating={recipe.rating}
+          imageUrl={recipe.image}
+          imageAlt={recipe.title}
+        />
+      )}
+    </RecipeGrid> :
+    <ErrorBox message='No recipes yet!' />;

@@ -12,5 +12,7 @@ export const unexpectedResponse = (json: ErrorMessageApiResponse): ErrorApiRespo
 
 export const clearError = (): ErrorApiResponse => ({
     type: AppActionTypes.CLEAR_ERROR,
-    json: null
+    json: {
+        message: null
+    }
 });
