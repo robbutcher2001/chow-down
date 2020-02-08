@@ -11,7 +11,6 @@ import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
 import recipes.chowdown.domain.Recipe;
-import recipes.chowdown.exceptions.ResourcesNotFoundException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 
@@ -35,7 +34,6 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
 
       if (result.getRecords().size() < 1) {
         LOGGER.log("No recipes found");
-        throw new ResourcesNotFoundException("no recipes found");
       }
 
       for (List<Field> fields : result.getRecords()) {

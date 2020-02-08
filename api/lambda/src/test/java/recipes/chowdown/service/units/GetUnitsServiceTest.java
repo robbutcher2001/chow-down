@@ -90,7 +90,7 @@ public class GetUnitsServiceTest {
         assertEquals(2, returnedUnits.size());
     }
 
-    // @Test
+    @Test
     void handleRequest_shouldNotReturnUnits_whenNoUnitsExist() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
