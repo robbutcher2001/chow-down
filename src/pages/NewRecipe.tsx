@@ -9,6 +9,7 @@ import { postRecipesRequest } from '../store/domain/recipes/actions';
 import Main from '../components/Main';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
+import ImageSelector from '../components/ImageSelector';
 import { LoadingBox, ErrorBox } from '../components/MessageBox';
 import Textarea from '../components/Textarea';
 
@@ -56,7 +57,7 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
                             <Textarea name='description' label='Description' />
                             <InputBox name='rating' type='number' label='Rating' />
                             <InputBox name='url' type='text' label='Url' />
-                            <InputBox name='image' type='text' label='Upload image' />
+                            <ImageSelector name='image' label='Upload image' />
                         </Form>
                     }
                 </div>
