@@ -2,7 +2,7 @@
 
 exports[`InputBox basic snapshot render 1`] = `
 <label
-  className="sc-bdVaJa cXQnaz"
+  className="sc-bdVaJa dFdldb"
   htmlFor="title"
 >
   The Input Title

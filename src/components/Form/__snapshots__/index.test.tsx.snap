@@ -9,7 +9,7 @@ exports[`Form basic snapshot render 1`] = `
 >
   <div
     form={Object {}}
-    onChange={[Function]}
+    setNewFormState={[Function]}
   >
     fake_child
   </div>
