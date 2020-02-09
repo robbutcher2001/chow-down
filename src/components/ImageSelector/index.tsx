@@ -4,9 +4,13 @@ import styled from 'styled-components';
 
 const reader = new FileReader();
 
-interface ImageSelectorProps {
+export interface ImageSelectorProps {
   name: string,
-  label: string
+  label: string,
+  form?: {
+    [key: string]: string | number
+  },
+  setNewFormState?: (field: string, newValue: string | number) => void
 };
 
 interface OwnState {
@@ -66,7 +70,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
     const files: FileList = event.target.files;
 
     if (files.length === 1) {
-      const img = files[0];
+      const img: File = files[0];
       if (img.type.match(/image.*/)) {
         reader.readAsDataURL(img);
       }

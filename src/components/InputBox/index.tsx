@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 
 import styled from 'styled-components';
 
@@ -9,7 +9,7 @@ export interface InputBoxProps {
   form?: {
     [key: string]: string | number
   },
-  onChange?: (field: string, type: 'text' | 'number', event: ChangeEvent<HTMLInputElement>) => void
+  setNewFormState?: (field: string, newValue: string | number) => void
 };
 
 const Label = styled.label`
@@ -30,15 +30,32 @@ const Label = styled.label`
   }
 `
 
-export default (props: InputBoxProps) => (
-  <Label htmlFor={props.name}>
-    {props.label}
-    <input
-      id={props.name}
-      name={props.name}
-      type={props.type}
-      value={props.form[props.name]}
-      onChange={event => props.onChange(props.name, props.type, event)}
-    />
-  </Label>
-);
+class InputBox extends Component<InputBoxProps, {}> {
+  constructor(props: InputBoxProps) {
+    super(props);
+  };
+
+  onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const value = event.currentTarget.value;
+    this.props.setNewFormState(
+      this.props.name,
+      this.props.type === 'number' && value ? parseInt(value) : value
+    );
+  };
+
+  render = () => (
+    <Label htmlFor={this.props.name}>
+      {this.props.label}
+      <input
+        id={this.props.name}
+        name={this.props.name}
+        type={this.props.type}
+        value={this.props.form[this.props.name]}
+        onChange={event => this.onChange(event)}
+      />
+    </Label>
+  );
+};
+
+export default InputBox;

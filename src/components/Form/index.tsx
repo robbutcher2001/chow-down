@@ -3,6 +3,10 @@ import React, { Component, FormEvent, ChangeEvent, ReactElement } from 'react';
 import styled from 'styled-components';
 
 import { InputBoxProps } from '../InputBox';
+import { TextareaProps } from '../Textarea';
+import { ImageSelectorProps } from '../ImageSelector';
+
+type CombinedInputProps = InputBoxProps | TextareaProps | ImageSelectorProps;
 
 interface FieldNames {
   [key: string]: string
@@ -15,7 +19,7 @@ interface DispatchProps { };
 interface OwnProps {
   dispatch: (form: object) => object,
   submitText: string,
-  children: ReactElement<InputBoxProps> | ReactElement<InputBoxProps>[]
+  children: ReactElement<CombinedInputProps> | ReactElement<CombinedInputProps>[]
 };
 
 interface OwnState {
@@ -66,29 +70,23 @@ class FormComponent extends Component<CombinedProps, OwnState> {
         ...fieldNames
       }
     };
-  }
+  };
 
-  getFieldNames = () => React.Children.map(this.props.children, (child: ReactElement<InputBoxProps>) => child.props.name)
+  getFieldNames = () => React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) => child.props.name)
     .reduce((names, name) => {
       names[name] = '';
       return names;
     }, {} as FieldNames);
 
-  onChange = (
-    field: string,
-    type: 'text' | 'number',
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    event.preventDefault();
-    const value = event.currentTarget.value;
+  setNewFormState = (field: string, newValue: string | number) => {
     this.setState(prevState => {
       const newState = {
         form: Object.assign({}, prevState.form)
       };
-      newState.form[field] = type === 'number' && value ? parseInt(value) : value;
+      newState.form[field] = newValue;
       return newState;
     });
-  }
+  };
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,7 +96,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     if (formPopulated) {
       this.props.dispatch(this.state.form);
     }
-  }
+  };
 
   onReset = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -112,8 +110,8 @@ class FormComponent extends Component<CombinedProps, OwnState> {
   };
 
   render = () => {
-    const children = React.Children.map(this.props.children, (child: ReactElement<InputBoxProps>) =>
-      React.cloneElement(child, { form: this.state.form, onChange: this.onChange }));
+    const children = React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) =>
+      React.cloneElement(child, { form: this.state.form, setNewFormState: this.setNewFormState }));
 
     return (
       <Form id='form' onSubmit={this.onSubmit} onReset={this.onReset} >
@@ -128,7 +126,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
         </div>
       </Form>
     );
-  }
+  };
 };
 
 export default FormComponent;
