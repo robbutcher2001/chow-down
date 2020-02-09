@@ -4,6 +4,8 @@ import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
 import { Recipe, PostRecipeApiRequest } from '../store/domain/recipes/types';
+import { Unit } from '../store/domain/units/types';
+import { Ingredient } from '../store/domain/ingredients/types';
 import { postRecipesRequest } from '../store/domain/recipes/actions';
 
 import Main from '../components/Main';
@@ -12,10 +14,13 @@ import InputBox from '../components/InputBox';
 import ImageSelector from '../components/ImageSelector';
 import { LoadingBox, ErrorBox } from '../components/MessageBox';
 import Textarea from '../components/Textarea';
+import RecipeIngredients from '../components/RecipeIngredients';
 
 interface StateProps {
     error: string,
     failure: string,
+    units: Unit[],
+    ingredients: Ingredient[],
     ui: {
         pending: {
             post: boolean
@@ -58,6 +63,7 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
                             <InputBox name='rating' type='number' label='Rating' />
                             <InputBox name='url' type='text' label='Url' />
                             <ImageSelector name='image' label='Upload image' />
+                            <RecipeIngredients units={this.props.units} ingredients={this.props.ingredients} />
                         </Form>
                     }
                 </div>
@@ -69,6 +75,8 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
 const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
     error: app.error,
     failure: domain.recipe.failure,
+    units: domain.unit.units,
+    ingredients: domain.ingredient.ingredients,
     ui: {
         pending: {
             post: ui.recipe.postPending

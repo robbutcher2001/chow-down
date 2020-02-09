@@ -19,9 +19,6 @@ const Label = styled.label`
 
   > input {
     border: solid 2px #e4e4e4;
-  }
-
-  > input {
     border-radius: 5px;
     padding: 0 0.5em;
     margin: 0.5rem 0;

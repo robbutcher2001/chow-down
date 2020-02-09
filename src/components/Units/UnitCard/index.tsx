@@ -22,11 +22,11 @@ const UnitCard = styled.li`
     margin-top: 0.5rem;
 
     &::before {
-      content: "("
+      content: '('
     }
 
     &::after {
-      content: ")"
+      content: ')'
     }
   }
 `

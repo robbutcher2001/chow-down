@@ -1,4 +1,4 @@
-import React, { Component, FormEvent, ChangeEvent, ReactElement } from 'react';
+import React, { Component, FormEvent, ReactElement } from 'react';
 
 import styled from 'styled-components';
 
