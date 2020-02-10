@@ -36,6 +36,7 @@ const RecipeIngredient = styled.li`
       height: 2rem;
       font-size: 1rem;
       font-family: 'Lato', sans-serif;
+      -webkit-appearance: none;
     }
   }
 
