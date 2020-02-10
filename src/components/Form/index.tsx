@@ -80,6 +80,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
       return names;
     }, {} as FieldNames);
 
+  //TODO: need to rename this - tests complain
   setNewFormState = (field: string, newValue: string | number) => {
     this.setState(prevState => {
       const newState = {

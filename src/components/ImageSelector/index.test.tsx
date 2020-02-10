@@ -13,6 +13,7 @@ test('ImageSelector basic snapshot render', () => {
       name='title'
       label='The Image Selector Title'
       form={mockFormState}
+      setNewFormState={jest.fn}
     />
   );
 

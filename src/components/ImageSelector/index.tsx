@@ -1,6 +1,7 @@
 import React, { Component, ChangeEvent } from 'react';
 
 import styled from 'styled-components';
+import questionImg from './question.svg';
 
 const reader = new FileReader();
 
@@ -35,9 +36,11 @@ const Label = styled.label`
   }
 
   > img {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    max-width: 400px;
     margin-bottom: 1rem;
+    background-color: rgba(0,0,0,.2);
+    cursor: pointer;
   }
 
   .red {
@@ -56,6 +59,14 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
     };
   }
 
+  componentDidMount = () => {
+    this.props.setNewFormState(
+      this.props.name,
+      questionImg
+    );
+  };
+
+  //TODO: select image, then open popup and click cancel, tries to render null
   getImgData = (event: ProgressEvent<FileReader>) => {
     this.props.setNewFormState(
       this.props.name,
