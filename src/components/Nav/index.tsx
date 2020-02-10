@@ -26,11 +26,7 @@ const Nav = styled.nav`
     &:hover, &.active {
       border-bottom-color: #4acaa8;
     }
-  
-    &:focus {
-      outline: none;
-    }
-  
+
     &:last-child {
       margin-left: auto;
       font-size: 0;

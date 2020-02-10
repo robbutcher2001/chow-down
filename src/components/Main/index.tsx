@@ -50,10 +50,6 @@ const Main = styled.main`
         color: white;
         background-color: #4acaa8;
         text-decoration: none;
-  
-        &:focus {
-          outline: none;
-        }
       }
     }
   }

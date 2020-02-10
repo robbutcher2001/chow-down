@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Unit } from '../../store/domain/units/types';
 import { Ingredient } from '../../store/domain/ingredients/types';
 
-export interface RecipeIngredientProps {
+interface RecipeIngredientProps {
   index: number,
   units: Unit[],
   ingredients: Ingredient[]
@@ -14,6 +14,12 @@ const RecipeIngredient = styled.li`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  background: rgba(171, 184, 195, 0.15);
+  border-left-style: solid;
+  border-left-width: 0.15rem;
+  border-left-color: #0693E3;
+  margin: 0 0 1rem 0;
+  padding: 0.75rem;
 
   label {
     display: flex;
@@ -25,6 +31,10 @@ const RecipeIngredient = styled.li`
 
     > select {
       min-width: 6rem;
+
+      &[id*='units_'] {
+        max-width: 8rem;
+      }
     }
 
     > input, select {
@@ -32,8 +42,8 @@ const RecipeIngredient = styled.li`
       border: dashed 2px #e4e4e4;
       border-radius: 5px;
       background-color: #fff;
-      padding: 0 0.5em;
       margin: 0.5rem 0;
+      padding: 0 0.5em;
       height: 2rem;
       font-size: 1rem;
       font-family: 'Lato', sans-serif;
@@ -64,6 +74,7 @@ export default (props: RecipeIngredientProps) => (
     <label htmlFor={'units_' + props.index}>
       Unit
       <select id={'units_' + props.index}>
+        <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
         {props.units.map(unit => (
           <option key={unit.id} value={unit.id}>{unit.singular}</option>
         ))}
@@ -73,6 +84,7 @@ export default (props: RecipeIngredientProps) => (
     <label htmlFor={'ingredient_' + props.index}>
       Ingredient
       <select id={'ingredient_' + props.index}>
+        <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
         {props.ingredients.map(ingredient => (
           <option key={ingredient.id} value={ingredient.id}>{ingredient.ingredient}</option>
         ))}

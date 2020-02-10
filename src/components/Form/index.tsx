@@ -1,12 +1,13 @@
-import React, { Component, FormEvent, ReactElement } from 'react';
+import React, { Component, ReactElement, FormEvent } from 'react';
 
 import styled from 'styled-components';
 
 import { InputBoxProps } from '../InputBox';
 import { TextareaProps } from '../Textarea';
 import { ImageSelectorProps } from '../ImageSelector';
+import { RecipeIngredientsProps } from '../RecipeIngredients';
 
-type CombinedInputProps = InputBoxProps | TextareaProps | ImageSelectorProps;
+type CombinedInputProps = InputBoxProps | TextareaProps | ImageSelectorProps | RecipeIngredientsProps;
 
 interface FieldNames {
   [key: string]: string
@@ -38,6 +39,7 @@ const Form = styled.form`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 0 2em;
+    margin-top: 1rem;
 
     > button {
       border-radius: 5px;

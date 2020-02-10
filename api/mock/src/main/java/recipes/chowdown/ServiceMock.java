@@ -3,6 +3,8 @@ package recipes.chowdown;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
@@ -22,99 +24,122 @@ import recipes.chowdown.schema.Unit;
 @CrossOrigin(origins = "http://localhost:8080")
 public class ServiceMock implements ApiApi {
 
-    final Faker faker;
-    final List<Unit> units = new ArrayList<>();
-    final List<Ingredient> ingredients = new ArrayList<>();
-    final List<Recipe> recipes = new ArrayList<>();
-    boolean initRequest = true;
+  final Faker faker;
+  final List<Unit> units = new ArrayList<>();
+  final List<Ingredient> ingredients = new ArrayList<>();
+  final List<Recipe> recipes = new ArrayList<>();
+  boolean initRequest = true;
 
-    public ServiceMock() {
-        this.faker = new Faker();
+  public ServiceMock() {
+    this.faker = new Faker();
 
-        for (int i = 0; i < 20; i++) {
-            Recipe recipe = new Recipe();
-            recipe.setId(this.faker.internet().uuid());
-            recipe.setTitle(this.faker.food().dish());
-            recipe.setDescription(this.faker.hitchhikersGuideToTheGalaxy().marvinQuote());
-            recipe.setRating(this.faker.number().numberBetween(0, 6));
-            recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
-            recipe.setImage(this.faker.internet().image());
+    for (int i = 0; i < 20; i++) {
+      Recipe recipe = new Recipe();
+      recipe.setId(this.faker.internet().uuid());
+      recipe.setTitle(this.faker.food().dish());
+      recipe.setDescription(this.faker.hitchhikersGuideToTheGalaxy().marvinQuote());
+      recipe.setRating(this.faker.number().numberBetween(0, 6));
+      recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
+      recipe.setImage(this.faker.internet().image());
 
-            this.recipes.add(recipe);
-        }
-
-        for (int i = 0; i < 12; i++) {
-            Unit unit = new Unit();
-            unit.setId(this.faker.internet().uuid());
-
-            String measurement = this.faker.food().measurement();
-            if (measurement.contains(" ")) {
-                measurement = measurement.split(" ")[1];
-            }
-
-            unit.setSingular(measurement);
-            unit.setPlural(measurement.concat("s"));
-
-            this.units.add(unit);
-        }
-
-        for (int i = 0; i < 120; i++) {
-            Ingredient ingredient = new Ingredient();
-            ingredient.setId(this.faker.internet().uuid());
-            ingredient.setIngredient(this.faker.food().ingredient());
-
-            this.ingredients.add(ingredient);
-        }
+      this.recipes.add(recipe);
     }
 
-    @Override
-    public ResponseEntity<List<Unit>> apiUnitsGet() {
-        if (initRequest) {
-            initRequest = !initRequest;
-            return new ResponseEntity<List<Unit>>(Collections.emptyList(), HttpStatus.OK);
-        }
+    for (int i = 0; i < 12; i++) {
+      Unit unit = new Unit();
+      unit.setId(this.faker.internet().uuid());
 
-        return new ResponseEntity<List<Unit>>(this.units, HttpStatus.OK);
+      String measurement = this.faker.food().measurement();
+      if (measurement.contains(" ")) {
+        measurement = measurement.split(" ")[1];
+      }
+
+      unit.setSingular(measurement);
+      unit.setPlural(measurement.concat("s"));
+
+      this.units.add(unit);
     }
 
-    @Override
-    public ResponseEntity<Unit> apiUnitsPost(@Valid Unit unit) {
-        unit.setId(this.faker.internet().uuid());
-        this.units.add(unit);
-        return new ResponseEntity<>(unit, HttpStatus.CREATED);
+    for (int i = 0; i < 120; i++) {
+      Ingredient ingredient = new Ingredient();
+      ingredient.setId(this.faker.internet().uuid());
+      ingredient.setIngredient(this.faker.food().ingredient());
+
+      this.ingredients.add(ingredient);
+    }
+  }
+
+  private void randomSleep() {
+    try {
+      TimeUnit.SECONDS.sleep(new Random().nextInt(10));
+    } catch (InterruptedException ie) {
+      Thread.currentThread().interrupt();
+    }
+  }
+
+  @Override
+  public ResponseEntity<List<Unit>> apiUnitsGet() {
+    if (initRequest) {
+      initRequest = !initRequest;
+      return new ResponseEntity<List<Unit>>(Collections.emptyList(), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<List<Ingredient>> apiIngredientsGet() {
-        if (initRequest) {
-            initRequest = !initRequest;
-            return new ResponseEntity<List<Ingredient>>(Collections.emptyList(), HttpStatus.OK);
-        }
+    randomSleep();
 
-        return new ResponseEntity<List<Ingredient>>(this.ingredients, HttpStatus.OK);
+    return new ResponseEntity<List<Unit>>(this.units, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<Unit> apiUnitsPost(@Valid Unit unit) {
+    unit.setId(this.faker.internet().uuid());
+    this.units.add(unit);
+
+    randomSleep();
+
+    return new ResponseEntity<>(unit, HttpStatus.CREATED);
+  }
+
+  @Override
+  public ResponseEntity<List<Ingredient>> apiIngredientsGet() {
+    if (initRequest) {
+      initRequest = !initRequest;
+      return new ResponseEntity<List<Ingredient>>(Collections.emptyList(), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<Ingredient> apiIngredientsPost(@Valid Ingredient ingredient) {
-        ingredient.setId(this.faker.internet().uuid());
-        this.ingredients.add(ingredient);
-        return new ResponseEntity<>(ingredient, HttpStatus.CREATED);
+    randomSleep();
+
+    return new ResponseEntity<List<Ingredient>>(this.ingredients, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<Ingredient> apiIngredientsPost(@Valid Ingredient ingredient) {
+    ingredient.setId(this.faker.internet().uuid());
+    this.ingredients.add(ingredient);
+
+    randomSleep();
+
+    return new ResponseEntity<>(ingredient, HttpStatus.CREATED);
+  }
+
+  @Override
+  public ResponseEntity<List<Recipe>> apiRecipesGet() {
+    if (initRequest) {
+      initRequest = !initRequest;
+      return new ResponseEntity<List<Recipe>>(Collections.emptyList(), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<List<Recipe>> apiRecipesGet() {
-        if (initRequest) {
-            initRequest = !initRequest;
-            return new ResponseEntity<List<Recipe>>(Collections.emptyList(), HttpStatus.OK);
-        }
+    randomSleep();
 
-        return new ResponseEntity<List<Recipe>>(this.recipes, HttpStatus.OK);
-    }
+    return new ResponseEntity<List<Recipe>>(this.recipes, HttpStatus.OK);
+  }
 
-    @Override
-    public ResponseEntity<Recipe> apiRecipesPost(@Valid Recipe recipe) {
-        recipe.setId(this.faker.internet().uuid());
-        this.recipes.add(recipe);
-        return new ResponseEntity<>(recipe, HttpStatus.CREATED);
-    }
+  @Override
+  public ResponseEntity<Recipe> apiRecipesPost(@Valid Recipe recipe) {
+    recipe.setId(this.faker.internet().uuid());
+    this.recipes.add(recipe);
+
+    randomSleep();
+
+    return new ResponseEntity<>(recipe, HttpStatus.CREATED);
+  }
 }
