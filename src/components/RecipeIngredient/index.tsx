@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import { Unit } from '../../store/domain/units/types';
 import { Ingredient } from '../../store/domain/ingredients/types';
 
-export interface InputBoxProps {
+export interface RecipeIngredientProps {
+  index: number,
   units: Unit[],
   ingredients: Ingredient[]
 };
@@ -54,24 +55,24 @@ const RecipeIngredient = styled.li`
   }
 `
 
-export default (props: InputBoxProps) => (
+export default (props: RecipeIngredientProps) => (
   <RecipeIngredient>
-    <label htmlFor='quantity'>
+    <label htmlFor={'quantity_' + props.index}>
       Quantity
-      <input id='quantity' type='number' min='0' />
+      <input id={'quantity_' + props.index} type='number' min='0' />
     </label>
-    <label htmlFor='units'>
+    <label htmlFor={'units_' + props.index}>
       Unit
-      <select id='units'>
+      <select id={'units_' + props.index}>
         {props.units.map(unit => (
           <option key={unit.id} value={unit.id}>{unit.singular}</option>
         ))}
       </select>
     </label>
     <p>of</p>
-    <label htmlFor='ingredient'>
+    <label htmlFor={'ingredient_' + props.index}>
       Ingredient
-      <select id='ingredient'>
+      <select id={'ingredient_' + props.index}>
         {props.ingredients.map(ingredient => (
           <option key={ingredient.id} value={ingredient.id}>{ingredient.ingredient}</option>
         ))}

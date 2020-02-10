@@ -41,18 +41,19 @@ class RecipeIngredients extends Component<RecipeIngredientsProps, OwnState> {
   newRecipeIngredient = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.setState(prevState => {
+      const index = this.state.recipeIngredients.length;
       const recipeIngredients = Object.assign(
         [],
-        prevState.recipeIngredients,
+        prevState.recipeIngredients
       );
 
       recipeIngredients.push(
-        <RecipeIngredient key={this.state.recipeIngredients.length + 1} units={this.props.units} ingredients={this.props.ingredients} />
+        <RecipeIngredient key={index} index={index} units={this.props.units} ingredients={this.props.ingredients} />
       );
 
       return {
         recipeIngredients
-      }
+      };
     });
     console.log(this.state);
   };

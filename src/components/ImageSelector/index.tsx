@@ -14,7 +14,6 @@ export interface ImageSelectorProps {
 };
 
 interface OwnState {
-  img: any,
   error: string
 };
 
@@ -53,14 +52,16 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
     reader.onload = this.getImgData;
 
     this.state = {
-      img: null,
       error: null
     };
   }
 
   getImgData = (event: ProgressEvent<FileReader>) => {
+    this.props.setNewFormState(
+      this.props.name,
+      event.target.result.toString()
+    );
     this.setState({
-      img: event.target.result,
       error: null
     });
   };
@@ -75,15 +76,21 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         reader.readAsDataURL(img);
       }
       else {
+        this.props.setNewFormState(
+          this.props.name,
+          null
+        );
         this.setState({
-          img: null,
           error: 'Not an image'
         });
       }
     }
     else {
+      this.props.setNewFormState(
+        this.props.name,
+        null
+      );
       this.setState({
-        img: null,
         error: 'Select only one image'
       });
     }
@@ -97,8 +104,8 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         name={this.props.name}
         type='file'
         accept='image/*'
-        onChange={this.onChange} />
-      <img src={this.state.img} />
+        onChange={event => this.onChange(event)} />
+      <img src={this.props.form[this.props.name].toString()} />
       <div className='red'>{this.state.error}</div>
     </Label>
   );
