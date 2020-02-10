@@ -3,12 +3,17 @@ import renderer from 'react-test-renderer';
 
 import ImageSelector from '.';
 
+const mockFormState = {
+  title: 'value'
+};
+
 test('ImageSelector basic snapshot render', () => {
   const imageSelector = renderer.create(
     <ImageSelector
       name='title'
       label='The Image Selector Title'
-      />
+      form={mockFormState}
+    />
   );
 
   expect(imageSelector.toJSON()).toMatchSnapshot();
