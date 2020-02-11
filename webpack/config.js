@@ -75,14 +75,14 @@ module.exports = {
       API_BASE: process.env.API_BASE ? process.env.API_BASE : ''
     }),
     new faviconsWebpackPlugin({
-      logo: './src/avocado.png',
+      logo: './src/chef.png',
       cache: true,
       inject: true,
       favicons: {
         appName: 'Chow Down',
         appDescription: 'Chow down on a weekly plan of your evening meals',
         developerName: 'Rob Butcher',
-        background: '#cccc99',
+        background: '#000',
         theme_color: '#000',
         start_url: '/',
         appleStatusBarStyle: 'default'
