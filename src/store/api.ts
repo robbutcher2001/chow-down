@@ -35,18 +35,19 @@ export interface FailCallback {
 //TODO: need to type the response from fetch, any is not good
 function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback) {
     try {
-        if (response.status) {
+        if (response.status && response.status >= 200 && response.status <= 500) {
             const json: ResponseBody = {
                 data: yield response.json()
             };
 
-            if (response.status >= 200 && response.status < 300) {
+            if (response.status < 300) {
                 yield* success(json.data);
             }
+            //TODO: does json.data.message actually get parsed in failure reducer? don't know until we return error >=400 && <500
             else if (response.status >= 400 && response.status < 500) {
                 yield* failure(response.status, json.data);
             }
-            else if (response.status >= 500) {
+            else if (response.status === 500) {
                 const error = { ...json.data } as ErrorMessageApiResponse;
                 yield putSideEffect(unexpectedServerError(error));
             }
@@ -58,7 +59,7 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
             throw response;
         }
     } catch (err) {
-        let errorMessage = err.statusText;
+        let errorMessage: string = err.statusText ? err.statusText : 'failed with status code ' + err.status;
         if (err.toString().includes('Failed to fetch') ||
             err.toString().includes('Could not connect to the server')) {
             errorMessage = 'remote server is unreachable';
