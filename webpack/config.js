@@ -75,7 +75,7 @@ module.exports = {
       API_BASE: process.env.API_BASE ? process.env.API_BASE : ''
     }),
     new faviconsWebpackPlugin({
-      logo: './src/chef.png',
+      logo: './src/chef2.png',
       cache: true,
       inject: true,
       favicons: {
