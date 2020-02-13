@@ -24,20 +24,12 @@ const Label = styled.label`
   flex-direction: column;
   margin-bottom: 0.75rem;
 
-  > input {
-    border: solid 2px #e4e4e4;
-    border-radius: 5px;
-    padding: 0 0.5em;
-    margin: 0.5rem 0;
-    height: 2rem;
-    font-size: 1rem;
-  }
-
   > figure {
     position: relative;
-    cursor: pointer;
+    align-self: center;
     max-width: 400px;
-    margin: 0;
+    margin: 0.5rem 0;
+    cursor: pointer;
 
     > img {
       width: 100%;
@@ -137,6 +129,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         name={this.props.name}
         type='file'
         accept='image/*'
+        hidden
         onChange={event => this.onChange(event)} />
       {this.props.form[this.props.name] ?
         <figure>
