@@ -2,12 +2,13 @@
 
 exports[`ImageSelector basic snapshot render 1`] = `
 <label
-  className="sc-bdVaJa cltaPS"
+  className="sc-bdVaJa hwVCqP"
   htmlFor="title"
 >
   The Image Selector Title
   <input
     accept="image/*"
+    hidden={true}
     id="title"
     name="title"
     onChange={[Function]}
