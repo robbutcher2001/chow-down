@@ -2,6 +2,7 @@ import React, { Component, ChangeEvent } from 'react';
 
 import styled from 'styled-components';
 import questionImg from './question.svg';
+import foodImg from '../../food.jpg';
 
 const reader = new FileReader();
 
@@ -25,9 +26,6 @@ const Label = styled.label`
 
   > input {
     border: solid 2px #e4e4e4;
-  }
-
-  > input {
     border-radius: 5px;
     padding: 0 0.5em;
     margin: 0.5rem 0;
@@ -35,12 +33,43 @@ const Label = styled.label`
     font-size: 1rem;
   }
 
-  > img {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 1rem;
-    background-color: rgba(0,0,0,.2);
+  > figure {
+    position: relative;
     cursor: pointer;
+    max-width: 400px;
+    margin: 0;
+
+    > img {
+      width: 100%;
+    }
+
+    aside, figcaption {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    aside {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(40, 40, 40, 0.7);
+
+      > img {
+        height: 100%;
+      }
+    }
+
+    > figcaption {
+      background: rgba(40, 40, 40, 0.8);
+
+      &::after {
+        content: 'No picture selected';
+        visibility: hidden;
+      }
+    }
   }
 
   .red {
@@ -58,13 +87,6 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
       error: null
     };
   }
-
-  componentDidMount = () => {
-    this.props.setNewFormState(
-      this.props.name,
-      questionImg
-    );
-  };
 
   //TODO: select image, then open popup and click cancel, tries to render null
   getImgData = (event: ProgressEvent<FileReader>) => {
@@ -102,7 +124,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         null
       );
       this.setState({
-        error: 'Select only one image'
+        error: null
       });
     }
   };
@@ -116,7 +138,18 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         type='file'
         accept='image/*'
         onChange={event => this.onChange(event)} />
-      <img src={this.props.form[this.props.name].toString()} />
+      {this.props.form[this.props.name] ?
+        <figure>
+          <img src={this.props.form[this.props.name].toString()} />
+        </figure> :
+        <figure>
+          <img src={foodImg} />
+          <aside>
+            <img src={questionImg} />
+          </aside>
+          <figcaption />
+        </figure>
+      }
       <div className='red'>{this.state.error}</div>
     </Label>
   );

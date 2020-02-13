@@ -2,7 +2,7 @@
 
 exports[`ImageSelector basic snapshot render 1`] = `
 <label
-  className="sc-bdVaJa iVTLGX"
+  className="sc-bdVaJa cltaPS"
   htmlFor="title"
 >
   The Image Selector Title
@@ -13,9 +13,11 @@ exports[`ImageSelector basic snapshot render 1`] = `
     onChange={[Function]}
     type="file"
   />
-  <img
-    src="value"
-  />
+  <figure>
+    <img
+      src="value"
+    />
+  </figure>
   <div
     className="red"
   />
