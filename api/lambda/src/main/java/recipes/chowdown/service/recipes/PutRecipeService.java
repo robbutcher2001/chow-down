@@ -12,6 +12,7 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
+import recipes.chowdown.service.images.DataUrlService;
 
 public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
@@ -21,9 +22,12 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
   private CacheInvalidator cacheInvalidator;
 
+  private DataUrlService dataUrlService;
+
   public PutRecipeService() {
     this.repository = new RecipeRepository();
     this.cacheInvalidator = new CacheInvalidator();
+    this.dataUrlService = new DataUrlService();
   }
 
   public Recipe handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
@@ -50,6 +54,10 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
       String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
       LOGGER.log("Recipe cache purge status [" + response + "]");
+
+      // test S3 upload
+      this.dataUrlService.decodeDataUrl(recipe.getImage());
+      // end test S3 upload
 
       return recipe;
       // TODO: maybe BadRequestException / AmazonServiceException needs to move down
