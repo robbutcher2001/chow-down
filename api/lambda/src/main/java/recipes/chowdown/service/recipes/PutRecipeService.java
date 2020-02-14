@@ -56,7 +56,9 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       LOGGER.log("Recipe cache purge status [" + response + "]");
 
       // test S3 upload
-      this.dataUrlService.decodeDataUrl(recipe.getImage());
+      if (recipe.getImage() != null) {
+        this.dataUrlService.decodeDataUrl(recipe.getImage());
+      }
       // end test S3 upload
 
       return recipe;
