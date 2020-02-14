@@ -30,7 +30,7 @@ public class DataUrlService {
     ObjectMetadata objectMetadata = new ObjectMetadata();
     objectMetadata.setContentLength(image.length);
 
-    final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.DEFAULT_REGION).build();
+    final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).build();
 
     try {
       System.out.println(dataUrl.getMimeType());
