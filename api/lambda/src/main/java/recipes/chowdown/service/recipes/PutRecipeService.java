@@ -6,10 +6,12 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
+import eu.maxschuster.dataurl.DataUrl;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
+import recipes.chowdown.repository.S3Repository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
 import recipes.chowdown.service.images.DataUrlService;
@@ -18,14 +20,17 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
   private static LambdaLogger LOGGER;
 
-  private RecipeRepository repository;
+  private RecipeRepository recipeRepository;
+
+  private S3Repository s3Repository;
 
   private CacheInvalidator cacheInvalidator;
 
   private DataUrlService dataUrlService;
 
   public PutRecipeService() {
-    this.repository = new RecipeRepository();
+    this.recipeRepository = new RecipeRepository();
+    this.s3Repository = new S3Repository();
     this.cacheInvalidator = new CacheInvalidator();
     this.dataUrlService = new DataUrlService();
   }
@@ -35,7 +40,17 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       LOGGER = context.getLogger();
 
       recipe.setId(null);
-      ExecuteStatementResult result = this.repository.putRecipe(recipe);
+      final String recipeImage = recipe.getImage();
+
+      // test S3 upload
+      if (recipeImage != null) {
+        final DataUrl imageDataUrl = this.dataUrlService.decodeDataUrl(recipeImage);
+        final String imageUuid = this.s3Repository.putRecipeImage(imageDataUrl.getData(), imageDataUrl.getMimeType());
+        recipe.setImage(imageUuid);
+      }
+      // end test S3 upload
+
+      ExecuteStatementResult result = this.recipeRepository.putRecipe(recipe);
 
       if (result.getRecords().size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
@@ -54,12 +69,6 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
       String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
       LOGGER.log("Recipe cache purge status [" + response + "]");
-
-      // test S3 upload
-      if (recipe.getImage() != null) {
-        this.dataUrlService.decodeDataUrl(recipe.getImage());
-      }
-      // end test S3 upload
 
       return recipe;
       // TODO: maybe BadRequestException / AmazonServiceException needs to move down

@@ -47,6 +47,33 @@ Resources:
             Action:
               - 's3:ListBucket'
             Resource: !GetAtt ChowDownFrontEndBucket.Arn
+  ChowDownImagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketName:
+        Fn::Join: [ '-', [ 'chow-down-images', !Ref Env ] ]
+  ChowDownImagesBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ChowDownImagesBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS:
+                - Fn::Join: [ ' ', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity', !Ref S3OriginAccessIdentity ] ]
+            Action:
+              - 's3:GetObject'
+            Resource:
+              Fn::Join: [ '', [ !GetAtt ChowDownImagesBucket.Arn, '/*' ] ]
+          - Effect: Allow
+            Principal:
+              AWS:
+                - Fn::Join: [ ' ', [ 'arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity', !Ref S3OriginAccessIdentity ] ]
+            Action:
+              - 's3:ListBucket'
+            Resource: !GetAtt ChowDownImagesBucket.Arn
   # IAM roles
   LambdaFunctionRole:
     Type: AWS::IAM::Role
@@ -223,6 +250,9 @@ Resources:
           - Arn
       MemorySize: 1024
       Timeout: 60
+      Environment:
+        Variables:
+          IMAGES_BUCKET: !Ref ChowDownImagesBucket
   PutRecipeLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -265,6 +295,12 @@ Resources:
         - DomainName: !GetAtt ChowDownFrontEndBucket.DomainName
           Id:
             Fn::Join: [ '-', [ 'origin', !GetAtt ChowDownFrontEndBucket.DomainName ] ]
+          S3OriginConfig:
+            OriginAccessIdentity:
+              Fn::Join: [ '', [ 'origin-access-identity/cloudfront/', !Ref S3OriginAccessIdentity ] ]
+        - DomainName: !GetAtt ChowDownImagesBucket.DomainName
+          Id:
+            Fn::Join: [ '-', [ 'origin', !GetAtt ChowDownImagesBucket.DomainName ] ]
           S3OriginConfig:
             OriginAccessIdentity:
               Fn::Join: [ '', [ 'origin-access-identity/cloudfront/', !Ref S3OriginAccessIdentity ] ]
@@ -315,6 +351,19 @@ Resources:
           MinTTL: 604800
           ForwardedValues:
             QueryString: true
+            Cookies:
+              Forward: none
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+        - AllowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          TargetOriginId:
+            Fn::Join: [ '-', [ 'origin', !GetAtt ChowDownImagesBucket.DomainName ] ]
+            PathPattern: '/images/*'
+          ForwardedValues:
+            QueryString: false
             Cookies:
               Forward: none
           ViewerProtocolPolicy: redirect-to-https
