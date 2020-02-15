@@ -11,7 +11,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 
 public class S3Repository {
   private static final String IMAGES_BUCKET = System.getenv("IMAGES_BUCKET");
-  private static final String IMAGE_BUCKET_PREFIX = "/images/";
+  private static final String IMAGE_BUCKET_PREFIX = "images/";
   private static final String RECIPE_IMAGE_PREFIX = "recipes/";
 
   private AmazonS3 s3Client;
@@ -29,6 +29,6 @@ public class S3Repository {
 
     this.s3Client.putObject(IMAGES_BUCKET, imageUuid, imageStream, objectMetadata);
 
-    return imageUuid;
+    return "/".concat(imageUuid);
   }
 }
