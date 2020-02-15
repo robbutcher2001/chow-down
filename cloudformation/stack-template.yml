@@ -361,7 +361,7 @@ Resources:
           - OPTIONS
           TargetOriginId:
             Fn::Join: [ '-', [ 'origin', !GetAtt ChowDownImagesBucket.DomainName ] ]
-            PathPattern: '/images/*'
+          PathPattern: '/images/*'
           ForwardedValues:
             QueryString: false
             Cookies:
