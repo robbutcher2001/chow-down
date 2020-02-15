@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StarRating basic snapshot render 1`] = `
+<label
+  className="sc-bdVaJa bgGHlQ"
+  htmlFor="title"
+>
+  The Star Rating Title
+  <div
+    id="title"
+  >
+    <label
+      className="empty"
+      htmlFor="rating_1"
+    >
+      <input
+        hidden={true}
+        id="rating_1"
+        name="title"
+        onChange={[Function]}
+        type="radio"
+        value="1"
+      />
+    </label>
+    <label
+      className="empty"
+      htmlFor="rating_2"
+    >
+      <input
+        hidden={true}
+        id="rating_2"
+        name="title"
+        onChange={[Function]}
+        type="radio"
+        value="2"
+      />
+    </label>
+    <label
+      className="empty"
+      htmlFor="rating_3"
+    >
+      <input
+        hidden={true}
+        id="rating_3"
+        name="title"
+        onChange={[Function]}
+        type="radio"
+        value="3"
+      />
+    </label>
+    <label
+      className="empty"
+      htmlFor="rating_4"
+    >
+      <input
+        hidden={true}
+        id="rating_4"
+        name="title"
+        onChange={[Function]}
+        type="radio"
+        value="4"
+      />
+    </label>
+    <label
+      className="empty"
+      htmlFor="rating_5"
+    >
+      <input
+        hidden={true}
+        id="rating_5"
+        name="title"
+        onChange={[Function]}
+        type="radio"
+        value="5"
+      />
+    </label>
+  </div>
+</label>
+`;

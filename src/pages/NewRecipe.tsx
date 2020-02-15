@@ -17,6 +17,7 @@ import ImageSelector from '../components/ImageSelector';
 import { LoadingBox, ErrorBox } from '../components/MessageBox';
 import Textarea from '../components/Textarea';
 import RecipeIngredients from '../components/RecipeIngredients';
+import StarRating from '../components/StarRating';
 
 interface StateProps {
   error: string,
@@ -46,7 +47,7 @@ type CombinedProps = StateProps & DispatchProps & OwnProps;
 class NewRecipePage extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
-  }
+  };
 
   componentDidMount = () => {
     this.props.getUnits();
@@ -70,7 +71,8 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
               submitText='Add recipe'>
               <InputBox name='title' type='text' label='Title' />
               <Textarea name='description' label='Description' />
-              <InputBox name='rating' type='number' label='Rating' />
+              {/* <InputBox name='rating_old' type='number' label='Rating' /> */}
+              <StarRating name='rating' label='Rating' />
               <InputBox name='url' type='text' label='Url' />
               <ImageSelector name='image' label='Upload image' />
               <RecipeIngredients

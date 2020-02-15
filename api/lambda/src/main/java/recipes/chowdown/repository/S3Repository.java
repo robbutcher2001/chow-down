@@ -21,7 +21,7 @@ public class S3Repository {
   }
 
   public String putRecipeImage(final byte[] image, final String contentType) {
-    final String imageUuid = RECIPE_IMAGE_PREFIX.concat(UUID.randomUUID().toString());
+    final String imageUuid = IMAGE_BUCKET_PREFIX + RECIPE_IMAGE_PREFIX.concat(UUID.randomUUID().toString());
     final InputStream imageStream = new ByteArrayInputStream(image);
     final ObjectMetadata objectMetadata = new ObjectMetadata();
     objectMetadata.setContentLength(image.length);
@@ -29,6 +29,6 @@ public class S3Repository {
 
     this.s3Client.putObject(IMAGES_BUCKET, imageUuid, imageStream, objectMetadata);
 
-    return IMAGE_BUCKET_PREFIX.concat(imageUuid);
+    return imageUuid;
   }
 }

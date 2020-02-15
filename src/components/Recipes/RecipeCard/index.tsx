@@ -64,6 +64,7 @@ const RecipeCard = styled.li`
   }
 `
 
+// TODO: convert to Unicode stars and use CSS custom var (--rating) to colour: https://css-tricks.com/five-methods-for-five-star-ratings/
 export default (props: RecipeCardProps) => (
   <RecipeCard>
     <figure>
