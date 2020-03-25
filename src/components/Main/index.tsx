@@ -14,10 +14,10 @@ interface MainProps {
   children: ReactNode
 };
 
-const Main = styled.main`
+const StyledZeroMarginedMain = styled.main`
   display: flex;
   justify-content: center;
-  margin: 1rem 1rem 8rem 1rem;
+  margin: 1rem 0 8rem 0;
 
   > div {
     max-width: 1100px;
@@ -28,11 +28,12 @@ const Main = styled.main`
       flex-direction: row;
       flex-wrap: wrap;
       line-height: 2.5rem;
-  
+      margin: 0 1rem;
+
       > * {
         margin: 0.5rem 0;
       }
-  
+
       h2 {
         flex-grow: 1;
         min-width: 80%; //can this be improved?
@@ -40,7 +41,7 @@ const Main = styled.main`
         font-size: 2rem;
         color: #4acaa8;
       }
-  
+
       a {
         border: none;
         border-radius: 5px;
@@ -55,19 +56,37 @@ const Main = styled.main`
   }
 `
 
+const StyledMarginedMain = styled(StyledZeroMarginedMain)`
+  margin: 1rem 1rem 8rem 1rem;
+
+  > div > section:first-child {
+    margin: unset;
+  }
+`
+
+const Main = (props: MainProps) => (
+  <div>
+    <section>
+      <h2>{props.title}</h2>
+      {props.cta &&
+        <Link
+          to={props.cta.link}>
+          {props.cta.text}
+        </Link>
+      }
+    </section>
+    {props.children}
+  </div>
+);
+
+export const ZeroMarginedMain = (props: MainProps) => (
+  <StyledZeroMarginedMain>
+    <Main {...props} />
+  </StyledZeroMarginedMain>
+);
+
 export default (props: MainProps) => (
-  <Main>
-    <div>
-      <section>
-        <h2>{props.title}</h2>
-        {props.cta &&
-          <Link
-            to={props.cta.link}>
-            {props.cta.text}
-          </Link>
-        }
-      </section>
-      {props.children}
-    </div>
-  </Main>
+  <StyledMarginedMain>
+    <Main {...props} />
+  </StyledMarginedMain>
 );

@@ -3,29 +3,17 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface DayCardProps {
-    day: string,
-    title: string,
-    description?: string,
-    rating: number,
-    imageUrl: string,
-    imageAlt: string
+  day: string,
+  title: string,
+  description?: string,
+  rating: number,
+  imageUrl: string,
+  imageAlt: string
 };
 
 const DayCard = styled.li`
     cursor: pointer;
-    padding: 0.5rem;
     margin-bottom: 2rem;
-    box-shadow: inset 0 0 0 2px rgba(144, 144, 144, 0.25);
-    border: 0;
-    border-radius: 0.825rem;
-
-    > h3 {
-        font-size: 1.2rem;
-        margin: 0;
-        padding: 1rem .5rem;
-        border-top-left-radius: .2rem;
-        border-top-right-radius: .2rem;
-    }
 
     > section {
         display: flex;
@@ -38,7 +26,29 @@ const DayCard = styled.li`
             overflow: hidden;
             margin: 0;
             position: relative;
-    
+
+            > span {
+              position: absolute;
+              border-left: 120px solid transparent;
+              border-right: 120px solid transparent;
+              border-bottom: 120px solid rgb(74, 202, 168);
+              transform: rotate(-45deg);
+              left: -82px;
+              top: -22px;
+            }
+
+            > h3 {
+              position: absolute;
+              font-size: 1.2rem;
+              width: 120px;
+              height: 50px;
+              text-align: center;
+              margin: 0;
+              color: white;
+              transform: rotate(-45deg);
+              top: 38px;
+            }
+
             > img {
                 width: 100%;
             }
@@ -78,34 +88,35 @@ const DayCard = styled.li`
 `
 
 export default (props: DayCardProps) => (
-    <DayCard>
+  <DayCard>
+    <section>
+      <figure>
+        <span />
         <h3>{props.day}</h3>
-        <section>
-            <figure>
-                <img src={props.imageUrl} alt={props.imageAlt}></img>
-                <figcaption>
-                    <h3>{props.title}</h3>
-                </figcaption>
-            </figure>
-            <article>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>1 large onion</td>
-                        </tr>
-                        <tr>
-                            <td>3 tbsp mild curry paste</td>
-                        </tr>
-                        <tr>
-                            <td>2 tsp vegetable bouillon powder</td>
-                        </tr>
-                        <tr>
-                            <td>400g can chopped tomatoes</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <section>{props.description}</section>
-            </article>
-        </section>
-    </DayCard>
+        <img src={props.imageUrl} alt={props.imageAlt}></img>
+        <figcaption>
+          <h3>{props.title}</h3>
+        </figcaption>
+      </figure>
+      <article>
+        <table>
+          <tbody>
+            <tr>
+              <td>1 large onion</td>
+            </tr>
+            <tr>
+              <td>3 tbsp mild curry paste</td>
+            </tr>
+            <tr>
+              <td>2 tsp vegetable bouillon powder</td>
+            </tr>
+            <tr>
+              <td>400g can chopped tomatoes</td>
+            </tr>
+          </tbody>
+        </table>
+        <section>{props.description}</section>
+      </article>
+    </section>
+  </DayCard>
 );
