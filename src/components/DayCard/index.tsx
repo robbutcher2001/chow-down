@@ -29,24 +29,24 @@ const DayCard = styled.li`
 
             > span {
               position: absolute;
-              border-left: 120px solid transparent;
-              border-right: 120px solid transparent;
-              border-bottom: 120px solid rgb(74, 202, 168);
+              border-left: 100px solid transparent;
+              border-right: 100px solid transparent;
+              border-bottom: 100px solid rgb(74, 202, 168);
               transform: rotate(-45deg);
-              left: -82px;
-              top: -22px;
+              left: -65px;
+              top: -15px;
             }
 
             > h3 {
               position: absolute;
               font-size: 1.2rem;
-              width: 120px;
+              width: 100px;
               height: 50px;
               text-align: center;
               margin: 0;
               color: white;
               transform: rotate(-45deg);
-              top: 38px;
+              top: 26px;
             }
 
             > img {
