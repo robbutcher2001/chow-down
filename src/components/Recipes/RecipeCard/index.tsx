@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
+import Stars from '../../Stars';
 
 //TODO: should this just be a recipe type from the store?
 interface RecipeCardProps {
@@ -49,22 +50,8 @@ const RecipeCard = styled.li`
     padding: 0 .5rem 1.5rem 0.5rem;
     margin: 0;
   }
-
-  > section {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    font-size: 1.2rem;
-    padding: 0.5rem;
-
-    > mark {
-      color: #4acaa8;
-      background-color: white;
-    }
-  }
 `
 
-// TODO: convert to Unicode stars and use CSS custom var (--rating) to colour: https://css-tricks.com/five-methods-for-five-star-ratings/
 export default (props: RecipeCardProps) => (
   <RecipeCard>
     <figure>
@@ -73,15 +60,7 @@ export default (props: RecipeCardProps) => (
         <h3>{props.title}</h3>
       </figcaption>
     </figure>
-    <section>
-      { function() {
-        const rating: ReactNode[] = [];
-        for (let i = 0; i < props.rating; i++) {
-          rating.push(<mark key={i} >&#9733;</mark>);
-        }
-        return rating;
-      }() }
-    </section>
+    <Stars rating={props.rating} />
     <p>{props.description}</p>
   </RecipeCard>
 );

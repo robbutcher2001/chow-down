@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Stars basic snapshot render 1`] = `
+<section
+  className="sc-bdVaJa dyQPNL"
+>
+  <mark>
+    ★
+  </mark>
+  <mark>
+    ★
+  </mark>
+  <mark>
+    ★
+  </mark>
+  <mark>
+    ★
+  </mark>
+</section>
+`;

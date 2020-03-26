@@ -2,10 +2,10 @@
 
 exports[`RecipeGrid basic snapshot render 1`] = `
 <ul
-  className="sc-htpNat hAuISV"
+  className="sc-bxivhb dWwryP"
 >
   <li
-    className="sc-bdVaJa dKdEsL"
+    className="sc-bwzfXH juCrAB"
   >
     <figure>
       <img
@@ -18,7 +18,9 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </h3>
       </figcaption>
     </figure>
-    <section>
+    <section
+      className="sc-bdVaJa dyQPNL"
+    >
       <mark>
         ★
       </mark>
@@ -37,7 +39,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
     </p>
   </li>
   <li
-    className="sc-bdVaJa dKdEsL"
+    className="sc-bwzfXH juCrAB"
   >
     <figure>
       <img
@@ -50,7 +52,9 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </h3>
       </figcaption>
     </figure>
-    <section>
+    <section
+      className="sc-bdVaJa dyQPNL"
+    >
       <mark>
         ★
       </mark>

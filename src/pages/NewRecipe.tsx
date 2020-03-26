@@ -17,7 +17,7 @@ import ImageSelector from '../components/ImageSelector';
 import { LoadingBox, ErrorBox } from '../components/MessageBox';
 import Textarea from '../components/Textarea';
 import RecipeIngredients from '../components/RecipeIngredients';
-import StarRating from '../components/StarRating';
+import InputStarRating from '../components/InputStarRating';
 
 interface StateProps {
   error: string,
@@ -72,7 +72,7 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
               <InputBox name='title' type='text' label='Title' />
               <Textarea name='description' label='Description' />
               {/* <InputBox name='rating_old' type='number' label='Rating' /> */}
-              <StarRating name='rating' label='Rating' />
+              <InputStarRating name='rating' label='Rating' />
               <InputBox name='url' type='text' label='Url' />
               <ImageSelector name='image' label='Upload image' />
               <RecipeIngredients

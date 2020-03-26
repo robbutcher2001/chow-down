@@ -2,7 +2,7 @@
 
 exports[`RecipeCard basic snapshot render 1`] = `
 <li
-  className="sc-bdVaJa dKdEsL"
+  className="sc-bwzfXH juCrAB"
 >
   <figure>
     <img
@@ -15,7 +15,9 @@ exports[`RecipeCard basic snapshot render 1`] = `
       </h3>
     </figcaption>
   </figure>
-  <section>
+  <section
+    className="sc-bdVaJa dyQPNL"
+  >
     <mark>
       ★
     </mark>

@@ -14,8 +14,10 @@ const cta: CallToAction = {
 const FlexContainer = styled.ul`
     display: flex;
     flex-direction: column;
-    list-style: none;
+    align-items: center;
+    margin: 0;
     padding: 0;
+    list-style: none;
 
     ${(props: any) =>
     props.primary &&
@@ -28,7 +30,7 @@ const FlexContainer = styled.ul`
 export default () => (
   <ZeroMarginedMain
     title='Week Ahead'
-    cta={cta}
+  // cta={cta}
   >
     <FlexContainer>
       <DayCard
@@ -40,7 +42,7 @@ export default () => (
         imageAlt='fake_alt'
       />
       <DayCard
-        day='Tomorrow night'
+        day='Tomorrow'
         title='Domino Dauphinoise'
         description='This Dauphinoise makes an impressive addition to the Sunday lunch table. Pile in the cream, potatoes and thyme for a moreish, crispy delight'
         rating={4}
@@ -48,7 +50,7 @@ export default () => (
         imageAlt='fake_alt'
       />
       <DayCard
-        day='Wednesday night'
+        day='Wednesday'
         title='Overnight oats'
         description='The Slimming World overnight oats recipe is packed full of healthy breakfast goodness! Making overnight oats with yogurt means they’re extra thick and creamy.'
         rating={5}
@@ -56,7 +58,7 @@ export default () => (
         imageAlt='fake_alt'
       />
       <DayCard
-        day='Thursday night'
+        day='Thursday'
         title='Meat feast pasta'
         description='Meaty, filling, packed with flavour – this pasta feast ticks all the boxes!'
         rating={2}
@@ -64,7 +66,7 @@ export default () => (
         imageAlt='fake_alt'
       />
       <DayCard
-        day='Friday night'
+        day='Friday'
         title='Fully loaded wedges'
         description='Dirty fries just got Food Optimised! The whole family will love these crispy spuds smothered in a tangy chicken-and-tomato topping...'
         rating={1}
@@ -72,7 +74,7 @@ export default () => (
         imageAlt='fake_alt'
       />
       <DayCard
-        day='Saturday night'
+        day='Saturday'
         title='Hot dogs'
         description='Our not-so-humble hot dog piled high with onions makes the ultimate quick and tasty treat. Using Slimming World sausages is an easy way to save Syns.'
         rating={5}
@@ -80,7 +82,7 @@ export default () => (
         imageAlt='fake_alt'
       />
       <DayCard
-        day='Sunday night'
+        day='Sunday'
         title='Best steak marinade'
         description='The only Steak Marinade recipe you’ll ever need! It’s deliciously robust and the perfect flavor pairing to rich beefy steaks. It’s incredibly easy to make and uses staple ingredients you likely already have on hand. Definitely a must have recipe!'
         rating={4}
