@@ -18,8 +18,8 @@ public class RecipeRepository {
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
-  private static final String GET_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image FROM public.recipes r";
-  private static final String PUT_SQL = "INSERT INTO public.recipes (id, title, description, rating, url, image) "
+  private static final String GET_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image FROM chow.recipes r";
+  private static final String PUT_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image) "
       + "VALUES (DEFAULT, :title, :description, :rating, :url, :image) RETURNING id";
 
   private AWSRDSData rdsData;

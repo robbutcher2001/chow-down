@@ -18,8 +18,8 @@ public class IngredientRepository {
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
-  private static final String GET_SQL = "SELECT i.id, i.ingredient FROM public.ingredients i";
-  private static final String PUT_SQL = "INSERT INTO public.ingredients (id, ingredient) "
+  private static final String GET_SQL = "SELECT i.id, i.ingredient FROM chow.ingredients i";
+  private static final String PUT_SQL = "INSERT INTO chow.ingredients (id, ingredient) "
       + "VALUES (DEFAULT, :ingredient) RETURNING id";
 
   private AWSRDSData rdsData;

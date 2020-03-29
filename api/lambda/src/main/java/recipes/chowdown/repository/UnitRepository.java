@@ -18,8 +18,8 @@ public class UnitRepository {
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
-  private static final String GET_SQL = "SELECT u.id, u.singular, u.plural FROM public.units u";
-  private static final String PUT_SQL = "INSERT INTO public.units (id, singular, plural) "
+  private static final String GET_SQL = "SELECT u.id, u.singular, u.plural FROM chow.units u";
+  private static final String PUT_SQL = "INSERT INTO chow.units (id, singular, plural) "
       + "VALUES (DEFAULT, :singular, :plural) RETURNING id";
 
   private AWSRDSData rdsData;
