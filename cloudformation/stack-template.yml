@@ -242,7 +242,8 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase  PutUnitLambdaPermission:
+          DATABASE_NAME: !Ref ChowDownDatabase
+  PutUnitLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
@@ -275,7 +276,8 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseReadOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase  GetIngredientsLambdaPermission:
+          DATABASE_NAME: !Ref ChowDownDatabase
+  GetIngredientsLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
@@ -307,7 +309,8 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase  PutIngredientLambdaPermission:
+          DATABASE_NAME: !Ref ChowDownDatabase
+  PutIngredientLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
@@ -340,7 +343,8 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseReadOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase  GetRecipesLambdaPermission:
+          DATABASE_NAME: !Ref ChowDownDatabase
+  GetRecipesLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
