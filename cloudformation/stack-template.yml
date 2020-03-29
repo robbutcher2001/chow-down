@@ -209,7 +209,7 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseReadOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase
+          DATABASE_NAME: chowdown
   GetUnitsLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -242,7 +242,7 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase
+          DATABASE_NAME: chowdown
   PutUnitLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -276,7 +276,7 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseReadOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase
+          DATABASE_NAME: chowdown
   GetIngredientsLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -309,7 +309,7 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase
+          DATABASE_NAME: chowdown
   PutIngredientLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -343,7 +343,7 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseReadOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase
+          DATABASE_NAME: chowdown
   GetRecipesLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -376,7 +376,7 @@ Resources:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
           SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
-          DATABASE_NAME: !Ref ChowDownDatabase
+          DATABASE_NAME: chowdown
           IMAGES_BUCKET: !Ref ChowDownImagesBucket
   PutRecipeLambdaPermission:
     Type: AWS::Lambda::Permission
