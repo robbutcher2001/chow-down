@@ -2,6 +2,16 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- User: chow_create_only
+
+CREATE USER chow_create_only WITH
+  LOGIN
+  NOSUPERUSER
+  INHERIT
+  NOCREATEDB
+  NOCREATEROLE
+  NOREPLICATION;
+
 -- User: chow_read_only
 
 CREATE USER chow_read_only WITH
@@ -12,9 +22,9 @@ CREATE USER chow_read_only WITH
   NOCREATEROLE
   NOREPLICATION;
 
--- User: chow_write_update_only
+-- User: chow_update_only
 
-CREATE USER chow_write_update_only WITH
+CREATE USER chow_update_only WITH
   LOGIN
   NOSUPERUSER
   INHERIT
@@ -37,17 +47,20 @@ CREATE USER chow_delete_only WITH
 CREATE SCHEMA chow;
 ALTER SCHEMA chow OWNER to chow_admin;
 
+GRANT CONNECT on DATABASE chowdown to chow_create_only;
 GRANT CONNECT on DATABASE chowdown to chow_read_only;
-GRANT CONNECT on DATABASE chowdown to chow_write_update_only;
+GRANT CONNECT on DATABASE chowdown to chow_update_only;
 GRANT CONNECT on DATABASE chowdown to chow_delete_only;
 
 -- Run these to set a password
+-- ALTER USER chow_create_only WITH PASSWORD '__PLACEHOLDER__';
 -- ALTER USER chow_read_only WITH PASSWORD '__PLACEHOLDER__';
--- ALTER USER chow_write_update_only WITH PASSWORD '__PLACEHOLDER__';
+-- ALTER USER chow_update_only WITH PASSWORD '__PLACEHOLDER__';
 -- ALTER USER chow_delete_only WITH PASSWORD '__PLACEHOLDER__';
 
+GRANT USAGE ON SCHEMA chow TO chow_create_only;
 GRANT USAGE ON SCHEMA chow TO chow_read_only;
-GRANT USAGE ON SCHEMA chow TO chow_write_update_only;
+GRANT USAGE ON SCHEMA chow TO chow_update_only;
 GRANT USAGE ON SCHEMA chow TO chow_delete_only;
 GRANT ALL ON SCHEMA chow TO chow_admin;
 
@@ -71,9 +84,10 @@ TABLESPACE pg_default;
 ALTER TABLE chow.units OWNER to chow_admin;
 
 GRANT ALL ON TABLE chow.units to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.units to chow_create_only;
 GRANT SELECT ON TABLE chow.units to chow_read_only;
-GRANT INSERT, UPDATE ON TABLE chow.units to chow_write_update_only;
-GRANT DELETE ON TABLE chow.units to chow_delete_only;
+GRANT SELECT, UPDATE ON TABLE chow.units to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.units to chow_delete_only;
 
 -- Table: chow.ingredients
 
@@ -91,9 +105,10 @@ TABLESPACE pg_default;
 ALTER TABLE chow.ingredients OWNER to chow_admin;
 
 GRANT ALL ON TABLE chow.ingredients to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.ingredients to chow_create_only;
 GRANT SELECT ON TABLE chow.ingredients to chow_read_only;
-GRANT INSERT, UPDATE ON TABLE chow.ingredients to chow_write_update_only;
-GRANT DELETE ON TABLE chow.ingredients to chow_delete_only;
+GRANT SELECT, UPDATE ON TABLE chow.ingredients to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.ingredients to chow_delete_only;
 
 -- Table: chow.recipes
 
@@ -115,9 +130,10 @@ TABLESPACE pg_default;
 ALTER TABLE chow.recipes OWNER to chow_admin;
 
 GRANT ALL ON TABLE chow.recipes to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.recipes to chow_create_only;
 GRANT SELECT ON TABLE chow.recipes to chow_read_only;
-GRANT INSERT, UPDATE ON TABLE chow.recipes to chow_write_update_only;
-GRANT DELETE ON TABLE chow.recipes to chow_delete_only;
+GRANT SELECT, UPDATE ON TABLE chow.recipes to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.recipes to chow_delete_only;
 
 -- Table: chow.recipe_ingredients
 
@@ -150,9 +166,10 @@ TABLESPACE pg_default;
 ALTER TABLE chow.recipe_ingredients OWNER to chow_admin;
 
 GRANT ALL ON TABLE chow.recipe_ingredients to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.recipe_ingredients to chow_create_only;
 GRANT SELECT ON TABLE chow.recipe_ingredients to chow_read_only;
-GRANT INSERT, UPDATE ON TABLE chow.recipe_ingredients to chow_write_update_only;
-GRANT DELETE ON TABLE chow.recipe_ingredients to chow_delete_only;
+GRANT SELECT, UPDATE ON TABLE chow.recipe_ingredients to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.recipe_ingredients to chow_delete_only;
 
 -- Table: chow.weeks
 
@@ -174,6 +191,7 @@ TABLESPACE pg_default;
 ALTER TABLE chow.weeks OWNER to chow_admin;
 
 GRANT ALL ON TABLE chow.weeks to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.weeks to chow_create_only;
 GRANT SELECT ON TABLE chow.weeks to chow_read_only;
-GRANT INSERT, UPDATE ON TABLE chow.weeks to chow_write_update_only;
-GRANT DELETE ON TABLE chow.weeks to chow_delete_only;
+GRANT SELECT, UPDATE ON TABLE chow.weeks to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.weeks to chow_delete_only;

@@ -10,7 +10,7 @@ services:
     volumes:
       - ./init.d:/docker-entrypoint-initdb.d
     environment:
-      - POSTGRES_USER=admin
+      - POSTGRES_USER=chow_admin
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=chowdown
   pg-admin:

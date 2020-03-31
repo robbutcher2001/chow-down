@@ -131,21 +131,38 @@ Resources:
       SecretId: !Ref ChowDownDatabaseReadOnlyCreds
       TargetId: !Ref ChowDownDatabase
       TargetType: AWS::RDS::DBCluster
-  ChowDownDatabaseWriteUpdateOnlyCreds:
+  ChowDownDatabaseCreateOnlyCreds:
     Type: AWS::SecretsManager::Secret
     Properties:
       Name:
-        Fn::Join: [ '/', [ 'rds-db-credentials', 'chowdown', 'databases', 'write_update_only', !Ref Env ] ]
+        Fn::Join: [ '/', [ 'rds-db-credentials', 'chowdown', 'databases', 'create_only', !Ref Env ] ]
       GenerateSecretString:
         SecretStringTemplate:
-          Fn::Join: [ '', [ '{"username": "chow_write_update_only"}' ] ]
+          Fn::Join: [ '', [ '{"username": "chow_create_only"}' ] ]
         GenerateStringKey: 'password'
         PasswordLength: 32
         ExcludeCharacters: "';"
-  ChowDownDatabaseWriteUpdateOnlyCredsAttachment:
+  ChowDownDatabaseCreateOnlyCredsAttachment:
     Type: AWS::SecretsManager::SecretTargetAttachment
     Properties:
-      SecretId: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
+      SecretId: !Ref ChowDownDatabaseCreateOnlyCreds
+      TargetId: !Ref ChowDownDatabase
+      TargetType: AWS::RDS::DBCluster
+  ChowDownDatabaseUpdateOnlyCreds:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name:
+        Fn::Join: [ '/', [ 'rds-db-credentials', 'chowdown', 'databases', 'update_only', !Ref Env ] ]
+      GenerateSecretString:
+        SecretStringTemplate:
+          Fn::Join: [ '', [ '{"username": "chow_update_only"}' ] ]
+        GenerateStringKey: 'password'
+        PasswordLength: 32
+        ExcludeCharacters: "';"
+  ChowDownDatabaseUpdateOnlyCredsAttachment:
+    Type: AWS::SecretsManager::SecretTargetAttachment
+    Properties:
+      SecretId: !Ref ChowDownDatabaseUpdateOnlyCreds
       TargetId: !Ref ChowDownDatabase
       TargetType: AWS::RDS::DBCluster
   ChowDownDatabaseDeleteOnlyCreds:
@@ -241,7 +258,7 @@ Resources:
         Variables:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
-          SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
+          SECRET_ARN: !Ref ChowDownDatabaseCreateOnlyCreds
           DATABASE_NAME: chowdown
   PutUnitLambdaPermission:
     Type: AWS::Lambda::Permission
@@ -308,7 +325,7 @@ Resources:
         Variables:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
-          SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
+          SECRET_ARN: !Ref ChowDownDatabaseCreateOnlyCreds
           DATABASE_NAME: chowdown
   PutIngredientLambdaPermission:
     Type: AWS::Lambda::Permission
@@ -375,7 +392,7 @@ Resources:
         Variables:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
-          SECRET_ARN: !Ref ChowDownDatabaseWriteUpdateOnlyCreds
+          SECRET_ARN: !Ref ChowDownDatabaseCreateOnlyCreds
           DATABASE_NAME: chowdown
           IMAGES_BUCKET: !Ref ChowDownImagesBucket
   PutRecipeLambdaPermission:

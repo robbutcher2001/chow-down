@@ -6,7 +6,7 @@
             "Host": "chowdown",
             "Port": 5432,
             "MaintenanceDB": "chowdown",
-            "Username": "admin",
+            "Username": "chow_admin",
             "SSLMode": "disable"
         }
     }
