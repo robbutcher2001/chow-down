@@ -29,7 +29,7 @@ const DayCard = styled.li`
     border-right: 90px solid transparent;
     border-bottom: 90px solid rgb(74, 202, 168);
     transform: rotate(-45deg);
-    z-index: 100;
+    z-index: 50;
     left: -62px;
     top: -17px;
   }
@@ -42,7 +42,7 @@ const DayCard = styled.li`
     margin: 0;
     color: white;
     transform: rotate(-45deg);
-    z-index: 100;
+    z-index: 50;
     top: 34px;
     left: -14px;
   }

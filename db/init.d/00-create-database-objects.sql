@@ -42,11 +42,6 @@ CREATE USER chow_delete_only WITH
   NOCREATEROLE
   NOREPLICATION;
 
--- SCHEMA: chow
-
-CREATE SCHEMA chow;
-ALTER SCHEMA chow OWNER to chow_admin;
-
 GRANT CONNECT on DATABASE chowdown to chow_create_only;
 GRANT CONNECT on DATABASE chowdown to chow_read_only;
 GRANT CONNECT on DATABASE chowdown to chow_update_only;
@@ -57,6 +52,11 @@ GRANT CONNECT on DATABASE chowdown to chow_delete_only;
 -- ALTER USER chow_read_only WITH PASSWORD '__PLACEHOLDER__';
 -- ALTER USER chow_update_only WITH PASSWORD '__PLACEHOLDER__';
 -- ALTER USER chow_delete_only WITH PASSWORD '__PLACEHOLDER__';
+
+-- SCHEMA: chow
+
+CREATE SCHEMA chow;
+ALTER SCHEMA chow OWNER to chow_admin;
 
 GRANT USAGE ON SCHEMA chow TO chow_create_only;
 GRANT USAGE ON SCHEMA chow TO chow_read_only;
@@ -120,6 +120,7 @@ CREATE TABLE chow.recipes
     rating smallint,
     url text COLLATE pg_catalog."default",
     image text COLLATE pg_catalog."default",
+    created_date timestamp with time zone NOT NULL,
     CONSTRAINT recipes_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -171,9 +172,9 @@ GRANT SELECT ON TABLE chow.recipe_ingredients to chow_read_only;
 GRANT SELECT, UPDATE ON TABLE chow.recipe_ingredients to chow_update_only;
 GRANT SELECT, DELETE ON TABLE chow.recipe_ingredients to chow_delete_only;
 
--- Table: chow.weeks
+-- Table: chow.days
 
-CREATE TABLE chow.weeks
+CREATE TABLE chow.days
 (
     date date NOT NULL,
     recipe_id uuid,
@@ -188,10 +189,10 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE chow.weeks OWNER to chow_admin;
+ALTER TABLE chow.days OWNER to chow_admin;
 
-GRANT ALL ON TABLE chow.weeks to chow_admin;
-GRANT SELECT, INSERT ON TABLE chow.weeks to chow_create_only;
-GRANT SELECT ON TABLE chow.weeks to chow_read_only;
-GRANT SELECT, UPDATE ON TABLE chow.weeks to chow_update_only;
-GRANT SELECT, DELETE ON TABLE chow.weeks to chow_delete_only;
+GRANT ALL ON TABLE chow.days to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.days to chow_create_only;
+GRANT SELECT ON TABLE chow.days to chow_read_only;
+GRANT SELECT, UPDATE ON TABLE chow.days to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.days to chow_delete_only;
