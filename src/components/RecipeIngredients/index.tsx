@@ -53,6 +53,15 @@ class RecipeIngredients extends Component<RecipeIngredientsProps, OwnState> {
     };
   }
 
+  // onChange = (event: MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+  //   const value = event.currentTarget.value;
+  //   this.props.setNewFormState(
+  //     this.props.name,
+  //     parseInt(value)
+  //   );
+  // };
+
   newRecipeIngredient = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.setState(prevState => {
@@ -70,7 +79,7 @@ class RecipeIngredients extends Component<RecipeIngredientsProps, OwnState> {
         recipeIngredients
       };
     });
-    console.log(this.state);
+    console.log(this.state.recipeIngredients);
   };
 
   render = () => (
@@ -90,6 +99,7 @@ class RecipeIngredients extends Component<RecipeIngredientsProps, OwnState> {
           </button>
         </div>
       }
+      {/* <button onClick={event => this.onChange(event)}></button> */}
     </Label>
   );
 };
