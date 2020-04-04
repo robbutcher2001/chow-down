@@ -9,6 +9,7 @@ import com.amazonaws.services.rdsdata.model.ExecuteStatementRequest;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 import com.amazonaws.services.rdsdata.model.SqlParameter;
+import com.amazonaws.services.rdsdata.model.TypeHint;
 
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
@@ -43,7 +44,8 @@ public class RecipeRepository {
       parameters.add(new SqlParameter().withName("rating").withValue(new Field().withLongValue(recipe.getRating())));
       parameters.add(new SqlParameter().withName("url").withValue(new Field().withStringValue(recipe.getUrl())));
       parameters.add(new SqlParameter().withName("image").withValue(new Field().withStringValue(recipe.getImage())));
-      parameters.add(new SqlParameter().withName("createdDate").withValue(new Field().withStringValue(recipe.getCreatedDate().toString())));
+      parameters.add(new SqlParameter().withName("createdDate")
+          .withValue(new Field().withStringValue(recipe.getCreatedDate().toString())).withTypeHint(TypeHint.TIMESTAMP));
     } catch (NullPointerException npe) {
       throw new ResourceNotPersistedException("part or all of the input Recipe was null");
     }
