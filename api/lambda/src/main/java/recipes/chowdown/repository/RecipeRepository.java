@@ -45,7 +45,7 @@ public class RecipeRepository {
       parameters.add(new SqlParameter().withName("url").withValue(new Field().withStringValue(recipe.getUrl())));
       parameters.add(new SqlParameter().withName("image").withValue(new Field().withStringValue(recipe.getImage())));
       parameters.add(new SqlParameter().withName("createdDate")
-          .withValue(new Field().withStringValue(recipe.getCreatedDate().toString())).withTypeHint(TypeHint.TIMESTAMP));
+          .withValue(new Field().withStringValue(recipe.getCreatedDate())).withTypeHint(TypeHint.TIMESTAMP));
     } catch (NullPointerException npe) {
       throw new ResourceNotPersistedException("part or all of the input Recipe was null");
     }
