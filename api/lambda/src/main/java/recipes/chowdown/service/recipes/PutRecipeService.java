@@ -52,17 +52,9 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       }
       // end test get ingredients
 
+      final String recipeImage = recipe.getImage();
       recipe.setId(null);
       recipe.setCreatedDate(OffsetDateTime.now(ZoneId.of("Europe/London")));
-      final String recipeImage = recipe.getImage();
-
-      // test S3 upload
-      if (recipeImage != null) {
-        final DataUrl imageDataUrl = this.dataUrlService.decodeDataUrl(recipeImage);
-        final String imageUuid = this.s3Repository.putRecipeImage(imageDataUrl.getData(), imageDataUrl.getMimeType());
-        recipe.setImage(imageUuid);
-      }
-      // end test S3 upload
 
       ExecuteStatementResult result = this.recipeRepository.putRecipe(recipe);
 
@@ -80,6 +72,13 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
       LOGGER.log("New recipe persisted with id [" + returnedId + "]");
       recipe.setId(returnedId);
+
+      if (recipeImage != null) {
+        final DataUrl imageDataUrl = this.dataUrlService.decodeDataUrl(recipeImage);
+        final String imageUuid = this.s3Repository.putRecipeImage(imageDataUrl.getData(), imageDataUrl.getMimeType());
+        LOGGER.log("Recipe image persisted with id [" + imageUuid + "]");
+        recipe.setImage(imageUuid);
+      }
 
       String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
       LOGGER.log("Recipe cache purge status [" + response + "]");
