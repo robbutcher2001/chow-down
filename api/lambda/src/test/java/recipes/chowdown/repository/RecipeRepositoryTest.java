@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 import com.amazonaws.services.rdsdata.AWSRDSData;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementRequest;
@@ -66,7 +66,7 @@ public class RecipeRepositoryTest {
     @Test
     void putRecipe_shouldReturnResults_whenRequestValidRecipe() throws Exception {
         Recipe recipe = Recipe.builder().title("katsu curry").description("good food").rating(5l).url("url")
-                .image("src").createdDate(OffsetDateTime.now()).build();
+                .image("src").createdDate(LocalDateTime.now().toString()).build();
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
         when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
@@ -78,7 +78,7 @@ public class RecipeRepositoryTest {
 
     @Test
     void putRecipe_shouldReturnResults_whenRequestInvalidRecipe() throws Exception {
-        Recipe recipe = Recipe.builder().createdDate(OffsetDateTime.now()).build();
+        Recipe recipe = Recipe.builder().createdDate(LocalDateTime.now().toString()).build();
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
         when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
