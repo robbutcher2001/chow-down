@@ -11,6 +11,7 @@ exports[`InputBox basic snapshot render 1`] = `
     name="title"
     onChange={[Function]}
     type="text"
+    value=""
   />
 </label>
 `;

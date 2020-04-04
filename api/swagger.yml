@@ -257,6 +257,20 @@ components:
           type: string
       required:
       - ingredient
+    RecipeIngredient:
+      title: "Recipe ingredients schema"
+      type: object
+      properties:
+        quantity:
+          type: integer
+        unitId:
+          type: string
+        ingredientId:
+          type: string
+      required:
+      - quantity
+      - unitId
+      - ingredientId
     Recipe:
       title: "Recipe schema"
       type: object
@@ -273,11 +287,16 @@ components:
           type: string
         image:
           type: string
+        ingredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeIngredient"
       required:
       - title
       - description
       - url
       - image
+      - ingredients
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false

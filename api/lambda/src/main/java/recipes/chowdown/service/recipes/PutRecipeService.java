@@ -39,6 +39,10 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
     try {
       LOGGER = context.getLogger();
 
+      //test get ingredients
+      LOGGER.log(recipe.toString());
+      //end test get ingredients
+
       recipe.setId(null);
       final String recipeImage = recipe.getImage();
 
