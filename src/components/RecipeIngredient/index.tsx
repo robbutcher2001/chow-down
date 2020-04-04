@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import styled from 'styled-components';
 import { Unit } from '../../store/domain/units/types';
 import { Ingredient } from '../../store/domain/ingredients/types';
+import { RecipeIngredient } from '../RecipeIngredients';
 
 interface RecipeIngredientProps {
   index: number,
   units: Unit[],
-  ingredients: Ingredient[]
+  ingredients: Ingredient[],
+  recipeIngredient: RecipeIngredient,
+  onChange: (index: number, recipeIngredient: RecipeIngredient) => void,
 };
 
 const RecipeIngredient = styled.li`
@@ -65,30 +68,62 @@ const RecipeIngredient = styled.li`
   }
 `
 
-export default (props: RecipeIngredientProps) => (
-  <RecipeIngredient>
-    <label htmlFor={'quantity_' + props.index}>
-      Quantity
-      <input id={'quantity_' + props.index} type='number' min='0' />
-    </label>
-    <label htmlFor={'units_' + props.index}>
-      Unit
-      <select id={'units_' + props.index}>
-        <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
-        {props.units.map(unit => (
-          <option key={unit.id} value={unit.id}>{unit.singular}</option>
-        ))}
-      </select>
-    </label>
-    <p>of</p>
-    <label htmlFor={'ingredient_' + props.index}>
-      Ingredient
-      <select id={'ingredient_' + props.index}>
-        <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
-        {props.ingredients.map(ingredient => (
-          <option key={ingredient.id} value={ingredient.id}>{ingredient.ingredient}</option>
-        ))}
-      </select>
-    </label>
-  </RecipeIngredient>
-);
+const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props: RecipeIngredientProps) => {
+
+  const onChange = (field: object) => {
+    props.onChange(props.index, {
+      ...props.recipeIngredient,
+      ...field
+    });
+  };
+
+  return (
+    <RecipeIngredient>
+      <label htmlFor={'quantity_' + props.index}>
+        Quantity
+        <input
+          id={'quantity_' + props.index}
+          type='number'
+          min='0'
+          value={props.recipeIngredient.quantity.toString()}
+          onChange={event => onChange({
+            quantity: event.currentTarget.value ? parseInt(event.currentTarget.value) : 0
+          })}
+        />
+      </label>
+      <label htmlFor={'units_' + props.index}>
+        Unit
+        <select
+          id={'units_' + props.index}
+          value={props.recipeIngredient.unitId}
+          onChange={event => onChange({
+            unitId: event.currentTarget.value
+          })}
+        >
+          <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
+          {props.units.map(unit => (
+            <option key={unit.id} value={unit.id}>{unit.singular}</option>
+          ))}
+        </select>
+      </label>
+      <p>of</p>
+      <label htmlFor={'ingredient_' + props.index}>
+        Ingredient
+        <select
+          id={'ingredient_' + props.index}
+          value={props.recipeIngredient.ingredientId}
+          onChange={event => onChange({
+            ingredientId: event.currentTarget.value
+          })}
+        >
+          <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
+          {props.ingredients.map(ingredient => (
+            <option key={ingredient.id} value={ingredient.id}>{ingredient.ingredient}</option>
+          ))}
+        </select>
+      </label>
+    </RecipeIngredient>
+  );
+};
+
+export default StyledRecipeIngredient;

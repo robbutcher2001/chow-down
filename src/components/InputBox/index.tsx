@@ -48,7 +48,7 @@ class InputBox extends Component<InputBoxProps, {}> {
         id={this.props.name}
         name={this.props.name}
         type={this.props.type}
-        value={this.props.form[this.props.name]}
+        value={this.props.form[this.props.name] ? this.props.form[this.props.name] : ''}
         onChange={event => this.onChange(event)}
       />
     </Label>

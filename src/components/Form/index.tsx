@@ -25,7 +25,7 @@ interface OwnProps {
 
 interface OwnState {
   form: {
-    [key: string]: string | number
+    [key: string]: string | number | Array<any>
   }
 };
 
@@ -76,12 +76,12 @@ class FormComponent extends Component<CombinedProps, OwnState> {
 
   getFieldNames = () => React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) => child.props.name)
     .reduce((names, name) => {
-      names[name] = '';
+      names[name] = null;
       return names;
     }, {} as FieldNames);
 
   //TODO: need to rename this - tests complain
-  setNewFormState = (field: string, newValue: string | number) => {
+  setNewFormState = (field: string, newValue: string | number | Array<any>) => {
     this.setState(prevState => {
       const newState = {
         form: Object.assign({}, prevState.form)

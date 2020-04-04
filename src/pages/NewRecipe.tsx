@@ -71,9 +71,8 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
               submitText='Add recipe'>
               <InputBox name='title' type='text' label='Title' />
               <Textarea name='description' label='Description' />
-              {/* <InputBox name='rating_old' type='number' label='Rating' /> */}
               <InputStarRating name='rating' label='Rating' />
-              <InputBox name='url' type='text' label='Url' />
+              <InputBox name='url' type='text' label='Web link' />
               <ImageSelector name='image' label='Upload image' />
               <RecipeIngredients
                 name='ingredients'

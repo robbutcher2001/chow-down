@@ -1,4 +1,4 @@
-import React, { Component, ReactNode, MouseEvent } from 'react';
+import React, { FunctionComponent, MouseEvent } from 'react';
 
 import styled from 'styled-components';
 
@@ -12,16 +12,18 @@ export interface RecipeIngredientsProps {
   name: string,
   label: string,
   form?: {
-    [key: string]: string | number
+    [key: string]: string | number | RecipeIngredient[]
   },
-  setNewFormState?: (field: string, newValue: string | number) => void,
+  setNewFormState?: (field: string, newValue: RecipeIngredient[]) => void,
   isPending: boolean,
   units: Unit[],
   ingredients: Ingredient[]
 };
 
-interface OwnState {
-  recipeIngredients: ReactNode[]
+export interface RecipeIngredient {
+  quantity: number,
+  unitId: string,
+  ingredientId: string
 };
 
 const Label = styled.label`
@@ -44,62 +46,62 @@ const Label = styled.label`
   }
 `
 
-class RecipeIngredients extends Component<RecipeIngredientsProps, OwnState> {
-  constructor(props: RecipeIngredientsProps) {
-    super(props);
+const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: RecipeIngredientsProps) => {
 
-    this.state = {
-      recipeIngredients: []
-    };
-  }
+  const onChange = (index: number, recipeIngredient: RecipeIngredient) => {
+    const recipeIngredients: RecipeIngredient[] = Object.assign([], props.form[props.name]);
+    recipeIngredients[index] = recipeIngredient;
 
-  // onChange = (event: MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  //   const value = event.currentTarget.value;
-  //   this.props.setNewFormState(
-  //     this.props.name,
-  //     parseInt(value)
-  //   );
-  // };
-
-  newRecipeIngredient = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    this.setState(prevState => {
-      const index = this.state.recipeIngredients.length;
-      const recipeIngredients = Object.assign(
-        [],
-        prevState.recipeIngredients
-      );
-
-      recipeIngredients.push(
-        <RecipeIngredient key={index} index={index} units={this.props.units} ingredients={this.props.ingredients} />
-      );
-
-      return {
-        recipeIngredients
-      };
-    });
-    console.log(this.state.recipeIngredients);
+    props.setNewFormState(
+      props.name,
+      recipeIngredients
+    );
   };
 
-  render = () => (
-    <Label htmlFor={this.props.name}>
-      {this.props.label}
-      {this.props.isPending ?
+  const newRecipeIngredient = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const recipeIngredients: RecipeIngredient[] = Object.assign([], props.form[props.name]);
+    recipeIngredients.push({
+      quantity: 0,
+      unitId: 'PLACEHOLDER',
+      ingredientId: 'PLACEHOLDER'
+    });
+
+    props.setNewFormState(
+      props.name,
+      recipeIngredients
+    );
+  };
+
+  const recipeIngredients: RecipeIngredient[] = props.form[props.name] as RecipeIngredient[];
+
+  return (
+    <Label htmlFor={props.name}>
+      {props.label}
+      {props.isPending ?
         <LoadingBox /> :
         <div>
-          <ul id={this.props.name}>
-            {this.state.recipeIngredients}
+          <ul id={props.name}>
+            {recipeIngredients &&
+              recipeIngredients.map((recipeIngredient: RecipeIngredient, index: number) =>
+                <RecipeIngredient
+                  key={index}
+                  index={index}
+                  units={props.units}
+                  ingredients={props.ingredients}
+                  recipeIngredient={recipeIngredient}
+                  onChange={onChange}
+                />
+            )}
           </ul>
           <button
             type='button'
-            onClick={event => this.newRecipeIngredient(event)}
+            onClick={event => newRecipeIngredient(event)}
           >
             Add Ingredient
           </button>
         </div>
       }
-      {/* <button onClick={event => this.onChange(event)}></button> */}
     </Label>
   );
 };

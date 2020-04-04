@@ -8,7 +8,7 @@ export interface StarRatingProps {
   form?: {
     [key: string]: number
   },
-  setNewFormState?: (field: string, newValue: string | number) => void
+  setNewFormState?: (field: string, newValue: number) => void
 };
 
 const Label = styled.label`

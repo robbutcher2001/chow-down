@@ -6,9 +6,9 @@ export interface TextareaProps {
   name: string,
   label: string,
   form?: {
-    [key: string]: string | number
+    [key: string]: string
   },
-  setNewFormState?: (field: string, newValue: string | number) => void
+  setNewFormState?: (field: string, newValue: string) => void
 };
 
 const Label = styled.label`
@@ -44,7 +44,7 @@ class Textarea extends Component<TextareaProps, {}> {
       <textarea
         id={this.props.name}
         name={this.props.name}
-        value={this.props.form[this.props.name]}
+        value={this.props.form[this.props.name] ? this.props.form[this.props.name] : ''}
         onChange={event => this.onChange(event)}
         rows={4}
       />

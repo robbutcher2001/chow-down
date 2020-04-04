@@ -10,9 +10,9 @@ export interface ImageSelectorProps {
   name: string,
   label: string,
   form?: {
-    [key: string]: string | number
+    [key: string]: string
   },
-  setNewFormState?: (field: string, newValue: string | number) => void
+  setNewFormState?: (field: string, newValue: string) => void
 };
 
 interface OwnState {
@@ -91,12 +91,12 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         accept='image/*'
         hidden
         onChange={event => this.onChange(event)} />
-      {this.props.form[this.props.name] ?
-        <figure>
-          <img src={this.props.form[this.props.name].toString()} />
-        </figure> :
-        <UnknownImage />
-      }
+        {this.props.form[this.props.name] ?
+          <figure>
+            <img src={this.props.form[this.props.name].toString()} />
+          </figure> :
+          <UnknownImage />
+        }
       <div className='red'>{this.state.error}</div>
     </Label>
   );
