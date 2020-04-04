@@ -19,8 +19,8 @@ public class RecipeRepository {
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
   private static final String GET_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image FROM chow.recipes r";
-  private static final String PUT_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image) "
-      + "VALUES (DEFAULT, :title, :description, :rating, :url, :image) RETURNING id";
+  private static final String PUT_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
+      + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
 
   private AWSRDSData rdsData;
 
@@ -43,6 +43,7 @@ public class RecipeRepository {
       parameters.add(new SqlParameter().withName("rating").withValue(new Field().withLongValue(recipe.getRating())));
       parameters.add(new SqlParameter().withName("url").withValue(new Field().withStringValue(recipe.getUrl())));
       parameters.add(new SqlParameter().withName("image").withValue(new Field().withStringValue(recipe.getImage())));
+      parameters.add(new SqlParameter().withName("createdDate").withValue(new Field().withStringValue(recipe.getCreatedDate().toString())));
     } catch (NullPointerException npe) {
       throw new ResourceNotPersistedException("part or all of the input Recipe was null");
     }

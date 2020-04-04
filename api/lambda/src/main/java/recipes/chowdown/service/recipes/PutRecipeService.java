@@ -1,5 +1,8 @@
 package recipes.chowdown.service.recipes;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -39,11 +42,16 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
     try {
       LOGGER = context.getLogger();
 
-      //test get ingredients
-      LOGGER.log(recipe.toString());
-      //end test get ingredients
+      // test get ingredients
+      recipe.getIngredients().forEach(ing -> {
+        LOGGER.log(ing.getQuantity().toString());
+        LOGGER.log(ing.getUnitId());
+        LOGGER.log(ing.getIngredientId());
+      });
+      // end test get ingredients
 
       recipe.setId(null);
+      recipe.setCreatedDate(OffsetDateTime.now(ZoneId.of("Europe/London")));
       final String recipeImage = recipe.getImage();
 
       // test S3 upload

@@ -1,5 +1,6 @@
 package recipes.chowdown.domain;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -14,11 +15,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Recipe {
-    private String id;
-    private String title;
-    private String description;
-    private Long rating;
-    private String url;
-    private String image;
-    private List<RecipeIngredient> ingredients;
+  private String id;
+  private String title;
+  private String description;
+  private Long rating;
+  private String url;
+  private String image;
+  private List<RecipeIngredient> ingredients;
+  private OffsetDateTime createdDate;
 }
