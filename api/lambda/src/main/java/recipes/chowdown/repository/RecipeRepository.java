@@ -20,7 +20,7 @@ public class RecipeRepository {
 
   private static final String GET_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image FROM chow.recipes r";
   private static final String PUT_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
-      + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
+      + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, CAST (:createdDate AS time)) RETURNING id";
 
   private AWSRDSData rdsData;
 
