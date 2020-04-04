@@ -43,11 +43,13 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       LOGGER = context.getLogger();
 
       // test get ingredients
-      recipe.getIngredients().forEach(ing -> {
-        LOGGER.log(ing.getQuantity().toString());
-        LOGGER.log(ing.getUnitId());
-        LOGGER.log(ing.getIngredientId());
-      });
+      if (recipe.getIngredients() != null) {
+        recipe.getIngredients().forEach(ing -> {
+          LOGGER.log(ing.getQuantity().toString());
+          LOGGER.log(ing.getUnitId());
+          LOGGER.log(ing.getIngredientId());
+        });
+      }
       // end test get ingredients
 
       recipe.setId(null);
