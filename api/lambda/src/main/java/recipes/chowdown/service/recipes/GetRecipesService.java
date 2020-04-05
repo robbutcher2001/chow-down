@@ -1,5 +1,9 @@
 package recipes.chowdown.service.recipes;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,10 +41,15 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
       }
 
       for (List<Field> fields : result.getRecords()) {
+        final ZonedDateTime zonedCreatedDate = ZonedDateTime.parse(fields.get(6).getStringValue(),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC));
+        final String localZoneCreatedDate = zonedCreatedDate.withZoneSameInstant(ZoneId.of("Europe/London"))
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
         recipes.add(Recipe.builder().id(fields.get(0).getStringValue()).title(fields.get(1).getStringValue())
             .description(fields.get(2).getStringValue()).rating(fields.get(3).getLongValue())
-            .url(fields.get(4).getStringValue()).image(fields.get(5).getStringValue())
-            .createdDate(fields.get(6).getStringValue()).build());
+            .url(fields.get(4).getStringValue()).image(fields.get(5).getStringValue()).createdDate(localZoneCreatedDate)
+            .build());
       }
 
       return recipes;

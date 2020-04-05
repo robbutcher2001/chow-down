@@ -1,7 +1,7 @@
 package recipes.chowdown.service.recipes;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import com.amazonaws.AmazonServiceException;
@@ -54,7 +54,7 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       // end test get ingredients
 
       recipe.setId(null);
-      OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC"));
+      OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
       recipe.setCreatedDate(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(now));
 
       final String recipeImage = recipe.getImage();

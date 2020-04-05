@@ -37,211 +37,262 @@ import recipes.chowdown.repository.RecipeRepository;
 @TestInstance(Lifecycle.PER_CLASS)
 public class GetRecipesServiceTest {
 
-    @Mock
-    private Context context;
+  @Mock
+  private Context context;
 
-    @Mock
-    private LambdaLogger logger;
+  @Mock
+  private LambdaLogger logger;
 
-    @Mock
-    private RecipeRepository repository;
+  @Mock
+  private RecipeRepository repository;
 
-    @InjectMocks
-    private GetRecipesService service;
+  @InjectMocks
+  private GetRecipesService service;
 
-    @BeforeAll
-    void beforeAll() {
-        MockitoAnnotations.initMocks(this);
+  private Field createdDate;
 
-        this.service = new GetRecipesService();
-    }
+  @BeforeAll
+  void beforeAll() {
+    MockitoAnnotations.initMocks(this);
 
-    @Test
-    void handleRequest_shouldReturnRecipe_whenExistsSingle() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    this.createdDate = new Field();
+    this.createdDate.setStringValue("2020-06-01 14:00:10");
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake");
+    this.service = new GetRecipesService();
+  }
 
-        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
+  @Test
+  void handleRequest_shouldReturnRecipe_whenExistsSingle() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        assertEquals(1, returnedRecipes.size());
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake");
 
-    @Test
-    void handleRequest_shouldReturnRecipes_whenExistsMultiple() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
-        List<List<Field>> rows = Arrays.asList(columns, columns);
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake");
+    assertEquals(1, returnedRecipes.size());
+  }
 
-        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
+  @Test
+  void handleRequest_shouldReturnRecipes_whenExistsMultiple() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate);
+    List<List<Field>> rows = Arrays.asList(columns, columns);
 
-        assertEquals(2, returnedRecipes.size());
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake");
 
-    @Test
-    void handleRequest_shouldNotReturnRecipes_whenNoRecipesExist() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
+    assertEquals(2, returnedRecipes.size());
+  }
 
-        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
+  @Test
+  void handleRequest_shouldReturnCorrectCreatedDate_whenBritishSummerTime() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    this.createdDate.setStringValue("2020-06-01 14:00:10");
 
-        assertEquals(0, returnedRecipes.size());
-    }
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-    @Test
-    void handleRequest_shouldThrowException_whenTooFewRowsReturnedFromDb() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake");
 
-        // only return one column (id) and no other recipe fields
-        List<Field> columns = Collections.singletonList(mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake");
+    assertEquals(1, returnedRecipes.size());
+    assertEquals("2020-06-01T15:00:10+01:00", returnedRecipes.get(0).getCreatedDate());
+  }
 
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), this.context));
-    }
+  @Test
+  void handleRequest_shouldReturnCorrectCreatedDate_whenNotBritishSummerTime() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    this.createdDate.setStringValue("2020-01-01 14:00:10");
 
-    @Test
-    void handleRequest_shouldReturnRecipe_whenTooManyRowsReturnedFromDb() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        // return eight columns (too many for query)
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
-                mockField, mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake");
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake");
-        when(mockField.getLongValue()).thenReturn(123l);
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
+    assertEquals(1, returnedRecipes.size());
+    assertEquals("2020-01-01T14:00:10Z", returnedRecipes.get(0).getCreatedDate());
+  }
 
-        assertEquals(1, returnedRecipes.size());
-        assertEquals("fake", returnedRecipes.get(0).getId());
-        assertEquals("fake", returnedRecipes.get(0).getTitle());
-        assertEquals("fake", returnedRecipes.get(0).getDescription());
-        assertEquals(123l, returnedRecipes.get(0).getRating());
-        assertEquals("fake", returnedRecipes.get(0).getUrl());
-        assertEquals("fake", returnedRecipes.get(0).getImage());
-    }
+  @Test
+  void handleRequest_shouldNotReturnRecipes_whenNoRecipesExist() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
-    @Test
-    void handleRequest_shouldReturnRecipe_whenNoRowDataReturnedFromDb() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("");
-        when(mockField.getLongValue()).thenReturn(0l);
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
+    assertEquals(0, returnedRecipes.size());
+  }
 
-        assertEquals(1, returnedRecipes.size());
-        assertEquals("", returnedRecipes.get(0).getId());
-        assertEquals("", returnedRecipes.get(0).getTitle());
-        assertEquals("", returnedRecipes.get(0).getDescription());
-        assertEquals(0l, returnedRecipes.get(0).getRating());
-        assertEquals("", returnedRecipes.get(0).getUrl());
-        assertEquals("", returnedRecipes.get(0).getImage());
-    }
+  @Test
+  void handleRequest_shouldThrowException_whenTooFewRowsReturnedFromDb() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
 
-    @Test
-    void handleRequest_shouldReturnRecipe_whenNullReturnedFromDb() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    // only return one column (id) and no other recipe fields
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn(null);
-        when(mockField.getLongValue()).thenReturn(null);
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
 
-        List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
+    assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), this.context));
+  }
 
-        assertEquals(1, returnedRecipes.size());
-        assertNull(returnedRecipes.get(0).getId());
-        assertNull(returnedRecipes.get(0).getTitle());
-        assertNull(returnedRecipes.get(0).getDescription());
-        assertNull(returnedRecipes.get(0).getRating());
-        assertNull(returnedRecipes.get(0).getUrl());
-        assertNull(returnedRecipes.get(0).getImage());
-    }
+  @Test
+  void handleRequest_shouldReturnRecipe_whenTooManyRowsReturnedFromDb() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
 
-    @Test
-    void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenThrow(BadRequestException.class);
+    // return eight columns (too many for query)
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate, mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        ServerException returnedException = assertThrows(ServerException.class,
-                () -> this.service.handleRequest(new Object(), this.context));
-        assertTrue(returnedException.getMessage().contains("unable to complete request"));
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake");
+    when(mockField.getLongValue()).thenReturn(123l);
 
-    @Test
-    void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenThrow(new AWSRDSDataException(
-                "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        ServerException returnedException = assertThrows(ServerException.class,
-                () -> this.service.handleRequest(new Object(), this.context));
-        assertTrue(returnedException.getMessage().contains("unable to complete request"));
-        assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
-        assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
-    }
+    assertEquals(1, returnedRecipes.size());
+    assertEquals("fake", returnedRecipes.get(0).getId());
+    assertEquals("fake", returnedRecipes.get(0).getTitle());
+    assertEquals("fake", returnedRecipes.get(0).getDescription());
+    assertEquals(123l, returnedRecipes.get(0).getRating());
+    assertEquals("fake", returnedRecipes.get(0).getUrl());
+    assertEquals("fake", returnedRecipes.get(0).getImage());
+  }
 
-    @Test
-    void handleRequest_shouldReturnRecipe_whenNullInputObject() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+  @Test
+  void handleRequest_shouldReturnRecipe_whenNoRowDataReturnedFromDb() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.getRecipes()).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake");
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("");
+    when(mockField.getLongValue()).thenReturn(0l);
 
-        List<Recipe> returnedRecipes = this.service.handleRequest(null, this.context);
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
-        assertEquals(1, returnedRecipes.size());
-    }
+    assertEquals(1, returnedRecipes.size());
+    assertEquals("", returnedRecipes.get(0).getId());
+    assertEquals("", returnedRecipes.get(0).getTitle());
+    assertEquals("", returnedRecipes.get(0).getDescription());
+    assertEquals(0l, returnedRecipes.get(0).getRating());
+    assertEquals("", returnedRecipes.get(0).getUrl());
+    assertEquals("", returnedRecipes.get(0).getImage());
+  }
 
-    @Test
-    void handleRequest_shouldThrowException_whenNullContext() throws Exception {
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), null));
-    }
+  @Test
+  void handleRequest_shouldReturnRecipe_whenNullReturnedFromDb() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-    @Test
-    void handleRequest_shouldThrowException_whenAllNullInput() throws Exception {
-        assertThrows(ServerException.class, () -> this.service.handleRequest(null, null));
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn(null);
+    when(mockField.getLongValue()).thenReturn(null);
+
+    List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
+
+    assertEquals(1, returnedRecipes.size());
+    assertNull(returnedRecipes.get(0).getId());
+    assertNull(returnedRecipes.get(0).getTitle());
+    assertNull(returnedRecipes.get(0).getDescription());
+    assertNull(returnedRecipes.get(0).getRating());
+    assertNull(returnedRecipes.get(0).getUrl());
+    assertNull(returnedRecipes.get(0).getImage());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenThrow(BadRequestException.class);
+
+    ServerException returnedException = assertThrows(ServerException.class,
+        () -> this.service.handleRequest(new Object(), this.context));
+    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenThrow(new AWSRDSDataException(
+        "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
+
+    ServerException returnedException = assertThrows(ServerException.class,
+        () -> this.service.handleRequest(new Object(), this.context));
+    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
+    assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
+  }
+
+  @Test
+  void handleRequest_shouldReturnRecipe_whenNullInputObject() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
+        this.createdDate);
+    List<List<Field>> rows = Collections.singletonList(columns);
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getRecipes()).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake");
+
+    List<Recipe> returnedRecipes = this.service.handleRequest(null, this.context);
+
+    assertEquals(1, returnedRecipes.size());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenNullContext() throws Exception {
+    assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), null));
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenAllNullInput() throws Exception {
+    assertThrows(ServerException.class, () -> this.service.handleRequest(null, null));
+  }
 }
