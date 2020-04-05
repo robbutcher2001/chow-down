@@ -235,6 +235,17 @@ paths:
   # Days
   /api/days:
     get:
+      parameters:
+      - name: "from"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
+      - name: "to"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
       responses:
         200:
           description: "200 response"
@@ -251,6 +262,7 @@ paths:
         500:
           description: "500 response"
           content: {}
+      x-amazon-apigateway-request-validator: "Validate query string"
       x-amazon-apigateway-integration:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDaysFunction.Arn}/invocations"
@@ -346,3 +358,6 @@ x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false
     validateRequestBody: true
+  Validate query string:
+    validateRequestParameters: true
+    validateRequestBody: false
