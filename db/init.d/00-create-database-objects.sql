@@ -142,9 +142,9 @@ CREATE TABLE chow.recipe_ingredients
 (
     id uuid NOT NULL DEFAULT uuid_generate_v4(),
     quantity double precision NOT NULL,
-    unit_id uuid,
+    unit_id uuid NOT NULL,
     ingredient_id uuid NOT NULL,
-    recipe_id uuid,
+    recipe_id uuid NOT NULL,
     CONSTRAINT recipe_ingredients_pkey PRIMARY KEY (id),
     CONSTRAINT ingredient_id FOREIGN KEY (ingredient_id)
         REFERENCES chow.ingredients (id) MATCH SIMPLE
@@ -177,7 +177,7 @@ GRANT SELECT, DELETE ON TABLE chow.recipe_ingredients to chow_delete_only;
 CREATE TABLE chow.days
 (
     date date NOT NULL,
-    recipe_id uuid,
+    recipe_id uuid NOT NULL,
     CONSTRAINT date PRIMARY KEY (date),
     CONSTRAINT recipe_id FOREIGN KEY (recipe_id)
         REFERENCES chow.recipes (id) MATCH SIMPLE
