@@ -60,7 +60,7 @@ public class GetRecipesServiceTest {
     void handleRequest_shouldReturnRecipe_whenExistsSingle() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
@@ -77,7 +77,7 @@ public class GetRecipesServiceTest {
     void handleRequest_shouldReturnRecipes_whenExistsMultiple() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Arrays.asList(columns, columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
@@ -125,9 +125,9 @@ public class GetRecipesServiceTest {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
 
-        // return seven columns (too many for query)
+        // return eight columns (too many for query)
         List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
-                mockField);
+                mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
@@ -151,7 +151,7 @@ public class GetRecipesServiceTest {
     void handleRequest_shouldReturnRecipe_whenNoRowDataReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
@@ -175,7 +175,7 @@ public class GetRecipesServiceTest {
     void handleRequest_shouldReturnRecipe_whenNullReturnedFromDb() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
@@ -222,7 +222,7 @@ public class GetRecipesServiceTest {
     void handleRequest_shouldReturnRecipe_whenNullInputObject() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
         Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField);
+        List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField);
         List<List<Field>> rows = Collections.singletonList(columns);
 
         when(this.context.getLogger()).thenReturn(this.logger);
