@@ -52,7 +52,6 @@ public class GetDaysService implements RequestHandler<Object, List<Day>> {
           days.add(Day.builder().date(date).recipe(recipe).build());
         } else {
           existingDay.get().getRecipe().getIngredients().add(buildRecipeIngredients(fields));
-          days.add(existingDay.get());
         }
       }
 
