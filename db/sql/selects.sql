@@ -60,3 +60,23 @@ INNER JOIN days d
 	AND w.date BETWEEN '2015-01-01' AND date_trunc('day', now());
 
 -- Foreign key contraints: http://www.postgresqltutorial.com/postgresql-foreign-key/
+
+
+
+
+
+
+
+
+SELECT d.date, r.title, r.rating, r.image, ri.quantity, u.singular, u.plural, i.ingredient
+FROM chow.recipe_ingredients ri
+INNER JOIN chow.units u
+  ON u.id = ri.unit_id
+INNER JOIN chow.ingredients i
+  ON i.id = ri.ingredient_id
+INNER JOIN chow.recipes r
+  ON r.id = ri.recipe_id
+INNER JOIN chow.days d
+  ON d.recipe_id = r.id
+  AND d.date BETWEEN '2020-04-01' AND '2020-04-05'
+ORDER BY d.date, i.ingredient;

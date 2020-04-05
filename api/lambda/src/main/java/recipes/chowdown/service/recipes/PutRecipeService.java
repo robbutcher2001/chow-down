@@ -43,16 +43,6 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
     try {
       LOGGER = context.getLogger();
 
-      // test get ingredients
-      if (recipe.getIngredients() != null) {
-        recipe.getIngredients().forEach(ing -> {
-          LOGGER.log(ing.getQuantity().toString());
-          LOGGER.log(ing.getUnitId());
-          LOGGER.log(ing.getIngredientId());
-        });
-      }
-      // end test get ingredients
-
       recipe.setId(null);
       OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
       recipe.setCreatedDate(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(now));

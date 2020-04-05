@@ -11,11 +11,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecipeIngredient {
-  private Long quantity;
-  private String unitId;
-  private String unitSingularName;
-  private String unitPluralName;
-  private String ingredientId;
-  private String ingredientName;
+public class Day {
+  private String date;
+  private Recipe recipe;
 }
