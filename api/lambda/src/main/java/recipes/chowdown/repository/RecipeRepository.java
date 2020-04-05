@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import com.amazonaws.services.rdsdata.AWSRDSData;
 import com.amazonaws.services.rdsdata.AWSRDSDataClient;
+import com.amazonaws.services.rdsdata.model.BeginTransactionRequest;
+import com.amazonaws.services.rdsdata.model.BeginTransactionResult;
+import com.amazonaws.services.rdsdata.model.CommitTransactionRequest;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementRequest;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
@@ -50,7 +53,31 @@ public class RecipeRepository {
       throw new ResourceNotPersistedException("part or all of the input Recipe was null");
     }
 
-    return this.rdsData.executeStatement(new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
-        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(PUT_SQL).withParameters(parameters));
+    final String transactionId = beginTransaction();
+    System.out.println("using transactionId " + transactionId);
+    final ExecuteStatementRequest executeStatementRequest = new ExecuteStatementRequest()
+        .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
+        .withSql(PUT_SQL).withParameters(parameters);
+    final ExecuteStatementResult executeStatementResult = this.rdsData.executeStatement(executeStatementRequest);
+    commitTransaction(transactionId);
+
+    return executeStatementResult;
+  }
+
+  private String beginTransaction() {
+    final BeginTransactionRequest beginTransactionRequest = new BeginTransactionRequest().withResourceArn(RESOURCE_ARN)
+        .withSecretArn(SECRET_ARN).withDatabase(DATABASE);
+    final BeginTransactionResult beginTransactionResult = this.rdsData.beginTransaction(beginTransactionRequest);
+
+    return beginTransactionResult.getTransactionId();
+  }
+
+  private void commitTransaction(final String transactionId) {
+    if (transactionId == null || transactionId.isEmpty()) {
+      throw new IllegalArgumentException("transactionId cannot be null or empty");
+    }
+
+    this.rdsData.commitTransaction(new CommitTransactionRequest().withTransactionId(transactionId)
+        .withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN));
   }
 }
