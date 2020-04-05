@@ -30,7 +30,7 @@ public class RecipeRepository {
   private static final String PUT_RECIPE_BODY_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
       + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
   private static final String PUT_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
-      + "VALUES (DEFAULT, :quantity, :unitId, :ingredientId, :recipeId) RETURNING id";
+      + "VALUES (DEFAULT, :quantity, :unitId::uuid, :ingredientId::uuid, :recipeId::uuid) RETURNING id";
 
   private AWSRDSData rdsData;
 
