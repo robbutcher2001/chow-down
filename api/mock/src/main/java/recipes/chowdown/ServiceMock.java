@@ -1,5 +1,7 @@
 package recipes.chowdown;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +43,7 @@ public class ServiceMock implements ApiApi {
       recipe.setRating(this.faker.number().numberBetween(0, 6));
       recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
       recipe.setImage(this.faker.internet().image());
+      recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
       this.recipes.add(recipe);
     }

@@ -6,8 +6,8 @@ exports[`RecipeCard basic snapshot render 1`] = `
 >
   <figure>
     <img
-      alt="fake_alt_text"
-      src="fake_url"
+      alt="fake_title"
+      src="fake_image"
     />
     <figcaption>
       <h3>

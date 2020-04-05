@@ -23,14 +23,7 @@ export default (props: RecipeGridProps) =>
   props.recipes && props.recipes.length > 0 ?
     <RecipeGrid>
       {props.recipes.map((recipe, i) =>
-        <RecipeCard
-          key={i}
-          title={recipe.title}
-          description={recipe.description}
-          rating={recipe.rating}
-          imageUrl={recipe.image}
-          imageAlt={recipe.title}
-        />
+        <RecipeCard key={i} recipe={recipe} />
       )}
     </RecipeGrid> :
     <NegativeBox message='No recipes yet!' />;
