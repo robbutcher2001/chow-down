@@ -28,7 +28,7 @@ public class DaysRepository {
   + "  ON r.id = ri.recipe_id "
   + "INNER JOIN chow.days d "
   + "  ON d.recipe_id = r.id "
-  + "  AND d.date BETWEEN :from AND :to "
+  + "  AND d.date BETWEEN :from::date AND :to::date "
   + "ORDER BY d.date, i.ingredient";
 
   private AWSRDSData rdsData;
