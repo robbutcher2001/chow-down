@@ -84,7 +84,7 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
   }
 
   private RecipeIngredient buildRecipeIngredients(final List<Field> fields) {
-    return RecipeIngredient.builder().quantity(fields.get(4).getLongValue())
+    return RecipeIngredient.builder().quantity(fields.get(4).getDoubleValue())
         .unitSingularName(fields.get(5).getStringValue()).unitPluralName(fields.get(6).getStringValue())
         .ingredientName(fields.get(7).getStringValue()).build();
   }
