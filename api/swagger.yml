@@ -355,7 +355,7 @@ components:
       type: object
       properties:
         quantity:
-          type: integer
+          type: number
         unitId:
           type: string
         ingredientId:

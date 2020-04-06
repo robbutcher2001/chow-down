@@ -41,10 +41,6 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
       if (request.getTo() == null || request.getTo().isEmpty() || !validateRequestDate(request.getTo())) {
         throw new IllegalArgumentException("to date cannot be null or empty or invalid date");
       }
-      LOGGER.log("getting from:");
-      LOGGER.log(request.getFrom());
-      LOGGER.log("getting to:");
-      LOGGER.log(request.getTo());
 
       final List<Day> days = new ArrayList<>();
 
