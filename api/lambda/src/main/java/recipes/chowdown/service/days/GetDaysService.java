@@ -1,5 +1,7 @@
 package recipes.chowdown.service.days;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,13 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
     try {
       LOGGER = context.getLogger();
 
+      if (request.getFrom() == null || request.getFrom().isEmpty() || !validateRequestDate(request.getFrom())) {
+        throw new IllegalArgumentException("from date cannot be null or empty or invalid date");
+      }
+
+      if (request.getTo() == null || request.getTo().isEmpty() || !validateRequestDate(request.getTo())) {
+        throw new IllegalArgumentException("to date cannot be null or empty or invalid date");
+      }
       LOGGER.log("getting from:");
       LOGGER.log(request.getFrom());
       LOGGER.log("getting to:");
@@ -39,7 +48,7 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
 
       final List<Day> days = new ArrayList<>();
 
-      ExecuteStatementResult result = this.repository.getDays();
+      ExecuteStatementResult result = this.repository.getDays(request.getFrom(), request.getTo());
 
       if (result.getRecords().size() < 1) {
         LOGGER.log("No days found");
@@ -67,6 +76,15 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }
+  }
+
+  private boolean validateRequestDate(final String date) {
+    try {
+      DateTimeFormatter.BASIC_ISO_DATE.parse(date);
+    } catch (DateTimeParseException e) {
+      return false;
+    }
+    return true;
   }
 
   private RecipeIngredient buildRecipeIngredients(final List<Field> fields) {

@@ -1,9 +1,16 @@
 package recipes.chowdown.repository;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.amazonaws.services.rdsdata.AWSRDSData;
 import com.amazonaws.services.rdsdata.AWSRDSDataClient;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementRequest;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
+import com.amazonaws.services.rdsdata.model.Field;
+import com.amazonaws.services.rdsdata.model.SqlParameter;
+
+import recipes.chowdown.exceptions.ResourceNotPersistedException;
 
 //TODO: needs tests
 public class DaysRepository {
@@ -21,7 +28,7 @@ public class DaysRepository {
   + "  ON r.id = ri.recipe_id "
   + "INNER JOIN chow.days d "
   + "  ON d.recipe_id = r.id "
-  + "  AND d.date BETWEEN '20200401' AND '20200405' "
+  + "  AND d.date BETWEEN :from AND :to "
   + "ORDER BY d.date, i.ingredient";
 
   private AWSRDSData rdsData;
@@ -30,8 +37,17 @@ public class DaysRepository {
     this.rdsData = AWSRDSDataClient.builder().build();
   }
 
-  public ExecuteStatementResult getDays() {
+  public ExecuteStatementResult getDays(final String from, final String to) {
+    Collection<SqlParameter> parameters = new ArrayList<>();
+
+    try {
+      parameters.add(new SqlParameter().withName("from").withValue(new Field().withStringValue(from)));
+      parameters.add(new SqlParameter().withName("to").withValue(new Field().withStringValue(to)));
+    } catch (NullPointerException npe) {
+      throw new ResourceNotPersistedException("part or all of the input dates were null");
+    }
+
     return this.rdsData.executeStatement(new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
-        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_SQL));
+        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_SQL).withParameters(parameters));
   }
 }
