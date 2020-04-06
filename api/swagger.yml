@@ -357,8 +357,13 @@ components:
       properties:
         date:
           type: string
+        recipeId:
+          type: string
         recipe:
           $ref: "#/components/schemas/Recipe"
+      required:
+      - date
+      - recipeId
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false
