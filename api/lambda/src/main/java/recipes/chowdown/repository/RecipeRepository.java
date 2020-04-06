@@ -109,7 +109,7 @@ public class RecipeRepository {
       for (RecipeIngredient recipeIngredient : recipeIngredients) {
         List<SqlParameter> parameters = new ArrayList<>();
         parameters.add(new SqlParameter().withName("quantity")
-            .withValue(new Field().withLongValue(recipeIngredient.getQuantity())));
+            .withValue(new Field().withDoubleValue(recipeIngredient.getQuantity())));
         parameters.add(
             new SqlParameter().withName("unitId").withValue(new Field().withStringValue(recipeIngredient.getUnitId())));
         parameters.add(new SqlParameter().withName("ingredientId")

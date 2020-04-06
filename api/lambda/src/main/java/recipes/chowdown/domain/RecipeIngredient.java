@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecipeIngredient {
-  private Long quantity;
+  private double quantity;
   private String unitId;
   private String unitSingularName;
   private String unitPluralName;
