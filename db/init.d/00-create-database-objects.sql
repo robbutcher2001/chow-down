@@ -192,7 +192,7 @@ TABLESPACE pg_default;
 ALTER TABLE chow.days OWNER to chow_admin;
 
 GRANT ALL ON TABLE chow.days to chow_admin;
-GRANT SELECT, INSERT ON TABLE chow.days to chow_create_only;
+GRANT SELECT, INSERT, UPDATE ON TABLE chow.days to chow_create_only;
 GRANT SELECT ON TABLE chow.days to chow_read_only;
 GRANT SELECT, UPDATE ON TABLE chow.days to chow_update_only;
 GRANT SELECT, DELETE ON TABLE chow.days to chow_delete_only;
