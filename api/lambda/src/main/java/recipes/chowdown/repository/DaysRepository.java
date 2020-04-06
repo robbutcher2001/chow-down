@@ -21,7 +21,7 @@ public class DaysRepository {
   + "  ON r.id = ri.recipe_id "
   + "INNER JOIN chow.days d "
   + "  ON d.recipe_id = r.id "
-  + "  AND d.date BETWEEN '2020-04-01' AND '2020-04-05' "
+  + "  AND d.date BETWEEN '20200401' AND '20200405' "
   + "ORDER BY d.date, i.ingredient";
 
   private AWSRDSData rdsData;

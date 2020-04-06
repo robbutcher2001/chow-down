@@ -32,6 +32,8 @@ public class GetDaysService implements RequestHandler<Object, List<Day>> {
     try {
       LOGGER = context.getLogger();
 
+      LOGGER.log(input.toString());
+
       final List<Day> days = new ArrayList<>();
 
       ExecuteStatementResult result = this.repository.getDays();
