@@ -54,7 +54,7 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
         final String date = fields.get(0).getStringValue();
         Optional<Day> existingDay = days.stream().filter(day -> date.equals(day.getDate())).findFirst();
 
-        // TODO: do we even need to initialise ingredients(Collections.emptyList())
+        // TODO: do we even need to initialise ingredients(new ArrayList<>())
         if (!existingDay.isPresent()) {
           Recipe recipe = Recipe.builder().title(fields.get(1).getStringValue()).rating(fields.get(2).getLongValue())
               .image(fields.get(3).getStringValue()).ingredients(new ArrayList<>()).build();

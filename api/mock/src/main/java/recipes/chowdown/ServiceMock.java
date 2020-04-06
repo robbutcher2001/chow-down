@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import com.github.javafaker.Faker;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
 import recipes.chowdown.schema.ApiApi;
+import recipes.chowdown.schema.Day;
 import recipes.chowdown.schema.Ingredient;
 import recipes.chowdown.schema.Recipe;
 import recipes.chowdown.schema.Unit;
@@ -144,5 +146,17 @@ public class ServiceMock implements ApiApi {
     randomSleep();
 
     return new ResponseEntity<>(recipe, HttpStatus.CREATED);
+  }
+
+  @Override
+  public ResponseEntity<List<Day>> apiDaysGet(@NotNull @Valid String from, @NotNull @Valid String to) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public ResponseEntity<Day> apiDaysPut(@Valid Day body) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

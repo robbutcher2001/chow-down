@@ -84,10 +84,11 @@ const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props:
         <input
           id={'quantity_' + props.index}
           type='number'
+          step='0.01'
           min='0'
           value={props.recipeIngredient.quantity.toString()}
           onChange={event => onChange({
-            quantity: event.currentTarget.value ? parseInt(event.currentTarget.value) : 0
+            quantity: event.currentTarget.value ? parseFloat(event.currentTarget.value) : 0
           })}
         />
       </label>
