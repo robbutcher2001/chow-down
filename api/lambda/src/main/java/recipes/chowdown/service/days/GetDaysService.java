@@ -18,7 +18,7 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.DaysRepository;
 
 //TODO: needs tests
-public class GetDaysService implements RequestHandler<Object, List<Day>> {
+public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
 
   private static LambdaLogger LOGGER;
 
@@ -28,11 +28,14 @@ public class GetDaysService implements RequestHandler<Object, List<Day>> {
     this.repository = new DaysRepository();
   }
 
-  public List<Day> handleRequest(final Object input, final Context context) {
+  public List<Day> handleRequest(final GetRequest request, final Context context) {
     try {
       LOGGER = context.getLogger();
 
-      LOGGER.log(input.toString());
+      LOGGER.log("getting from:");
+      LOGGER.log(request.getFrom());
+      LOGGER.log("getting to:");
+      LOGGER.log(request.getTo());
 
       final List<Day> days = new ArrayList<>();
 

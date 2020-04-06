@@ -277,7 +277,12 @@ paths:
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
         httpMethod: "POST"
-        passthroughBehavior: "when_no_match"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "{\n    \"from\": \"$util.escapeJavaScript($input.params().querystring.get('from'))\"\
+            ,\n    \"to\": \"$util.escapeJavaScript($input.params().querystring.get('to'))\"\
+            \n}"
+        contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
 components:
   schemas:
