@@ -284,6 +284,47 @@ paths:
             \n}"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Day"
+        required: true
+      responses:
+        201:
+          description: "201 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Day"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutDayFunction.Arn}/invocations"
+        responses:
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "$input.body"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
 components:
   schemas:
     Unit:

@@ -255,7 +255,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 60
+      Timeout: 300
       Environment:
         Variables:
           RESOURCE_ARN:
@@ -323,7 +323,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 60
+      Timeout: 300
       Environment:
         Variables:
           RESOURCE_ARN:
@@ -391,7 +391,7 @@ Resources:
           - LambdaFunctionRole
           - Arn
       MemorySize: 1024
-      Timeout: 60
+      Timeout: 300
       Environment:
         Variables:
           RESOURCE_ARN:
@@ -442,6 +442,40 @@ Resources:
       FunctionName:
         Fn::GetAtt:
           - GetDaysFunction
+          - Arn
+      SourceArn:
+        Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
+  PutDayFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Join: [ '-', [ 'PutDayFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.service.days.PutDayService::handleRequest
+      Runtime: java8
+      CodeUri:
+        Bucket: !Ref ApiSourceCodeBucket
+        Key: %{ChowDownApiSourceKey}
+      Role:
+        Fn::GetAtt:
+          - LambdaFunctionRole
+          - Arn
+      MemorySize: 1024
+      Timeout: 300
+      Environment:
+        Variables:
+          RESOURCE_ARN:
+            Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
+          SECRET_ARN: !Ref ChowDownDatabaseCreateOnlyCreds
+          DATABASE_NAME: chowdown
+          DISTRIBUTION_ID: !Ref DistributionId
+  PutDayLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      FunctionName:
+        Fn::GetAtt:
+          - PutDayFunction
           - Arn
       SourceArn:
         Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]

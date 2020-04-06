@@ -80,3 +80,16 @@ INNER JOIN chow.days d
   ON d.recipe_id = r.id
   AND d.date BETWEEN '2020-04-01' AND '2020-04-05'
 ORDER BY d.date, i.ingredient;
+
+
+
+INSERT INTO chow.days (date, recipe_id)
+VALUES ('20200406', '101c440b-696f-47b9-abb1-463c42cd875c')
+ON CONFLICT (date) DO UPDATE
+	SET recipe_id = EXCLUDED.recipe_id;
+
+
+INSERT INTO chow.days (date, recipe_id)
+VALUES ('20200406', null)
+ON CONFLICT (date) DO UPDATE
+	SET recipe_id = EXCLUDED.recipe_id;

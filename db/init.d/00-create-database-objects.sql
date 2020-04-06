@@ -177,7 +177,7 @@ GRANT SELECT, DELETE ON TABLE chow.recipe_ingredients to chow_delete_only;
 CREATE TABLE chow.days
 (
     date date NOT NULL,
-    recipe_id uuid NOT NULL,
+    recipe_id uuid,
     CONSTRAINT date PRIMARY KEY (date),
     CONSTRAINT recipe_id FOREIGN KEY (recipe_id)
         REFERENCES chow.recipes (id) MATCH SIMPLE

@@ -13,5 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Day {
   private String date;
+  private String recipeId;
   private Recipe recipe;
 }
