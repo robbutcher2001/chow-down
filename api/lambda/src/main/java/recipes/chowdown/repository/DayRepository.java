@@ -13,8 +13,7 @@ import com.amazonaws.services.rdsdata.model.SqlParameter;
 import recipes.chowdown.domain.Day;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 
-//TODO: needs tests
-public class DaysRepository {
+public class DayRepository {
   private static final String RESOURCE_ARN = System.getenv("RESOURCE_ARN");
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
@@ -40,7 +39,7 @@ public class DaysRepository {
 
   private AWSRDSData rdsData;
 
-  public DaysRepository() {
+  public DayRepository() {
     this.rdsData = AWSRDSDataClient.builder().build();
   }
 

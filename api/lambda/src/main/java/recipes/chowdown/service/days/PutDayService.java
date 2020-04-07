@@ -9,7 +9,7 @@ import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import recipes.chowdown.domain.Day;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
-import recipes.chowdown.repository.DaysRepository;
+import recipes.chowdown.repository.DayRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
 
@@ -17,12 +17,12 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
   private static LambdaLogger LOGGER;
 
-  private DaysRepository repository;
+  private DayRepository repository;
 
   private CacheInvalidator cacheInvalidator;
 
   public PutDayService() {
-    this.repository = new DaysRepository();
+    this.repository = new DayRepository();
     this.cacheInvalidator = new CacheInvalidator();
   }
 

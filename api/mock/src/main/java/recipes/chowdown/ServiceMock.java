@@ -1,5 +1,6 @@
 package recipes.chowdown;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class ServiceMock implements ApiApi {
   final List<Unit> units = new ArrayList<>();
   final List<Ingredient> ingredients = new ArrayList<>();
   final List<Recipe> recipes = new ArrayList<>();
+  final List<Day> days = new ArrayList<>();
   boolean initRequest = true;
 
   public ServiceMock() {
@@ -71,6 +73,14 @@ public class ServiceMock implements ApiApi {
       ingredient.setIngredient(this.faker.food().ingredient());
 
       this.ingredients.add(ingredient);
+    }
+
+    for (int i = 0; i < 7; i++) {
+      Day day = new Day();
+      day.setDate(LocalDate.now().plusDays(i).toString());
+      day.setRecipe(this.recipes.get(i));
+
+      this.days.add(day);
     }
   }
 
@@ -150,12 +160,18 @@ public class ServiceMock implements ApiApi {
 
   @Override
   public ResponseEntity<List<Day>> apiDaysGet(@NotNull @Valid String from, @NotNull @Valid String to) {
-    // TODO Auto-generated method stub
-    return null;
+    if (initRequest) {
+      initRequest = !initRequest;
+      return new ResponseEntity<List<Day>>(Collections.emptyList(), HttpStatus.OK);
+    }
+
+    randomSleep();
+
+    return new ResponseEntity<List<Day>>(this.days, HttpStatus.OK);
   }
 
   @Override
-  public ResponseEntity<Day> apiDaysPut(@Valid Day body) {
+  public ResponseEntity<Day> apiDaysPut(@Valid Day day) {
     // TODO Auto-generated method stub
     return null;
   }

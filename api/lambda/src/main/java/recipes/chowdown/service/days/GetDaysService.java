@@ -1,5 +1,6 @@
 package recipes.chowdown.service.days;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -17,17 +18,16 @@ import recipes.chowdown.domain.Day;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.domain.RecipeIngredient;
 import recipes.chowdown.exceptions.ServerException;
-import recipes.chowdown.repository.DaysRepository;
+import recipes.chowdown.repository.DayRepository;
 
-//TODO: needs tests
 public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
 
   private static LambdaLogger LOGGER;
 
-  private DaysRepository repository;
+  private DayRepository repository;
 
   public GetDaysService() {
-    this.repository = new DaysRepository();
+    this.repository = new DayRepository();
   }
 
   public List<Day> handleRequest(final GetRequest request, final Context context) {
@@ -51,7 +51,7 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
       }
 
       for (List<Field> fields : result.getRecords()) {
-        final String date = fields.get(0).getStringValue();
+        final String date = parseToBasicISODate(fields.get(0).getStringValue());
         Optional<Day> existingDay = days.stream().filter(day -> date.equals(day.getDate())).findFirst();
 
         // TODO: do we even need to initialise ingredients(new ArrayList<>())
@@ -72,6 +72,10 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }
+  }
+
+  private String parseToBasicISODate(final String date) {
+    return LocalDate.parse(date).format(DateTimeFormatter.BASIC_ISO_DATE).toString();
   }
 
   private boolean validateRequestDate(final String date) {

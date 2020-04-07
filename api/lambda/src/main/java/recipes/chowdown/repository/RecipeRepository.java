@@ -62,7 +62,9 @@ public class RecipeRepository {
     commitTransaction(transactionId);
 
     // TODO: should just return ID here as we've already extracted it but is pattern
-    // change for all repositories
+    // change for all repositories. Maybe all repositories process the
+    // `ExecuteStatementResult` and return object T to service (int, db count, id or
+    // whatever)
     return executeStatementResult;
   }
 
