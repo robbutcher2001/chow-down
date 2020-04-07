@@ -2,7 +2,7 @@
 
 exports[`StarRating basic snapshot render 1`] = `
 <label
-  className="sc-bdVaJa bgGHlQ"
+  className="sc-bdVaJa jDBkAx"
   htmlFor="title"
 >
   The Star Rating Title
