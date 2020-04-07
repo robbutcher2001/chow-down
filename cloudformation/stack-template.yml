@@ -537,6 +537,8 @@ Resources:
         - ErrorCode: 404
           ResponseCode: 200
           ResponsePagePath: /index.html
+        - ErrorCode: 504
+          ErrorCachingMinTTL: 0
         DefaultCacheBehavior:
           AllowedMethods:
           - GET
