@@ -6,6 +6,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -54,11 +56,10 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
         final String date = parseToBasicISODate(fields.get(0).getStringValue());
         Optional<Day> existingDay = days.stream().filter(day -> date.equals(day.getDate())).findFirst();
 
-        // TODO: do we even need to initialise ingredients(new ArrayList<>())
         if (!existingDay.isPresent()) {
           Recipe recipe = Recipe.builder().title(fields.get(1).getStringValue()).rating(fields.get(2).getLongValue())
-              .image(fields.get(3).getStringValue()).ingredients(new ArrayList<>()).build();
-          recipe.getIngredients().add(buildRecipeIngredients(fields));
+              .image(fields.get(3).getStringValue()).build();
+          recipe.setIngredients(Stream.of(buildRecipeIngredients(fields)).collect(Collectors.toList()));
           days.add(Day.builder().date(date).recipe(recipe).build());
         } else {
           existingDay.get().getRecipe().getIngredients().add(buildRecipeIngredients(fields));
