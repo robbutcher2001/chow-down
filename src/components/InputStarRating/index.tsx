@@ -20,6 +20,7 @@ const Label = styled.label`
     font-family: Times;
     margin-right: 0.5rem;
     cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
   .filled::before {
