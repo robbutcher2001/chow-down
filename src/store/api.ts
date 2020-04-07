@@ -1,6 +1,7 @@
 import { call, put as putSideEffect } from 'redux-saga/effects';
 
 import { unexpectedServerError, unexpectedResponse, clearError } from './app/actions';
+import { ErrorMessageApiResponse } from './app/types';
 
 enum Method {
     POST = 'POST',
@@ -34,7 +35,7 @@ export interface FailCallback {
 //TODO: need to type the response from fetch, any is not good
 function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback) {
     try {
-        if (response.status >= 200 && response.status < 500) {
+        if (response.status && response.status >= 200 && response.status <= 500) {
             const json: ResponseBody = {
                 data: yield response.json()
             };
@@ -42,8 +43,13 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
             if (response.status < 300) {
                 yield* success(json.data);
             }
-            else if (response.status >= 400) {
+            //TODO: does json.data.message actually get parsed in failure reducer? don't know until we return error >=400 && <500
+            else if (response.status >= 400 && response.status < 500) {
                 yield* failure(response.status, json.data);
+            }
+            else if (response.status === 500) {
+                const error = { ...json.data } as ErrorMessageApiResponse;
+                yield putSideEffect(unexpectedServerError(error));
             }
             else {
                 throw response;
@@ -53,19 +59,18 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
             throw response;
         }
     } catch (err) {
-        if (err.status >= 500) {
-            yield putSideEffect(unexpectedServerError(err.statusText));
+        let errorMessage: string = err.statusText ? err.statusText : 'failed with status code ' + err.status;
+        if (err.toString().includes('Failed to fetch') ||
+            err.toString().includes('Could not connect to the server')) {
+            errorMessage = 'remote server is unreachable';
         }
-        else {
-            let errorMessage = err.statusText;
-            if (err.toString().includes('Failed to fetch') ||
-                err.toString().includes('Could not connect to the server')) {
-                errorMessage = 'remote server is unreachable';
-            }
 
-            yield putSideEffect(unexpectedResponse('An error has occurred with message: ' +
-                (errorMessage ? errorMessage.toLowerCase() : '<argh, no message at all>') + '.'));
-        }
+        const error: ErrorMessageApiResponse = {
+            message: 'An error has occurred with message: ' +
+                (errorMessage ? errorMessage.toLowerCase() : '<no message provided by server>') + '.'
+        };
+
+        yield putSideEffect(unexpectedResponse(error));
     }
 };
 

@@ -1,6 +1,7 @@
 package recipes.chowdown.service.ingredients;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.rdsdata.model.AWSRDSDataException;
 import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
@@ -89,17 +91,16 @@ public class GetIngredientsServiceTest {
     }
 
     @Test
-    void handleRequest_shouldThrowException_whenNoIngredientsExist() throws Exception {
+    void handleRequest_shouldNotReturnIngredients_whenNoIngredientsExist() throws Exception {
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
         when(this.context.getLogger()).thenReturn(this.logger);
         when(this.repository.getIngredients()).thenReturn(mockResult);
         when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
-        // TODO: see PutIngredientService, need to put this in APIG
-        // assertThrows(ResourcesNotFoundException.class, () ->
-        // this.service.handleRequest(new Object(), this.context));
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), this.context));
+        List<Ingredient> returnedIngredients = this.service.handleRequest(new Object(), this.context);
+
+        assertEquals(0, returnedIngredients.size());
     }
 
     @Test
@@ -185,7 +186,20 @@ public class GetIngredientsServiceTest {
 
         ServerException returnedException = assertThrows(ServerException.class,
                 () -> this.service.handleRequest(new Object(), this.context));
-        assertTrue(returnedException.getMessage().contains("issue communicating with database"));
+        assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    }
+
+    @Test
+    void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
+        when(this.context.getLogger()).thenReturn(this.logger);
+        when(this.repository.getIngredients()).thenThrow(new AWSRDSDataException(
+                "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
+
+        ServerException returnedException = assertThrows(ServerException.class,
+                () -> this.service.handleRequest(new Object(), this.context));
+        assertTrue(returnedException.getMessage().contains("unable to complete request"));
+        assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
+        assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
     }
 
     @Test

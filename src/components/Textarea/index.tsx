@@ -1,18 +1,14 @@
-import React, { ChangeEvent } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 
 import styled from 'styled-components';
 
-export interface InputBoxProps {
+export interface TextareaProps {
   name: string,
   label: string,
   form?: {
-    [key: string]: string | number
+    [key: string]: string
   },
-  onChange?: (
-    field: string,
-    type: 'text' | 'number',
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  ) => void
+  setNewFormState?: (field: string, newValue: string) => void
 };
 
 const Label = styled.label`
@@ -32,15 +28,28 @@ const Label = styled.label`
   }
 `
 
-export default (props: InputBoxProps) => (
-  <Label htmlFor={props.name}>
-    {props.label}
-    <textarea
-      id={props.name}
-      name={props.name}
-      value={props.form[props.name]}
-      onChange={event => props.onChange(props.name, 'text', event)}
-      rows={4}
-    />
-  </Label>
-);
+class Textarea extends Component<TextareaProps, {}> {
+  constructor(props: TextareaProps) {
+    super(props);
+  };
+
+  onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    event.preventDefault();
+    this.props.setNewFormState(this.props.name, event.currentTarget.value);
+  };
+
+  render = () => (
+    <Label htmlFor={this.props.name}>
+      {this.props.label}
+      <textarea
+        id={this.props.name}
+        name={this.props.name}
+        value={this.props.form[this.props.name] ? this.props.form[this.props.name] : ''}
+        onChange={event => this.onChange(event)}
+        rows={4}
+      />
+    </Label>
+  );
+};
+
+export default Textarea;

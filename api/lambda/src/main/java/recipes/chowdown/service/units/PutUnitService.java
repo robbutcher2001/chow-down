@@ -1,9 +1,9 @@
 package recipes.chowdown.service.units;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
 import recipes.chowdown.domain.Unit;
@@ -52,8 +52,9 @@ public class PutUnitService implements RequestHandler<Unit, Unit> {
       LOGGER.log("Unit cache purge status [" + response + "]");
 
       return unit;
-    } catch (BadRequestException bre) {
-      throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (AmazonServiceException ase) {
+      LOGGER.log(ase.getMessage());
+      throw new ServerException("unable to complete request");
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }

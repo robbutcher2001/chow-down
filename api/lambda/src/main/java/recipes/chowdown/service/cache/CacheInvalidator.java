@@ -11,28 +11,28 @@ import com.amazonaws.services.cloudfront.model.Paths;
 
 //TODO: test but need to mock static AmazonCloudFrontClientBuilder
 public class CacheInvalidator {
-    static final String DISTRIBUTION_ID = System.getenv("DISTRIBUTION_ID");
+  private static final String DISTRIBUTION_ID = System.getenv("DISTRIBUTION_ID");
 
-    public String invalidate(final Endpoint endpoint) {
-        AmazonCloudFront cloudFront = null;
+  public String invalidate(final Endpoint endpoint) {
+    AmazonCloudFront cloudFront = null;
 
-        try {
-            cloudFront = AmazonCloudFrontClientBuilder.defaultClient();
-            CreateInvalidationRequest invalidationRequest = new CreateInvalidationRequest(DISTRIBUTION_ID,
-                    createInvalidationBatch(endpoint.getPath()));
-            CreateInvalidationResult result = cloudFront.createInvalidation(invalidationRequest);
+    try {
+      cloudFront = AmazonCloudFrontClientBuilder.defaultClient();
+      CreateInvalidationRequest invalidationRequest = new CreateInvalidationRequest(DISTRIBUTION_ID,
+          createInvalidationBatch(endpoint.getPath()));
+      CreateInvalidationResult result = cloudFront.createInvalidation(invalidationRequest);
 
-            return result.getInvalidation().getStatus();
-        } finally {
-            if (cloudFront != null) {
-                cloudFront.shutdown();
-            }
-        }
+      return result.getInvalidation().getStatus();
+    } finally {
+      if (cloudFront != null) {
+        cloudFront.shutdown();
+      }
     }
+  }
 
-    private InvalidationBatch createInvalidationBatch(final String path) {
-        Paths paths = new Paths().withQuantity(1).withItems(path);
+  private InvalidationBatch createInvalidationBatch(final String path) {
+    Paths paths = new Paths().withQuantity(1).withItems(path);
 
-        return new InvalidationBatch(paths, UUID.randomUUID().toString());
-    }
+    return new InvalidationBatch(paths, UUID.randomUUID().toString());
+  }
 }

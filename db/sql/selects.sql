@@ -47,7 +47,7 @@ INNER JOIN recipes r
 -- Recipe chosen for a specific day:
 SELECT r.id, w.date, r.title, r.description, r.rating, r.image
 FROM recipes r
-INNER JOIN weeks w
+INNER JOIN days d
 	ON w.recipe_id = r.id
 	AND w.date = '2019-10-17';
 
@@ -55,8 +55,41 @@ SELECT date_trunc('day', now()) - interval '7 days';
 
 SELECT r.id, w.date, r.title, r.description, r.rating, r.image
 FROM recipes r
-INNER JOIN weeks w
+INNER JOIN days d
 	ON w.recipe_id = r.id
 	AND w.date BETWEEN '2015-01-01' AND date_trunc('day', now());
 
 -- Foreign key contraints: http://www.postgresqltutorial.com/postgresql-foreign-key/
+
+
+
+
+
+
+
+
+SELECT d.date, r.title, r.rating, r.image, ri.quantity, u.singular, u.plural, i.ingredient
+FROM chow.recipe_ingredients ri
+INNER JOIN chow.units u
+  ON u.id = ri.unit_id
+INNER JOIN chow.ingredients i
+  ON i.id = ri.ingredient_id
+INNER JOIN chow.recipes r
+  ON r.id = ri.recipe_id
+INNER JOIN chow.days d
+  ON d.recipe_id = r.id
+  AND d.date BETWEEN '2020-04-01' AND '2020-04-05'
+ORDER BY d.date, i.ingredient;
+
+
+
+INSERT INTO chow.days (date, recipe_id)
+VALUES ('20200406', '101c440b-696f-47b9-abb1-463c42cd875c')
+ON CONFLICT (date) DO UPDATE
+	SET recipe_id = EXCLUDED.recipe_id;
+
+
+INSERT INTO chow.days (date, recipe_id)
+VALUES ('20200406', null)
+ON CONFLICT (date) DO UPDATE
+	SET recipe_id = EXCLUDED.recipe_id;

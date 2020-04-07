@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Unit } from '../../../store/domain/units/types';
 import UnitCard from '../UnitCard';
+import { NegativeBox } from '../../MessageBox';
 
 interface UnitGridProps {
   units: Unit[]
@@ -18,13 +19,14 @@ const UnitGrid = styled.ul`
   padding: 0;
 `
 
-export default (props: UnitGridProps) => (
-  <UnitGrid>
-    {props.units.map((unit, i) =>
-      <UnitCard
-        key={i}
-        unit={unit}
-      />
-    )}
-  </UnitGrid>
-);
+export default (props: UnitGridProps) =>
+  props.units && props.units.length > 0 ?
+    <UnitGrid>
+      {props.units.map((unit, i) =>
+        <UnitCard
+          key={i}
+          unit={unit}
+        />
+      )}
+    </UnitGrid> :
+    <NegativeBox message='No units yet!' />;

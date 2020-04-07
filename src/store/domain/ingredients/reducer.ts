@@ -8,7 +8,7 @@ const initialState: IngredientsState = {
 }
 
 interface IngredientsFailureResponse {
-    ingredient: string
+    message: string
 }
 
 //TODO: should we type-cast here?
@@ -40,17 +40,9 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
         case IngredientActionTypes.POST_INGREDIENTS_FAILURE:
             const failureResponse = action as IngredientsFailureApiResponse;
             const failureJson = failureResponse.json as IngredientsFailureResponse;
-            console.log(failureResponse.code);
-
-            if (failureResponse.code === 410) {
-                return {
-                    failure: 'No ingredients yet!',
-                    ingredients: []
-                };
-            }
 
             return {
-                failure: failureJson.ingredient,
+                failure: failureJson.message,
                 ingredients: []
             };
 

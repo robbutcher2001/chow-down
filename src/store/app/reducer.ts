@@ -12,9 +12,10 @@ export const appReducer: Reducer<AppState, ErrorApiResponse> = (state = initialS
         case AppActionTypes.UNEXPECTED_SERVER_ERROR:
         case AppActionTypes.UNEXPECTED_RESPONSE:
         case AppActionTypes.CLEAR_ERROR:
-        console.log("Error handler called with [" + action.reason + "]");
+            const error: string = action.json.message;
+            console.log("Error handler called with [" + error + "]");
             return {
-                error: action.reason
+                error
             };
 
         default:

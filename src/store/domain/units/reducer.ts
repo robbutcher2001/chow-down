@@ -8,7 +8,7 @@ const initialState: UnitsState = {
 }
 
 interface UnitsFailureResponse {
-    unit: string
+    message: string
 }
 
 //TODO: should we type-cast here?
@@ -35,17 +35,9 @@ export const unitsReducer: Reducer<UnitsState, GetUnitsApiResponse> = (state = i
         case UnitActionTypes.POST_UNITS_FAILURE:
             const failureResponse = action as UnitsFailureApiResponse;
             const failureJson = failureResponse.json as UnitsFailureResponse;
-            console.log(failureResponse.code);
-
-            if (failureResponse.code === 410) {
-                return {
-                    failure: 'No units yet!',
-                    units: []
-                };
-            }
 
             return {
-                failure: failureJson.unit,
+                failure: failureJson.message,
                 units: []
             };
 

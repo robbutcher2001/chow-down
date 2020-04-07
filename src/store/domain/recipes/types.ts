@@ -15,7 +15,8 @@ export interface Recipe {
     description: string,
     rating: number,
     url: string,
-    image: string
+    image: string,
+    createdDate: string
 }
 
 export interface RecipesState {

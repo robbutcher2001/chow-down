@@ -9,6 +9,5 @@ node_modules/
 .vscode/
 .idea/
 target/
-chow-db/
 api/lambda/.factorypath
 api/mock/.factorypath

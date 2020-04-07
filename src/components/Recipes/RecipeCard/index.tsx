@@ -1,14 +1,12 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+
+import { Recipe } from '../../../store/domain/recipes/types';
 
 import styled from 'styled-components';
+import Stars from '../../Stars';
 
-//TODO: should this just be a recipe type from the store?
 interface RecipeCardProps {
-  title: string,
-  description: string,
-  rating: number,
-  imageUrl: string,
-  imageAlt: string
+  recipe: Recipe
 };
 
 const RecipeCard = styled.li`
@@ -49,38 +47,17 @@ const RecipeCard = styled.li`
     padding: 0 .5rem 1.5rem 0.5rem;
     margin: 0;
   }
-
-  > section {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    font-size: 1.2rem;
-    padding: 0.5rem;
-
-    > mark {
-      color: #4acaa8;
-      background-color: white;
-    }
-  }
 `
 
 export default (props: RecipeCardProps) => (
   <RecipeCard>
     <figure>
-      <img src={props.imageUrl} alt={props.imageAlt}></img>
+      <img src={props.recipe.image} alt={props.recipe.title}></img>
       <figcaption>
-        <h3>{props.title}</h3>
+        <h3>{props.recipe.title}</h3>
       </figcaption>
     </figure>
-    <section>
-      { function() {
-        const rating: ReactNode[] = [];
-        for (let i = 0; i < props.rating; i++) {
-          rating.push(<mark key={i} >&#9733;</mark>);
-        }
-        return rating;
-      }() }
-    </section>
-    <p>{props.description}</p>
+    <Stars rating={props.recipe.rating} />
+    <p>{props.recipe.description}</p>
   </RecipeCard>
 );

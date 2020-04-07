@@ -1,12 +1,12 @@
 {
     "Servers": {
         "1": {
-            "Name": "chow-db",
+            "Name": "chowdown",
             "Group": "Servers",
-            "Host": "chow-db",
+            "Host": "chowdown",
             "Port": 5432,
-            "MaintenanceDB": "chow-db",
-            "Username": "admin",
+            "MaintenanceDB": "chowdown",
+            "Username": "chow_admin",
             "SSLMode": "disable"
         }
     }

@@ -1,6 +1,7 @@
 package recipes.chowdown.service.recipes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.rdsdata.model.AWSRDSDataException;
 import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
@@ -31,134 +33,151 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
+import recipes.chowdown.service.images.DataUrlService;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
 public class PutRecipeServiceTest {
 
-    @Mock
-    private Context context;
+  @Mock
+  private Context context;
 
-    @Mock
-    private LambdaLogger logger;
+  @Mock
+  private LambdaLogger logger;
 
-    @Mock
-    private RecipeRepository repository;
+  @Mock
+  private RecipeRepository repository;
 
-    @Mock
-    private CacheInvalidator cacheInvalidator;
+  @Mock
+  private CacheInvalidator cacheInvalidator;
 
-    @InjectMocks
-    private PutRecipeService service;
+  @Mock
+  private DataUrlService dataUrlService;
 
-    @BeforeAll
-    void beforeAll() {
-        MockitoAnnotations.initMocks(this);
+  @InjectMocks
+  private PutRecipeService service;
 
-        this.service = new PutRecipeService();
-    }
+  @BeforeAll
+  void beforeAll() {
+    MockitoAnnotations.initMocks(this);
 
-    @Test
-    void handleRequest_shouldReturnPopulatedRecipe_whenNewRecipePut() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Collections.singletonList(mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    this.service = new PutRecipeService();
+  }
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("fake_id");
-        when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+  @Test
+  void handleRequest_shouldReturnPopulatedRecipe_whenNewRecipePut() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        Recipe returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake_id");
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
 
-        assertEquals("fake_id", returnedRecipe.getId());
-    }
+    Recipe returnedRecipe = this.service.handleRequest(new Recipe(), this.context);
 
-    @Test
-    void handleRequest_shouldThrowException_whenMultipleRecipePut() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Collections.singletonList(mockField);
-        List<List<Field>> rows = new ArrayList<>();
+    assertEquals("fake_id", returnedRecipe.getId());
+  }
 
-        // Fake two rows returned
-        rows.add(columns);
-        rows.add(columns);
+  @Test
+  void handleRequest_shouldThrowException_whenMultipleRecipePut() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = new ArrayList<>();
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
+    // Fake two rows returned
+    rows.add(columns);
+    rows.add(columns);
 
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
 
-    @Test
-    void handleRequest_shouldThrowException_whenNoRecipePut() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
+  }
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(Collections.emptyList());
+  @Test
+  void handleRequest_shouldThrowException_whenNoRecipePut() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
-    @Test
-    void handleRequest_shouldThrowException_whenNoIdReturnedFromDb() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Collections.singletonList(mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
+  }
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn("");
+  @Test
+  void handleRequest_shouldThrowException_whenNoIdReturnedFromDb() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("");
 
-    @Test
-    void handleRequest_shouldThrowException_whenNullReturnedFromDb() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-        Field mockField = Mockito.mock(Field.class);
-        List<Field> columns = Collections.singletonList(mockField);
-        List<List<Field>> rows = Collections.singletonList(columns);
+    assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
+  }
 
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
-        when(mockResult.getRecords()).thenReturn(rows);
-        when(mockField.getStringValue()).thenReturn(null);
+  @Test
+  void handleRequest_shouldThrowException_whenNullReturnedFromDb() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
-    }
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn(null);
 
-    @Test
-    void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
-        when(this.context.getLogger()).thenReturn(this.logger);
-        when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenThrow(BadRequestException.class);
+    assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
+  }
 
-        ServerException returnedException = assertThrows(ServerException.class,
-                () -> this.service.handleRequest(new Recipe(), this.context));
-        assertTrue(returnedException.getMessage().contains("issue communicating with database"));
-    }
+  @Test
+  void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenThrow(BadRequestException.class);
 
-    @Test
-    void handleRequest_shouldThrowException_whenNullRecipePut() throws Exception {
-        when(this.context.getLogger()).thenReturn(this.logger);
+    ServerException returnedException = assertThrows(ServerException.class,
+        () -> this.service.handleRequest(new Recipe(), this.context));
+    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+  }
 
-        assertThrows(ServerException.class, () -> this.service.handleRequest(null, this.context));
-    }
+  @Test
+  void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenThrow(new AWSRDSDataException(
+        "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
 
-    @Test
-    void handleRequest_shouldThrowException_whenNullContext() throws Exception {
-        assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), null));
-    }
+    ServerException returnedException = assertThrows(ServerException.class,
+        () -> this.service.handleRequest(new Recipe(), this.context));
+    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
+    assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
+  }
 
-    @Test
-    void handleRequest_shouldThrowException_whenAllNullInput() throws Exception {
-        assertThrows(ServerException.class, () -> this.service.handleRequest(null, null));
-    }
+  @Test
+  void handleRequest_shouldThrowException_whenNullRecipePut() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(null, this.context));
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenNullContext() throws Exception {
+    assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), null));
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenAllNullInput() throws Exception {
+    assertThrows(ServerException.class, () -> this.service.handleRequest(null, null));
+  }
 }

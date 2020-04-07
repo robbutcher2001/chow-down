@@ -5,16 +5,18 @@ import { render } from '@testing-library/react';
 import RecipeCard from '.';
 
 const mockRecipe = {
+  id: 'fake_id',
   title: 'fake_title',
   description: 'fake_description',
   rating: 4,
-  imageUrl: 'fake_url',
-  imageAlt: 'fake_alt_text'
+  url: 'fake_url',
+  image: 'fake_image',
+  createdDate: 'fake_created_date'
 };
 
 test('RecipeCard basic snapshot render', () => {
   const recipeCard = renderer.create(
-    <RecipeCard {...mockRecipe} />
+    <RecipeCard recipe={mockRecipe} />
   );
 
   expect(recipeCard.toJSON()).toMatchSnapshot();
@@ -22,7 +24,7 @@ test('RecipeCard basic snapshot render', () => {
 
 test('RecipeCard correct tag content assertion', () => {
   const { getByText, getAllByText } = render(
-    <RecipeCard {...mockRecipe} />
+    <RecipeCard recipe={mockRecipe} />
   );
 
   expect(getByText(/fake_title/).textContent).toEqual('fake_title');

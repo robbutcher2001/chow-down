@@ -2,13 +2,13 @@
 
 exports[`ErrorBox basic snapshot render 1`] = `
 <section
-  className="sc-bdVaJa fFWgtU"
+  className="sc-bdVaJa cIFhlI"
 >
   <img
     src="test-file-stub"
   />
   <div
-    className="error"
+    className="red"
   >
     test_error
   </div>
@@ -17,11 +17,26 @@ exports[`ErrorBox basic snapshot render 1`] = `
 
 exports[`LoadingBox basic snapshot render 1`] = `
 <section
-  className="sc-bdVaJa fFWgtU"
+  className="sc-bdVaJa cIFhlI"
 >
   <img
     src="test-file-stub"
   />
   test_message
+</section>
+`;
+
+exports[`NegativeBox basic snapshot render 1`] = `
+<section
+  className="sc-bdVaJa cIFhlI"
+>
+  <img
+    src="test-file-stub"
+  />
+  <div
+    className="e"
+  >
+    test_negative
+  </div>
 </section>
 `;

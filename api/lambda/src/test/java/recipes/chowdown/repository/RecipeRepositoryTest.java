@@ -6,9 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+
 import com.amazonaws.services.rdsdata.AWSRDSData;
+import com.amazonaws.services.rdsdata.model.BeginTransactionRequest;
+import com.amazonaws.services.rdsdata.model.BeginTransactionResult;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementRequest;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
+import com.amazonaws.services.rdsdata.model.Field;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,74 +29,137 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import recipes.chowdown.domain.Recipe;
+import recipes.chowdown.domain.RecipeIngredient;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
 public class RecipeRepositoryTest {
 
-    @Mock
-    private AWSRDSData rdsData;
+  @Mock
+  private AWSRDSData rdsData;
 
-    @InjectMocks
-    private RecipeRepository repository;
+  @InjectMocks
+  private RecipeRepository repository;
 
-    @BeforeAll
-    void beforeAll() {
-        MockitoAnnotations.initMocks(this);
+  @BeforeAll
+  void beforeAll() {
+    MockitoAnnotations.initMocks(this);
 
-        this.repository = new RecipeRepository();
-    }
+    this.repository = new RecipeRepository();
+  }
 
-    @Test
-    void getRecipes_shouldReturnResults_whenRequestValid() throws Exception {
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+  @Test
+  void getRecipes_shouldReturnResults_whenRequestValid() throws Exception {
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
-        when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+    when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
 
-        ExecuteStatementResult result = this.repository.getRecipes();
+    ExecuteStatementResult result = this.repository.getRecipes();
 
-        assertEquals(mockResult, result);
-    }
+    assertEquals(mockResult, result);
+  }
 
-    @Test
-    void getRecipes_shouldNotReturnResults_whenRequestInvalid() throws Exception {
-        when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(null);
+  @Test
+  void getRecipes_shouldNotReturnResults_whenRequestInvalid() throws Exception {
+    when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(null);
 
-        ExecuteStatementResult result = this.repository.getRecipes();
+    ExecuteStatementResult result = this.repository.getRecipes();
 
-        assertNull(result);
-    }
+    assertNull(result);
+  }
 
-    @Test
-    void putRecipe_shouldReturnResults_whenRequestValidRecipe() throws Exception {
-        Recipe recipe = Recipe.builder().title("katsu curry").description("good food").rating(5l).url("url")
-                .image("src").build();
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+  @Test
+  void putRecipe_shouldReturnResults_whenRequestValidRecipe() throws Exception {
+    List<RecipeIngredient> recipeIngredients = Collections
+        .singletonList(RecipeIngredient.builder().quantity(2l).unitId("unit_id").ingredientId("ingredient_id").build());
+    Recipe recipe = Recipe.builder().title("katsu curry").description("good food").rating(5l).url("url").image("src")
+        .createdDate(LocalDateTime.now().toString()).ingredients(recipeIngredients).build();
+    BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-        when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+    when(this.rdsData.beginTransaction(Mockito.any(BeginTransactionRequest.class))).thenReturn(mockBeginTransaction);
+    when(mockBeginTransaction.getTransactionId()).thenReturn("mockTransactionId");
+    when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake_id");
 
-        ExecuteStatementResult result = this.repository.putRecipe(recipe);
+    ExecuteStatementResult result = this.repository.putRecipe(recipe);
 
-        assertEquals(mockResult, result);
-    }
+    assertEquals(mockResult, result);
+  }
 
-    @Test
-    void putRecipe_shouldReturnResults_whenRequestInvalidRecipe() throws Exception {
-        Recipe recipe = Recipe.builder().build();
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+  @Test
+  void putRecipe_shouldThrowException_whenRequestInvalidRecipeTitle() throws Exception {
+    Recipe recipe = Recipe.builder().build();
+    BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
 
-        when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+    when(this.rdsData.beginTransaction(Mockito.any(BeginTransactionRequest.class))).thenReturn(mockBeginTransaction);
+    when(mockBeginTransaction.getTransactionId()).thenReturn("mockTransactionId");
 
-        ExecuteStatementResult result = this.repository.putRecipe(recipe);
+    IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
+        () -> this.repository.putRecipe(recipe));
+    assertTrue(returnedException.getMessage().contains("recipe or recipe title cannot be null or empty"));
+  }
 
-        assertEquals(mockResult, result);
-    }
+  @Test
+  void putRecipe_shouldThrowException_whenRequestInvalidRecipeIngredients() throws Exception {
+    Recipe recipe = Recipe.builder().title("fake_title").build();
+    BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
 
-    @Test
-    void putRecipe_shouldThrowException_whenRequestNullRecipe() throws Exception {
-        ResourceNotPersistedException returnedException = assertThrows(ResourceNotPersistedException.class,
-                () -> this.repository.putRecipe(null));
-        assertTrue(returnedException.getMessage().contains("part or all of the input Recipe was null"));
-    }
+    when(this.rdsData.beginTransaction(Mockito.any(BeginTransactionRequest.class))).thenReturn(mockBeginTransaction);
+    when(mockBeginTransaction.getTransactionId()).thenReturn("mockTransactionId");
+    when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake_id");
+
+    ResourceNotPersistedException returnedException = assertThrows(ResourceNotPersistedException.class,
+        () -> this.repository.putRecipe(recipe));
+    assertTrue(returnedException.getMessage().contains("part or all of the input Recipe Ingredient was null"));
+  }
+
+  @Test
+  void putRecipe_shouldThrowException_whenRequestNullRecipe() throws Exception {
+    BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
+
+    when(this.rdsData.beginTransaction(Mockito.any(BeginTransactionRequest.class))).thenReturn(mockBeginTransaction);
+    when(mockBeginTransaction.getTransactionId()).thenReturn("mockTransactionId");
+
+    IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
+        () -> this.repository.putRecipe(null));
+    assertTrue(returnedException.getMessage().contains("recipe or recipe title cannot be null or empty"));
+  }
+
+  @Test
+  void putRecipe_shouldThrowException_whenTransactionIdEmpty() throws Exception {
+    Recipe recipe = Recipe.builder().build();
+    BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
+
+    when(this.rdsData.beginTransaction(Mockito.any(BeginTransactionRequest.class))).thenReturn(mockBeginTransaction);
+    when(mockBeginTransaction.getTransactionId()).thenReturn("");
+
+    IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
+        () -> this.repository.putRecipe(recipe));
+    assertTrue(returnedException.getMessage().contains("transactionId cannot be null or empty"));
+  }
+
+  @Test
+  void putRecipe_shouldThrowException_whenTransactionIdNull() throws Exception {
+    Recipe recipe = Recipe.builder().build();
+    BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
+
+    when(this.rdsData.beginTransaction(Mockito.any(BeginTransactionRequest.class))).thenReturn(mockBeginTransaction);
+    when(mockBeginTransaction.getTransactionId()).thenReturn(null);
+
+    IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
+        () -> this.repository.putRecipe(recipe));
+    assertTrue(returnedException.getMessage().contains("transactionId cannot be null or empty"));
+  }
 }

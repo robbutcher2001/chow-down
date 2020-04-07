@@ -2,10 +2,10 @@
 
 exports[`UnitGrid basic snapshot render 1`] = `
 <ul
-  className="sc-bwzfXH hKcgRx"
+  className="sc-htpNat jNKlnC"
 >
   <li
-    className="sc-bdVaJa fEuTXX"
+    className="sc-bdVaJa gvXlnZ"
   >
     fake_singular1
     <aside>
@@ -13,7 +13,7 @@ exports[`UnitGrid basic snapshot render 1`] = `
     </aside>
   </li>
   <li
-    className="sc-bdVaJa fEuTXX"
+    className="sc-bdVaJa gvXlnZ"
   >
     fake_singular2
     <aside>

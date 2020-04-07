@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 import loadingImg from './eclipse.svg';
+import negativeImg from './negative.svg';
 import errorImg from './error.svg';
 
 interface MessageBoxProps {
@@ -21,7 +22,7 @@ const Section = styled.section`
     margin-bottom: 1rem;
   }
 
-  .error {
+  .red {
     color: #dc3545;
   }
 `
@@ -35,9 +36,16 @@ export const LoadingBox = (props: MessageBoxProps) => (
   </Section>
 );
 
+export const NegativeBox = (props: MessageBoxProps) => (
+  <Section>
+    <img src={negativeImg}></img>
+    <div className='e'>{props.message}</div>
+  </Section>
+);
+
 export const ErrorBox = (props: MessageBoxProps) => (
   <Section>
     <img src={errorImg}></img>
-    <div className='error'>{props.message}</div>
+    <div className='red'>{props.message}</div>
   </Section>
 );

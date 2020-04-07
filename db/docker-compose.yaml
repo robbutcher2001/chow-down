@@ -1,0 +1,29 @@
+version: "3.6"
+
+services:
+  chowdown:
+    image: postgres:11.3-alpine
+    ports:
+      - 5432:5432
+    networks:
+      - chow-net
+    volumes:
+      - ./init.d:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=chow_admin
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=chowdown
+  pg-admin:
+    image: dpage/pgadmin4:4.8
+    ports:
+      - 9090:80
+    networks:
+      - chow-net
+    volumes:
+      - ./postgres-server.json:/pgadmin4/servers.json
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin
+      - PGADMIN_DEFAULT_PASSWORD=${POSTGRES_PASSWORD}
+
+networks:
+  chow-net:

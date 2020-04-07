@@ -2,7 +2,7 @@
 
 exports[`Nav basic snapshot render 1`] = `
 <nav
-  className="sc-bdVaJa kpAtsg"
+  className="sc-bdVaJa eTowqh"
 >
   <a
     className="active"

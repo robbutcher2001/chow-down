@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
-import heroImg from './hero.jpg';
+import foodImg from '../../food.jpg';
 
 const Header = styled.header`
   display: grid;
@@ -10,7 +10,7 @@ const Header = styled.header`
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: .5em;
 
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)), url(${heroImg});
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.8)), url(${foodImg});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

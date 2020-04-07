@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 
-import { LoadingBox, ErrorBox } from '.';
+import { LoadingBox, NegativeBox, ErrorBox } from '.';
 
 test('LoadingBox basic snapshot render', () => {
   const loadingBox = renderer.create(
@@ -18,6 +18,22 @@ test('LoadingBox correct tag content assertion', () => {
   );
 
   expect(getByText(/test_message/).textContent).toEqual('test_message');
+});
+
+test('NegativeBox basic snapshot render', () => {
+  const negativeBox = renderer.create(
+    <NegativeBox message='test_negative' />
+  );
+
+  expect(negativeBox.toJSON()).toMatchSnapshot();
+});
+
+test('NegativeBox correct tag content assertion', () => {
+  const { getByText } = render(
+    <NegativeBox message='test_negative' />
+  );
+
+  expect(getByText(/test_negative/).textContent).toEqual('test_negative');
 });
 
 test('ErrorBox basic snapshot render', () => {

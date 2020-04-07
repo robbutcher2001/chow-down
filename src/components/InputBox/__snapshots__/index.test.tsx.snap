@@ -2,7 +2,7 @@
 
 exports[`InputBox basic snapshot render 1`] = `
 <label
-  className="sc-bdVaJa cXQnaz"
+  className="sc-bdVaJa dFdldb"
   htmlFor="title"
 >
   The Input Title
@@ -11,6 +11,7 @@ exports[`InputBox basic snapshot render 1`] = `
     name="title"
     onChange={[Function]}
     type="text"
+    value=""
   />
 </label>
 `;

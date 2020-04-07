@@ -1,16 +1,18 @@
-import { AppActionTypes, ErrorApiResponse } from './types';
+import { AppActionTypes, ErrorMessageApiResponse, ErrorApiResponse } from './types';
 
-export const unexpectedServerError = (reason: string): ErrorApiResponse => ({
+export const unexpectedServerError = (json: ErrorMessageApiResponse): ErrorApiResponse => ({
     type: AppActionTypes.UNEXPECTED_SERVER_ERROR,
-    reason
+    json
 });
 
-export const unexpectedResponse = (reason: string): ErrorApiResponse => ({
+export const unexpectedResponse = (json: ErrorMessageApiResponse): ErrorApiResponse => ({
     type: AppActionTypes.UNEXPECTED_RESPONSE,
-    reason
+    json
 });
 
 export const clearError = (): ErrorApiResponse => ({
     type: AppActionTypes.CLEAR_ERROR,
-    reason: null
+    json: {
+        message: null
+    }
 });

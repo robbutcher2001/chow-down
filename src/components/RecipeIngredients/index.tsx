@@ -1,0 +1,109 @@
+import React, { FunctionComponent, MouseEvent } from 'react';
+
+import styled from 'styled-components';
+
+import { Unit } from '../../store/domain/units/types';
+import { Ingredient } from '../../store/domain/ingredients/types';
+
+import RecipeIngredient from '../RecipeIngredient';
+import { LoadingBox } from '../MessageBox';
+
+export interface RecipeIngredientsProps {
+  name: string,
+  label: string,
+  form?: {
+    [key: string]: string | number | RecipeIngredient[]
+  },
+  setNewFormState?: (field: string, newValue: RecipeIngredient[]) => void,
+  isPending: boolean,
+  units: Unit[],
+  ingredients: Ingredient[]
+};
+
+export interface RecipeIngredient {
+  quantity: number,
+  unitId: string,
+  ingredientId: string
+};
+
+const Label = styled.label`
+  ul {
+    list-style-type: none;
+    margin: 0.5rem 0 0 0;
+    padding: 0;
+  }
+
+  button {
+    border: none;
+    background: none;
+    margin: 1rem 0;
+    padding: 0;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #1d70b8;
+    cursor: pointer;
+  }
+`
+
+const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: RecipeIngredientsProps) => {
+
+  const onChange = (index: number, recipeIngredient: RecipeIngredient) => {
+    const recipeIngredients: RecipeIngredient[] = Object.assign([], props.form[props.name]);
+    recipeIngredients[index] = recipeIngredient;
+
+    props.setNewFormState(
+      props.name,
+      recipeIngredients
+    );
+  };
+
+  const newRecipeIngredient = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const recipeIngredients: RecipeIngredient[] = Object.assign([], props.form[props.name]);
+    recipeIngredients.push({
+      quantity: 0,
+      unitId: 'PLACEHOLDER',
+      ingredientId: 'PLACEHOLDER'
+    });
+
+    props.setNewFormState(
+      props.name,
+      recipeIngredients
+    );
+  };
+
+  const recipeIngredients: RecipeIngredient[] = props.form[props.name] as RecipeIngredient[];
+
+  return (
+    <Label htmlFor={props.name}>
+      {props.label}
+      {props.isPending ?
+        <LoadingBox /> :
+        <div>
+          <ul id={props.name}>
+            {recipeIngredients &&
+              recipeIngredients.map((recipeIngredient: RecipeIngredient, index: number) =>
+                <RecipeIngredient
+                  key={index}
+                  index={index}
+                  units={props.units}
+                  ingredients={props.ingredients}
+                  recipeIngredient={recipeIngredient}
+                  onChange={onChange}
+                />
+            )}
+          </ul>
+          <button
+            type='button'
+            onClick={event => newRecipeIngredient(event)}
+          >
+            Add Ingredient
+          </button>
+        </div>
+      }
+    </Label>
+  );
+};
+
+export default RecipeIngredients;

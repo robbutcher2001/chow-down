@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageSelector basic snapshot render 1`] = `
+<label
+  className="sc-bwzfXH gxwnoF"
+  htmlFor="title"
+>
+  The Image Selector Title
+  <input
+    accept="image/*"
+    hidden={true}
+    id="title"
+    name="title"
+    onChange={[Function]}
+    type="file"
+  />
+  <figure>
+    <img
+      src="value"
+    />
+  </figure>
+  <div
+    className="red"
+  />
+</label>
+`;

@@ -20,9 +20,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Unit"
-        410:
-          description: "410 response"
-          content: {}
         500:
           description: "500 response"
           content: {}
@@ -30,11 +27,6 @@ paths:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetUnitsFunction.Arn}/invocations"
         responses:
-          .*ResourcesNotFoundException.*:
-            statusCode: "410"
-            responseTemplates:
-              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
-                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           .*ServerException.*:
             statusCode: "500"
             responseTemplates:
@@ -65,9 +57,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Unit"
-        410:
-          description: "410 response"
-          content: {}
         500:
           description: "500 response"
           content: {}
@@ -76,11 +65,6 @@ paths:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutUnitFunction.Arn}/invocations"
         responses:
-          .*ResourcesNotFoundException.*:
-            statusCode: "410"
-            responseTemplates:
-              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
-                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           .*ServerException.*:
             statusCode: "500"
             responseTemplates:
@@ -112,9 +96,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Ingredient"
-        410:
-          description: "410 response"
-          content: {}
         500:
           description: "500 response"
           content: {}
@@ -122,11 +103,6 @@ paths:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetIngredientsFunction.Arn}/invocations"
         responses:
-          .*ResourcesNotFoundException.*:
-            statusCode: "410"
-            responseTemplates:
-              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
-                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           .*ServerException.*:
             statusCode: "500"
             responseTemplates:
@@ -157,9 +133,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Ingredient"
-        410:
-          description: "410 response"
-          content: {}
         500:
           description: "500 response"
           content: {}
@@ -168,11 +141,6 @@ paths:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutIngredientFunction.Arn}/invocations"
         responses:
-          .*ResourcesNotFoundException.*:
-            statusCode: "410"
-            responseTemplates:
-              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
-                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           .*ServerException.*:
             statusCode: "500"
             responseTemplates:
@@ -204,9 +172,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Recipe"
-        410:
-          description: "410 response"
-          content: {}
         500:
           description: "500 response"
           content: {}
@@ -214,11 +179,6 @@ paths:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetRecipesFunction.Arn}/invocations"
         responses:
-          .*ResourcesNotFoundException.*:
-            statusCode: "410"
-            responseTemplates:
-              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
-                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           .*ServerException.*:
             statusCode: "500"
             responseTemplates:
@@ -249,9 +209,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Recipe"
-        410:
-          description: "410 response"
-          content: {}
         500:
           description: "500 response"
           content: {}
@@ -260,11 +217,99 @@ paths:
         uri:
           Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutRecipeFunction.Arn}/invocations"
         responses:
-          .*ResourcesNotFoundException.*:
-            statusCode: "410"
+          .*ServerException.*:
+            statusCode: "500"
             responseTemplates:
               application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
                 {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "$input.body"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+  # Days
+  /api/days:
+    get:
+      parameters:
+      - name: "from"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
+      - name: "to"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Day"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate query string"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetDaysFunction.Arn}/invocations"
+        responses:
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "{\n    \"from\": \"$util.escapeJavaScript($input.params().querystring.get('from'))\"\
+            ,\n    \"to\": \"$util.escapeJavaScript($input.params().querystring.get('to'))\"\
+            \n}"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Day"
+        required: true
+      responses:
+        201:
+          description: "201 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Day"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutDayFunction.Arn}/invocations"
+        responses:
           .*ServerException.*:
             statusCode: "500"
             responseTemplates:
@@ -305,6 +350,20 @@ components:
           type: string
       required:
       - ingredient
+    RecipeIngredient:
+      title: "Recipe ingredients schema"
+      type: object
+      properties:
+        quantity:
+          type: number
+        unitId:
+          type: string
+        ingredientId:
+          type: string
+      required:
+      - quantity
+      - unitId
+      - ingredientId
     Recipe:
       title: "Recipe schema"
       type: object
@@ -321,12 +380,35 @@ components:
           type: string
         image:
           type: string
+        ingredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeIngredient"
+        createdDate:
+          type: string
       required:
       - title
       - description
       - url
       - image
+      - ingredients
+    Day:
+      title: "Day schema"
+      type: object
+      properties:
+        date:
+          type: string
+        recipeId:
+          type: string
+        recipe:
+          $ref: "#/components/schemas/Recipe"
+      required:
+      - date
+      - recipeId
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false
     validateRequestBody: true
+  Validate query string:
+    validateRequestParameters: true
+    validateRequestBody: false

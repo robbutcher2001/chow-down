@@ -3,15 +3,14 @@ package recipes.chowdown.service.ingredients;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
 import recipes.chowdown.domain.Ingredient;
-import recipes.chowdown.exceptions.ResourcesNotFoundException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.IngredientRepository;
 
@@ -35,7 +34,6 @@ public class GetIngredientsService implements RequestHandler<Object, List<Ingred
 
       if (result.getRecords().size() < 1) {
         LOGGER.log("No ingredients found");
-        throw new ResourcesNotFoundException("no ingredients found");
       }
 
       for (List<Field> fields : result.getRecords()) {
@@ -44,8 +42,9 @@ public class GetIngredientsService implements RequestHandler<Object, List<Ingred
       }
 
       return ingredients;
-    } catch (BadRequestException bre) {
-      throw new ServerException("unable to complete request, issue communicating with database");
+    } catch (AmazonServiceException ase) {
+      LOGGER.log(ase.getMessage());
+      throw new ServerException("unable to complete request");
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }

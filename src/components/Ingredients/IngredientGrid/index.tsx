@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Ingredient } from '../../../store/domain/ingredients/types';
 import IngredientCard from '../IngredientCard';
 import IngredientMarker from '../IngredientMarker';
+import { NegativeBox } from '../../MessageBox';
 
 interface IngredientGridProps {
   ingredients: Ingredient[]
@@ -48,8 +49,9 @@ const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
   }, [] as ReactNode[]);
 };
 
-export default (props: IngredientGridProps) => (
-  <IngredientGrid>
-    {ingredientsWithMarkers(props.ingredients)}
-  </IngredientGrid>
-);
+export default (props: IngredientGridProps) =>
+  props.ingredients && props.ingredients.length > 0 ?
+    <IngredientGrid>
+      {ingredientsWithMarkers(props.ingredients)}
+    </IngredientGrid> :
+    <NegativeBox message='No ingredients yet!' />;

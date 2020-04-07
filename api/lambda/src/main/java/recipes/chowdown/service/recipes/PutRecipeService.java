@@ -1,29 +1,42 @@
 package recipes.chowdown.service.recipes;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.rdsdata.model.BadRequestException;
 import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
+import eu.maxschuster.dataurl.DataUrl;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
+import recipes.chowdown.repository.S3Repository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
+import recipes.chowdown.service.images.DataUrlService;
 
 public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
   private static LambdaLogger LOGGER;
 
-  private RecipeRepository repository;
+  private RecipeRepository recipeRepository;
+
+  private S3Repository s3Repository;
 
   private CacheInvalidator cacheInvalidator;
 
+  private DataUrlService dataUrlService;
+
   public PutRecipeService() {
-    this.repository = new RecipeRepository();
+    this.recipeRepository = new RecipeRepository();
+    this.s3Repository = new S3Repository();
     this.cacheInvalidator = new CacheInvalidator();
+    this.dataUrlService = new DataUrlService();
   }
 
   public Recipe handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
@@ -31,7 +44,18 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       LOGGER = context.getLogger();
 
       recipe.setId(null);
-      ExecuteStatementResult result = this.repository.putRecipe(recipe);
+      OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+      recipe.setCreatedDate(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(now));
+
+      final String recipeImage = recipe.getImage();
+      if (recipeImage != null) {
+        final DataUrl imageDataUrl = this.dataUrlService.decodeDataUrl(recipeImage);
+        final String imageUuid = this.s3Repository.putRecipeImage(imageDataUrl.getData(), imageDataUrl.getMimeType());
+        LOGGER.log("Recipe image persisted with id [" + imageUuid + "]");
+        recipe.setImage(imageUuid);
+      }
+
+      ExecuteStatementResult result = this.recipeRepository.putRecipe(recipe);
 
       if (result.getRecords().size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
@@ -52,10 +76,13 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
       LOGGER.log("Recipe cache purge status [" + response + "]");
 
       return recipe;
-      //TODO: maybe BadRequestException needs to move down to the repository
-    } catch (BadRequestException bre) {
-      throw new ServerException("unable to complete request, issue communicating with database");
-      //TODO: maybe this needs to not catch ResourceNotPersistedException and instead handle it separately
+      // TODO: maybe BadRequestException / AmazonServiceException needs to move down
+      // to the repository
+    } catch (AmazonServiceException ase) {
+      LOGGER.log(ase.getMessage());
+      throw new ServerException("unable to complete request");
+      // TODO: maybe this needs to not catch ResourceNotPersistedException and instead
+      // handle it separately
     } catch (Exception ex) {
       throw new ServerException(ex.getMessage(), ex);
     }

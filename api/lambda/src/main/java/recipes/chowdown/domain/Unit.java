@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Unit {
-    private String id;
-    private String singular;
-    private String plural;
+  private String id;
+  private String singular;
+  private String plural;
 }
