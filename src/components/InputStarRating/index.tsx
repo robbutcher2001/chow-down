@@ -1,13 +1,12 @@
 import React, { Component, ChangeEvent } from 'react';
 
 import styled from 'styled-components';
+import { Fields } from '../Form';
 
 export interface StarRatingProps {
   name: string,
   label: string,
-  form?: {
-    [key: string]: number
-  },
+  form?: Fields,
   setNewFormState?: (field: string, newValue: number) => void
 };
 

@@ -69,17 +69,37 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
             <Form
               dispatch={this.addRecipe}
               submitText='Add recipe'>
-              <InputBox name='title' type='text' label='Title' />
-              <Textarea name='description' label='Description' />
+              <InputBox
+                name='title'
+                type='text'
+                label='Title'
+                validator={(value: string) => value.length > 0}
+              />
+              <Textarea
+                name='description'
+                label='Description'
+                validator={(value: string) => value.length > 10}
+              />
               <InputStarRating name='rating' label='Rating' />
-              <InputBox name='url' type='text' label='Web link' />
-              <ImageSelector name='image' label='Upload image' />
+              <InputBox
+                name='url'
+                type='text'
+                label='Web link'
+                validator={(value: string) => value.length > 0}
+              />
+              <ImageSelector
+                name='image'
+                label='Upload image'
+                validator={(files: FileList) => files.length === 1}
+              />
               <RecipeIngredients
                 name='ingredients'
                 label='Ingredients for this recipe'
                 isPending={this.props.ui.pending.getRecipeIngredients}
                 units={this.props.units}
                 ingredients={this.props.ingredients}
+                quantityValidator={(quantity: string) => quantity !== '0'}
+                idValidator={(id: string) => id !== 'PLACEHOLDER'}
               />
             </Form>
           }

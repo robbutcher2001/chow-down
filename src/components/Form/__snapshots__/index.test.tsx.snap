@@ -10,6 +10,8 @@ exports[`Form basic snapshot render 1`] = `
   <div
     form={Object {}}
     setNewFormState={[Function]}
+    setValidationState={[Function]}
+    validFields={Object {}}
   >
     fake_child
   </div>

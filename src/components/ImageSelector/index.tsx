@@ -3,16 +3,18 @@ import React, { Component, ChangeEvent } from 'react';
 import styled from 'styled-components';
 
 import UnknownImage from '../UnknownImage';
+import { Fields, FieldValidations } from '../Form';
 
 const reader = new FileReader();
 
 export interface ImageSelectorProps {
   name: string,
   label: string,
-  form?: {
-    [key: string]: string
-  },
-  setNewFormState?: (field: string, newValue: string) => void
+  validator: (files: FileList) => boolean,
+  form?: Fields,
+  validFields?: FieldValidations,
+  setNewFormState?: (field: string, newValue: string) => void,
+  setValidationState?: (field: string, isValid?: boolean) => void
 };
 
 interface OwnState {
@@ -23,10 +25,6 @@ const Label = styled.label`
   display: flex;
   flex-direction: column;
   margin-bottom: 0.75rem;
-
-  .red {
-    color: #dc3545;
-  }
 `
 
 class ImageSelector extends Component<ImageSelectorProps, OwnState> {
@@ -38,7 +36,9 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
     this.state = {
       error: null
     };
-  }
+  };
+
+  componentDidMount = () => this.props.setValidationState(this.props.name);
 
   //TODO: select image, then open popup and click cancel, tries to render null
   getImgData = (event: ProgressEvent<FileReader>) => {
@@ -57,7 +57,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
 
     if (files.length === 1) {
       const img: File = files[0];
-      if (img.type.match(/image.*/)) {
+      if (img.type.match(/image\/(jpeg|png)/)) {
         reader.readAsDataURL(img);
       }
       else {
@@ -66,7 +66,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
           null
         );
         this.setState({
-          error: 'Not an image'
+          error: 'Image uploads limited to PNG or JPEG images only'
         });
       }
     }
@@ -79,18 +79,27 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         error: null
       });
     }
+
+    this.props.setValidationState(
+      this.props.name,
+      this.props.validator(files)
+    );
   };
 
   render = () => (
-    <Label htmlFor={this.props.name}>
+    <Label
+      htmlFor={this.props.name}
+      className={this.props.validFields[this.props.name] === false ? 'red' : undefined}
+    >
       {this.props.label}
       <input
         id={this.props.name}
         name={this.props.name}
         type='file'
-        accept='image/*'
+        accept='image/jpeg,image/png'
         hidden
-        onChange={event => this.onChange(event)} />
+        onChange={event => this.onChange(event)}
+      />
         {this.props.form[this.props.name] ?
           <figure>
             <img src={this.props.form[this.props.name].toString()} />

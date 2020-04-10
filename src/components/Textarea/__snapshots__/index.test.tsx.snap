@@ -2,15 +2,16 @@
 
 exports[`Textarea basic snapshot render 1`] = `
 <label
-  className="sc-bdVaJa fadCrU"
+  className="sc-bdVaJa gtRYUw"
   htmlFor="title"
 >
   The Textarea Title
   <textarea
     id="title"
     name="title"
+    onBlur={[Function]}
     onChange={[Function]}
-    rows={4}
+    rows={5}
     value=""
   />
 </label>

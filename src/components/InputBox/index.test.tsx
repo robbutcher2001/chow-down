@@ -13,7 +13,10 @@ test('InputBox basic snapshot render', () => {
       name='title'
       type='text'
       label='The Input Title'
+      validator={() => true}
       form={mockFormState}
+      validFields={{}}
+      setValidationState={jest.fn}
     />
   );
 
