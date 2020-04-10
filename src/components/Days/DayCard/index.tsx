@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
+import moment from 'moment';
 
 import styled from 'styled-components';
 
@@ -8,10 +9,11 @@ import UnknownImage from '../../UnknownImage';
 
 interface DayCardProps {
   dayNotSet?: boolean,
+  dateFormat: string,
   day: Day
 };
 
-const DayCard = styled.li`
+const StyledDayCard = styled.li`
   cursor: pointer;
   margin-top: 1.5rem;
   margin-bottom: 2rem;
@@ -67,19 +69,28 @@ const DayRecipe = styled.figure`
   }
 `
 
-export default (props: DayCardProps) => (
-  <DayCard>
-    <span />
-    <h3>{props.day.date}</h3>
-    {props.dayNotSet ?
-      <UnknownImage /> :
-      <DayRecipe>
-        <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
-        <figcaption>
-          <h3>{props.day.recipe.title}</h3>
-          <Stars rating={props.day.recipe.rating} />
-        </figcaption>
-      </DayRecipe>
-    }
-  </DayCard>
-);
+const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
+  const today: string = moment().format(props.dateFormat);
+  const isTonight: boolean = moment(today).isSame(props.day.date);
+  const isTomorrow: boolean = moment(today).add(1, 'd').isSame(props.day.date);
+  const day: string = isTonight ? 'Tonight' : isTomorrow ? 'Tomorrow' : moment(props.day.date).format('dddd');
+
+  return (
+    <StyledDayCard>
+      <span />
+      <h3>{day}</h3>
+      {props.dayNotSet ?
+        <UnknownImage /> :
+        <DayRecipe>
+          <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
+          <figcaption>
+            <h3>{props.day.recipe.title}</h3>
+            <Stars rating={props.day.recipe.rating} />
+          </figcaption>
+        </DayRecipe>
+      }
+    </StyledDayCard>
+  );
+};
+
+export default DayCard;

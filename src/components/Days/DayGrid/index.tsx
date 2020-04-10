@@ -7,6 +7,8 @@ import DayCard from '../DayCard';
 import { NegativeBox } from '../../MessageBox';
 
 interface DayGridProps {
+  dateFormat: string,
+  seekDays: number,
   days: Day[]
 };
 
@@ -32,6 +34,7 @@ export default (props: DayGridProps) =>
       {props.days.map((day, i) =>
         <DayCard
           key={i}
+          dateFormat={props.dateFormat}
           day={day}
         />
       )}

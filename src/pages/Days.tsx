@@ -32,8 +32,8 @@ interface DispatchProps {
 };
 
 interface OwnState {
-  today: string,
-  end: string
+  dateFormat: string,
+  seekDays: number
 };
 
 type CombinedProps = StateProps & DispatchProps;
@@ -44,12 +44,15 @@ class DaysPage extends Component<CombinedProps, OwnState> {
     super(props);
 
     this.state = {
-      today: moment().format('YYYYMMDD'),
-      end: moment().add(7, 'd').format('YYYYMMDD')
+      dateFormat: 'YYYYMMDD',
+      seekDays: 7
     }
   }
 
-  componentDidMount = () => this.props.getDays(this.state.today, this.state.end);
+  componentDidMount = () => this.props.getDays(
+    moment().format(this.state.dateFormat),
+    moment().add(this.state.seekDays, 'd').format(this.state.dateFormat)
+  );
 
   render = () => (
     <ZeroMarginedMain title='Week Ahead' >
@@ -61,7 +64,11 @@ class DaysPage extends Component<CombinedProps, OwnState> {
         <div>
           {this.props.ui.pending.get ?
             <LoadingBox message='Fetching days' /> :
-            <DayGrid days={this.props.days} />
+            <DayGrid
+              dateFormat={this.state.dateFormat}
+              seekDays={this.state.seekDays}
+              days={this.props.days}
+            />
           }
         </div>
       }
