@@ -15,8 +15,7 @@ interface DayCardProps {
 
 const StyledDayCard = styled.li`
   cursor: pointer;
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
   max-height: 350px;
   max-width: 450px;
   overflow: hidden;

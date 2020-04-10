@@ -85,7 +85,13 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
                 name='url'
                 type='text'
                 label='Web link'
-                validator={(value: string) => value.length > 0}
+                validator={(value: string) =>
+                  value.length > 0 &&
+                  (value.startsWith('http://') ||
+                    value.startsWith('https://') ||
+                    value.startsWith('www.')
+                  )
+                }
               />
               <ImageSelector
                 name='image'
