@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import moment from 'moment';
 
 import { GlobalState } from '../store';
 import { Day, GetDaysApiRequest } from '../store/domain/days/types';
@@ -27,18 +28,28 @@ interface StateProps {
 };
 
 interface DispatchProps {
-  getDays: () => GetDaysApiRequest
+  getDays: (from: string, to: string) => GetDaysApiRequest
+};
+
+interface OwnState {
+  today: string,
+  end: string
 };
 
 type CombinedProps = StateProps & DispatchProps;
 
 //TODO: convert to FunctionComponent and useEffect()
-class DaysPage extends Component<CombinedProps> {
+class DaysPage extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
+
+    this.state = {
+      today: moment().format('YYYYMMDD'),
+      end: moment().add(7, 'd').format('YYYYMMDD')
+    }
   }
 
-  componentDidMount = () => this.props.getDays();
+  componentDidMount = () => this.props.getDays(this.state.today, this.state.end);
 
   render = () => (
     <ZeroMarginedMain title='Week Ahead' >
@@ -70,7 +81,7 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  getDays: () => dispatch(getDaysRequest())
+  getDays: (from: string, to: string) => dispatch(getDaysRequest(from, to))
 });
 
 export default connect<StateProps, DispatchProps, null, GlobalState>

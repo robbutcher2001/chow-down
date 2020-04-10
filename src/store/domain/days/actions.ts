@@ -1,7 +1,9 @@
 import { Day, DayActionTypes, GetDaysApiRequest, PostDayApiRequest, DaysSuccessApiResponse, DaysFailureApiResponse } from './types';
 
-export const getDaysRequest = (): GetDaysApiRequest => ({
-    type: DayActionTypes.GET_DAYS_REQUEST
+export const getDaysRequest = (from: string, to: string): GetDaysApiRequest => ({
+    type: DayActionTypes.GET_DAYS_REQUEST,
+    from,
+    to
 });
 
 export const getDaysSuccess = (days: Day[]): DaysSuccessApiResponse => ({

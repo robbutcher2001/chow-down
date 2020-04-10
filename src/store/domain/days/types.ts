@@ -35,7 +35,9 @@ export interface DaysState {
 }
 
 export interface GetDaysApiRequest extends Action {
-    type: DayActionTypes
+    type: DayActionTypes,
+    from: string,
+    to: string
 }
 
 export interface PostDayApiRequest extends Action {

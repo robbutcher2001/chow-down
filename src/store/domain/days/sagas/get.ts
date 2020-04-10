@@ -1,15 +1,15 @@
 import { put } from 'redux-saga/effects';
 
-import { Day } from '../types';
+import { Day, GetDaysApiRequest } from '../types';
 import { getDaysSuccess, getDaysFailure } from '../actions';
 import { pendingGetDays, clearPendingGetDays } from '../../../ui/days/actions';
 import { get } from '../../../api';
 
-const URL = `${process.env.API_BASE}/api/days?from=date&to=date`;
+const URL = `${process.env.API_BASE}/api/days`;
 
-export default function* getSaga() {
+export default function* getSaga(action: GetDaysApiRequest) {
     yield put(pendingGetDays());
-    yield get(URL, successCallback, failCallback);
+    yield get(`${URL}?from=${action.from}&to=${action.to}`, successCallback, failCallback);
 };
 
 function* successCallback(days: Day[]) {
