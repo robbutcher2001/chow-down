@@ -1,17 +1,14 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import Stars from '../Stars';
-import UnknownImage from '../UnknownImage';
+
+import { Day } from '../../../store/domain/days/types';
+import Stars from '../../Stars';
+import UnknownImage from '../../UnknownImage';
 
 interface DayCardProps {
-  day: string,
   dayNotSet?: boolean,
-  title: string,
-  description?: string,
-  rating: number,
-  imageUrl: string,
-  imageAlt: string
+  day: Day
 };
 
 const DayCard = styled.li`
@@ -73,14 +70,14 @@ const DayRecipe = styled.figure`
 export default (props: DayCardProps) => (
   <DayCard>
     <span />
-    <h3>{props.day}</h3>
+    <h3>{props.day.date}</h3>
     {props.dayNotSet ?
       <UnknownImage /> :
       <DayRecipe>
-        <img src={props.imageUrl} alt={props.imageAlt}></img>
+        <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
         <figcaption>
-          <h3>{props.title}</h3>
-          <Stars rating={props.rating} />
+          <h3>{props.day.recipe.title}</h3>
+          <Stars rating={props.day.recipe.rating} />
         </figcaption>
       </DayRecipe>
     }

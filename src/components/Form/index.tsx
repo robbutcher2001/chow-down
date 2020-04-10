@@ -126,7 +126,6 @@ class FormComponent extends Component<CombinedProps, OwnState> {
   };
 
   render = () => {
-    console.log(this.state);
     const children = React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) =>
       React.cloneElement(child, {
         form: this.state.form,

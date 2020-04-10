@@ -3,7 +3,7 @@ import { Action } from 'redux';
 export enum IngredientUiActionTypes {
     GET_INGREDIENTS_PENDING = '@@ingredients/GET_PENDING',
     POST_INGREDIENTS_PENDING = '@@ingredients/POST_PENDING',
-    CLEAR_GET_INGREDIENTS_PENDING = '@@ingredients/CLEAR_ET_PENDING',
+    CLEAR_GET_INGREDIENTS_PENDING = '@@ingredients/CLEAR_GET_PENDING',
     CLEAR_POST_INGREDIENTS_PENDING = '@@ingredients/CLEAR_POST_PENDING'
 }
 
