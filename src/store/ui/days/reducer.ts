@@ -4,7 +4,7 @@ import { DaysUiState, DayActionTypes, DaysUiChange } from './types';
 
 const initialState: DaysUiState = {
     getPending: false,
-    postPending: false
+    putPending: false
 }
 
 export const daysUiReducer: Reducer<DaysUiState, DaysUiChange> = (state = initialState, action: DaysUiChange) => {
@@ -16,10 +16,10 @@ export const daysUiReducer: Reducer<DaysUiState, DaysUiChange> = (state = initia
                 getPending: true
             };
 
-        case DayActionTypes.POST_DAYS_PENDING:
+        case DayActionTypes.PUT_DAYS_PENDING:
             return {
                 ...state,
-                postPending: true
+                putPending: true
             };
 
         case DayActionTypes.CLEAR_GET_DAYS_PENDING:
@@ -28,10 +28,10 @@ export const daysUiReducer: Reducer<DaysUiState, DaysUiChange> = (state = initia
                 getPending: false
             };
 
-        case DayActionTypes.CLEAR_POST_DAYS_PENDING:
+        case DayActionTypes.CLEAR_PUT_DAYS_PENDING:
             return {
                 ...state,
-                postPending: false
+                putPending: false
             };
 
         default:

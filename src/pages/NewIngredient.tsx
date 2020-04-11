@@ -78,7 +78,7 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
     //TODO: move application-wide errors to footer component for toast notification (feed down through page container)
-    error: app.error,
+    error: app.error.message,
     failure: domain.ingredient.failure,
     ingredients: domain.ingredient.ingredients,
     ui: {

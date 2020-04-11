@@ -1,4 +1,4 @@
-import { Day, DayActionTypes, GetDaysApiRequest, PostDayApiRequest, DaysSuccessApiResponse, DaysFailureApiResponse } from './types';
+import { Day, DayActionTypes, GetDaysApiRequest, PutDayApiRequest, DaysSuccessApiResponse, DaysFailureApiResponse } from './types';
 
 export const getDaysRequest = (from: string, to: string): GetDaysApiRequest => ({
     type: DayActionTypes.GET_DAYS_REQUEST,
@@ -17,18 +17,22 @@ export const getDaysFailure = (code: number, json: object): DaysFailureApiRespon
     json
 });
 
-export const postDaysRequest = (day: Day): PostDayApiRequest => ({
-    type: DayActionTypes.POST_DAYS_REQUEST,
+export const putDaysRequest = (day: Day): PutDayApiRequest => ({
+    type: DayActionTypes.PUT_DAYS_REQUEST,
     day
 });
 
-export const postDaysSuccess = (days: Day[]): DaysSuccessApiResponse => ({
-    type: DayActionTypes.POST_DAYS_SUCCESS,
-    days
+// export const putDaysSuccess = (days: Day[]): DaysSuccessApiResponse => ({
+//     type: DayActionTypes.PUT_DAYS_SUCCESS,
+//     days
+// });
+
+export const putDaysSuccess = (): DaysSuccessApiResponse => ({
+  type: DayActionTypes.PUT_DAYS_SUCCESS
 });
 
-export const postDaysFailure = (code: number, json: object): DaysFailureApiResponse => ({
-    type: DayActionTypes.POST_DAYS_FAILURE,
+export const putDaysFailure = (code: number, json: object): DaysFailureApiResponse => ({
+    type: DayActionTypes.PUT_DAYS_FAILURE,
     code,
     json
 });

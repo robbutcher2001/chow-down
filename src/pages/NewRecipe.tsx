@@ -116,7 +116,7 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
 };
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
-  error: app.error,
+  error: app.error.message,
   failure: domain.recipe.failure,
   units: domain.unit.units,
   ingredients: domain.ingredient.ingredients,

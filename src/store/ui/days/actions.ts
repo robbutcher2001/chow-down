@@ -8,10 +8,10 @@ export const clearPendingGetDays = (): DaysUiChange => ({
     type: DayActionTypes.CLEAR_GET_DAYS_PENDING
 });
 
-export const pendingPostDays = (): DaysUiChange => ({
-    type: DayActionTypes.POST_DAYS_PENDING
+export const pendingPutDays = (): DaysUiChange => ({
+    type: DayActionTypes.PUT_DAYS_PENDING
 });
 
-export const clearPendingPostDays = (): DaysUiChange => ({
-    type: DayActionTypes.CLEAR_POST_DAYS_PENDING
+export const clearPendingPutDays = (): DaysUiChange => ({
+    type: DayActionTypes.CLEAR_PUT_DAYS_PENDING
 });

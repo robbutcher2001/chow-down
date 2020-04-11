@@ -175,6 +175,6 @@ public class ServiceMock implements ApiApi {
   @Override
   public ResponseEntity<Day> apiDaysPut(@Valid Day day) {
     // TODO Auto-generated method stub
-    return null;
+    return new ResponseEntity<Day>(day, HttpStatus.OK);
   }
 }

@@ -1,21 +1,19 @@
 import React from 'react';
-
-import { Recipe } from '../../../store/domain/recipes/types';
+import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
+
+import { Recipe } from '../../../store/domain/recipes/types';
+import { Day, PutDayApiRequest } from '../../../store/domain/days/types';
 import Stars from '../../Stars';
 
 interface RecipeCardProps {
-  recipe: Recipe
+  recipe: Recipe,
+  selectedDay?: string,
+  putDay?: (day: Day) => PutDayApiRequest
 };
 
-const RecipeCard = styled.li`
-  -webkit-box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
-  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
-  border: 1px solid rgba(0,0,0,.04);
-  border-radius: 0.5rem;
-  cursor: pointer;
-
+const ContentContainer = styled.span`
   > figure {
     max-height: 220px;
     overflow: hidden;
@@ -49,8 +47,20 @@ const RecipeCard = styled.li`
   }
 `
 
-export default (props: RecipeCardProps) => (
-  <RecipeCard>
+const RecipeCard = styled.li`
+  -webkit-box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
+  box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
+  border: 1px solid rgba(0,0,0,.04);
+  border-radius: 0.5rem;
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+`
+
+const RecipeCardContents = (props: RecipeCardProps) => (
+  <ContentContainer>
     <figure>
       <img src={props.recipe.image} alt={props.recipe.title}></img>
       <figcaption>
@@ -59,5 +69,19 @@ export default (props: RecipeCardProps) => (
     </figure>
     <Stars rating={props.recipe.rating} />
     <p>{props.recipe.description}</p>
-  </RecipeCard>
+  </ContentContainer>
 );
+
+export default (props: RecipeCardProps) =>
+  props.selectedDay ?
+    <RecipeCard>
+      <Link to='/' onClick={() => props.putDay({
+        date: props.selectedDay,
+        recipeId: props.recipe.id
+      })}>
+        <RecipeCardContents {...props} />
+      </Link>
+    </RecipeCard> :
+    <RecipeCard>
+      <RecipeCardContents {...props} />
+    </RecipeCard>;

@@ -4,8 +4,8 @@ import { all, fork } from 'redux-saga/effects';
 import { routerMiddleware, connectRouter, RouterState } from 'connected-react-router';
 import { History } from 'history';
 
-import { AppState } from './app/types';
-import { appReducer } from './app/reducer';
+import { AppState } from './app';
+import { createAppReducer } from './app';
 import { DomainState } from './domain';
 import { createDomainReducer } from './domain';
 import { UiState } from './ui';
@@ -24,7 +24,7 @@ export interface GlobalState {
 }
 
 const createRootReducer = (history: History) => combineReducers<GlobalState>({
-    app: appReducer,
+    app: createAppReducer(),
     domain: createDomainReducer(),
     ui: createUiReducer(),
     router: connectRouter(history)

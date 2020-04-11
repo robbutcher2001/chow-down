@@ -4,12 +4,14 @@ import moment from 'moment';
 import styled, { css } from 'styled-components';
 
 import { Day } from '../../../store/domain/days/types';
+import { UserAction } from '../../../store/app/user/types';
 import DayCard from '../DayCard';
 
 interface DayGridProps {
   dateFormat: string,
   seekDays: number,
-  days: Day[]
+  days: Day[],
+  setSelectingDay?: (day: string) => UserAction
 };
 
 const StyledDayGrid = styled.ul`
@@ -41,6 +43,7 @@ const DayGrid: FunctionComponent<DayGridProps> = (props: DayGridProps) => {
         dateFormat={props.dateFormat}
         date={seekDay}
         day={day}
+        setSelectingDay={props.setSelectingDay}
       />
     );
   }

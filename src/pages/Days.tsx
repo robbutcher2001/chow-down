@@ -5,7 +5,9 @@ import moment from 'moment';
 
 import { GlobalState } from '../store';
 import { Day, GetDaysApiRequest } from '../store/domain/days/types';
+import { UserAction } from '../store/app/user/types';
 import { getDaysRequest } from '../store/domain/days/actions';
+import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import { ZeroMarginedMain, CallToAction } from '../components/Main';
 import DayGrid from '../components/Days/DayGrid';
@@ -28,7 +30,8 @@ interface StateProps {
 };
 
 interface DispatchProps {
-  getDays: (from: string, to: string) => GetDaysApiRequest
+  getDays: (from: string, to: string) => GetDaysApiRequest,
+  setSelectingDay: (day: string) => UserAction
 };
 
 interface OwnState {
@@ -51,7 +54,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
 
   componentDidMount = () => this.props.getDays(
     moment().format(this.state.dateFormat),
-    moment().add(this.state.seekDays, 'd').format(this.state.dateFormat)
+    moment().add(this.state.seekDays - 1, 'd').format(this.state.dateFormat)
   );
 
   render = () => (
@@ -63,11 +66,12 @@ class DaysPage extends Component<CombinedProps, OwnState> {
         <ErrorBox message={this.props.error} /> :
         <div>
           {this.props.ui.pending.get ?
-            <LoadingBox message='Fetching days' /> :
+            <LoadingBox message='Fetching your weeks plan' /> :
             <DayGrid
               dateFormat={this.state.dateFormat}
               seekDays={this.state.seekDays}
               days={this.props.days}
+              setSelectingDay={this.props.setSelectingDay}
             />
           }
         </div>
@@ -77,7 +81,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
 };
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
-  error: app.error,
+  error: app.error.message,
   failure: domain.day.failure,
   days: domain.day.days,
   ui: {
@@ -88,7 +92,8 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  getDays: (from: string, to: string) => dispatch(getDaysRequest(from, to))
+  getDays: (from: string, to: string) => dispatch(getDaysRequest(from, to)),
+  setSelectingDay: (day: string) => dispatch(setUserIsSelectingDay(day))
 });
 
 export default connect<StateProps, DispatchProps, null, GlobalState>

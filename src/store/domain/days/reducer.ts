@@ -24,14 +24,15 @@ export const daysReducer: Reducer<DaysState, GetDaysApiResponse> = (state = init
                 days: successResponse.days
             };
 
-        case DayActionTypes.POST_DAYS_SUCCESS:
+        case DayActionTypes.PUT_DAYS_SUCCESS:
             return {
-                failure: null,
-                days: state.days.concat((action as DaysSuccessApiResponse).days)
+                ...state,
+                failure: null
             };
+            //days: state.days.concat((action as DaysSuccessApiResponse).days)
 
         case DayActionTypes.GET_DAYS_FAILURE:
-        case DayActionTypes.POST_DAYS_FAILURE:
+        case DayActionTypes.PUT_DAYS_FAILURE:
             const failureResponse = action as DaysFailureApiResponse;
             const failureJson = failureResponse.json as DaysFailureResponse;
 

@@ -1,20 +1,22 @@
 import React, { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 import styled from 'styled-components';
 
 import { Day } from '../../../store/domain/days/types';
+import { UserAction } from '../../../store/app/user/types';
 import Stars from '../../Stars';
 import UnknownImage from '../../UnknownImage';
 
 interface DayCardProps {
   dateFormat: string,
   date: string,
-  day?: Day
+  day?: Day,
+  setSelectingDay?: (day: string) => UserAction
 };
 
 const StyledDayCard = styled.li`
-  cursor: pointer;
   margin: 2rem 0;
   max-height: 350px;
   max-width: 450px;
@@ -43,6 +45,11 @@ const StyledDayCard = styled.li`
     z-index: 50;
     top: 34px;
     left: -14px;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
   }
 `
 
@@ -79,14 +86,18 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
       <span />
       <h3>{displayDay}</h3>
       {!props.day ?
-        <UnknownImage /> :
-        <DayRecipe>
-          <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
-          <figcaption>
-            <h3>{props.day.recipe.title}</h3>
-            <Stars rating={props.day.recipe.rating} />
-          </figcaption>
-        </DayRecipe>
+        <Link to='/recipes' onClick={() => props.setSelectingDay(props.date)}>
+          <UnknownImage />
+        </Link> :
+        <Link to={`/days/${props.date}`}>
+          <DayRecipe>
+            <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
+            <figcaption>
+              <h3>{props.day.recipe.title}</h3>
+              <Stars rating={props.day.recipe.rating} />
+            </figcaption>
+          </DayRecipe>
+        </Link>
       }
     </StyledDayCard>
   );

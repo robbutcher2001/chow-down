@@ -4,9 +4,9 @@ export enum DayActionTypes {
     GET_DAYS_REQUEST = '@@days/GET_REQUEST',
     GET_DAYS_SUCCESS = '@@days/GET_SUCCESS',
     GET_DAYS_FAILURE = '@@days/GET_FAILURE',
-    POST_DAYS_REQUEST = '@@days/POST_REQUEST',
-    POST_DAYS_SUCCESS = '@@days/POST_SUCCESS',
-    POST_DAYS_FAILURE = '@@days/POST_FAILURE'
+    PUT_DAYS_REQUEST = '@@days/PUT_REQUEST',
+    PUT_DAYS_SUCCESS = '@@days/PUT_SUCCESS',
+    PUT_DAYS_FAILURE = '@@days/PUT_FAILURE'
 }
 
 //TODO: maybe combine these with ~/store/domain/recipes
@@ -26,7 +26,8 @@ interface Recipe {
 
 export interface Day {
     date: string,
-    recipe: Recipe
+    recipeId?: string,
+    recipe?: Recipe
 }
 
 export interface DaysState {
@@ -40,14 +41,19 @@ export interface GetDaysApiRequest extends Action {
     to: string
 }
 
-export interface PostDayApiRequest extends Action {
+export interface PutDayApiRequest extends Action {
     type: DayActionTypes,
     day: Day
 }
 
+// export interface DaysSuccessApiResponse extends Action {
+//     type: DayActionTypes,
+//     days: Day[]
+// }
+
 export interface DaysSuccessApiResponse extends Action {
-    type: DayActionTypes,
-    days: Day[]
+  type: DayActionTypes,
+  days?: Day[]
 }
 
 export interface DaysFailureApiResponse extends Action {

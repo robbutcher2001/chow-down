@@ -83,7 +83,7 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
 };
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
-    error: app.error,
+    error: app.error.message,
     failure: domain.unit.failure,
     units: domain.unit.units,
     ui: {
