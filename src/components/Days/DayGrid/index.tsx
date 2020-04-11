@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
+import moment from 'moment';
 
 import styled, { css } from 'styled-components';
 
 import { Day } from '../../../store/domain/days/types';
 import DayCard from '../DayCard';
-import { NegativeBox } from '../../MessageBox';
 
 interface DayGridProps {
   dateFormat: string,
@@ -12,7 +12,7 @@ interface DayGridProps {
   days: Day[]
 };
 
-const DayGrid = styled.ul`
+const StyledDayGrid = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,22 +21,31 @@ const DayGrid = styled.ul`
   list-style: none;
 
   ${(props: any) =>
-  props.primary &&
-  css`
+    props.primary &&
+    css`
       // background: palevioletred;
       // color: white;
   `};
 `
 
-export default (props: DayGridProps) =>
-  props.days && props.days.length > 0 ?
-    <DayGrid>
-      {props.days.map((day, i) =>
-        <DayCard
-          key={i}
-          dateFormat={props.dateFormat}
-          day={day}
-        />
-      )}
-    </DayGrid> :
-    <NegativeBox message='No days yet!' />;
+const DayGrid: FunctionComponent<DayGridProps> = (props: DayGridProps) => {
+  const dayCards = [];
+
+  for (let i: number = 0; i < props.seekDays; i++) {
+    const seekDay: string = moment().add(i, 'd').format(props.dateFormat);
+    const day: Day = props.days.find(day => moment(seekDay).isSame(day.date));
+
+    dayCards.push(
+      <DayCard
+        key={i}
+        dateFormat={props.dateFormat}
+        date={seekDay}
+        day={day}
+      />
+    );
+  }
+
+  return <StyledDayGrid>{dayCards}</StyledDayGrid>;
+};
+
+export default DayGrid;

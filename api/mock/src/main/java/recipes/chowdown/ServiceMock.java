@@ -76,11 +76,13 @@ public class ServiceMock implements ApiApi {
     }
 
     for (int i = 0; i < 7; i++) {
-      Day day = new Day();
-      day.setDate(LocalDate.now().plusDays(i).toString());
-      day.setRecipe(this.recipes.get(i));
+      if (i != 3 && i != 5) {
+        Day day = new Day();
+        day.setDate(LocalDate.now().plusDays(i).toString());
+        day.setRecipe(this.recipes.get(i));
 
-      this.days.add(day);
+        this.days.add(day);
+      }
     }
   }
 

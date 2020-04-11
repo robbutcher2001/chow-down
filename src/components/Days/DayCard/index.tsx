@@ -8,9 +8,9 @@ import Stars from '../../Stars';
 import UnknownImage from '../../UnknownImage';
 
 interface DayCardProps {
-  dayNotSet?: boolean,
   dateFormat: string,
-  day: Day
+  date: string,
+  day?: Day
 };
 
 const StyledDayCard = styled.li`
@@ -70,15 +70,15 @@ const DayRecipe = styled.figure`
 
 const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
   const today: string = moment().format(props.dateFormat);
-  const isTonight: boolean = moment(today).isSame(props.day.date);
-  const isTomorrow: boolean = moment(today).add(1, 'd').isSame(props.day.date);
-  const day: string = isTonight ? 'Tonight' : isTomorrow ? 'Tomorrow' : moment(props.day.date).format('dddd');
+  const isTonight: boolean = moment(today).isSame(props.date);
+  const isTomorrow: boolean = moment(today).add(1, 'd').isSame(props.date);
+  const displayDay: string = isTonight ? 'Tonight' : isTomorrow ? 'Tomorrow' : moment(props.date).format('dddd');
 
   return (
     <StyledDayCard>
       <span />
-      <h3>{day}</h3>
-      {props.dayNotSet ?
+      <h3>{displayDay}</h3>
+      {!props.day ?
         <UnknownImage /> :
         <DayRecipe>
           <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
