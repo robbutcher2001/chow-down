@@ -1,4 +1,5 @@
 import React, { Component, ChangeEvent } from 'react';
+import ImageResizer from 'react-image-file-resizer';
 
 import styled from 'styled-components';
 
@@ -58,7 +59,16 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
     if (files.length === 1) {
       const img: File = files[0];
       if (img.type.match(/image\/(jpeg|png)/)) {
-        reader.readAsDataURL(img);
+        ImageResizer.imageFileResizer(
+          img,
+          450,
+          350,
+          img.type.substring(6),
+          100,
+          0,
+          (uri: Blob) => reader.readAsDataURL(uri),
+          'blob'
+        );
       }
       else {
         this.props.setNewFormState(
@@ -100,12 +110,12 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         hidden
         onChange={event => this.onChange(event)}
       />
-        {this.props.form[this.props.name] ?
-          <figure>
-            <img src={this.props.form[this.props.name].toString()} />
-          </figure> :
-          <UnknownImage />
-        }
+      {this.props.form[this.props.name] ?
+        <figure>
+          <img src={this.props.form[this.props.name].toString()} />
+        </figure> :
+        <UnknownImage />
+      }
       <div className='red'>{this.state.error}</div>
     </Label>
   );
