@@ -1,5 +1,7 @@
 package recipes.chowdown.service.days;
 
+import java.util.List;
+
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -21,9 +23,12 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
   private CacheInvalidator cacheInvalidator;
 
+  private GetDaysService getDaysService;
+
   public PutDayService() {
     this.repository = new DayRepository();
     this.cacheInvalidator = new CacheInvalidator();
+    this.getDaysService = new GetDaysService();
   }
 
   public Day handleRequest(final Day day, final Context context) throws RuntimeException {
@@ -46,10 +51,16 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
       LOGGER.log("New day persisted with date [" + returnedDate + "]");
 
+      final List<Day> newDay = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
+
+      if (newDay.size() != 1) {
+        throw new ResourceNotPersistedException("inconsistent number of rows returned after GET");
+      }
+
       String response = this.cacheInvalidator.invalidate(Endpoint.DAY);
       LOGGER.log("Day cache purge status [" + response + "]");
 
-      return day;
+      return newDay.get(0);
     } catch (AmazonServiceException ase) {
       LOGGER.log(ase.getMessage());
       throw new ServerException("unable to complete request");

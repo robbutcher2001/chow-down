@@ -41,7 +41,6 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
 
   componentDidMount = () => this.props.setValidationState(this.props.name);
 
-  //TODO: select image, then open popup and click cancel, tries to render null
   getImgData = (event: ProgressEvent<FileReader>) => {
     this.props.setNewFormState(
       this.props.name,

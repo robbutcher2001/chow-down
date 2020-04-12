@@ -75,6 +75,11 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
     }
   }
 
+  public List<Day> getDays(final String from, final String to, final Context context) {
+    final GetRequest getRequest = GetRequest.builder().from(from).to(to).build();
+    return handleRequest(getRequest, context);
+  }
+
   private String parseToBasicISODate(final String date) {
     return LocalDate.parse(date).format(DateTimeFormatter.BASIC_ISO_DATE).toString();
   }

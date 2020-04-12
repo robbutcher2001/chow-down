@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +51,9 @@ public class PutDayServiceTest {
   @Mock
   private CacheInvalidator cacheInvalidator;
 
+  @Mock
+  private GetDaysService getDaysService;
+
   @InjectMocks
   private PutDayService service;
 
@@ -62,6 +66,7 @@ public class PutDayServiceTest {
 
   @Test
   void handleRequest_shouldReturnPopulatedDay_whenNewDayPut() throws Exception {
+    Day day = Day.builder().date("20200412").build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -71,9 +76,10 @@ public class PutDayServiceTest {
     when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake_date");
+    when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context))
+        .thenReturn(Collections.singletonList(day));
     when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
 
-    Day day = new Day();
     Day returnedDay = this.service.handleRequest(day, this.context);
 
     assertEquals(day, returnedDay);
@@ -95,6 +101,23 @@ public class PutDayServiceTest {
     when(mockResult.getRecords()).thenReturn(rows);
 
     assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), this.context));
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenMultipleDayGet() throws Exception {
+    Day day = Day.builder().date("20200412").build();
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake_date");
+    when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context)).thenReturn(Arrays.asList(day, day));
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(day, this.context));
   }
 
   @Test
