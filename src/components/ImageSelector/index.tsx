@@ -61,8 +61,8 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
       if (img.type.match(/image\/(jpeg|png)/)) {
         ImageResizer.imageFileResizer(
           img,
-          450,
-          350,
+          500,
+          500,
           img.type.substring(6),
           100,
           0,
