@@ -24,7 +24,8 @@ interface StateProps {
   days: Day[]
   ui: {
     pending: {
-      get: boolean
+      get: boolean,
+      put: boolean
     }
   }
 };
@@ -52,7 +53,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
     }
   }
 
-  componentDidMount = () => this.props.getDays(
+  componentDidMount = () => !this.props.ui.pending.put && this.props.getDays(
     moment().format(this.state.dateFormat),
     moment().add(this.state.seekDays - 1, 'd').format(this.state.dateFormat)
   );
@@ -67,12 +68,14 @@ class DaysPage extends Component<CombinedProps, OwnState> {
         <div>
           {this.props.ui.pending.get ?
             <LoadingBox message='Fetching your weeks plan' /> :
-            <DayGrid
-              dateFormat={this.state.dateFormat}
-              seekDays={this.state.seekDays}
-              days={this.props.days}
-              setSelectingDay={this.props.setSelectingDay}
-            />
+            this.props.ui.pending.put ?
+              <LoadingBox message='Updating your weeks plan' /> :
+              <DayGrid
+                dateFormat={this.state.dateFormat}
+                seekDays={this.state.seekDays}
+                days={this.props.days}
+                setSelectingDay={this.props.setSelectingDay}
+              />
           }
         </div>
       }
@@ -86,7 +89,8 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
   days: domain.day.days,
   ui: {
     pending: {
-      get: ui.day.getPending
+      get: ui.day.getPending,
+      put: ui.day.putPending
     }
   }
 });

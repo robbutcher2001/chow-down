@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { DaysState, DayActionTypes, GetDaysApiResponse, DaysSuccessApiResponse, DaysFailureApiResponse } from './types';
+import { Day, DayActionTypes, DaysFailureApiResponse, DaysState, GetDaysApiResponse, GetDaysSuccessApiResponse, PutDaySuccessApiResponse } from './types';
 
 const initialState: DaysState = {
     failure: null,
@@ -16,20 +16,24 @@ export const daysReducer: Reducer<DaysState, GetDaysApiResponse> = (state = init
     switch (action.type) {
 
         case DayActionTypes.GET_DAYS_SUCCESS:
-            const successResponse = action as DaysSuccessApiResponse;
-            // const successJson = successResponse.json as DaysSuccessResponse;
+            const successGetResponse = action as GetDaysSuccessApiResponse;
 
             return {
                 failure: null,
-                days: successResponse.days
+                days: successGetResponse.days
             };
 
         case DayActionTypes.PUT_DAYS_SUCCESS:
+            const successPutResponse = action as PutDaySuccessApiResponse;
+            const newDays: Day[] = state.days.filter(day => day.date !== successPutResponse.day.date);
+            console.log('removed exisitng day');
+            console.log(newDays);
+            console.log(newDays.concat(successPutResponse.day));
+
             return {
-                ...state,
-                failure: null
+                failure: null,
+                days: newDays.concat(successPutResponse.day)
             };
-            //days: state.days.concat((action as DaysSuccessApiResponse).days)
 
         case DayActionTypes.GET_DAYS_FAILURE:
         case DayActionTypes.PUT_DAYS_FAILURE:

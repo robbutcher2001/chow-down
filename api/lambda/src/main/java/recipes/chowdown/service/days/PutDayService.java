@@ -51,16 +51,16 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
       LOGGER.log("New day persisted with date [" + returnedDate + "]");
 
-      final List<Day> newDay = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
+      final List<Day> newDays = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
 
-      if (newDay.size() != 1) {
+      if (newDays.size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after GET");
       }
 
       String response = this.cacheInvalidator.invalidate(Endpoint.DAY);
       LOGGER.log("Day cache purge status [" + response + "]");
 
-      return newDay.get(0);
+      return newDays.get(0);
     } catch (AmazonServiceException ase) {
       LOGGER.log(ase.getMessage());
       throw new ServerException("unable to complete request");

@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -78,7 +79,7 @@ public class ServiceMock implements ApiApi {
     for (int i = 0; i < 7; i++) {
       if (i != 3 && i != 5) {
         Day day = new Day();
-        day.setDate(LocalDate.now().plusDays(i).toString());
+        day.setDate(LocalDate.now().plusDays(i).format(DateTimeFormatter.BASIC_ISO_DATE));
         day.setRecipe(this.recipes.get(i));
 
         this.days.add(day);
@@ -173,8 +174,32 @@ public class ServiceMock implements ApiApi {
   }
 
   @Override
-  public ResponseEntity<Day> apiDaysPut(@Valid Day day) {
-    // TODO Auto-generated method stub
-    return new ResponseEntity<Day>(day, HttpStatus.OK);
+  public ResponseEntity<Day> apiDaysPut(@Valid Day newDay) {
+    randomSleep();
+
+    Optional<Recipe> existingRecipe = this.recipes.stream()
+        .filter(recipe -> newDay.getRecipeId().equals(recipe.getId())).findFirst();
+
+    if (!existingRecipe.isPresent()) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    Optional<Day> existingDay = this.days.stream().filter(day -> newDay.getDate().equals(day.getDate())).findFirst();
+
+    if (existingDay.isPresent()) {
+      existingDay.get().setRecipe(existingRecipe.get());
+    } else {
+      newDay.setRecipe(existingRecipe.get());
+      this.days.add(newDay);
+    }
+
+    Optional<Day> subsequentDatabaseGet = this.days.stream().filter(day -> newDay.getDate().equals(day.getDate()))
+        .findFirst();
+
+    if (!subsequentDatabaseGet.isPresent()) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return new ResponseEntity<Day>(subsequentDatabaseGet.get(), HttpStatus.OK);
   }
 }

@@ -12,12 +12,10 @@ export default function* putSaga(action: PutDayApiRequest) {
     yield putApi(URL, successCallback, failCallback, action.day);
 };
 
-//TODO: changed this to not process response as it's useless but response should be changed to return the whole new day
-function* successCallback() {
+function* successCallback(day: Day) {
     console.log('Calling putDaySuccessCallback');
     yield put(clearPendingPutDays());
-    // yield put(putDaysSuccess(days));
-    yield put(putDaysSuccess());
+    yield put(putDaysSuccess(day));
 };
 
 function* failCallback(code: number, json: object) {
