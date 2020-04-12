@@ -38,6 +38,7 @@ const StyledDay = styled.section`
 
     > img {
       width: 150px;
+      height: 150px;
     }
   }
 
