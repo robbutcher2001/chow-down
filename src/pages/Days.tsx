@@ -51,7 +51,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
       dateFormat: 'YYYYMMDD',
       seekDays: 7
     }
-  }
+  };
 
   componentDidMount = () => !this.props.ui.pending.put && this.props.getDays(
     moment().format(this.state.dateFormat),
