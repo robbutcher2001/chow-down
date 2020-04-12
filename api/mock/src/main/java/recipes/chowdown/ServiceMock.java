@@ -1,5 +1,6 @@
 package recipes.chowdown;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +25,7 @@ import recipes.chowdown.schema.ApiApi;
 import recipes.chowdown.schema.Day;
 import recipes.chowdown.schema.Ingredient;
 import recipes.chowdown.schema.Recipe;
+import recipes.chowdown.schema.RecipeIngredient;
 import recipes.chowdown.schema.Unit;
 
 @RestController
@@ -49,6 +51,25 @@ public class ServiceMock implements ApiApi {
       recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
       recipe.setImage(this.faker.internet().image());
       recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+      List<RecipeIngredient> ingredients = new ArrayList<>();
+
+      for (int j = 0; j < new Random().nextInt(40); j++) {
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setQuantity(new BigDecimal(this.faker.random().nextInt(0, 40)));
+
+        String measurement = this.faker.food().measurement();
+        if (measurement.contains(" ")) {
+          measurement = measurement.split(" ")[1];
+        }
+
+        recipeIngredient.setUnitSingularName(measurement);
+        recipeIngredient.setUnitPluralName(measurement.concat("s"));
+        recipeIngredient.setIngredientName(this.faker.food().ingredient());
+        ingredients.add(recipeIngredient);
+      }
+
+      recipe.setIngredients(ingredients);
 
       this.recipes.add(recipe);
     }

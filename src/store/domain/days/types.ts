@@ -10,7 +10,7 @@ export enum DayActionTypes {
 }
 
 //TODO: maybe combine these with ~/store/domain/recipes
-interface RecipeIngredient {
+export interface RecipeIngredient {
   quantity: number,
   unitSingularName: string,
   unitPluralName: string,

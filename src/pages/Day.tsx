@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { RouteComponentProps, Link } from 'react-router-dom';
 import moment from 'moment';
 
 import { GlobalState } from '../store';
@@ -9,14 +10,9 @@ import { UserAction } from '../store/app/user/types';
 import { getDaysRequest } from '../store/domain/days/actions';
 import { setUserIsSelectingDay } from '../store/app/user/actions';
 
-import { ZeroMarginedMain, CallToAction } from '../components/Main';
-import DayGrid from '../components/Days/DayGrid';
+import DayComponent from '../components/Day';
+import Main from '../components/Main';
 import { ErrorBox, LoadingBox } from '../components/MessageBox';
-
-const cta: CallToAction = {
-  text: 'Get week\'s ingredients',
-  link: '/ingredients/week/this'
-};
 
 interface StateProps {
   error: string,
@@ -24,62 +20,89 @@ interface StateProps {
   days: Day[]
   ui: {
     pending: {
-      get: boolean,
-      put: boolean
+      get: boolean
     }
   }
 };
 
 interface DispatchProps {
-  getDays: (from: string, to: string) => GetDaysApiRequest,
+  getDay: (date: string) => GetDaysApiRequest,
   setSelectingDay: (day: string) => UserAction
 };
 
-interface OwnState {
-  dateFormat: string,
-  seekDays: number
+interface DayUrlParamProps {
+  date: string
 };
 
-type CombinedProps = StateProps & DispatchProps;
+interface OwnState {
+  displayDay: string,
+  day: Day
+};
 
-//TODO: convert to FunctionComponent and useEffect()
+type CombinedProps = StateProps & DispatchProps & RouteComponentProps<DayUrlParamProps>;
+
+//TODO: convert to FunctionComponent and useEffect() and useParams
 class DaysPage extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
 
     this.state = {
-      dateFormat: 'YYYYMMDD',
-      seekDays: 7
+      displayDay: null,
+      day: null
     }
   }
 
-  componentDidMount = () => !this.props.ui.pending.put && this.props.getDays(
-    moment().format(this.state.dateFormat),
-    moment().add(this.state.seekDays - 1, 'd').format(this.state.dateFormat)
-  );
+  findDay = (date: string) => this.props.days.find(day => day.date === date);
+
+  componentDidMount = () => {
+    const { date } = this.props.match.params;
+    const day: Day = this.findDay(date);
+
+    this.setState({
+      displayDay: moment(date).isValid() ? moment(date).format('dddd') : ''
+    });
+
+    if (day) {
+      this.setState({
+        day
+      });
+    }
+    else {
+      this.props.getDay(date);
+    }
+  };
+
+  componentDidUpdate = (_prevProps: CombinedProps, prevState: OwnState) => {
+    const { date } = this.props.match.params;
+    const day: Day = this.findDay(date);
+
+    if (day && day !== prevState.day) {
+      this.setState({
+        day
+      });
+    }
+  };
 
   render = () => (
-    <ZeroMarginedMain title='Week Ahead' >
+    <Main title={this.state.displayDay} >
       {this.props.failure &&
         <ErrorBox message={this.props.failure} />
       }
       {this.props.error ?
         <ErrorBox message={this.props.error} /> :
-        <div>
+        <>
           {this.props.ui.pending.get ?
-            <LoadingBox message='Fetching your weeks plan' /> :
-            this.props.ui.pending.put ?
-              <LoadingBox message='Updating your week' /> :
-              <DayGrid
-                dateFormat={this.state.dateFormat}
-                seekDays={this.state.seekDays}
-                days={this.props.days}
+            <LoadingBox message={`Fetching ${this.state.displayDay}'s plan`} /> :
+            !this.state.day ?
+              <ErrorBox message='We could not find a recipe associated to this day' /> :
+              <DayComponent
+                day={this.state.day}
                 setSelectingDay={this.props.setSelectingDay}
               />
           }
-        </div>
+        </>
       }
-    </ZeroMarginedMain>
+    </Main>
   );
 };
 
@@ -89,14 +112,13 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
   days: domain.day.days,
   ui: {
     pending: {
-      get: ui.day.getPending,
-      put: ui.day.putPending
+      get: ui.day.getPending
     }
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  getDays: (from: string, to: string) => dispatch(getDaysRequest(from, to)),
+  getDay: (date: string) => dispatch(getDaysRequest(date, date)),
   setSelectingDay: (day: string) => dispatch(setUserIsSelectingDay(day))
 });
 

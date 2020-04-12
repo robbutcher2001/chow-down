@@ -53,7 +53,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     componentWillUnmount = () => this.props.clearSelectingDay();
 
     render = () => (
-        <Main title='Your recipes' cta={cta} >
+        <Main title='Your recipes' cta={!this.props.selectedDay ? cta : undefined} >
             {this.props.failure &&
                 <ErrorBox message={this.props.failure} />
             }
