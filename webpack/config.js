@@ -94,7 +94,7 @@ module.exports = {
         '/api/recipes',
         '/api/ingredients',
         '/api/units',
-        '/api/days*'
+        '/api/days'
       ],
       autoUpdate: true
     })
