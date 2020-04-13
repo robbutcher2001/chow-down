@@ -37,9 +37,11 @@ public class UnitRepository {
     Collection<SqlParameter> parameters = new ArrayList<>();
 
     try {
-      parameters
-          .add(new SqlParameter().withName("singular").withValue(new Field().withStringValue(unit.getSingular())));
-      parameters.add(new SqlParameter().withName("plural").withValue(new Field().withStringValue(unit.getPlural())));
+      // TODO: unit test .toLowerCase().trim()
+      parameters.add(new SqlParameter().withName("singular")
+          .withValue(new Field().withStringValue(unit.getSingular().toLowerCase().trim())));
+      parameters.add(new SqlParameter().withName("plural")
+          .withValue(new Field().withStringValue(unit.getPlural().toLowerCase().trim())));
     } catch (NullPointerException npe) {
       throw new ResourceNotPersistedException("part or all of the input Unit was null");
     }

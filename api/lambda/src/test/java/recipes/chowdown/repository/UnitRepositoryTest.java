@@ -76,13 +76,11 @@ public class UnitRepositoryTest {
     @Test
     void putUnit_shouldReturnResults_whenRequestInvalidUnit() throws Exception {
         Unit unit = Unit.builder().build();
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
-        when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+        ResourceNotPersistedException returnedException = assertThrows(ResourceNotPersistedException.class,
+                () -> this.repository.putUnit(unit));
 
-        ExecuteStatementResult result = this.repository.putUnit(unit);
-
-        assertEquals(mockResult, result);
+        assertTrue(returnedException.getMessage().contains("part or all of the input Unit was null"));
     }
 
     @Test

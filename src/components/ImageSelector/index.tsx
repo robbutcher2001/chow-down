@@ -26,6 +26,17 @@ const Label = styled.label`
   display: flex;
   flex-direction: column;
   margin-bottom: 0.75rem;
+
+  > figure {
+    align-self: center;
+    max-width: 400px;
+    margin: 0.5rem 0;
+    cursor: pointer;
+
+    > img {
+      width: 100%;
+    }
+  }
 `
 
 class ImageSelector extends Component<ImageSelectorProps, OwnState> {

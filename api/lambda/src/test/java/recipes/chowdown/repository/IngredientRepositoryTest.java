@@ -76,13 +76,11 @@ public class IngredientRepositoryTest {
     @Test
     void putIngredient_shouldReturnResults_whenRequestInvalidIngredient() throws Exception {
         Ingredient ingredient = Ingredient.builder().build();
-        ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
-        when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
-
-        ExecuteStatementResult result = this.repository.putIngredient(ingredient);
-
-        assertEquals(mockResult, result);
+        ResourceNotPersistedException returnedException = assertThrows(ResourceNotPersistedException.class,
+                () -> this.repository.putIngredient(ingredient));
+        
+        assertTrue(returnedException.getMessage().contains("part or all of the input Ingredient was null"));
     }
 
     @Test
