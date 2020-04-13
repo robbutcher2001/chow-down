@@ -1,9 +1,11 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
 import styled from 'styled-components';
+
 import { Unit } from '../../store/domain/units/types';
 import { Ingredient } from '../../store/domain/ingredients/types';
 import { RecipeIngredient } from '../RecipeIngredients';
+import { FieldValidations } from '../Form';
 
 interface RecipeIngredientProps {
   index: number,
@@ -11,6 +13,10 @@ interface RecipeIngredientProps {
   ingredients: Ingredient[],
   recipeIngredient: RecipeIngredient,
   onChange: (index: number, recipeIngredient: RecipeIngredient) => void,
+  quantityValidator: (quantity: string) => boolean,
+  idValidator: (id: string) => boolean,
+  validFields: FieldValidations,
+  setValidationState: (field: string, isValid?: boolean) => void
 };
 
 const RecipeIngredient = styled.li`
@@ -69,6 +75,16 @@ const RecipeIngredient = styled.li`
 `
 
 const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props: RecipeIngredientProps) => {
+  const quantityId = 'quantity_' + props.index;
+  const unitId = 'unit_' + props.index;
+  const ingredientId = 'ingredient_' + props.index;
+  const placeholder = 'PLACEHOLDER';
+
+  useEffect(() => {
+    props.setValidationState(quantityId)
+    props.setValidationState(unitId)
+    props.setValidationState(ingredientId)
+  }, []);
 
   const onChange = (field: object) => {
     props.onChange(props.index, {
@@ -79,45 +95,64 @@ const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props:
 
   return (
     <RecipeIngredient>
-      <label htmlFor={'quantity_' + props.index}>
+      <label htmlFor={quantityId}>
         Quantity
         <input
-          id={'quantity_' + props.index}
+          id={quantityId}
           type='number'
           step='0.01'
           min='0'
+          className={props.validFields[quantityId] === false ? 'red' : undefined}
           value={props.recipeIngredient.quantity.toString()}
           onChange={event => onChange({
-            quantity: event.currentTarget.value ? parseFloat(event.currentTarget.value) : 0
+            quantity: event.currentTarget.value.endsWith('.') ?
+              event.currentTarget.value :
+              !!parseFloat(event.currentTarget.value) ?
+                parseFloat(event.currentTarget.value) :
+                0
           })}
+          onBlur={event => props.setValidationState(
+            quantityId,
+            props.quantityValidator(event.currentTarget.value)
+          )}
         />
       </label>
-      <label htmlFor={'units_' + props.index}>
+      <label htmlFor={unitId}>
         Unit
         <select
-          id={'units_' + props.index}
+          id={unitId}
+          className={props.validFields[unitId] === false ? 'red' : undefined}
           value={props.recipeIngredient.unitId}
           onChange={event => onChange({
             unitId: event.currentTarget.value
           })}
+          onBlur={event => props.setValidationState(
+            unitId,
+            props.idValidator(event.currentTarget.value)
+          )}
         >
-          <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
+          <option key={placeholder} value={placeholder}></option>
           {props.units.map(unit => (
             <option key={unit.id} value={unit.id}>{unit.singular}</option>
           ))}
         </select>
       </label>
       <p>of</p>
-      <label htmlFor={'ingredient_' + props.index}>
+      <label htmlFor={ingredientId}>
         Ingredient
         <select
-          id={'ingredient_' + props.index}
+          id={ingredientId}
+          className={props.validFields[ingredientId] === false ? 'red' : undefined}
           value={props.recipeIngredient.ingredientId}
           onChange={event => onChange({
             ingredientId: event.currentTarget.value
           })}
+          onBlur={event => props.setValidationState(
+            ingredientId,
+            props.idValidator(event.currentTarget.value)
+          )}
         >
-          <option key='PLACEHOLDER' value='PLACEHOLDER'></option>
+          <option key={placeholder} value={placeholder}></option>
           {props.ingredients.map(ingredient => (
             <option key={ingredient.id} value={ingredient.id}>{ingredient.ingredient}</option>
           ))}

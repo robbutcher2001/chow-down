@@ -1,7 +1,7 @@
 import { call, put as putSideEffect } from 'redux-saga/effects';
 
-import { unexpectedServerError, unexpectedResponse, clearError } from './app/actions';
-import { ErrorMessageApiResponse } from './app/types';
+import { unexpectedServerError, unexpectedResponse, clearError } from './app/error/actions';
+import { ErrorMessageApiResponse } from './app/error/types';
 
 enum Method {
     POST = 'POST',

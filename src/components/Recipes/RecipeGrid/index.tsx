@@ -1,14 +1,23 @@
 import React from 'react';
+import moment from 'moment';
 
 import styled from 'styled-components';
 
 import { Recipe } from '../../../store/domain/recipes/types';
+import { Day, PutDayApiRequest } from '../../../store/domain/days/types';
 import RecipeCard from '../RecipeCard';
 import { NegativeBox } from '../../MessageBox';
 
 interface RecipeGridProps {
-  recipes: Recipe[]
+  recipes: Recipe[],
+  selectedDay?: string,
+  putDay?: (day: Day) => PutDayApiRequest
 };
+
+const UserInstruction = styled.div`
+  margin: 1rem 0 2rem;
+  font-size: 1.2rem;
+`
 
 const RecipeGrid = styled.ul`
   display: grid;
@@ -21,9 +30,21 @@ const RecipeGrid = styled.ul`
 
 export default (props: RecipeGridProps) =>
   props.recipes && props.recipes.length > 0 ?
-    <RecipeGrid>
-      {props.recipes.map((recipe, i) =>
-        <RecipeCard key={i} recipe={recipe} />
-      )}
-    </RecipeGrid> :
+    <>
+      {props.selectedDay &&
+        <UserInstruction>
+          Select something for {moment(props.selectedDay).format('dddd')}
+        </UserInstruction>
+      }
+      <RecipeGrid>
+        {props.recipes.map((recipe, i) =>
+          <RecipeCard
+            key={i}
+            recipe={recipe}
+            selectedDay={props.selectedDay}
+            putDay={props.putDay}
+          />
+        )}
+      </RecipeGrid>
+    </> :
     <NegativeBox message='No recipes yet!' />;

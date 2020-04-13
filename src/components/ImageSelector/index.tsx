@@ -1,18 +1,21 @@
 import React, { Component, ChangeEvent } from 'react';
+import ImageResizer from 'react-image-file-resizer';
 
 import styled from 'styled-components';
 
 import UnknownImage from '../UnknownImage';
+import { Fields, FieldValidations } from '../Form';
 
 const reader = new FileReader();
 
 export interface ImageSelectorProps {
   name: string,
   label: string,
-  form?: {
-    [key: string]: string
-  },
-  setNewFormState?: (field: string, newValue: string) => void
+  validator: (files: FileList) => boolean,
+  form?: Fields,
+  validFields?: FieldValidations,
+  setNewFormState?: (field: string, newValue: string) => void,
+  setValidationState?: (field: string, isValid?: boolean) => void
 };
 
 interface OwnState {
@@ -24,8 +27,15 @@ const Label = styled.label`
   flex-direction: column;
   margin-bottom: 0.75rem;
 
-  .red {
-    color: #dc3545;
+  > figure {
+    align-self: center;
+    max-width: 400px;
+    margin: 0.5rem 0;
+    cursor: pointer;
+
+    > img {
+      width: 100%;
+    }
   }
 `
 
@@ -38,9 +48,10 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
     this.state = {
       error: null
     };
-  }
+  };
 
-  //TODO: select image, then open popup and click cancel, tries to render null
+  componentDidMount = () => this.props.setValidationState(this.props.name);
+
   getImgData = (event: ProgressEvent<FileReader>) => {
     this.props.setNewFormState(
       this.props.name,
@@ -57,8 +68,17 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
 
     if (files.length === 1) {
       const img: File = files[0];
-      if (img.type.match(/image.*/)) {
-        reader.readAsDataURL(img);
+      if (img.type.match(/image\/(jpeg|png)/)) {
+        ImageResizer.imageFileResizer(
+          img,
+          500,
+          500,
+          img.type.substring(6),
+          100,
+          0,
+          (uri: Blob) => reader.readAsDataURL(uri),
+          'blob'
+        );
       }
       else {
         this.props.setNewFormState(
@@ -66,7 +86,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
           null
         );
         this.setState({
-          error: 'Not an image'
+          error: 'Image uploads limited to PNG or JPEG images only'
         });
       }
     }
@@ -79,24 +99,33 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         error: null
       });
     }
+
+    this.props.setValidationState(
+      this.props.name,
+      this.props.validator(files)
+    );
   };
 
   render = () => (
-    <Label htmlFor={this.props.name}>
+    <Label
+      htmlFor={this.props.name}
+      className={this.props.validFields[this.props.name] === false ? 'red' : undefined}
+    >
       {this.props.label}
       <input
         id={this.props.name}
         name={this.props.name}
         type='file'
-        accept='image/*'
+        accept='image/jpeg,image/png'
         hidden
-        onChange={event => this.onChange(event)} />
-        {this.props.form[this.props.name] ?
-          <figure>
-            <img src={this.props.form[this.props.name].toString()} />
-          </figure> :
-          <UnknownImage />
-        }
+        onChange={event => this.onChange(event)}
+      />
+      {this.props.form[this.props.name] ?
+        <figure>
+          <img src={this.props.form[this.props.name].toString()} />
+        </figure> :
+        <UnknownImage />
+      }
       <div className='red'>{this.state.error}</div>
     </Label>
   );

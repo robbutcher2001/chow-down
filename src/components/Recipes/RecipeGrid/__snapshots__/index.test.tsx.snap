@@ -2,72 +2,80 @@
 
 exports[`RecipeGrid basic snapshot render 1`] = `
 <ul
-  className="sc-bxivhb dWwryP"
+  className="sc-EHOje jOhHw"
 >
   <li
-    className="sc-bwzfXH juCrAB"
+    className="sc-htpNat hySfcC"
   >
-    <figure>
-      <img
-        alt="fake_title1"
-        src="fake_alt_text1"
-      />
-      <figcaption>
-        <h3>
-          fake_title1
-        </h3>
-      </figcaption>
-    </figure>
-    <section
-      className="sc-bdVaJa dyQPNL"
+    <span
+      className="sc-bwzfXH bpAHud"
     >
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-    </section>
-    <p>
-      fake_description1
-    </p>
+      <figure>
+        <img
+          alt="fake_title1"
+          src="fake_alt_text1"
+        />
+        <figcaption>
+          <h3>
+            fake_title1
+          </h3>
+        </figcaption>
+      </figure>
+      <section
+        className="sc-bdVaJa dyQPNL"
+      >
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+      </section>
+      <p>
+        fake_description1
+      </p>
+    </span>
   </li>
   <li
-    className="sc-bwzfXH juCrAB"
+    className="sc-htpNat hySfcC"
   >
-    <figure>
-      <img
-        alt="fake_title2"
-        src="fake_alt_text2"
-      />
-      <figcaption>
-        <h3>
-          fake_title2
-        </h3>
-      </figcaption>
-    </figure>
-    <section
-      className="sc-bdVaJa dyQPNL"
+    <span
+      className="sc-bwzfXH bpAHud"
     >
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-    </section>
-    <p>
-      fake_description2
-    </p>
+      <figure>
+        <img
+          alt="fake_title2"
+          src="fake_alt_text2"
+        />
+        <figcaption>
+          <h3>
+            fake_title2
+          </h3>
+        </figcaption>
+      </figure>
+      <section
+        className="sc-bdVaJa dyQPNL"
+      >
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+      </section>
+      <p>
+        fake_description2
+      </p>
+    </span>
   </li>
 </ul>
 `;

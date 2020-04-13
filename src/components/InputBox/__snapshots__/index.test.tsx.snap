@@ -9,6 +9,7 @@ exports[`InputBox basic snapshot render 1`] = `
   <input
     id="title"
     name="title"
+    onBlur={[Function]}
     onChange={[Function]}
     type="text"
     value=""

@@ -358,7 +358,13 @@ components:
           type: number
         unitId:
           type: string
+        unitSingularName:
+          type: string
+        unitPluralName:
+          type: string
         ingredientId:
+          type: string
+        ingredientName:
           type: string
       required:
       - quantity

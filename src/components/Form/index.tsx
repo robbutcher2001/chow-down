@@ -9,8 +9,12 @@ import { RecipeIngredientsProps } from '../RecipeIngredients';
 
 type CombinedInputProps = InputBoxProps | TextareaProps | ImageSelectorProps | RecipeIngredientsProps;
 
-interface FieldNames {
-  [key: string]: string
+export interface Fields {
+  [key: string]: string | number | Array<any>
+};
+
+export interface FieldValidations {
+  [key: string]: boolean
 };
 
 interface StateProps { };
@@ -24,9 +28,8 @@ interface OwnProps {
 };
 
 interface OwnState {
-  form: {
-    [key: string]: string | number | Array<any>
-  }
+  form: Fields,
+  validFields: FieldValidations
 };
 
 type CombinedProps = StateProps & DispatchProps & OwnProps;
@@ -65,20 +68,21 @@ const Form = styled.form`
 class FormComponent extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
-    const fieldNames: FieldNames = this.getFieldNames();
+    const fields: Fields = this.getFields();
 
     this.state = {
       form: {
-        ...fieldNames
-      }
+        ...fields
+      },
+      validFields: {}
     };
   };
 
-  getFieldNames = () => React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) => child.props.name)
+  getFields = () => React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) => child.props.name)
     .reduce((names, name) => {
       names[name] = null;
       return names;
-    }, {} as FieldNames);
+    }, {} as Fields);
 
   //TODO: need to rename this - tests complain
   setNewFormState = (field: string, newValue: string | number | Array<any>) => {
@@ -91,30 +95,44 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     });
   };
 
+  setValidationState = (field: string, isValid?: boolean) => {
+    this.setState(prevState => {
+      const newState = {
+        validFields: Object.assign({}, prevState.validFields)
+      };
+      newState.validFields[field] = isValid;
+      return newState;
+    });
+  };
+
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formPopulated = Object.keys(this.state.form).reduce((acc, formField) =>
-      this.state.form[formField] ? true : acc, false);
+    const formValid = Object.keys(this.state.validFields).every(key => this.state.validFields[key] === true);
 
-    if (formPopulated) {
+    if (formValid) {
       this.props.dispatch(this.state.form);
     }
   };
 
   onReset = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const fieldNames: FieldNames = this.getFieldNames();
+    const fields: Fields = this.getFields();
 
     this.setState({
       form: {
-        ...fieldNames
+        ...fields
       }
     });
   };
 
   render = () => {
     const children = React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) =>
-      React.cloneElement(child, { form: this.state.form, setNewFormState: this.setNewFormState }));
+      React.cloneElement(child, {
+        form: this.state.form,
+        validFields: this.state.validFields,
+        setNewFormState: this.setNewFormState,
+        setValidationState: this.setValidationState
+      }));
 
     return (
       <Form id='form' onSubmit={this.onSubmit} onReset={this.onReset} >

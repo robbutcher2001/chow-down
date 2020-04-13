@@ -55,9 +55,7 @@ public class GetDaysServiceTest {
   void beforeAll() {
     MockitoAnnotations.initMocks(this);
 
-    this.getRequest = new GetRequest();
-    this.getRequest.setFrom("20200401");
-    this.getRequest.setTo("20200401");
+    this.getRequest = GetRequest.builder().from("20200401").to("20200401").build();
 
     this.service = new GetDaysService();
   }
@@ -167,9 +165,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenEmptyFromAndValidTo() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom("");
-    getRequestInvalid.setTo("20200401");
+    GetRequest getRequestInvalid = GetRequest.builder().from("").to("20200401").build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -178,9 +174,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenNullFromAndValidTo() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom(null);
-    getRequestInvalid.setTo("20200401");
+    GetRequest getRequestInvalid = GetRequest.builder().from(null).to("20200401").build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -189,9 +183,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenBadFromAndValidTo() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom("not_a_date");
-    getRequestInvalid.setTo("20200401");
+    GetRequest getRequestInvalid = GetRequest.builder().from("not_a_date").to("20200401").build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -200,9 +192,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenValidFromAndEmptyTo() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom("20200401");
-    getRequestInvalid.setTo("");
+    GetRequest getRequestInvalid = GetRequest.builder().from("20200401").to("").build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -211,9 +201,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenValidFromAndNullTo() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom("20200401");
-    getRequestInvalid.setTo(null);
+    GetRequest getRequestInvalid = GetRequest.builder().from("20200401").to(null).build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -222,9 +210,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenValidFromAndBadTo() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom("20200401");
-    getRequestInvalid.setTo("not_a_date");
+    GetRequest getRequestInvalid = GetRequest.builder().from("20200401").to("not_a_date").build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -233,9 +219,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenEmptyBoth() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom("");
-    getRequestInvalid.setTo("");
+    GetRequest getRequestInvalid = GetRequest.builder().from("").to("").build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -244,9 +228,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenNullBoth() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom(null);
-    getRequestInvalid.setTo(null);
+    GetRequest getRequestInvalid = GetRequest.builder().from(null).to(null).build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 
@@ -255,9 +237,7 @@ public class GetDaysServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenBadBoth() throws Exception {
-    GetRequest getRequestInvalid = new GetRequest();
-    getRequestInvalid.setFrom("not_a_date");
-    getRequestInvalid.setTo("not_a_date");
+    GetRequest getRequestInvalid = GetRequest.builder().from("not_a_date").to("not_a_date").build();
 
     when(this.context.getLogger()).thenReturn(this.logger);
 

@@ -37,8 +37,9 @@ public class IngredientRepository {
     Collection<SqlParameter> parameters = new ArrayList<>();
 
     try {
-      parameters.add(
-          new SqlParameter().withName("ingredient").withValue(new Field().withStringValue(ingredient.getIngredient())));
+      // TODO: unit test .toLowerCase().trim()
+      parameters.add(new SqlParameter().withName("ingredient")
+          .withValue(new Field().withStringValue(ingredient.getIngredient().toLowerCase().trim())));
     } catch (NullPointerException npe) {
       throw new ResourceNotPersistedException("part or all of the input Ingredient was null");
     }

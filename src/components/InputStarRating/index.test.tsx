@@ -21,7 +21,7 @@ test('StarRating basic snapshot render', () => {
   expect(starRating.toJSON()).toMatchSnapshot();
 });
 
-test('Header correct tag content assertion', () => {
+test('StarRating correct tag content assertion', () => {
   const { getByText } = render(
     <StarRating
       name='title'

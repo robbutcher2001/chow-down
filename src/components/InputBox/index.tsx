@@ -1,15 +1,17 @@
 import React, { Component, ChangeEvent } from 'react';
 
 import styled from 'styled-components';
+import { Fields, FieldValidations } from '../Form';
 
 export interface InputBoxProps {
   name: string,
   type: 'text' | 'number',
   label: string,
-  form?: {
-    [key: string]: string | number
-  },
-  setNewFormState?: (field: string, newValue: string | number) => void
+  validator: (value: string) => boolean,
+  form?: Fields,
+  validFields?: FieldValidations,
+  setNewFormState?: (field: string, newValue: string | number) => void,
+  setValidationState?: (field: string, isValid?: boolean) => void
 };
 
 const Label = styled.label`
@@ -32,6 +34,8 @@ class InputBox extends Component<InputBoxProps, {}> {
     super(props);
   };
 
+  componentDidMount = () => this.props.setValidationState(this.props.name);
+
   onChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const value = event.currentTarget.value;
@@ -48,8 +52,13 @@ class InputBox extends Component<InputBoxProps, {}> {
         id={this.props.name}
         name={this.props.name}
         type={this.props.type}
+        className={this.props.validFields[this.props.name] === false ? 'red' : undefined}
         value={this.props.form[this.props.name] ? this.props.form[this.props.name] : ''}
         onChange={event => this.onChange(event)}
+        onBlur={event => this.props.setValidationState(
+          this.props.name,
+          this.props.validator(event.currentTarget.value)
+        )}
       />
     </Label>
   );

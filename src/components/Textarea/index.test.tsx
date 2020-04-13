@@ -12,7 +12,10 @@ test('Textarea basic snapshot render', () => {
     <Textarea
       name='title'
       label='The Textarea Title'
+      validator={() => true}
       form={mockFormState}
+      validFields={{}}
+      setValidationState={jest.fn}
     />
   );
 

@@ -13,21 +13,27 @@ test('ImageSelector basic snapshot render', () => {
     <ImageSelector
       name='title'
       label='The Image Selector Title'
+      validator={() => true}
       form={mockFormState}
+      validFields={{}}
       setNewFormState={jest.fn}
+      setValidationState={jest.fn}
     />
   );
 
   expect(imageSelector.toJSON()).toMatchSnapshot();
 });
 
-test('Header correct tag content assertion', () => {
+test('ImageSelector correct tag content assertion', () => {
   const { getByText } = render(
     <ImageSelector
       name='title'
       label='The Image Selector Title'
+      validator={() => true}
       form={mockFormState}
+      validFields={{}}
       setNewFormState={jest.fn}
+      setValidationState={jest.fn}
     />
   );
 

@@ -4,7 +4,11 @@ import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest } from '../store/domain/recipes/types';
+import { Day, PutDayApiRequest } from '../store/domain/days/types';
+import { UserAction } from '../store/app/user/types';
 import { getRecipesRequest } from '../store/domain/recipes/actions';
+import { putDaysRequest } from '../store/domain/days/actions';
+import { clearUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
@@ -19,6 +23,7 @@ interface StateProps {
     error: string,
     failure: string,
     recipes: Recipe[],
+    selectedDay: string,
     ui: {
         pending: {
             get: boolean
@@ -27,7 +32,9 @@ interface StateProps {
 };
 
 interface DispatchProps {
-    getRecipes: () => GetRecipesApiRequest
+    getRecipes: () => GetRecipesApiRequest,
+    putDay: (day: Day) => PutDayApiRequest,
+    clearSelectingDay: () => UserAction
 };
 
 interface OwnProps { };
@@ -43,8 +50,10 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
     componentDidMount = () => this.props.getRecipes();
 
+    componentWillUnmount = () => this.props.clearSelectingDay();
+
     render = () => (
-        <Main title='Your recipes' cta={cta} >
+        <Main title='Your recipes' cta={!this.props.selectedDay ? cta : undefined} >
             {this.props.failure &&
                 <ErrorBox message={this.props.failure} />
             }
@@ -53,7 +62,11 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 <div>
                     {this.props.ui.pending.get ?
                         <LoadingBox message='Fetching recipes' /> :
-                        <RecipeGrid recipes={this.props.recipes} />
+                        <RecipeGrid
+                          recipes={this.props.recipes}
+                          selectedDay={this.props.selectedDay}
+                          putDay={this.props.putDay}
+                        />
                     }
                 </div>
             }
@@ -62,9 +75,10 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 };
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
-    error: app.error,
+    error: app.error.message,
     failure: domain.recipe.failure,
     recipes: domain.recipe.recipes,
+    selectedDay: app.user.selectedDay,
     ui: {
         pending: {
             get: ui.recipe.getPending
@@ -73,7 +87,9 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): 
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
-    getRecipes: () => dispatch(getRecipesRequest())
+    getRecipes: () => dispatch(getRecipesRequest()),
+    putDay: (day: Day) => dispatch(putDaysRequest(day)),
+    clearSelectingDay: () => dispatch(clearUserIsSelectingDay())
 });
 
 export default connect<StateProps, DispatchProps, OwnProps, GlobalState>

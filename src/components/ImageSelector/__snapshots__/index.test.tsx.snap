@@ -2,12 +2,12 @@
 
 exports[`ImageSelector basic snapshot render 1`] = `
 <label
-  className="sc-bwzfXH gxwnoF"
+  className="sc-bwzfXH gApMSu"
   htmlFor="title"
 >
   The Image Selector Title
   <input
-    accept="image/*"
+    accept="image/jpeg,image/png"
     hidden={true}
     id="title"
     name="title"

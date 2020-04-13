@@ -7,17 +7,20 @@ import { Ingredient } from '../../store/domain/ingredients/types';
 
 import RecipeIngredient from '../RecipeIngredient';
 import { LoadingBox } from '../MessageBox';
+import { Fields, FieldValidations } from '../Form';
 
 export interface RecipeIngredientsProps {
   name: string,
   label: string,
-  form?: {
-    [key: string]: string | number | RecipeIngredient[]
-  },
-  setNewFormState?: (field: string, newValue: RecipeIngredient[]) => void,
   isPending: boolean,
   units: Unit[],
-  ingredients: Ingredient[]
+  ingredients: Ingredient[],
+  quantityValidator: (quantity: string) => boolean,
+  idValidator: (id: string) => boolean,
+  form?: Fields,
+  validFields?: FieldValidations,
+  setNewFormState?: (field: string, newValue: RecipeIngredient[]) => void,
+  setValidationState?: (field: string, isValid?: boolean) => void
 };
 
 export interface RecipeIngredient {
@@ -90,9 +93,14 @@ const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: Rec
                   units={props.units}
                   ingredients={props.ingredients}
                   recipeIngredient={recipeIngredient}
+                  validFields={props.validFields}
                   onChange={onChange}
+                  setValidationState={props.setValidationState}
+                  quantityValidator={props.quantityValidator}
+                  idValidator={props.idValidator}
                 />
-            )}
+              )
+            }
           </ul>
           <button
             type='button'

@@ -57,7 +57,12 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
                         <Form
                             dispatch={this.addIngredient}
                             submitText='Add ingredient'>
-                            <InputBox name='ingredient' type='text' label='Ingredient name' />
+                            <InputBox
+                              name='ingredient'
+                              type='text'
+                              label='Ingredient name'
+                              validator={(value: string) => value && value.length > 1}
+                            />
                         </Form>
                     }
                     <h4>Existing ingredients</h4>
@@ -73,7 +78,7 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
     //TODO: move application-wide errors to footer component for toast notification (feed down through page container)
-    error: app.error,
+    error: app.error.message,
     failure: domain.ingredient.failure,
     ingredients: domain.ingredient.ingredients,
     ui: {
