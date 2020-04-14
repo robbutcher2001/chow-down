@@ -93,8 +93,7 @@ module.exports = {
       externals: [
         '/api/recipes',
         '/api/ingredients',
-        '/api/units',
-        '/api/days'
+        '/api/units'
       ],
       autoUpdate: true
     })
