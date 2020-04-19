@@ -18,7 +18,7 @@ public class DayRepository {
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
-  private static final String GET_SQL = "SELECT d.date, r.title, r.rating, r.image, ri.quantity, u.singular, u.plural, i.ingredient "
+  private static final String GET_SQL = "SELECT d.date, r.title, r.rating, r.image, r.url, ri.quantity, u.singular, u.plural, i.ingredient "
     + "FROM chow.recipe_ingredients ri "
     + "INNER JOIN chow.units u "
     + "  ON u.id = ri.unit_id "
@@ -29,7 +29,7 @@ public class DayRepository {
     + "INNER JOIN chow.days d "
     + "  ON d.recipe_id = r.id "
     + "  AND d.date BETWEEN :from::date AND :to::date "
-    + "ORDER BY d.date, i.ingredient";
+    + "ORDER BY d.date, ri.quantity";
 
   private static final String PUT_SQL = "INSERT INTO chow.days (date, recipe_id) "
     + "VALUES (:date::date, :recipeId::uuid) "

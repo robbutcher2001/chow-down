@@ -9,7 +9,7 @@ exports[`Nav basic snapshot render 1`] = `
     href="/"
     onClick={[Function]}
   >
-    This Week
+    Your Week
   </a>
   <a
     className=""

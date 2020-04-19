@@ -57,7 +57,7 @@ export default () => {
       <Link
         className={isActive(routes.thisWeek)}
         to={routes.thisWeek}>
-        This Week
+        Your Week
       </Link>
       <Link
         className={isActive(routes.recipes)}

@@ -70,6 +70,8 @@ public class GetDaysServiceTest {
     rating.setLongValue(5l);
     Field image = new Field();
     image.setStringValue("/image/url/123");
+    Field url = new Field();
+    url.setStringValue("a url");
     Field quantity = new Field();
     quantity.setDoubleValue(4d);
     Field unitSingularName = new Field();
@@ -80,7 +82,7 @@ public class GetDaysServiceTest {
     ingredientName.setStringValue("tomatoes");
 
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
-    List<Field> columns = Arrays.asList(date, title, rating, image, quantity, unitSingularName, unitPluralName,
+    List<Field> columns = Arrays.asList(date, title, rating, image, url, quantity, unitSingularName, unitPluralName,
         ingredientName);
     List<List<Field>> rows = Collections.singletonList(columns);
 
@@ -95,6 +97,7 @@ public class GetDaysServiceTest {
     assertEquals("a lovely recipe", returnedDays.get(0).getRecipe().getTitle());
     assertEquals(5, returnedDays.get(0).getRecipe().getRating());
     assertEquals("/image/url/123", returnedDays.get(0).getRecipe().getImage());
+    assertEquals("a url", returnedDays.get(0).getRecipe().getUrl());
     assertEquals(4, returnedDays.get(0).getRecipe().getIngredients().get(0).getQuantity());
     assertEquals("tin", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnitSingularName());
     assertEquals("tins", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnitPluralName());
@@ -110,9 +113,9 @@ public class GetDaysServiceTest {
     Field dateTwo = new Field();
     dateTwo.setStringValue("2020-04-02");
     List<Field> columnsOne = Arrays.asList(dateOne, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<Field> columnsTwo = Arrays.asList(dateTwo, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<List<Field>> rows = Arrays.asList(columnsOne, columnsTwo);
 
     when(this.context.getLogger()).thenReturn(this.logger);
@@ -131,7 +134,7 @@ public class GetDaysServiceTest {
     Field date = new Field();
     date.setStringValue("2020-04-01");
     List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
@@ -151,7 +154,7 @@ public class GetDaysServiceTest {
     Field date = new Field();
     date.setStringValue("2020-04-01");
     List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
@@ -251,7 +254,7 @@ public class GetDaysServiceTest {
     Field date = new Field();
     date.setStringValue("2020-04-01");
     List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
@@ -273,7 +276,7 @@ public class GetDaysServiceTest {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<List<Field>> rows = Arrays.asList(columns, columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
@@ -347,7 +350,7 @@ public class GetDaysServiceTest {
     Field date = new Field();
     date.setStringValue("2020-04-01");
     List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
@@ -369,7 +372,7 @@ public class GetDaysServiceTest {
     Field date = new Field();
     date.setStringValue("2020-04-01");
     List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
-        mockField);
+        mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
