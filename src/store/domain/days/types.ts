@@ -21,6 +21,7 @@ interface Recipe {
   title: string,
   rating: number,
   image: string,
+  url: string,
   ingredients: RecipeIngredient[]
 }
 

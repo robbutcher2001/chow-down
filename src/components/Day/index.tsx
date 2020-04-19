@@ -42,13 +42,43 @@ const StyledDay = styled.section`
     }
   }
 
+  section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+
+    h3 {
+      margin: 1rem 1rem 1rem 0;
+    }
+
+    a {
+      flex-shrink: 0;
+      border: none;
+      background: none;
+      margin: 1rem 0;
+      padding: 0;
+      font-size: 1rem;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      color: #1d70b8;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
   ul {
     margin: 0;
     padding: 0;
-    list-style-position: inside;
+    list-style-type: none;
 
-    span {
-      margin: 0 2px;
+    li {
+      padding: 0.5rem 0.75rem;
+      line-height: 1.5rem;
+
+      &:nth-child(odd) {
+        background: #f1f7f7;
+      }
     }
   }
 `
@@ -58,12 +88,16 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
   const createRecipeIngredients = (recipeIngredients: RecipeIngredient[]) =>
     recipeIngredients.map((recipeIngredient, index) =>
       <li key={index}>
-        <span>{recipeIngredient.quantity}</span>
-        {recipeIngredient.quantity === 1 ?
-          <span>{recipeIngredient.unitSingularName.toLowerCase()}</span> :
-          <span>{recipeIngredient.unitPluralName.toLowerCase()}</span>
-        }
-        <span>{recipeIngredient.ingredientName.toLowerCase()}</span>
+        <span>
+          {recipeIngredient.quantity}
+          {' '}
+          {recipeIngredient.quantity === 1 ?
+            recipeIngredient.unitSingularName.toLowerCase() :
+            recipeIngredient.unitPluralName.toLowerCase()
+          }
+          {' '}
+          {recipeIngredient.ingredientName.toLowerCase()}
+        </span>
       </li>
     );
 
@@ -77,7 +111,12 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
         </div>
         <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
       </header>
-      <h3>{props.day.recipe.title}</h3>
+      <section>
+        <h3>{props.day.recipe.title}</h3>
+        <a href={`//${props.day.recipe.url}`} target='_blank' rel='external noreferrer'>
+          Web link &gt;
+        </a>
+      </section>
       <ul>
         {createRecipeIngredients(props.day.recipe.ingredients)}
       </ul>
