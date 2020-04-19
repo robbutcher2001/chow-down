@@ -23,6 +23,6 @@ test('Nav correct tag content assertion', () => {
     </Router>
   );
 
-  expect(getByText(/This Week/).textContent).toEqual('This Week');
+  expect(getByText(/Your Week/).textContent).toEqual('Your Week');
   expect(getByText(/Recipes/).textContent).toEqual('Recipes');
 });

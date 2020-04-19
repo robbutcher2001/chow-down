@@ -27,7 +27,7 @@ test('Page correct tag content assertion', () => {
     </Router>
   );
 
-  expect(getByText(/This Week/).textContent).toEqual('This Week');
+  expect(getByText(/Your Week/).textContent).toEqual('Your Week');
   expect(getByText(/Recipes/).textContent).toEqual('Recipes');
   expect(getByText(/fake_child/).textContent).toEqual('fake_child');
   expect(getByText(/Chow Down/).textContent).toEqual('Chow Down');

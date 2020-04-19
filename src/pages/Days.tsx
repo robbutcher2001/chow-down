@@ -59,7 +59,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
   );
 
   render = () => (
-    <ZeroMarginedMain title='Week Ahead' >
+    <ZeroMarginedMain title='Your week' >
       {this.props.failure &&
         <ErrorBox message={this.props.failure} />
       }
