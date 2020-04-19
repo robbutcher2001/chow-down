@@ -113,7 +113,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
       </header>
       <section>
         <h3>{props.day.recipe.title}</h3>
-        <a href={`//${props.day.recipe.url}`} target='_blank' rel='external noreferrer'>
+        <a href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
           Web link &gt;
         </a>
       </section>
