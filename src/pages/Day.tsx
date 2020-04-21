@@ -96,6 +96,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
             !this.state.day ?
               <ErrorBox message='We could not find a recipe associated to this day' /> :
               <DayComponent
+                displayDay={this.state.displayDay}
                 day={this.state.day}
                 setSelectingDay={this.props.setSelectingDay}
               />

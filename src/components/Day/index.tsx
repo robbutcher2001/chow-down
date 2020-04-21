@@ -7,6 +7,7 @@ import { Day, RecipeIngredient } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
 
 interface DayProps {
+  displayDay: string,
   day: Day,
   setSelectingDay: (day: string) => UserAction
 };
@@ -23,16 +24,12 @@ const StyledDay = styled.section`
       flex-grow: 2;
       justify-content: flex-start;
 
-      a {
-        border: none;
-        border-radius: 5px;
-        padding: .5rem 1.5em;
-        height: 2.5rem;
-        font-size: 1rem;
-        line-height: 2.5rem;
-        color: white;
-        background-color: #4acaa8;
-        text-decoration: none;
+      a[class=link] {
+        display: block;
+        //TODO: make button component with bold prop
+        font-weight: 400;
+        color: #ca4a6c;
+        text-decoration: underline;
       }
     }
 
@@ -54,16 +51,6 @@ const StyledDay = styled.section`
 
     a {
       flex-shrink: 0;
-      border: none;
-      background: none;
-      margin: 1rem 0;
-      padding: 0;
-      font-size: 1rem;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      color: #1d70b8;
-      cursor: pointer;
-      text-decoration: none;
     }
   }
 
@@ -80,6 +67,31 @@ const StyledDay = styled.section`
         background: #f1f7f7;
       }
     }
+  }
+
+  .button {
+    border: none;
+    border-radius: 5px;
+    padding: .5rem 1.5em;
+    height: 2.5rem;
+    font-size: 1rem;
+    line-height: 2.5rem;
+    color: white;
+    background-color: #4acaa8;
+    text-decoration: none;
+  }
+
+  .link {
+    border: none;
+    background: none;
+    margin: 1rem 0;
+    padding: 0;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #1d70b8;
+    cursor: pointer;
+    text-decoration: none;
   }
 `
 
@@ -105,15 +117,16 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
     <StyledDay>
       <header>
         <div>
-          <Link to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
+          <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
             Change
           </Link>
+          <a className='link' onClick={() => alert('Need to implement')}>Reset {props.displayDay}</a>
         </div>
         <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
       </header>
       <section>
         <h3>{props.day.recipe.title}</h3>
-        <a href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
+        <a className='link' href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
           Web link &gt;
         </a>
       </section>
