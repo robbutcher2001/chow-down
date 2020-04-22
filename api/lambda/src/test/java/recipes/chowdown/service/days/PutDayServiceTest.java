@@ -30,6 +30,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import recipes.chowdown.domain.Day;
+import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.DayRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
@@ -105,7 +106,7 @@ public class PutDayServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenMultipleDayGet() throws Exception {
-    Day day = Day.builder().date("20200412").build();
+    Day day = Day.builder().date("20200412").recipe(new Recipe()).build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
