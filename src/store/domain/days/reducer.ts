@@ -32,7 +32,7 @@ export const daysReducer: Reducer<DaysState, GetDaysApiResponse> = (state = init
 
             return {
                 failure: null,
-                days: newDays.concat(successPutResponse.day)
+                days: successPutResponse.day.recipe ? newDays.concat(successPutResponse.day) : newDays
             };
 
         case DayActionTypes.GET_DAYS_FAILURE:

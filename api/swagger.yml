@@ -406,7 +406,6 @@ components:
           type: string
         recipeId:
           type: string
-          nullable: true
         recipe:
           $ref: "#/components/schemas/Recipe"
       required:

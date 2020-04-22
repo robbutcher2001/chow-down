@@ -53,9 +53,11 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
       final List<Day> newDays = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
 
-      if (newDays.size() != 1) {
+      if (day.getRecipe() != null && newDays.size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after GET");
       }
+      System.out.println("the recipe");
+      System.out.println(day.getRecipe());
 
       String response = this.cacheInvalidator.invalidate(Endpoint.DAY);
       LOGGER.log("Day cache purge status [" + response + "]");
