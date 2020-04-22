@@ -62,7 +62,8 @@ public class DayRepository {
 
     try {
       parameters.add(new SqlParameter().withName("date").withValue(new Field().withStringValue(day.getDate())));
-      parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(day.getRecipeId())));
+      // parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(day.getRecipeId())));
+      parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withIsNull(true)));
     } catch (NullPointerException npe) {
       throw new ResourceNotPersistedException("part or all of the input Day was null");
     }
