@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
@@ -75,19 +75,34 @@ const StyledDay = styled.section`
     li {
       padding: 0.5rem 0.75rem;
       line-height: 1.5rem;
+      cursor: pointer;
 
       &:nth-child(odd) {
         background: #f1f7f7;
       }
     }
+
+    .strikethrough {
+      color: #6c757d;
+      text-decoration: line-through;
+    }
   }
 `
 
 const Day: FunctionComponent<DayProps> = (props: DayProps) => {
+  const [strikethroughIndexes, setStrikethroughIndex] = useState([]);
+
+  const setStrikethrough = (strikethroughIndex: number) =>
+    !strikethroughIndexes.includes(strikethroughIndex) &&
+      setStrikethroughIndex(strikethroughIndexes.concat(strikethroughIndex));
 
   const createRecipeIngredients = (recipeIngredients: RecipeIngredient[]) =>
     recipeIngredients.map((recipeIngredient, index) =>
-      <li key={index}>
+      <li
+        key={index}
+        className={strikethroughIndexes.includes(index) ? 'strikethrough' : ''}
+        onClick={() => setStrikethrough(index)}
+      >
         <span>
           {recipeIngredient.quantity}
           {' '}
