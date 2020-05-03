@@ -34,13 +34,8 @@ public class PutDayService implements RequestHandler<Day, Day> {
   public Day handleRequest(final Day day, final Context context) throws RuntimeException {
     try {
       LOGGER = context.getLogger();
+      Day dayToReturn = null;
 
-      System.out.println("the day");
-      System.out.println(day.getDate());
-      System.out.println(day.getRecipeId());
-      System.out.println(day.getRecipe());
-      System.out.println(day.getRecipeId() == null);
-      System.out.println("null".equalsIgnoreCase(day.getRecipeId()));
       ExecuteStatementResult result = this.repository.putDay(day);
 
       if (result.getRecords().size() != 1) {
@@ -59,14 +54,21 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
       final List<Day> newDays = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
 
-      if (day.getRecipeId() != null && newDays.size() != 1) {
-        throw new ResourceNotPersistedException("inconsistent number of rows returned after GET");
+      if (day.getRecipeId() != null) {
+        if (newDays.size() == 1) {
+          dayToReturn = newDays.get(0);
+        } else {
+          throw new ResourceNotPersistedException("inconsistent number of rows returned after GET");
+        }
+      }
+      else {
+        dayToReturn = day;
       }
 
       String response = this.cacheInvalidator.invalidate(Endpoint.DAY);
       LOGGER.log("Day cache purge status [" + response + "]");
 
-      return newDays.get(0);
+      return dayToReturn;
     } catch (AmazonServiceException ase) {
       LOGGER.log(ase.getMessage());
       throw new ServerException("unable to complete request");
