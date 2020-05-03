@@ -2,6 +2,8 @@ package recipes.chowdown.service.days;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -30,7 +32,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import recipes.chowdown.domain.Day;
-import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.DayRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
@@ -67,7 +68,7 @@ public class PutDayServiceTest {
 
   @Test
   void handleRequest_shouldReturnPopulatedDay_whenNewDayPut() throws Exception {
-    Day day = Day.builder().date("20200412").build();
+    Day day = Day.builder().date("20200412").recipeId("fake_id").build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -84,6 +85,8 @@ public class PutDayServiceTest {
     Day returnedDay = this.service.handleRequest(day, this.context);
 
     assertEquals(day, returnedDay);
+    assertNotNull(returnedDay.getDate());
+    assertNotNull(returnedDay.getRecipeId());
   }
 
   @Test
@@ -104,9 +107,9 @@ public class PutDayServiceTest {
     assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), this.context));
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldThrowException_whenMultipleDayGet() throws Exception {
-    Day day = Day.builder().date("20200412").build();
+    Day day = Day.builder().date("20200412").recipeId("fake_id").build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -130,6 +133,52 @@ public class PutDayServiceTest {
     when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
     assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), this.context));
+  }
+
+  @Test
+  void handleRequest_shouldReturnEmptyDay_whenValidResetPut() throws Exception {
+    Day day = Day.builder().date("20200412").build();
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake_date");
+    when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context)).thenReturn(Collections.emptyList());
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+
+    Day returnedDay = this.service.handleRequest(day, this.context);
+
+    assertEquals(day, returnedDay);
+    assertNotNull(returnedDay.getDate());
+    assertNull(returnedDay.getRecipeId());
+    assertNull(returnedDay.getRecipe());
+  }
+
+  @Test
+  void handleRequest_shouldReturnEmptyDay_whenInvalidResetPut() throws Exception {
+    Day day = Day.builder().date("20200412").recipeId("not_valid").build();
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    Field mockField = Mockito.mock(Field.class);
+    List<Field> columns = Collections.singletonList(mockField);
+    List<List<Field>> rows = Collections.singletonList(columns);
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+    when(mockField.getStringValue()).thenReturn("fake_date");
+    when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context))
+        .thenReturn(Collections.singletonList(day));
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+
+    Day returnedDay = this.service.handleRequest(day, this.context);
+
+    assertEquals(day, returnedDay);
+    assertNotNull(returnedDay.getDate());
+    assertNotNull(returnedDay.getRecipeId());
   }
 
   @Test
