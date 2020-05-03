@@ -69,7 +69,11 @@ module.exports = {
   },
   plugins: [
     new htmlWebpack({
-      template: path.join(path.resolve(__dirname, '../src'), 'index.html')
+      title: 'Chow Down',
+      template: path.join(path.resolve(__dirname, '../src'), 'index.html'),
+      meta: {
+        description: 'Chow down on a weekly plan of your evening meals'
+      }
     }),
     new webpack.EnvironmentPlugin({
       API_BASE: process.env.API_BASE ? process.env.API_BASE : ''
