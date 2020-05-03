@@ -39,6 +39,8 @@ public class PutDayService implements RequestHandler<Day, Day> {
       System.out.println(day.getDate());
       System.out.println(day.getRecipeId());
       System.out.println(day.getRecipe());
+      System.out.println(day.getRecipeId() == null);
+      System.out.println(day.getRecipeId().equals("null"));
       ExecuteStatementResult result = this.repository.putDay(day);
 
       if (result.getRecords().size() != 1) {
