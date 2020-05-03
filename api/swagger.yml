@@ -410,7 +410,6 @@ components:
           $ref: "#/components/schemas/Recipe"
       required:
       - date
-      - recipeId
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false
