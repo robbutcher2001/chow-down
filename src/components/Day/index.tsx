@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { Day, RecipeIngredient } from '../../store/domain/days/types';
+import { Day, RecipeIngredient, PutDayApiRequest } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
 
 interface DayProps {
-  displayDay: string,
   day: Day,
-  setSelectingDay: (day: string) => UserAction
+  setSelectingDay: (day: string) => UserAction,
+  putDay: (day: Day) => PutDayApiRequest
 };
 
 const StyledDay = styled.section`
@@ -24,11 +24,15 @@ const StyledDay = styled.section`
       flex-grow: 2;
       justify-content: flex-start;
 
+      a {
+        margin-right: 1rem !important;
+      }
+
       a[class=link] {
-        display: block;
+        display: inline-block;
         //TODO: make button component with bold prop
         font-weight: 400;
-        color: #ca4a6c;
+        color: #df3034;
         text-decoration: underline;
       }
     }
@@ -95,7 +99,7 @@ const StyledDay = styled.section`
     font-size: 1rem;
     font-family: 'Lato', sans-serif;
     font-weight: 700;
-    color: #1d70b8;
+    color: #005ea5;
     cursor: pointer;
     text-decoration: none;
   }
@@ -106,7 +110,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
 
   const setStrikethrough = (strikethroughIndex: number) =>
     !strikethroughIndexes.includes(strikethroughIndex) &&
-      setStrikethroughIndex(strikethroughIndexes.concat(strikethroughIndex));
+    setStrikethroughIndex(strikethroughIndexes.concat(strikethroughIndex));
 
   const createRecipeIngredients = (recipeIngredients: RecipeIngredient[]) =>
     recipeIngredients.map((recipeIngredient, index) =>
@@ -135,7 +139,9 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
           <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
             Change
           </Link>
-          <a className='link' onClick={() => alert('Need to implement')}>Reset {props.displayDay}</a>
+          <Link className='link' to='/' onClick={() => props.putDay({ date: props.day.date })}>
+            Reset
+          </Link>
         </div>
         <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
       </header>
