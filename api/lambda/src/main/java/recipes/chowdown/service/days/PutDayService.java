@@ -35,6 +35,8 @@ public class PutDayService implements RequestHandler<Day, Day> {
     try {
       LOGGER = context.getLogger();
 
+      System.out.println("the day");
+      System.out.println(day);
       ExecuteStatementResult result = this.repository.putDay(day);
 
       if (result.getRecords().size() != 1) {
@@ -53,11 +55,9 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
       final List<Day> newDays = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
 
-      if (day.getRecipe() != null && newDays.size() != 1) {
+      if (day.getRecipeId() != null && newDays.size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after GET");
       }
-      System.out.println("the recipe");
-      System.out.println(day.getRecipe());
 
       String response = this.cacheInvalidator.invalidate(Endpoint.DAY);
       LOGGER.log("Day cache purge status [" + response + "]");
