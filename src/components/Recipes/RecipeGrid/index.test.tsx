@@ -26,7 +26,7 @@ const mockRecipes: Recipe[] = [{
 
 test('RecipeGrid basic snapshot render', () => {
   const recipeGrid = renderer.create(
-    <RecipeGrid recipes={mockRecipes} />
+    <RecipeGrid isLoading={false} recipes={mockRecipes} />
   );
 
   expect(recipeGrid.toJSON()).toMatchSnapshot();
@@ -34,7 +34,7 @@ test('RecipeGrid basic snapshot render', () => {
 
 test('RecipeGrid correct tag content assertion', () => {
   const { getByText } = render(
-    <RecipeGrid recipes={mockRecipes} />
+    <RecipeGrid isLoading={false} recipes={mockRecipes} />
   );
 
   expect(getByText(/fake_title1/).textContent).toEqual('fake_title1');
@@ -43,7 +43,7 @@ test('RecipeGrid correct tag content assertion', () => {
 
 test('RecipeGrid render multiple recipes assertion', () => {
   const { getByText } = render(
-    <RecipeGrid recipes={mockRecipes} />
+    <RecipeGrid isLoading={false} recipes={mockRecipes} />
   );
 
   expect(getByText(/fake_title2/).textContent).toEqual('fake_title2');

@@ -11,7 +11,7 @@ import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import { ZeroMarginedMain, CallToAction } from '../components/Main';
 import DayGrid from '../components/Days/DayGrid';
-import { ErrorBox, LoadingBox } from '../components/MessageBox';
+import { ErrorBox } from '../components/MessageBox';
 
 const cta: CallToAction = {
   text: 'Get week\'s ingredients',
@@ -68,7 +68,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
         <DayGrid
           dateFormat={this.state.dateFormat}
           seekDays={this.state.seekDays}
-          getLoading={this.props.ui.pending.get || this.props.ui.pending.put}
+          isLoading={this.props.ui.pending.get || this.props.ui.pending.put}
           days={this.props.days}
           setSelectingDay={this.props.setSelectingDay}
         />

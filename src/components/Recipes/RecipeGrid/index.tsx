@@ -9,6 +9,7 @@ import RecipeCard from '../RecipeCard';
 import { NegativeBox } from '../../MessageBox';
 
 interface RecipeGridProps {
+  isLoading: boolean,
   recipes: Recipe[],
   selectedDay?: string,
   putDay?: (day: Day) => PutDayApiRequest
@@ -29,15 +30,16 @@ const RecipeGrid = styled.ul`
 `
 
 export default (props: RecipeGridProps) =>
-  props.recipes && props.recipes.length > 0 ?
-    <>
-      {props.selectedDay &&
-        <UserInstruction>
-          Select something for {moment(props.selectedDay).format('dddd')}
-        </UserInstruction>
-      }
-      <RecipeGrid>
-        {props.recipes.map((recipe, i) =>
+  <>
+    {props.selectedDay &&
+      <UserInstruction>
+        Select something for {moment(props.selectedDay).format('dddd')}
+      </UserInstruction>
+    }
+    <RecipeGrid className={props.isLoading ? 'spinner spinning' : 'spinner'} >
+      {!props.isLoading && props.recipes.length === 0 ?
+        <NegativeBox message='No recipes yet!' /> :
+        props.recipes.map((recipe, i) =>
           <RecipeCard
             key={i}
             recipe={recipe}
@@ -45,6 +47,5 @@ export default (props: RecipeGridProps) =>
             putDay={props.putDay}
           />
         )}
-      </RecipeGrid>
-    </> :
-    <NegativeBox message='No recipes yet!' />;
+    </RecipeGrid>
+  </>;
