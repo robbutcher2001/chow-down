@@ -65,19 +65,13 @@ class DaysPage extends Component<CombinedProps, OwnState> {
       }
       {this.props.error ?
         <ErrorBox message={this.props.error} /> :
-        <div>
-          {this.props.ui.pending.get ?
-            <LoadingBox message='Fetching your weeks plan' /> :
-            this.props.ui.pending.put ?
-              <LoadingBox message='Updating your week' /> :
-              <DayGrid
-                dateFormat={this.state.dateFormat}
-                seekDays={this.state.seekDays}
-                days={this.props.days}
-                setSelectingDay={this.props.setSelectingDay}
-              />
-          }
-        </div>
+        <DayGrid
+          dateFormat={this.state.dateFormat}
+          seekDays={this.state.seekDays}
+          getLoading={this.props.ui.pending.get || this.props.ui.pending.put}
+          days={this.props.days}
+          setSelectingDay={this.props.setSelectingDay}
+        />
       }
     </ZeroMarginedMain>
   );

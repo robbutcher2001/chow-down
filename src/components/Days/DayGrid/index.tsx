@@ -10,6 +10,7 @@ import DayCard from '../DayCard';
 interface DayGridProps {
   dateFormat: string,
   seekDays: number,
+  getLoading: boolean,
   days: Day[],
   setSelectingDay?: (day: string) => UserAction
 };
@@ -48,7 +49,11 @@ const DayGrid: FunctionComponent<DayGridProps> = (props: DayGridProps) => {
     );
   }
 
-  return <StyledDayGrid>{dayCards}</StyledDayGrid>;
+  return (
+    <StyledDayGrid className={props.getLoading ? 'spinner spinning' : 'spinner'} >
+      {dayCards}
+    </StyledDayGrid>
+  );
 };
 
 export default DayGrid;
