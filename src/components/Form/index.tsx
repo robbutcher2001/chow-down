@@ -123,8 +123,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
 
   onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formValid = Object.keys(this.state.validFields).length > 0 &&
-      Object.keys(this.state.validFields).every(key => this.state.validFields[key] === true);
+    const formValid = Object.keys(this.state.validFields).every(key => this.state.validFields[key] === true);
 
     if (formValid) {
       if (window.localStorage) {
