@@ -81,9 +81,15 @@ const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props:
   const placeholder = 'PLACEHOLDER';
 
   useEffect(() => {
-    props.setValidationState(quantityId)
-    props.setValidationState(unitId)
-    props.setValidationState(ingredientId)
+    if (!(quantityId in props.validFields)) {
+      props.setValidationState(quantityId)
+    }
+    if (!(unitId in props.validFields)) {
+      props.setValidationState(unitId)
+    }
+    if (!(ingredientId in props.validFields)) {
+      props.setValidationState(ingredientId)
+    }
   }, []);
 
   const onChange = (field: object) => {

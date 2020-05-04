@@ -55,6 +55,7 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
                     {this.props.ui.pending.post ?
                         <LoadingBox message='Creating new ingredient' /> :
                         <Form
+                            name='ingredientForm'
                             dispatch={this.addIngredient}
                             submitText='Add ingredient'>
                             <InputBox

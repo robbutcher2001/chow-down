@@ -55,6 +55,7 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
                     {this.props.ui.pending.post ?
                         <LoadingBox message='Creating new unit' /> :
                         <Form
+                            name='unitForm'
                             dispatch={this.addUnit}
                             submitText='Add unit'>
                             <InputBox

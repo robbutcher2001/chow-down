@@ -6,7 +6,7 @@ import Form from '.';
 
 test('Form basic snapshot render', () => {
   const form = renderer.create(
-    <Form dispatch={jest.fn()} submitText='Submit Button' >
+    <Form name='fakeForm' dispatch={jest.fn()} submitText='Submit Button' >
       <div>fake_child</div>
     </Form>
   );
@@ -16,7 +16,7 @@ test('Form basic snapshot render', () => {
 
 test('Form correct tag content assertion', () => {
   const { getByText } = render(
-    <Form dispatch={jest.fn()} submitText='Submit Button' >
+    <Form name='fakeForm' dispatch={jest.fn()} submitText='Submit Button' >
       <div>fake_child</div>
     </Form>
   );
