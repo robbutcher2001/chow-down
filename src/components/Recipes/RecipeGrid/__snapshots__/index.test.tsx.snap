@@ -2,7 +2,7 @@
 
 exports[`RecipeGrid basic snapshot render 1`] = `
 <ul
-  className="sc-EHOje jOhHw"
+  className="sc-EHOje jOhHw spinner"
 >
   <li
     className="sc-htpNat hySfcC"
