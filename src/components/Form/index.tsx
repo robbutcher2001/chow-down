@@ -137,14 +137,16 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     event.preventDefault();
     const fields: Fields = this.getFields();
 
-    //TODO: corner-case where you might have a greater number of recipe ingredients set to valid = null than
-    //you want to submit once you've reset the form
     this.setState(prevState => ({
       form: {
         ...fields
       },
-      validFields: Object.keys(prevState.validFields)
-        .reduce((fields, key) => { fields[key] = null; return fields; }, {} as FieldValidations)
+      validFields: Object.keys(fields).reduce((acc, field) => {
+        if (field in prevState.validFields) {
+          acc[field] = null;
+        }
+        return acc;
+      }, {} as FieldValidations)
     }));
   };
 
