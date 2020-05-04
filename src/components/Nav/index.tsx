@@ -11,7 +11,7 @@ const Nav = styled.nav`
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 200;
   background: #000;
 
   > a {

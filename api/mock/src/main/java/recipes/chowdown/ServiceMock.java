@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -191,26 +192,33 @@ public class ServiceMock implements ApiApi {
 
     randomSleep();
 
-    return new ResponseEntity<List<Day>>(this.days, HttpStatus.OK);
+    return new ResponseEntity<List<Day>>(
+        this.days.stream().filter(day -> day.getRecipe() != null).collect(Collectors.toList()),
+        HttpStatus.OK);
   }
 
   @Override
   public ResponseEntity<Day> apiDaysPut(@Valid Day newDay) {
     randomSleep();
+    Recipe recipeToAdd = null;
 
-    Optional<Recipe> existingRecipe = this.recipes.stream()
-        .filter(recipe -> newDay.getRecipeId().equals(recipe.getId())).findFirst();
+    if (newDay.getRecipeId() != null) {
+      Optional<Recipe> existingRecipe = this.recipes.stream()
+          .filter(recipe -> newDay.getRecipeId().equals(recipe.getId())).findFirst();
 
-    if (!existingRecipe.isPresent()) {
-      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      if (!existingRecipe.isPresent()) {
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+
+      recipeToAdd = existingRecipe.get();
     }
 
     Optional<Day> existingDay = this.days.stream().filter(day -> newDay.getDate().equals(day.getDate())).findFirst();
 
     if (existingDay.isPresent()) {
-      existingDay.get().setRecipe(existingRecipe.get());
+      existingDay.get().setRecipe(recipeToAdd);
     } else {
-      newDay.setRecipe(existingRecipe.get());
+      newDay.setRecipe(recipeToAdd);
       this.days.add(newDay);
     }
 

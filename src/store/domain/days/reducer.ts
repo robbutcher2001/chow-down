@@ -25,14 +25,11 @@ export const daysReducer: Reducer<DaysState, GetDaysApiResponse> = (state = init
 
         case DayActionTypes.PUT_DAYS_SUCCESS:
             const successPutResponse = action as PutDaySuccessApiResponse;
-            const newDays: Day[] = state.days.filter(day => day.date !== successPutResponse.day.date);
-            console.log('removed exisitng day');
-            console.log(newDays);
-            console.log(newDays.concat(successPutResponse.day));
+            const otherDays: Day[] = state.days.filter(day => day.date !== successPutResponse.day.date);
 
             return {
                 failure: null,
-                days: newDays.concat(successPutResponse.day)
+                days: successPutResponse.day.recipe ? otherDays.concat(successPutResponse.day) : otherDays
             };
 
         case DayActionTypes.GET_DAYS_FAILURE:

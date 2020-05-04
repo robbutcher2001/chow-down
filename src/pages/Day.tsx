@@ -5,9 +5,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
 
 import { GlobalState } from '../store';
-import { Day, GetDaysApiRequest } from '../store/domain/days/types';
+import { Day, GetDaysApiRequest, PutDayApiRequest } from '../store/domain/days/types';
 import { UserAction } from '../store/app/user/types';
-import { getDaysRequest } from '../store/domain/days/actions';
+import { getDaysRequest, putDaysRequest } from '../store/domain/days/actions';
 import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import DayComponent from '../components/Day';
@@ -27,6 +27,7 @@ interface StateProps {
 
 interface DispatchProps {
   getDay: (date: string) => GetDaysApiRequest,
+  putDay: (day: Day) => PutDayApiRequest,
   setSelectingDay: (day: string) => UserAction
 };
 
@@ -98,6 +99,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
               <DayComponent
                 day={this.state.day}
                 setSelectingDay={this.props.setSelectingDay}
+                putDay={this.props.putDay}
               />
           }
         </>
@@ -119,6 +121,7 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   getDay: (date: string) => dispatch(getDaysRequest(date, date)),
+  putDay: (day: Day) => dispatch(putDaysRequest(day)),
   setSelectingDay: (day: string) => dispatch(setUserIsSelectingDay(day))
 });
 

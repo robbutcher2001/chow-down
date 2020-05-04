@@ -22,6 +22,7 @@ interface StateProps { };
 interface DispatchProps { };
 
 interface OwnProps {
+  name: string,
   dispatch: (form: object) => object,
   submitText: string,
   children: ReactElement<CombinedInputProps> | ReactElement<CombinedInputProps>[]
@@ -78,6 +79,21 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     };
   };
 
+  componentDidMount = () => {
+    if (window.localStorage) {
+      const storedForm = localStorage.getItem(this.props.name);
+      if (storedForm) {
+        this.setState(JSON.parse(storedForm));
+      }
+    };
+  };
+
+  componentDidUpdate = () => {
+    if (window.localStorage) {
+      localStorage.setItem(this.props.name, JSON.stringify(this.state));
+    };
+  };
+
   getFields = () => React.Children.map(this.props.children, (child: ReactElement<CombinedInputProps>) => child.props.name)
     .reduce((names, name) => {
       names[name] = null;
@@ -100,7 +116,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
       const newState = {
         validFields: Object.assign({}, prevState.validFields)
       };
-      newState.validFields[field] = isValid;
+      newState.validFields[field] = isValid === undefined ? null : isValid;
       return newState;
     });
   };
@@ -110,6 +126,9 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     const formValid = Object.keys(this.state.validFields).every(key => this.state.validFields[key] === true);
 
     if (formValid) {
+      if (window.localStorage) {
+        localStorage.removeItem(this.props.name);
+      };
       this.props.dispatch(this.state.form);
     }
   };
@@ -118,11 +137,17 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     event.preventDefault();
     const fields: Fields = this.getFields();
 
-    this.setState({
+    this.setState(prevState => ({
       form: {
         ...fields
-      }
-    });
+      },
+      validFields: Object.keys(fields).reduce((acc, field) => {
+        if (field in prevState.validFields) {
+          acc[field] = null;
+        }
+        return acc;
+      }, {} as FieldValidations)
+    }));
   };
 
   render = () => {

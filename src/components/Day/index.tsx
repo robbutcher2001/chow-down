@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
-import { Day, RecipeIngredient } from '../../store/domain/days/types';
+import { Day, RecipeIngredient, PutDayApiRequest } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
 
 interface DayProps {
   day: Day,
-  setSelectingDay: (day: string) => UserAction
+  setSelectingDay: (day: string) => UserAction,
+  putDay: (day: Day) => PutDayApiRequest
 };
 
 const StyledDay = styled.section`
@@ -24,15 +25,15 @@ const StyledDay = styled.section`
       justify-content: flex-start;
 
       a {
-        border: none;
-        border-radius: 5px;
-        padding: .5rem 1.5em;
-        height: 2.5rem;
-        font-size: 1rem;
-        line-height: 2.5rem;
-        color: white;
-        background-color: #4acaa8;
-        text-decoration: none;
+        margin-right: 1rem !important;
+      }
+
+      a[class=link] {
+        display: inline-block;
+        //TODO: make button component with bold prop
+        font-weight: 400;
+        color: #df3034;
+        text-decoration: underline;
       }
     }
 
@@ -54,16 +55,6 @@ const StyledDay = styled.section`
 
     a {
       flex-shrink: 0;
-      border: none;
-      background: none;
-      margin: 1rem 0;
-      padding: 0;
-      font-size: 1rem;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      color: #1d70b8;
-      cursor: pointer;
-      text-decoration: none;
     }
   }
 
@@ -87,6 +78,31 @@ const StyledDay = styled.section`
       text-decoration: line-through;
     }
   }
+
+  .button {
+    border: none;
+    border-radius: 5px;
+    padding: .5rem 1.5em;
+    height: 2.5rem;
+    font-size: 1rem;
+    line-height: 2.5rem;
+    color: white;
+    background-color: #4acaa8;
+    text-decoration: none;
+  }
+
+  .link {
+    border: none;
+    background: none;
+    margin: 1rem 0;
+    padding: 0;
+    font-size: 1rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #005ea5;
+    cursor: pointer;
+    text-decoration: none;
+  }
 `
 
 const Day: FunctionComponent<DayProps> = (props: DayProps) => {
@@ -94,7 +110,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
 
   const setStrikethrough = (strikethroughIndex: number) =>
     !strikethroughIndexes.includes(strikethroughIndex) &&
-      setStrikethroughIndex(strikethroughIndexes.concat(strikethroughIndex));
+    setStrikethroughIndex(strikethroughIndexes.concat(strikethroughIndex));
 
   const createRecipeIngredients = (recipeIngredients: RecipeIngredient[]) =>
     recipeIngredients.map((recipeIngredient, index) =>
@@ -120,15 +136,18 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
     <StyledDay>
       <header>
         <div>
-          <Link to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
+          <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
             Change
+          </Link>
+          <Link className='link' to='/' onClick={() => props.putDay({ date: props.day.date })}>
+            Reset
           </Link>
         </div>
         <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
       </header>
       <section>
         <h3>{props.day.recipe.title}</h3>
-        <a href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
+        <a className='link' href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
           Web link &gt;
         </a>
       </section>
