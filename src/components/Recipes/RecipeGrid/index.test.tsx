@@ -49,3 +49,21 @@ test('RecipeGrid render multiple recipes assertion', () => {
   expect(getByText(/fake_title2/).textContent).toEqual('fake_title2');
   expect(getByText(/fake_description2/).textContent).toEqual('fake_description2');
 });
+
+test('RecipeGrid correct class when not loading', () => {
+  const { container } = render(
+    <RecipeGrid isLoading={false} recipes={mockRecipes} />
+  );
+
+  expect(container.querySelector('ul').classList).toContain('spinner');
+  expect(container.querySelector('ul').classList).not.toContain('spinning');
+});
+
+test('RecipeGrid correct class when loading', () => {
+  const { container } = render(
+    <RecipeGrid isLoading={true} recipes={mockRecipes} />
+  );
+
+  expect(container.querySelector('ul').classList).toContain('spinner');
+  expect(container.querySelector('ul').classList).toContain('spinning');
+});
