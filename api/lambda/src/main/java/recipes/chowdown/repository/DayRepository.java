@@ -29,7 +29,7 @@ public class DayRepository {
     + "INNER JOIN chow.days d "
     + "  ON d.recipe_id = r.id "
     + "  AND d.date BETWEEN :from::date AND :to::date "
-    + "ORDER BY d.date, ri.quantity";
+    + "ORDER BY d.date, ri.quantity, u.singular, i.ingredient";
 
   private static final String PUT_SQL = "INSERT INTO chow.days (date, recipe_id) "
     + "VALUES (:date::date, :recipeId::uuid) "
