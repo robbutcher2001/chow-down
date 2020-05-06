@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
@@ -33,7 +34,11 @@ export default (props: RecipeGridProps) =>
   <>
     {props.selectedDay &&
       <UserInstruction>
-        Select something for {moment(props.selectedDay).format('dddd')}
+        <span>Select for {moment(props.selectedDay).format('dddd')} or set as </span>
+        <Link to={`/days/alternate/new?date=` + props.selectedDay} >
+          alternate day
+        </Link>
+        <span>.</span>
       </UserInstruction>
     }
     <RecipeGrid className={props.isLoading ? 'spinner spinning' : 'spinner'} >
