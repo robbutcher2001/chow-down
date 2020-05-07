@@ -65,7 +65,7 @@ public class GetDaysServiceTest {
     Field date = new Field();
     date.setStringValue("2020-04-01");
     Field alternateDay = new Field();
-    alternateDay.setStringValue("time for a BBQ");
+    alternateDay.setIsNull(true);
     Field title = new Field();
     title.setStringValue("a lovely recipe");
     Field rating = new Field();
@@ -256,7 +256,9 @@ public class GetDaysServiceTest {
     Field mockField = Mockito.mock(Field.class);
     Field date = new Field();
     date.setStringValue("2020-04-01");
-    List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
+    Field nullField = new Field();
+    nullField.setStringValue(null);
+    List<Field> columns = Arrays.asList(date, nullField, mockField, mockField, mockField, mockField, mockField,
         mockField, mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
@@ -278,7 +280,9 @@ public class GetDaysServiceTest {
   void handleRequest_shouldReturnDays_whenExistsMultipleWithSameDate() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
-    List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField, mockField,
+    Field nullField = new Field();
+    nullField.setStringValue(null);
+    List<Field> columns = Arrays.asList(mockField, nullField, mockField, mockField, mockField, mockField, mockField,
         mockField, mockField, mockField);
     List<List<Field>> rows = Arrays.asList(columns, columns);
 
@@ -328,9 +332,11 @@ public class GetDaysServiceTest {
     Field mockField = Mockito.mock(Field.class);
     Field date = new Field();
     date.setStringValue("2020-04-01");
+    Field nullField = new Field();
+    nullField.setStringValue(null);
 
     // return eleven columns (too many for query)
-    List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
+    List<Field> columns = Arrays.asList(date, nullField, mockField, mockField, mockField, mockField, mockField,
         mockField, mockField, mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
@@ -352,7 +358,9 @@ public class GetDaysServiceTest {
     Field mockField = Mockito.mock(Field.class);
     Field date = new Field();
     date.setStringValue("2020-04-01");
-    List<Field> columns = Arrays.asList(date, mockField, mockField, mockField, mockField, mockField, mockField,
+    Field nullField = new Field();
+    nullField.setStringValue(null);
+    List<Field> columns = Arrays.asList(date, nullField, mockField, mockField, mockField, mockField, mockField,
         mockField, mockField, mockField);
     List<List<Field>> rows = Collections.singletonList(columns);
 
