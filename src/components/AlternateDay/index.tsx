@@ -28,20 +28,19 @@ const AlternateDay = styled.figure`
     right: 0;
     bottom: 0;
     left: 0;
-    text-transform: capitalize;
     font-size: 2rem;
     color: white;
     background: rgba(40, 40, 40, 0.90);
-
-    &::after {
-      content: '${props => props.title}';
-    }
+    text-transform: capitalize;
+    text-align: center;
   }
 `
 
 export default (props: AlternateDayProps) => (
-  <AlternateDay title={props.title} >
+  <AlternateDay>
     <img src={foodImg} />
-    <figcaption />
+    <figcaption>
+      <div>{props.title}</div>
+    </figcaption>
   </AlternateDay>
 );
