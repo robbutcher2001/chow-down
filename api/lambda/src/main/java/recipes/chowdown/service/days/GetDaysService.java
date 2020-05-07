@@ -57,8 +57,8 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
         Optional<Day> existingDay = days.stream().filter(day -> date.equals(day.getDate())).findFirst();
 
         if (!existingDay.isPresent()) {
-          Recipe recipe = Recipe.builder().title(fields.get(1).getStringValue()).rating(fields.get(2).getLongValue())
-              .image(fields.get(3).getStringValue()).url(fields.get(4).getStringValue()).build();
+          Recipe recipe = Recipe.builder().title(fields.get(2).getStringValue()).rating(fields.get(3).getLongValue())
+              .image(fields.get(4).getStringValue()).url(fields.get(5).getStringValue()).build();
           recipe.setIngredients(Stream.of(buildRecipeIngredients(fields)).collect(Collectors.toList()));
           days.add(Day.builder().date(date).recipe(recipe).build());
         } else {
@@ -94,8 +94,8 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
   }
 
   private RecipeIngredient buildRecipeIngredients(final List<Field> fields) {
-    return RecipeIngredient.builder().quantity(fields.get(5).getDoubleValue())
-        .unitSingularName(fields.get(6).getStringValue()).unitPluralName(fields.get(7).getStringValue())
-        .ingredientName(fields.get(8).getStringValue()).build();
+    return RecipeIngredient.builder().quantity(fields.get(6).getDoubleValue())
+        .unitSingularName(fields.get(7).getStringValue()).unitPluralName(fields.get(8).getStringValue())
+        .ingredientName(fields.get(9).getStringValue()).build();
   }
 }
