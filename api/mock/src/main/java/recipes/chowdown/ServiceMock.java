@@ -99,10 +99,17 @@ public class ServiceMock implements ApiApi {
     }
 
     for (int i = 0; i < 7; i++) {
-      if (i != 3 && i != 5) {
+      if (i != 0 && i != 3 && i != 5) {
         Day day = new Day();
         day.setDate(LocalDate.now().plusDays(i).format(DateTimeFormatter.BASIC_ISO_DATE));
         day.setRecipe(this.recipes.get(i));
+
+        this.days.add(day);
+      }
+      if (i == 5) {
+        Day day = new Day();
+        day.setDate(LocalDate.now().plusDays(i).format(DateTimeFormatter.BASIC_ISO_DATE));
+        day.setAlternateDay("BBQ day");
 
         this.days.add(day);
       }
@@ -111,7 +118,7 @@ public class ServiceMock implements ApiApi {
 
   private void randomSleep() {
     try {
-      TimeUnit.SECONDS.sleep(new Random().nextInt(10));
+      TimeUnit.SECONDS.sleep(new Random().nextInt(2));
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
     }
@@ -192,14 +199,15 @@ public class ServiceMock implements ApiApi {
 
     randomSleep();
 
-    return new ResponseEntity<List<Day>>(
-        this.days.stream().filter(day -> day.getRecipe() != null).collect(Collectors.toList()),
+    return new ResponseEntity<List<Day>>(this.days.stream()
+        .filter(day -> day.getRecipe() != null || day.getAlternateDay() != null).collect(Collectors.toList()),
         HttpStatus.OK);
   }
 
   @Override
   public ResponseEntity<Day> apiDaysPut(@Valid Day newDay) {
     randomSleep();
+    final String alternateDay = newDay.getAlternateDay();
     Recipe recipeToAdd = null;
 
     if (newDay.getRecipeId() != null) {
@@ -216,9 +224,19 @@ public class ServiceMock implements ApiApi {
     Optional<Day> existingDay = this.days.stream().filter(day -> newDay.getDate().equals(day.getDate())).findFirst();
 
     if (existingDay.isPresent()) {
-      existingDay.get().setRecipe(recipeToAdd);
+      if (alternateDay != null) {
+        existingDay.get().setAlternateDay(alternateDay);
+        existingDay.get().setRecipe(null);
+      } else {
+        existingDay.get().setAlternateDay(null);
+        existingDay.get().setRecipe(recipeToAdd);
+      }
     } else {
-      newDay.setRecipe(recipeToAdd);
+      if (alternateDay != null) {
+        newDay.setAlternateDay(alternateDay);
+      } else {
+        newDay.setRecipe(recipeToAdd);
+      }
       this.days.add(newDay);
     }
 

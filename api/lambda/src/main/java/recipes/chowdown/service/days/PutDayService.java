@@ -52,16 +52,15 @@ public class PutDayService implements RequestHandler<Day, Day> {
 
       LOGGER.log("New day persisted with date [" + returnedDate + "]");
 
-      final List<Day> newDays = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
-
       if (day.getRecipeId() != null) {
+        final List<Day> newDays = this.getDaysService.getDays(day.getDate(), day.getDate(), context);
+
         if (newDays.size() == 1) {
           dayToReturn = newDays.get(0);
         } else {
           throw new ResourceNotPersistedException("inconsistent number of rows returned after GET");
         }
-      }
-      else {
+      } else {
         dayToReturn = day;
       }
 

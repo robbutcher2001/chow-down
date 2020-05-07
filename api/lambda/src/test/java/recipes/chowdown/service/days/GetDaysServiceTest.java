@@ -131,6 +131,69 @@ public class GetDaysServiceTest {
   }
 
   @Test
+  void handleRequest_shouldReturnAlternateDayInCorrectStructure_whenValidRequest() throws Exception {
+    Field date = new Field();
+    date.setStringValue("2020-04-01");
+    Field alternateDay = new Field();
+    alternateDay.setStringValue("BBQ day");
+
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    List<Field> columns = Arrays.asList(date, alternateDay);
+    List<List<Field>> rows = Collections.singletonList(columns);
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getDays(this.getRequest.getFrom(), this.getRequest.getTo())).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+
+    List<Day> returnedDays = this.service.handleRequest(this.getRequest, this.context);
+
+    assertEquals(1, returnedDays.size());
+    assertEquals("20200401", returnedDays.get(0).getDate());
+    assertEquals("BBQ day", returnedDays.get(0).getAlternateDay());
+    assertNull(returnedDays.get(0).getRecipe());
+  }
+
+  @Test
+  void handleRequest_shouldReturnAlternateDayInCorrectStructure_whenValidRequestAndTooManyDbCols() throws Exception {
+    Field date = new Field();
+    date.setStringValue("2020-04-01");
+    Field alternateDay = new Field();
+    alternateDay.setStringValue("BBQ day");
+    Field title = new Field();
+    title.setStringValue("a lovely recipe");
+    Field rating = new Field();
+    rating.setLongValue(5l);
+    Field image = new Field();
+    image.setStringValue("/image/url/123");
+    Field url = new Field();
+    url.setStringValue("a url");
+    Field quantity = new Field();
+    quantity.setDoubleValue(4d);
+    Field unitSingularName = new Field();
+    unitSingularName.setStringValue("tin");
+    Field unitPluralName = new Field();
+    unitPluralName.setStringValue("tins");
+    Field ingredientName = new Field();
+    ingredientName.setStringValue("tomatoes");
+
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    List<Field> columns = Arrays.asList(date, alternateDay, title, rating, image, url, quantity, unitSingularName, unitPluralName,
+        ingredientName);
+    List<List<Field>> rows = Collections.singletonList(columns);
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.repository.getDays(this.getRequest.getFrom(), this.getRequest.getTo())).thenReturn(mockResult);
+    when(mockResult.getRecords()).thenReturn(rows);
+
+    List<Day> returnedDays = this.service.handleRequest(this.getRequest, this.context);
+
+    assertEquals(1, returnedDays.size());
+    assertEquals("20200401", returnedDays.get(0).getDate());
+    assertEquals("BBQ day", returnedDays.get(0).getAlternateDay());
+    assertNull(returnedDays.get(0).getRecipe());
+  }
+
+  @Test
   void handleRequest_shouldReturnISODateFormat_whenDbReturnsDifferentDateFormat() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);

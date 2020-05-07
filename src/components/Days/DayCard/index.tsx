@@ -8,6 +8,7 @@ import { Day } from '../../../store/domain/days/types';
 import { UserAction } from '../../../store/app/user/types';
 import Stars from '../../Stars';
 import UnknownImage from '../../UnknownImage';
+import AlternateDay from '../../AlternateDay';
 
 interface DayCardProps {
   dateFormat: string,
@@ -89,15 +90,19 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
         <Link to='/recipes' onClick={() => props.setSelectingDay(props.date)}>
           <UnknownImage />
         </Link> :
-        <Link to={`/days/${props.date}`}>
-          <DayRecipe>
-            <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
-            <figcaption>
-              <h3>{props.day.recipe.title}</h3>
-              <Stars rating={props.day.recipe.rating} />
-            </figcaption>
-          </DayRecipe>
-        </Link>
+        props.day.alternateDay ?
+          <Link to='/recipes' onClick={() => props.setSelectingDay(props.date)}>
+            <AlternateDay title={props.day.alternateDay} />
+          </Link> :
+          <Link to={`/days/${props.date}`}>
+            <DayRecipe>
+              <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
+              <figcaption>
+                <h3>{props.day.recipe.title}</h3>
+                <Stars rating={props.day.recipe.rating} />
+              </figcaption>
+            </DayRecipe>
+          </Link>
       }
     </StyledDayCard>
   );
