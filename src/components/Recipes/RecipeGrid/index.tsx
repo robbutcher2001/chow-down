@@ -19,6 +19,18 @@ interface RecipeGridProps {
 const UserInstruction = styled.div`
   margin: 1rem 0 2rem;
   font-size: 1.2rem;
+
+  .link {
+    border: none;
+    background: none;
+    margin: 1rem 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    color: #005ea5;
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `
 
 const RecipeGrid = styled.ul`
@@ -35,16 +47,16 @@ export default (props: RecipeGridProps) =>
     {props.selectedDay &&
       <UserInstruction>
         <span>Select for {moment(props.selectedDay).format('dddd')} or set as </span>
-        <Link to={`/days/alternate/new?date=` + props.selectedDay} >
+        <Link className='link' to={`/days/alternate/new?date=` + props.selectedDay} >
           alternate day
         </Link>
         <span>.</span>
       </UserInstruction>
     }
-    <RecipeGrid className={props.isLoading ? 'spinner spinning' : 'spinner'} >
-      {!props.isLoading && props.recipes.length === 0 ?
-        <NegativeBox message='No recipes yet!' /> :
-        props.recipes.map((recipe, i) =>
+    {!props.isLoading && props.recipes.length === 0 ?
+      <NegativeBox message='No recipes yet!' /> :
+      <RecipeGrid className={props.isLoading ? 'spinner spinning' : 'spinner'} >
+        {props.recipes.map((recipe, i) =>
           <RecipeCard
             key={i}
             recipe={recipe}
@@ -52,5 +64,6 @@ export default (props: RecipeGridProps) =>
             putDay={props.putDay}
           />
         )}
-    </RecipeGrid>
+      </RecipeGrid>
+    }
   </>;

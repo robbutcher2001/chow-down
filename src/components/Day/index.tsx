@@ -5,8 +5,10 @@ import styled from 'styled-components';
 
 import { Day, RecipeIngredient, PutDayApiRequest } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
+import { ErrorBox } from '../MessageBox';
 
 interface DayProps {
+  isLoading: boolean,
   day: Day,
   setSelectingDay: (day: string) => UserAction,
   putDay: (day: Day) => PutDayApiRequest
@@ -133,28 +135,32 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
     );
 
   return (
-    <StyledDay>
-      <header>
-        <div>
-          <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
-            Change
-          </Link>
-          <Link className='link' to='/' onClick={() => props.putDay({ date: props.day.date })}>
-            Reset
-          </Link>
-        </div>
-        <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
-      </header>
-      <section>
-        <h3>{props.day.recipe.title}</h3>
-        <a className='link' href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
-          Web link &gt;
-        </a>
-      </section>
-      <ul>
-        {createRecipeIngredients(props.day.recipe.ingredients)}
-      </ul>
-    </StyledDay >
+    !props.isLoading && (!props.day || !props.day.recipe) ?
+      <ErrorBox message='We could not find a recipe associated to this day' /> :
+      <StyledDay className={props.isLoading ? 'spinner spinning' : 'spinner'} >
+        <header>
+          <div>
+            <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
+              Change
+            </Link>
+            <Link className='link' to='/' onClick={() => props.putDay({ date: props.day.date })}>
+              Reset
+            </Link>
+          </div>
+          <img src={props.day?.recipe.image} alt={props.day?.recipe.title}></img>
+        </header>
+        <section>
+          <h3>{props.day?.recipe.title}</h3>
+          {props.day &&
+            <a className='link' href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
+              Web link &gt;
+            </a>
+          }
+        </section>
+        <ul>
+          {createRecipeIngredients(props.day?.recipe.ingredients || [])}
+        </ul>
+      </StyledDay >
   );
 };
 

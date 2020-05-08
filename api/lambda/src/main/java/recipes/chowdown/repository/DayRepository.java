@@ -76,7 +76,7 @@ public class DayRepository {
         parameters.add(new SqlParameter().withName("alternateDay").withValue(new Field().withIsNull(true)));
       } else if (day.getAlternateDay() != null) {
         parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withIsNull(true)));
-        parameters.add(new SqlParameter().withName("alternateDay").withValue(new Field().withStringValue(day.getAlternateDay())));
+        parameters.add(new SqlParameter().withName("alternateDay").withValue(new Field().withStringValue(day.getAlternateDay().trim())));
       } else {
         parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withIsNull(true)));
         parameters.add(new SqlParameter().withName("alternateDay").withValue(new Field().withIsNull(true)));

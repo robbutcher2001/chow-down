@@ -107,7 +107,7 @@ public class RecipeRepositoryTest {
 
   @Test
   void putRecipe_shouldThrowException_whenRequestInvalidRecipeIngredients() throws Exception {
-    Recipe recipe = Recipe.builder().title("fake_title").build();
+    Recipe recipe = Recipe.builder().title("fake_title").description("fake_description").url("fake_url").build();
     BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);

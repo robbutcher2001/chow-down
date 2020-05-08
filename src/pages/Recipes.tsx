@@ -59,14 +59,12 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
       }
       {this.props.error ?
         <ErrorBox message={this.props.error} /> :
-        <>
-          <RecipeGrid
-            isLoading={this.props.ui.pending.get}
-            recipes={this.props.recipes}
-            selectedDay={this.props.selectedDay}
-            putDay={this.props.putDay}
-          />
-        </>
+        <RecipeGrid
+          isLoading={this.props.ui.pending.get}
+          recipes={this.props.recipes}
+          selectedDay={this.props.selectedDay}
+          putDay={this.props.putDay}
+        />
       }
     </Main>
   );
