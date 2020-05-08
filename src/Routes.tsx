@@ -7,6 +7,7 @@ import ScrollTop from './components/ScrollTop';
 import Days from './pages/Days';
 import Day from './pages/Day';
 import Recipes from './pages/Recipes';
+import NewAlternateDay from './pages/NewAlternateDay';
 import NewRecipe from './pages/NewRecipe';
 import NewUnit from './pages/NewUnit';
 import NewIngredient from './pages/NewIngredient';
@@ -20,6 +21,7 @@ const Routes: FunctionComponent = () => (
         <Route exact path='/' component={Days} />
         <Route exact path='/days/:date' component={Day} />
         <Route exact path='/recipes' component={Recipes} />
+        <Route exact path='/days/alternate/new' component={NewAlternateDay} />
         <Route exact path='/recipes/new' component={NewRecipe} />
         <Route exact path='/units/new' component={NewUnit} />
         <Route exact path='/ingredients/new' component={NewIngredient} />

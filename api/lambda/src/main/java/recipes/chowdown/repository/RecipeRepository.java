@@ -80,11 +80,11 @@ public class RecipeRepository {
     Collection<SqlParameter> parameters = new ArrayList<>();
 
     try {
-      parameters.add(new SqlParameter().withName("title").withValue(new Field().withStringValue(recipe.getTitle())));
+      parameters.add(new SqlParameter().withName("title").withValue(new Field().withStringValue(recipe.getTitle().trim())));
       parameters.add(
-          new SqlParameter().withName("description").withValue(new Field().withStringValue(recipe.getDescription())));
+          new SqlParameter().withName("description").withValue(new Field().withStringValue(recipe.getDescription().trim())));
       parameters.add(new SqlParameter().withName("rating").withValue(new Field().withLongValue(recipe.getRating())));
-      parameters.add(new SqlParameter().withName("url").withValue(new Field().withStringValue(recipe.getUrl())));
+      parameters.add(new SqlParameter().withName("url").withValue(new Field().withStringValue(recipe.getUrl().trim())));
       parameters.add(new SqlParameter().withName("image").withValue(new Field().withStringValue(recipe.getImage())));
       parameters.add(new SqlParameter().withName("createdDate")
           .withValue(new Field().withStringValue(recipe.getCreatedDate())).withTypeHint(TypeHint.TIMESTAMP));

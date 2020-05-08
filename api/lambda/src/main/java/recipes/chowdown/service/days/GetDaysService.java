@@ -54,15 +54,21 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
 
       for (List<Field> fields : result.getRecords()) {
         final String date = parseToBasicISODate(fields.get(0).getStringValue());
-        Optional<Day> existingDay = days.stream().filter(day -> date.equals(day.getDate())).findFirst();
+        final String alternateDay = fields.get(1).getStringValue();
 
-        if (!existingDay.isPresent()) {
-          Recipe recipe = Recipe.builder().title(fields.get(1).getStringValue()).rating(fields.get(2).getLongValue())
-              .image(fields.get(3).getStringValue()).url(fields.get(4).getStringValue()).build();
-          recipe.setIngredients(Stream.of(buildRecipeIngredients(fields)).collect(Collectors.toList()));
-          days.add(Day.builder().date(date).recipe(recipe).build());
+        if (alternateDay == null) {
+          Optional<Day> existingDay = days.stream().filter(day -> date.equals(day.getDate())).findFirst();
+
+          if (!existingDay.isPresent()) {
+            Recipe recipe = Recipe.builder().title(fields.get(2).getStringValue()).rating(fields.get(3).getLongValue())
+                .image(fields.get(4).getStringValue()).url(fields.get(5).getStringValue()).build();
+            recipe.setIngredients(Stream.of(buildRecipeIngredients(fields)).collect(Collectors.toList()));
+            days.add(Day.builder().date(date).recipe(recipe).build());
+          } else {
+            existingDay.get().getRecipe().getIngredients().add(buildRecipeIngredients(fields));
+          }
         } else {
-          existingDay.get().getRecipe().getIngredients().add(buildRecipeIngredients(fields));
+          days.add(Day.builder().date(date).alternateDay(alternateDay).build());
         }
       }
 
@@ -94,8 +100,8 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
   }
 
   private RecipeIngredient buildRecipeIngredients(final List<Field> fields) {
-    return RecipeIngredient.builder().quantity(fields.get(5).getDoubleValue())
-        .unitSingularName(fields.get(6).getStringValue()).unitPluralName(fields.get(7).getStringValue())
-        .ingredientName(fields.get(8).getStringValue()).build();
+    return RecipeIngredient.builder().quantity(fields.get(6).getDoubleValue())
+        .unitSingularName(fields.get(7).getStringValue()).unitPluralName(fields.get(8).getStringValue())
+        .ingredientName(fields.get(9).getStringValue()).build();
   }
 }

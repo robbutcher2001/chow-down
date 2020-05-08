@@ -28,6 +28,7 @@ interface Recipe {
 export interface Day {
   date: string,
   recipeId?: string,
+  alternateDay?: string,
   recipe?: Recipe
 }
 

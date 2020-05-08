@@ -2,7 +2,7 @@
 
 exports[`ImageSelector basic snapshot render 1`] = `
 <label
-  className="sc-bwzfXH gApMSu"
+  className="sc-bwzfXH dqQMLq"
   htmlFor="title"
 >
   The Image Selector Title

@@ -98,6 +98,30 @@ public class DayRepositoryTest {
   }
 
   @Test
+  void putDay_shouldReturnResults_whenRequestValidAlternateDay() throws Exception {
+    Day day = Day.builder().date("20200401").alternateDay("BBQ day").build();
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+
+    when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+
+    ExecuteStatementResult result = this.repository.putDay(day);
+
+    assertEquals(mockResult, result);
+  }
+
+  @Test
+  void putDay_shouldReturnResults_whenRequestValidRecipeIdAndAlternateDay() throws Exception {
+    Day day = Day.builder().date("20200401").recipeId("123").alternateDay("BBQ day").build();
+    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+
+    when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);
+
+    ExecuteStatementResult result = this.repository.putDay(day);
+
+    assertEquals(mockResult, result);
+  }
+
+  @Test
   void putDay_shouldThrowException_whenRequestNullDay() throws Exception {
     ResourceNotPersistedException returnedException = assertThrows(ResourceNotPersistedException.class,
         () -> this.repository.putDay(null));

@@ -406,6 +406,8 @@ components:
           type: string
         recipeId:
           type: string
+        alternateDay:
+          type: string
         recipe:
           $ref: "#/components/schemas/Recipe"
       required:

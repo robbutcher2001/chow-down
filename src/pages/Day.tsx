@@ -12,7 +12,7 @@ import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import DayComponent from '../components/Day';
 import Main from '../components/Main';
-import { ErrorBox, LoadingBox } from '../components/MessageBox';
+import { ErrorBox } from '../components/MessageBox';
 
 interface StateProps {
   error: string,
@@ -91,18 +91,12 @@ class DaysPage extends Component<CombinedProps, OwnState> {
       }
       {this.props.error ?
         <ErrorBox message={this.props.error} /> :
-        <>
-          {this.props.ui.pending.get ?
-            <LoadingBox message={`Fetching ${this.state.displayDay}'s plan`} /> :
-            !this.state.day ?
-              <ErrorBox message='We could not find a recipe associated to this day' /> :
-              <DayComponent
-                day={this.state.day}
-                setSelectingDay={this.props.setSelectingDay}
-                putDay={this.props.putDay}
-              />
-          }
-        </>
+        <DayComponent
+          isLoading={this.props.ui.pending.get}
+          day={this.state.day}
+          setSelectingDay={this.props.setSelectingDay}
+          putDay={this.props.putDay}
+        />
       }
     </Main>
   );

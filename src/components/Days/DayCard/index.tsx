@@ -8,6 +8,7 @@ import { Day } from '../../../store/domain/days/types';
 import { UserAction } from '../../../store/app/user/types';
 import Stars from '../../Stars';
 import UnknownImage from '../../UnknownImage';
+import AlternateDay from '../../AlternateDay';
 
 interface DayCardProps {
   dateFormat: string,
@@ -18,8 +19,10 @@ interface DayCardProps {
 
 const StyledDayCard = styled.li`
   margin: 2rem 0;
-  max-height: 350px;
-  max-width: 450px;
+  width: 100%;
+  max-width: 420px;
+  height: 320px;
+  min-height: 320px;
   overflow: hidden;
   position: relative;
 
@@ -53,14 +56,13 @@ const StyledDayCard = styled.li`
   }
 `
 
-const DayRecipe = styled.figure`
+const DayRecipe = styled.figure<{ url: string }>`
+  background-image: url(${props => props.url});
+  background-size: cover;
+  background-position: 50%;
   margin: 0;
-
-  > img {
-    width: 100%;
-    height: 100%;
-  }
-
+  height: 100%;
+  
   > figcaption {
     position: absolute;
     bottom: 0;
@@ -89,15 +91,18 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
         <Link to='/recipes' onClick={() => props.setSelectingDay(props.date)}>
           <UnknownImage />
         </Link> :
-        <Link to={`/days/${props.date}`}>
-          <DayRecipe>
-            <img src={props.day.recipe.image} alt={props.day.recipe.title}></img>
-            <figcaption>
-              <h3>{props.day.recipe.title}</h3>
-              <Stars rating={props.day.recipe.rating} />
-            </figcaption>
-          </DayRecipe>
-        </Link>
+        props.day.alternateDay ?
+          <Link to='/recipes' onClick={() => props.setSelectingDay(props.date)}>
+            <AlternateDay title={props.day.alternateDay} />
+          </Link> :
+          <Link to={`/days/${props.date}`}>
+            <DayRecipe url={props.day.recipe.image} >
+              <figcaption>
+                <h3>{props.day.recipe.title}</h3>
+                <Stars rating={props.day.recipe.rating} />
+              </figcaption>
+            </DayRecipe>
+          </Link>
       }
     </StyledDayCard>
   );

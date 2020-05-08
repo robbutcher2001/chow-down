@@ -14,5 +14,6 @@ import lombok.Setter;
 public class Day {
   private String date;
   private String recipeId;
+  private String alternateDay;
   private Recipe recipe;
 }
