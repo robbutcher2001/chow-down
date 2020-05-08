@@ -8,16 +8,14 @@ interface AlternateDayProps {
 };
 
 const AlternateDay = styled.figure`
+  background-image: url(${foodImg});
+  background-size: cover;
+  background-position: 50%;
+  margin: 0;
+  height: 100%;
   position: relative;
   align-self: center;
-  max-height: 350px;
-  max-width: 450px;
-  margin: 0;
   cursor: pointer;
-
-  > img {
-    width: 100%;
-  }
 
   > figcaption {
     display: flex;
@@ -29,6 +27,7 @@ const AlternateDay = styled.figure`
     bottom: 0;
     left: 0;
     font-size: 2rem;
+    font-weight: 700;
     color: white;
     background: rgba(40, 40, 40, 0.90);
     text-transform: capitalize;
@@ -38,7 +37,6 @@ const AlternateDay = styled.figure`
 
 export default (props: AlternateDayProps) => (
   <AlternateDay>
-    <img src={foodImg} />
     <figcaption>
       <div>{props.title}</div>
     </figcaption>

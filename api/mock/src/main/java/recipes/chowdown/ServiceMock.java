@@ -1,6 +1,9 @@
 package recipes.chowdown;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +36,8 @@ import recipes.chowdown.schema.Unit;
 @CrossOrigin(origins = "http://localhost:8080")
 public class ServiceMock implements ApiApi {
 
+  static final String IMAGE_URL = "https://source.unsplash.com/random";
+
   final Faker faker;
   final List<Unit> units = new ArrayList<>();
   final List<Ingredient> ingredients = new ArrayList<>();
@@ -50,6 +55,7 @@ public class ServiceMock implements ApiApi {
       recipe.setDescription(this.faker.hitchhikersGuideToTheGalaxy().marvinQuote());
       recipe.setRating(this.faker.number().numberBetween(0, 6));
       recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
+      // recipe.setImage(getRandomImageUrl());
       recipe.setImage(this.faker.internet().image());
       recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
@@ -116,12 +122,34 @@ public class ServiceMock implements ApiApi {
     }
   }
 
-  private void randomSleep() {
+  private void randomSleep(int seed) {
     try {
-      TimeUnit.SECONDS.sleep(new Random().nextInt(2));
+      TimeUnit.SECONDS.sleep(new Random().nextInt(seed));
     } catch (InterruptedException ie) {
       Thread.currentThread().interrupt();
     }
+  }
+
+  private String getRandomImageUrl() {
+    System.out.println("Retrieving random image URL");
+    randomSleep(5);
+
+    String randomImageUrl = "";
+    HttpURLConnection connection = null;
+
+    try {
+      HttpURLConnection.setFollowRedirects(false);
+      connection = (HttpURLConnection) new URL(IMAGE_URL).openConnection();
+      randomImageUrl = connection.getHeaderField("location");
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    } finally {
+      if (connection != null) {
+        connection.disconnect();
+      }
+    }
+
+    return randomImageUrl;
   }
 
   @Override
@@ -131,7 +159,7 @@ public class ServiceMock implements ApiApi {
       return new ResponseEntity<List<Unit>>(Collections.emptyList(), HttpStatus.OK);
     }
 
-    randomSleep();
+    randomSleep(2);
 
     return new ResponseEntity<List<Unit>>(this.units, HttpStatus.OK);
   }
@@ -141,7 +169,7 @@ public class ServiceMock implements ApiApi {
     unit.setId(this.faker.internet().uuid());
     this.units.add(unit);
 
-    randomSleep();
+    randomSleep(2);
 
     return new ResponseEntity<>(unit, HttpStatus.CREATED);
   }
@@ -153,7 +181,7 @@ public class ServiceMock implements ApiApi {
       return new ResponseEntity<List<Ingredient>>(Collections.emptyList(), HttpStatus.OK);
     }
 
-    randomSleep();
+    randomSleep(2);
 
     return new ResponseEntity<List<Ingredient>>(this.ingredients, HttpStatus.OK);
   }
@@ -163,7 +191,7 @@ public class ServiceMock implements ApiApi {
     ingredient.setId(this.faker.internet().uuid());
     this.ingredients.add(ingredient);
 
-    randomSleep();
+    randomSleep(2);
 
     return new ResponseEntity<>(ingredient, HttpStatus.CREATED);
   }
@@ -175,7 +203,7 @@ public class ServiceMock implements ApiApi {
       return new ResponseEntity<List<Recipe>>(Collections.emptyList(), HttpStatus.OK);
     }
 
-    randomSleep();
+    randomSleep(2);
 
     return new ResponseEntity<List<Recipe>>(this.recipes, HttpStatus.OK);
   }
@@ -185,7 +213,7 @@ public class ServiceMock implements ApiApi {
     recipe.setId(this.faker.internet().uuid());
     this.recipes.add(recipe);
 
-    randomSleep();
+    randomSleep(2);
 
     return new ResponseEntity<>(recipe, HttpStatus.CREATED);
   }
@@ -197,7 +225,7 @@ public class ServiceMock implements ApiApi {
       return new ResponseEntity<List<Day>>(Collections.emptyList(), HttpStatus.OK);
     }
 
-    randomSleep();
+    randomSleep(2);
 
     return new ResponseEntity<List<Day>>(this.days.stream()
         .filter(day -> day.getRecipe() != null || day.getAlternateDay() != null).collect(Collectors.toList()),
@@ -206,7 +234,7 @@ public class ServiceMock implements ApiApi {
 
   @Override
   public ResponseEntity<Day> apiDaysPut(@Valid Day newDay) {
-    randomSleep();
+    randomSleep(2);
     final String alternateDay = newDay.getAlternateDay();
     Recipe recipeToAdd = null;
 
