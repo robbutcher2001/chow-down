@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 import styled from 'styled-components';
+import placeholderImg from './placeholder.svg';
 
 import { Day } from '../../../store/domain/days/types';
 import { UserAction } from '../../../store/app/user/types';
@@ -62,7 +63,20 @@ const DayRecipe = styled.figure<{ url: string }>`
   background-position: 50%;
   margin: 0;
   height: 100%;
-  
+
+  > aside {
+    background-image: url(${placeholderImg});
+    background-size: cover;
+    background-position: 50%;
+    position: absolute;
+    opacity: 0.5;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -50;
+  }
+
   > figcaption {
     position: absolute;
     bottom: 0;
@@ -97,6 +111,7 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
           </Link> :
           <Link to={`/days/${props.date}`}>
             <DayRecipe url={props.day.recipe.image} >
+              <aside />
               <figcaption>
                 <h3>{props.day.recipe.title}</h3>
                 <Stars rating={props.day.recipe.rating} />
