@@ -30,7 +30,7 @@ const Nav = styled.nav`
       box-shadow: 0px 2px 0 0px #4acaa8;
 
       img {
-        animation: rotate 8s linear infinite;
+        animation-play-state: running !important;
       }
     }
 
@@ -39,6 +39,8 @@ const Nav = styled.nav`
 
       img {
         height: 100%;
+        animation: rotate 8s linear infinite;
+        animation-play-state: paused;
       }
     }
   }
