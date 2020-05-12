@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 import styled from 'styled-components';
-import placeholderImg from './placeholder.svg';
+import placeholderImg from '../../../placeholder.svg';
 
 import { Day } from '../../../store/domain/days/types';
 import { UserAction } from '../../../store/app/user/types';
