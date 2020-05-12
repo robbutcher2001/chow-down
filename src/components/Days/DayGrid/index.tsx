@@ -17,8 +17,9 @@ interface DayGridProps {
 
 const StyledDayGrid = styled.ul`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   margin: 0;
   padding: 0;
   list-style: none;
