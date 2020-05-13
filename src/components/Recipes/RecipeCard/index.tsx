@@ -24,7 +24,7 @@ const RecipeCard = styled.li<{ url: string }>`
     text-decoration: none;
   }
 
-  > figure, > a > figure {
+  > a > figure, > figure {
     height: 220px;
     background-image: url(${props => props.url});
     background-size: cover;
@@ -62,7 +62,7 @@ const RecipeCard = styled.li<{ url: string }>`
     }
   }
 
-  > p {
+  > a > p, > p {
     color: #888;
     padding: 0 0.5rem 1.5rem;
     margin: 0;
