@@ -29,7 +29,8 @@ const Label = styled.label`
 
   > figure {
     align-self: center;
-    width: 420px;
+    width: 100%;
+    max-width: 420px;
     min-height: 320px;
     margin: 0.5rem 0;
     cursor: pointer;
