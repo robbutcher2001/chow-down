@@ -15,17 +15,16 @@ interface RecipeCardProps {
 };
 
 const RecipeCard = styled.li<{ url: string }>`
-  -webkit-box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
   box-shadow: 0 1px 0.25rem rgba(0, 0, 0, .08);
   border: 1px solid rgba(0,0,0,.04);
   border-radius: 0.5rem;
 
-  a {
+  > a {
     color: black;
     text-decoration: none;
   }
 
-  > figure {
+  > figure, > a > figure {
     height: 220px;
     background-image: url(${props => props.url});
     background-size: cover;

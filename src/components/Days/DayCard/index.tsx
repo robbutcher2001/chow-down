@@ -27,9 +27,13 @@ const StyledDayCard = styled.li`
   min-height: 320px;
   overflow: hidden;
   position: relative;
+  border-radius: 8px;
+  box-shadow: 2px 4px 12px 2px rgba(0,0,0,0.6);
+  box-sizing: border-box;
 
   ${xsmall`
-    margin: 2rem 0;
+    margin: 0.8rem 0;
+    box-shadow: 0 4px 12px 4px rgba(0,0,0,0.6);
   `}
 
   > span {

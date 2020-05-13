@@ -43,7 +43,7 @@ interface OwnState {
 type CombinedProps = StateProps & DispatchProps & RouteComponentProps<DayUrlParamProps>;
 
 //TODO: convert to FunctionComponent and useEffect() and useParams
-class DaysPage extends Component<CombinedProps, OwnState> {
+class DayPage extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
 
@@ -120,4 +120,4 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
 });
 
 export default connect<StateProps, DispatchProps, null, GlobalState>
-  (mapStateToProps, mapDispatchToProps)(DaysPage);
+  (mapStateToProps, mapDispatchToProps)(DayPage);
