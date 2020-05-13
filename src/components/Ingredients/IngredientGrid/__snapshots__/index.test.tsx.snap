@@ -10,12 +10,12 @@ exports[`IngredientGrid basic snapshot render 1`] = `
     F
   </li>
   <li
-    className="sc-bdVaJa dFyiMu"
+    className="sc-bdVaJa eIQMUN"
   >
     fake_ingredient1
   </li>
   <li
-    className="sc-bdVaJa dFyiMu"
+    className="sc-bdVaJa eIQMUN"
   >
     fake_ingredient2
   </li>
