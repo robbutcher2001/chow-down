@@ -17,7 +17,7 @@ interface RecipeCardProps {
 const RecipeCard = styled.li<{ url: string }>`
   box-shadow: 0 1px 4px rgba(0, 0, 0, .08);
   border: 1px solid rgba(0,0,0,.04);
-  border-radius: 12px;
+  border-radius: 8px;
 
   > a {
     color: black;
@@ -31,8 +31,8 @@ const RecipeCard = styled.li<{ url: string }>`
     background-position: 50%;
     margin: 0;
     overflow: hidden;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
     position: relative;
 
     > aside {

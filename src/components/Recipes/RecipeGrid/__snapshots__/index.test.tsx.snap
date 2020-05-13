@@ -5,7 +5,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
   className="sc-ifAKCX lkqgzt spinner"
 >
   <li
-    className="sc-bwzfXH gBcifJ"
+    className="sc-bwzfXH cJbDwl"
   >
     <figure>
       <aside />
@@ -36,7 +36,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
     </p>
   </li>
   <li
-    className="sc-bwzfXH kapBwK"
+    className="sc-bwzfXH zAmOy"
   >
     <figure>
       <aside />
