@@ -9,7 +9,7 @@ import { UserAction } from '../store/app/user/types';
 import { getDaysRequest } from '../store/domain/days/actions';
 import { setUserIsSelectingDay } from '../store/app/user/actions';
 
-import { ZeroMarginedMain, CallToAction } from '../components/Main';
+import Main, { CallToAction } from '../components/Main';
 import DayGrid from '../components/Days/DayGrid';
 import { ErrorBox } from '../components/MessageBox';
 
@@ -59,7 +59,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
   );
 
   render = () => (
-    <ZeroMarginedMain title='Your week' >
+    <Main title='Your week' >
       {this.props.failure &&
         <ErrorBox message={this.props.failure} />
       }
@@ -73,7 +73,7 @@ class DaysPage extends Component<CombinedProps, OwnState> {
           setSelectingDay={this.props.setSelectingDay}
         />
       }
-    </ZeroMarginedMain>
+    </Main>
   );
 };
 

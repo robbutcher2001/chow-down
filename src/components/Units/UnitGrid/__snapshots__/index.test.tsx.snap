@@ -5,7 +5,7 @@ exports[`UnitGrid basic snapshot render 1`] = `
   className="sc-htpNat jNKlnC"
 >
   <li
-    className="sc-bdVaJa gvXlnZ"
+    className="sc-bdVaJa kHLynw"
   >
     fake_singular1
     <aside>
@@ -13,7 +13,7 @@ exports[`UnitGrid basic snapshot render 1`] = `
     </aside>
   </li>
   <li
-    className="sc-bdVaJa gvXlnZ"
+    className="sc-bdVaJa kHLynw"
   >
     fake_singular2
     <aside>

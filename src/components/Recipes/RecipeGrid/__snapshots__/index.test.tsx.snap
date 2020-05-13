@@ -2,80 +2,66 @@
 
 exports[`RecipeGrid basic snapshot render 1`] = `
 <ul
-  className="sc-EHOje jOhHw spinner"
+  className="sc-ifAKCX lkqgzt spinner"
 >
   <li
-    className="sc-htpNat hySfcC"
+    className="sc-bwzfXH gWWprb"
   >
-    <span
-      className="sc-bwzfXH bpAHud"
+    <figure>
+      <aside />
+      <figcaption>
+        <h3>
+          fake_title1
+        </h3>
+      </figcaption>
+    </figure>
+    <section
+      className="sc-bdVaJa dyQPNL"
     >
-      <figure>
-        <img
-          alt="fake_title1"
-          src="fake_alt_text1"
-        />
-        <figcaption>
-          <h3>
-            fake_title1
-          </h3>
-        </figcaption>
-      </figure>
-      <section
-        className="sc-bdVaJa dyQPNL"
-      >
-        <mark>
-          ★
-        </mark>
-        <mark>
-          ★
-        </mark>
-        <mark>
-          ★
-        </mark>
-        <mark>
-          ★
-        </mark>
-      </section>
-      <p>
-        fake_description1
-      </p>
-    </span>
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+    </section>
+    <p>
+      fake_description1
+    </p>
   </li>
   <li
-    className="sc-htpNat hySfcC"
+    className="sc-bwzfXH heyaQo"
   >
-    <span
-      className="sc-bwzfXH bpAHud"
+    <figure>
+      <aside />
+      <figcaption>
+        <h3>
+          fake_title2
+        </h3>
+      </figcaption>
+    </figure>
+    <section
+      className="sc-bdVaJa dyQPNL"
     >
-      <figure>
-        <img
-          alt="fake_title2"
-          src="fake_alt_text2"
-        />
-        <figcaption>
-          <h3>
-            fake_title2
-          </h3>
-        </figcaption>
-      </figure>
-      <section
-        className="sc-bdVaJa dyQPNL"
-      >
-        <mark>
-          ★
-        </mark>
-        <mark>
-          ★
-        </mark>
-        <mark>
-          ★
-        </mark>
-      </section>
-      <p>
-        fake_description2
-      </p>
-    </span>
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+    </section>
+    <p>
+      fake_description2
+    </p>
   </li>
 </ul>
 `;

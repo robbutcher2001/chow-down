@@ -18,7 +18,6 @@ interface RecipeGridProps {
 
 const UserInstruction = styled.div`
   margin: 1rem 0 2rem;
-  font-size: 1.2rem;
 
   .link {
     border: none;

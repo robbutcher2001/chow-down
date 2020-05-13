@@ -17,25 +17,40 @@ const Nav = styled.nav`
   > a {
     background: #000;
     font-size: 1rem;
-    padding: 1rem 1rem 0.5rem 1rem;
+    height: 1.25rem;
+    margin: 0.5rem;
+    padding: 0.5rem;
     border: none;
-    border-bottom: .5rem solid #000;
+    box-shadow: 0px 2px 0 -2px #4acaa8;
+    transition: box-shadow 0.4s ease-in-out;
     color: #fff;
     text-decoration: none;
 
-    &:hover, &.active {
-      border-bottom-color: #4acaa8;
+    &.active {
+      box-shadow: 0px 2px 0 0px #4acaa8;
+
+      img {
+        animation-play-state: running !important;
+      }
     }
 
     &:last-child {
       margin-left: auto;
-      font-size: 0;
-      padding: 0.8rem 0.8rem 0.3rem 0.8rem;
-  
+
       img {
-        height: 1.4rem;
-        width: 1.4rem;
+        height: 100%;
+        animation: rotate 8s linear infinite;
+        animation-play-state: paused;
       }
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 `
