@@ -22,50 +22,50 @@ const RecipeCard = styled.li<{ url: string }>`
   > a {
     color: black;
     text-decoration: none;
-  }
 
-  > a > figure, > figure {
-    height: 220px;
-    background-image: url(${props => props.url});
-    background-size: cover;
-    background-position: 50%;
-    margin: 0;
-    overflow: hidden;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    position: relative;
-
-    > aside {
-      background-image: url(${placeholderImg});
+    > figure {
+      height: 220px;
+      background-image: url(${props => props.url});
       background-size: cover;
       background-position: 50%;
-      position: absolute;
-      opacity: 0.5;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: -50;
-    }
-
-    > figcaption {
-      position: absolute;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, .7);
-      width: 100%;
-
-      > h3 {
-        color: white;
-        padding: .5rem;
-        margin: 0;
+      margin: 0;
+      overflow: hidden;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      position: relative;
+  
+      > aside {
+        background-image: url(${placeholderImg});
+        background-size: cover;
+        background-position: 50%;
+        position: absolute;
+        opacity: 0.5;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -50;
+      }
+  
+      > figcaption {
+        position: absolute;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, .7);
+        width: 100%;
+  
+        > h3 {
+          color: white;
+          padding: .5rem;
+          margin: 0;
+        }
       }
     }
-  }
-
-  > a > p, > p {
-    color: #888;
-    padding: 0 0.5rem 1.5rem;
-    margin: 0;
+  
+    > p {
+      color: #888;
+      padding: 0 0.5rem 1.5rem;
+      margin: 0;
+    }
   }
 `
 
@@ -93,5 +93,7 @@ export default (props: RecipeCardProps) =>
       </Link>
     </RecipeCard> :
     <RecipeCard url={props.recipe.image}>
-      <RecipeCardContents {...props} />
+      <Link to={`/recipe/${props.recipe.id}`}>
+        <RecipeCardContents {...props} />
+      </Link>
     </RecipeCard>;
