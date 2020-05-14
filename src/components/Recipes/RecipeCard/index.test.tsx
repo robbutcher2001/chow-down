@@ -1,6 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import RecipeCard from '.';
 
@@ -16,7 +18,9 @@ const mockRecipe = {
 
 test('RecipeCard basic snapshot render', () => {
   const recipeCard = renderer.create(
-    <RecipeCard recipe={mockRecipe} />
+    <Router history={createMemoryHistory()}>
+      <RecipeCard recipe={mockRecipe} />
+    </Router>
   );
 
   expect(recipeCard.toJSON()).toMatchSnapshot();
@@ -24,7 +28,9 @@ test('RecipeCard basic snapshot render', () => {
 
 test('RecipeCard correct tag content assertion', () => {
   const { getByText, getAllByText } = render(
-    <RecipeCard recipe={mockRecipe} />
+    <Router history={createMemoryHistory()}>
+      <RecipeCard recipe={mockRecipe} />
+    </Router>
   );
 
   expect(getByText(/fake_title/).textContent).toEqual('fake_title');

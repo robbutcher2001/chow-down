@@ -5,63 +5,73 @@ exports[`RecipeGrid basic snapshot render 1`] = `
   className="sc-ifAKCX lkqgzt spinner"
 >
   <li
-    className="sc-bwzfXH gWWprb"
+    className="sc-bwzfXH fFeMtW"
   >
-    <figure>
-      <aside />
-      <figcaption>
-        <h3>
-          fake_title1
-        </h3>
-      </figcaption>
-    </figure>
-    <section
-      className="sc-bdVaJa dyQPNL"
+    <a
+      href="/recipe/123"
+      onClick={[Function]}
     >
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-    </section>
-    <p>
-      fake_description1
-    </p>
+      <figure>
+        <aside />
+        <figcaption>
+          <h3>
+            fake_title1
+          </h3>
+        </figcaption>
+      </figure>
+      <section
+        className="sc-bdVaJa dyQPNL"
+      >
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+      </section>
+      <p>
+        fake_description1
+      </p>
+    </a>
   </li>
   <li
-    className="sc-bwzfXH heyaQo"
+    className="sc-bwzfXH ewGyNd"
   >
-    <figure>
-      <aside />
-      <figcaption>
-        <h3>
-          fake_title2
-        </h3>
-      </figcaption>
-    </figure>
-    <section
-      className="sc-bdVaJa dyQPNL"
+    <a
+      href="/recipe/124"
+      onClick={[Function]}
     >
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-      <mark>
-        ★
-      </mark>
-    </section>
-    <p>
-      fake_description2
-    </p>
+      <figure>
+        <aside />
+        <figcaption>
+          <h3>
+            fake_title2
+          </h3>
+        </figcaption>
+      </figure>
+      <section
+        className="sc-bdVaJa dyQPNL"
+      >
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+      </section>
+      <p>
+        fake_description2
+      </p>
+    </a>
   </li>
 </ul>
 `;
