@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import { css, ThemedStyledProps } from 'styled-components';
 
 const breakpoints = {
   xsmall: '480px',
@@ -7,13 +7,13 @@ const breakpoints = {
   large: '1200px'
 };
 
-const breakpointMixin = (breakpoint: string, styles: TemplateStringsArray) => css`
+const breakpointMixin = (breakpoint: string, styles: TemplateStringsArray, props: ThemedStyledProps<any, any>) => css`
   @media (max-width: ${breakpoint}) {
-    ${css(styles)}
+    ${css(styles, props)}
   }
 `;
 
-export const xsmall = (styles: TemplateStringsArray) => breakpointMixin(breakpoints.xsmall, styles);
-export const small = (styles: TemplateStringsArray) => breakpointMixin(breakpoints.small, styles);
-export const medium = (styles: TemplateStringsArray) => breakpointMixin(breakpoints.medium, styles);
-export const large = (styles: TemplateStringsArray) => breakpointMixin(breakpoints.large, styles);
+export const xsmall = (styles: TemplateStringsArray, props?: ThemedStyledProps<any, any>) => breakpointMixin(breakpoints.xsmall, styles, props);
+export const small = (styles: TemplateStringsArray, props?: ThemedStyledProps<any, any>) => breakpointMixin(breakpoints.small, styles, props);
+export const medium = (styles: TemplateStringsArray, props?: ThemedStyledProps<any, any>) => breakpointMixin(breakpoints.medium, styles, props);
+export const large = (styles: TemplateStringsArray, props?: ThemedStyledProps<any, any>) => breakpointMixin(breakpoints.large, styles, props);

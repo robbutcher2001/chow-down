@@ -67,7 +67,9 @@ const StyledMarginedMain = styled(StyledZeroMarginedMain)`
 const Main = (props: MainProps) => (
   <div>
     <section>
-      <h2>{props.title}</h2>
+      {props.title &&
+        <h2>{props.title}</h2>
+      }
       {props.cta &&
         <Link
           to={props.cta.link}>
