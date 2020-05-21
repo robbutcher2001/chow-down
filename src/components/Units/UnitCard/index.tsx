@@ -24,11 +24,11 @@ const UnitCard = styled.li`
     font-style: italic;
     margin-top: 0.5rem;
 
-    &::before {
+    &:before {
       content: '('
     }
 
-    &::after {
+    &:after {
       content: ')'
     }
   }

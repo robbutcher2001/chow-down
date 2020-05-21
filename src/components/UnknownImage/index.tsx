@@ -40,7 +40,7 @@ const UnknownImage = styled.figure`
   > figcaption {
     background: rgba(40, 40, 40, 0.8);
 
-    &::after {
+    &:after {
       content: 'No picture selected';
       visibility: hidden;
     }
