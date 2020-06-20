@@ -15,17 +15,6 @@ exports[`ErrorBox basic snapshot render 1`] = `
 </section>
 `;
 
-exports[`LoadingBox basic snapshot render 1`] = `
-<section
-  className="sc-bdVaJa cIFhlI"
->
-  <img
-    src="test-file-stub"
-  />
-  test_message
-</section>
-`;
-
 exports[`NegativeBox basic snapshot render 1`] = `
 <section
   className="sc-bdVaJa cIFhlI"

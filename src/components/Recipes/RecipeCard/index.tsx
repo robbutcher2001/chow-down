@@ -6,6 +6,7 @@ import placeholderImg from '../../../placeholder.svg';
 
 import { Recipe } from '../../../store/domain/recipes/types';
 import { Day, PutDayApiRequest } from '../../../store/domain/days/types';
+
 import Stars from '../../Stars';
 
 interface RecipeCardProps {

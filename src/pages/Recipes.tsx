@@ -26,7 +26,8 @@ interface StateProps {
   selectedDay: string,
   ui: {
     pending: {
-      get: boolean
+      get: boolean,
+      post: boolean
     }
   }
 };
@@ -48,7 +49,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     super(props);
   }
 
-  componentDidMount = () => this.props.getRecipes();
+  componentDidMount = () => !this.props.ui.pending.post && this.props.getRecipes();
 
   componentWillUnmount = () => this.props.clearSelectingDay();
 
@@ -60,7 +61,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
       {this.props.error ?
         <ErrorBox message={this.props.error} /> :
         <RecipeGrid
-          isLoading={this.props.ui.pending.get}
+          isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
           recipes={this.props.recipes}
           selectedDay={this.props.selectedDay}
           putDay={this.props.putDay}
@@ -77,7 +78,8 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): 
   selectedDay: app.user.selectedDay,
   ui: {
     pending: {
-      get: ui.recipe.getPending
+      get: ui.recipe.getPending,
+      post: ui.recipe.postPending
     }
   }
 });

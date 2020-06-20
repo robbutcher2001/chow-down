@@ -36,6 +36,16 @@ test('RecipeGrid basic snapshot render', () => {
   expect(recipeGrid.toJSON()).toMatchSnapshot();
 });
 
+test('RecipeGrid basic isLoading snapshot render', () => {
+  const recipeGrid = renderer.create(
+    <Router history={createMemoryHistory()}>
+      <RecipeGrid isLoading={true} recipes={mockRecipes} />
+    </Router>
+  );
+
+  expect(recipeGrid.toJSON()).toMatchSnapshot();
+});
+
 test('RecipeGrid correct tag content assertion', () => {
   const { getByText } = render(
     <Router history={createMemoryHistory()}>

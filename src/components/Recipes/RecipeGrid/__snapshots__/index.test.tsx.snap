@@ -1,8 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`RecipeGrid basic isLoading snapshot render 1`] = `
+<ul
+  className="sc-ifAKCX fmEAZJ spinner spinning"
+>
+  <li
+    className="sc-bwzfXH fFeMtW"
+  >
+    <a
+      href="/recipe/123"
+      onClick={[Function]}
+    >
+      <figure>
+        <aside />
+        <figcaption>
+          <h3>
+            fake_title1
+          </h3>
+        </figcaption>
+      </figure>
+      <section
+        className="sc-bdVaJa dyQPNL"
+      >
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+      </section>
+      <p>
+        fake_description1
+      </p>
+    </a>
+  </li>
+  <li
+    className="sc-bwzfXH ewGyNd"
+  >
+    <a
+      href="/recipe/124"
+      onClick={[Function]}
+    >
+      <figure>
+        <aside />
+        <figcaption>
+          <h3>
+            fake_title2
+          </h3>
+        </figcaption>
+      </figure>
+      <section
+        className="sc-bdVaJa dyQPNL"
+      >
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+        <mark>
+          ★
+        </mark>
+      </section>
+      <p>
+        fake_description2
+      </p>
+    </a>
+  </li>
+</ul>
+`;
+
 exports[`RecipeGrid basic snapshot render 1`] = `
 <ul
-  className="sc-ifAKCX lkqgzt spinner"
+  className="sc-ifAKCX fmEAZJ spinner"
 >
   <li
     className="sc-bwzfXH fFeMtW"

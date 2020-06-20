@@ -8,6 +8,7 @@ import IngredientMarker from '../IngredientMarker';
 import { NegativeBox } from '../../MessageBox';
 
 interface IngredientGridProps {
+  isLoading: boolean,
   ingredients: Ingredient[]
 };
 
@@ -18,6 +19,7 @@ const IngredientGrid = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
+  min-height: 120px;
 
   li:first-child {
     margin-top: 0.5rem;
@@ -50,8 +52,8 @@ const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
 };
 
 export default (props: IngredientGridProps) =>
-  props.ingredients && props.ingredients.length > 0 ?
-    <IngredientGrid>
+  !props.isLoading && props.ingredients.length === 0 ?
+    <NegativeBox message='No ingredients yet!' /> :
+    <IngredientGrid className={props.isLoading ? 'spinner spinning' : 'spinner'}>
       {ingredientsWithMarkers(props.ingredients)}
-    </IngredientGrid> :
-    <NegativeBox message='No ingredients yet!' />;
+    </IngredientGrid>;

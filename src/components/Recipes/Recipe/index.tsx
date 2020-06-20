@@ -7,6 +7,8 @@ import placeholderImg from '../../../placeholder.svg';
 
 import { Recipe } from '../../../store/domain/recipes/types';
 
+import { NegativeBox } from '../../MessageBox';
+
 interface RecipeDetailProps {
   recipe: Recipe
 };
@@ -128,7 +130,7 @@ export default (props: RecipeDetailProps) =>
         <aside />
         <h3>{props.recipe.title}</h3>
         <section className='ingredients' >
-          {props.recipe.description}
+          <div>Recipe ingredients coming soon!</div>
           {props.recipe.rating > 0 &&
             <span>
               <Stars rating={props.recipe.rating} />
@@ -140,4 +142,4 @@ export default (props: RecipeDetailProps) =>
         </section>
       </div>
     </RecipeDetail> :
-    <div>Need to implement GET</div>
+    <NegativeBox message='Direct recipe retrieval not implemented yet.' />;

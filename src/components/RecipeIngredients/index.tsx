@@ -6,7 +6,6 @@ import { Unit } from '../../store/domain/units/types';
 import { Ingredient } from '../../store/domain/ingredients/types';
 
 import RecipeIngredient from '../RecipeIngredient';
-import { LoadingBox } from '../MessageBox';
 import { Fields, FieldValidations } from '../Form';
 
 export interface RecipeIngredientsProps {
@@ -30,6 +29,10 @@ export interface RecipeIngredient {
 };
 
 const Label = styled.label`
+  > div.spinning {
+    min-height: 200px;
+  }
+
   ul {
     list-style-type: none;
     margin: 0.5rem 0 0 0;
@@ -81,35 +84,32 @@ const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: Rec
   return (
     <Label htmlFor={props.name}>
       {props.label}
-      {props.isPending ?
-        <LoadingBox /> :
-        <div>
-          <ul id={props.name}>
-            {recipeIngredients &&
-              recipeIngredients.map((recipeIngredient: RecipeIngredient, index: number) =>
-                <RecipeIngredient
-                  key={index}
-                  index={index}
-                  units={props.units}
-                  ingredients={props.ingredients}
-                  recipeIngredient={recipeIngredient}
-                  validFields={props.validFields}
-                  onChange={onChange}
-                  setValidationState={props.setValidationState}
-                  quantityValidator={props.quantityValidator}
-                  idValidator={props.idValidator}
-                />
-              )
-            }
-          </ul>
-          <button
-            type='button'
-            onClick={event => newRecipeIngredient(event)}
-          >
-            Add Ingredient
+      <div className={props.isPending ? 'spinner spinning' : 'spinner'} >
+        <ul id={props.name}>
+          {recipeIngredients &&
+            recipeIngredients.map((recipeIngredient: RecipeIngredient, index: number) =>
+              <RecipeIngredient
+                key={index}
+                index={index}
+                units={props.units}
+                ingredients={props.ingredients}
+                recipeIngredient={recipeIngredient}
+                validFields={props.validFields}
+                onChange={onChange}
+                setValidationState={props.setValidationState}
+                quantityValidator={props.quantityValidator}
+                idValidator={props.idValidator}
+              />
+            )
+          }
+        </ul>
+        <button
+          type='button'
+          onClick={event => newRecipeIngredient(event)}
+        >
+          Add Ingredient
           </button>
-        </div>
-      }
+      </div>
     </Label>
   );
 };
