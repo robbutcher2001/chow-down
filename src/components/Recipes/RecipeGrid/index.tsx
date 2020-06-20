@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { Recipe } from '../../../store/domain/recipes/types';
 import { Day, PutDayApiRequest } from '../../../store/domain/days/types';
+
 import RecipeCard from '../RecipeCard';
 import { NegativeBox } from '../../MessageBox';
 
@@ -39,6 +40,7 @@ const RecipeGrid = styled.ul`
   margin: 0;
   padding: 1rem 0rem 0rem 0rem;
   list-style: none;
+  min-height: 120px;
 `
 
 export default (props: RecipeGridProps) =>

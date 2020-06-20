@@ -1,8 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`IngredientGrid basic isLoading snapshot render 1`] = `
+<ul
+  className="sc-bxivhb rSCoC spinner spinning"
+>
+  <li
+    className="sc-bwzfXH fOOqCi"
+  >
+    F
+  </li>
+  <li
+    className="sc-bdVaJa eIQMUN"
+  >
+    fake_ingredient1
+  </li>
+  <li
+    className="sc-bdVaJa eIQMUN"
+  >
+    fake_ingredient2
+  </li>
+</ul>
+`;
+
 exports[`IngredientGrid basic snapshot render 1`] = `
 <ul
-  className="sc-bxivhb gVBeIm"
+  className="sc-bxivhb rSCoC spinner"
 >
   <li
     className="sc-bwzfXH fOOqCi"

@@ -1,6 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import RecipeGrid from '.';
 import { Recipe } from '../../../store/domain/recipes/types';
@@ -26,7 +28,19 @@ const mockRecipes: Recipe[] = [{
 
 test('RecipeGrid basic snapshot render', () => {
   const recipeGrid = renderer.create(
-    <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    <Router history={createMemoryHistory()}>
+      <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    </Router>
+  );
+
+  expect(recipeGrid.toJSON()).toMatchSnapshot();
+});
+
+test('RecipeGrid basic isLoading snapshot render', () => {
+  const recipeGrid = renderer.create(
+    <Router history={createMemoryHistory()}>
+      <RecipeGrid isLoading={true} recipes={mockRecipes} />
+    </Router>
   );
 
   expect(recipeGrid.toJSON()).toMatchSnapshot();
@@ -34,7 +48,9 @@ test('RecipeGrid basic snapshot render', () => {
 
 test('RecipeGrid correct tag content assertion', () => {
   const { getByText } = render(
-    <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    <Router history={createMemoryHistory()}>
+      <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    </Router>
   );
 
   expect(getByText(/fake_title1/).textContent).toEqual('fake_title1');
@@ -43,7 +59,9 @@ test('RecipeGrid correct tag content assertion', () => {
 
 test('RecipeGrid render multiple recipes assertion', () => {
   const { getByText } = render(
-    <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    <Router history={createMemoryHistory()}>
+      <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    </Router>
   );
 
   expect(getByText(/fake_title2/).textContent).toEqual('fake_title2');
@@ -52,7 +70,9 @@ test('RecipeGrid render multiple recipes assertion', () => {
 
 test('RecipeGrid correct class when not loading', () => {
   const { container } = render(
-    <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    <Router history={createMemoryHistory()}>
+      <RecipeGrid isLoading={false} recipes={mockRecipes} />
+    </Router>
   );
 
   expect(container.querySelector('ul').classList).toContain('spinner');
@@ -61,7 +81,9 @@ test('RecipeGrid correct class when not loading', () => {
 
 test('RecipeGrid correct class when loading', () => {
   const { container } = render(
-    <RecipeGrid isLoading={true} recipes={mockRecipes} />
+    <Router history={createMemoryHistory()}>
+      <RecipeGrid isLoading={true} recipes={mockRecipes} />
+    </Router>
   );
 
   expect(container.querySelector('ul').classList).toContain('spinner');

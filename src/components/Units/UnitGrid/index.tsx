@@ -7,6 +7,7 @@ import UnitCard from '../UnitCard';
 import { NegativeBox } from '../../MessageBox';
 
 interface UnitGridProps {
+  isLoading: boolean,
   units: Unit[]
 };
 
@@ -17,16 +18,17 @@ const UnitGrid = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
+  min-height: 120px;
 `
 
 export default (props: UnitGridProps) =>
-  props.units && props.units.length > 0 ?
-    <UnitGrid>
+  !props.isLoading && props.units.length === 0 ?
+    <NegativeBox message='No units yet!' /> :
+    <UnitGrid className={props.isLoading ? 'spinner spinning' : 'spinner'} >
       {props.units.map((unit, i) =>
         <UnitCard
           key={i}
           unit={unit}
         />
       )}
-    </UnitGrid> :
-    <NegativeBox message='No units yet!' />;
+    </UnitGrid>;

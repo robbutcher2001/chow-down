@@ -2,34 +2,39 @@
 
 exports[`RecipeCard basic snapshot render 1`] = `
 <li
-  className="sc-bwzfXH grUHRq"
+  className="sc-bwzfXH hXTeEz"
 >
-  <figure>
-    <aside />
-    <figcaption>
-      <h3>
-        fake_title
-      </h3>
-    </figcaption>
-  </figure>
-  <section
-    className="sc-bdVaJa dyQPNL"
+  <a
+    href="/recipe/fake_id"
+    onClick={[Function]}
   >
-    <mark>
-      ★
-    </mark>
-    <mark>
-      ★
-    </mark>
-    <mark>
-      ★
-    </mark>
-    <mark>
-      ★
-    </mark>
-  </section>
-  <p>
-    fake_description
-  </p>
+    <figure>
+      <aside />
+      <figcaption>
+        <h3>
+          fake_title
+        </h3>
+      </figcaption>
+    </figure>
+    <section
+      className="sc-bdVaJa dyQPNL"
+    >
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+      <mark>
+        ★
+      </mark>
+    </section>
+    <p>
+      fake_description
+    </p>
+  </a>
 </li>
 `;

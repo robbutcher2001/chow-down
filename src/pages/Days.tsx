@@ -11,7 +11,7 @@ import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
 import DayGrid from '../components/Days/DayGrid';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 
 const cta: CallToAction = {
   text: 'Get week\'s ingredients',
@@ -61,10 +61,10 @@ class DaysPage extends Component<CombinedProps, OwnState> {
   render = () => (
     <Main title='Your week' >
       {this.props.failure &&
-        <ErrorBox message={this.props.failure} />
+        <NegativeBox message={this.props.failure} />
       }
       {this.props.error ?
-        <ErrorBox message={this.props.error} /> :
+        <NegativeBox message={this.props.error} /> :
         <DayGrid
           dateFormat={this.state.dateFormat}
           seekDays={this.state.seekDays}

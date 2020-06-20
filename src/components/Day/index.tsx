@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { Day, RecipeIngredient, PutDayApiRequest } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
-import { ErrorBox } from '../MessageBox';
+import { NegativeBox } from '../MessageBox';
 
 interface DayProps {
   isLoading: boolean,
@@ -14,7 +14,7 @@ interface DayProps {
   putDay: (day: Day) => PutDayApiRequest
 };
 
-const StyledDay = styled.section`
+const StyledDay = styled.section<{ image: string }>`
   margin: 2rem 0;
 
   > header {
@@ -39,9 +39,17 @@ const StyledDay = styled.section`
       }
     }
 
-    > img {
+    > figure {
       width: 150px;
       height: 150px;
+      margin: 0;
+      border-radius: 12px;
+
+      ${props => props.image && `
+        background-image: url(${props.image});
+        background-size: cover;
+        background-position: 50%;
+      `}
     }
   }
 
@@ -136,8 +144,11 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
 
   return (
     !props.isLoading && (!props.day || !props.day.recipe) ?
-      <ErrorBox message='We could not find a recipe associated to this day' /> :
-      <StyledDay className={props.isLoading ? 'spinner spinning' : 'spinner'} >
+      <NegativeBox message='We could not find a recipe associated to this day' /> :
+      <StyledDay
+        image={props.day?.recipe.image}
+        className={props.isLoading ? 'spinner spinning' : 'spinner'}
+      >
         <header>
           <div>
             <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
@@ -147,7 +158,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
               Reset
             </Link>
           </div>
-          <img src={props.day?.recipe.image} alt={props.day?.recipe.title}></img>
+          <figure />
         </header>
         <section>
           <h3>{props.day?.recipe.title}</h3>

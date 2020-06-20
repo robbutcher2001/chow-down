@@ -12,7 +12,7 @@ import { clearUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 
 const cta: CallToAction = {
   text: 'New recipe',
@@ -26,7 +26,8 @@ interface StateProps {
   selectedDay: string,
   ui: {
     pending: {
-      get: boolean
+      get: boolean,
+      post: boolean
     }
   }
 };
@@ -48,19 +49,19 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     super(props);
   }
 
-  componentDidMount = () => this.props.getRecipes();
+  componentDidMount = () => !this.props.ui.pending.post && this.props.getRecipes();
 
   componentWillUnmount = () => this.props.clearSelectingDay();
 
   render = () => (
     <Main title='Your recipes' cta={!this.props.selectedDay ? cta : undefined} >
       {this.props.failure &&
-        <ErrorBox message={this.props.failure} />
+        <NegativeBox message={this.props.failure} />
       }
       {this.props.error ?
-        <ErrorBox message={this.props.error} /> :
+        <NegativeBox message={this.props.error} /> :
         <RecipeGrid
-          isLoading={this.props.ui.pending.get}
+          isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
           recipes={this.props.recipes}
           selectedDay={this.props.selectedDay}
           putDay={this.props.putDay}
@@ -77,7 +78,8 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): 
   selectedDay: app.user.selectedDay,
   ui: {
     pending: {
-      get: ui.recipe.getPending
+      get: ui.recipe.getPending,
+      post: ui.recipe.postPending
     }
   }
 });
