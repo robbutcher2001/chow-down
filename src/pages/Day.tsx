@@ -12,7 +12,7 @@ import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import DayComponent from '../components/Day';
 import Main from '../components/Main';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 
 interface StateProps {
   error: string,
@@ -87,10 +87,10 @@ class DayPage extends Component<CombinedProps, OwnState> {
   render = () => (
     <Main title={this.state.displayDay} >
       {this.props.failure &&
-        <ErrorBox message={this.props.failure} />
+        <NegativeBox message={this.props.failure} />
       }
       {this.props.error ?
-        <ErrorBox message={this.props.error} /> :
+        <NegativeBox message={this.props.error} /> :
         <DayComponent
           isLoading={this.props.ui.pending.get}
           day={this.state.day}

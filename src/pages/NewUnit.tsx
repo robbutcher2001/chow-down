@@ -10,7 +10,7 @@ import Main from '../components/Main';
 import UnitGrid from '../components/Units/UnitGrid';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 
 interface StateProps {
   error: string,
@@ -47,10 +47,10 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
   render = () => (
     <Main title='New unit' >
       {this.props.failure &&
-        <ErrorBox message={this.props.failure} />
+        <NegativeBox message={this.props.failure} />
       }
       {this.props.error ?
-        <ErrorBox message={this.props.error} /> :
+        <NegativeBox message={this.props.error} /> :
         <>
           <div className={this.props.ui.pending.post ? 'spinner spinning' : 'spinner'}>
             <Form

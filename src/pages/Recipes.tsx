@@ -12,7 +12,7 @@ import { clearUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 
 const cta: CallToAction = {
   text: 'New recipe',
@@ -56,10 +56,10 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
   render = () => (
     <Main title='Your recipes' cta={!this.props.selectedDay ? cta : undefined} >
       {this.props.failure &&
-        <ErrorBox message={this.props.failure} />
+        <NegativeBox message={this.props.failure} />
       }
       {this.props.error ?
-        <ErrorBox message={this.props.error} /> :
+        <NegativeBox message={this.props.error} /> :
         <RecipeGrid
           isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
           recipes={this.props.recipes}

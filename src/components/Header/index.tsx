@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 import foodImg from '../../food.jpg';
+import { xsmall } from '../../breakpoints';
 
 const Header = styled.header`
   display: grid;
@@ -18,7 +19,7 @@ const Header = styled.header`
   min-width: 280px; /* needs to be 280px + 2rem when using scss calculate */
 
   > * {
-    padding: .75rem;
+    padding: 0.75rem;
     margin: 0;
   }
 
@@ -35,6 +36,20 @@ const Header = styled.header`
     color: white;
     font-size: 1.5rem;
   }
+
+  ${xsmall`
+    > * {
+      padding: 0.5rem;
+    }
+
+    > h1 {
+      font-size: 2.2rem;
+    }
+
+    > p {
+      font-size: 1.2rem;
+    }
+  `}
 `
 
 export default () => (

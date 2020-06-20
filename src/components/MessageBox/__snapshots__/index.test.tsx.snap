@@ -1,30 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ErrorBox basic snapshot render 1`] = `
-<section
-  className="sc-bdVaJa cIFhlI"
->
-  <img
-    src="test-file-stub"
-  />
-  <div
-    className="red"
-  >
-    test_error
-  </div>
-</section>
-`;
-
 exports[`NegativeBox basic snapshot render 1`] = `
 <section
-  className="sc-bdVaJa cIFhlI"
+  className="sc-bdVaJa iPHEZG"
 >
   <img
     src="test-file-stub"
   />
-  <div
-    className="e"
-  >
+  <div>
     test_negative
   </div>
 </section>

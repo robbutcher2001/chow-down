@@ -15,7 +15,7 @@ import Main from '../components/Main';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
 import ImageSelector from '../components/ImageSelector';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 import Textarea from '../components/Textarea';
 import RecipeIngredients from '../components/RecipeIngredients';
 import InputStarRating from '../components/InputStarRating';
@@ -66,10 +66,10 @@ class NewRecipePage extends Component<CombinedProps, OwnState> {
   render = () => (
     <Main title='New recipe' >
       {this.props.failure &&
-        <ErrorBox message={this.props.failure} />
+        <NegativeBox message={this.props.failure} />
       }
       {this.props.error ?
-        <ErrorBox message={this.props.error} /> :
+        <NegativeBox message={this.props.error} /> :
         <Form
           name='recipeForm'
           dispatch={this.addRecipe}

@@ -8,7 +8,7 @@ import { Recipe } from '../store/domain/recipes/types';
 
 import RecipeComponent from '../components/Recipes/Recipe';
 import { ZeroMarginedMain } from '../components/Main';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 
 interface StateProps {
   error: string,
@@ -72,10 +72,10 @@ class RecipePage extends Component<CombinedProps, OwnState> {
   render = () => (
     <ZeroMarginedMain>
       {this.props.failure &&
-        <ErrorBox message={this.props.failure} />
+        <NegativeBox message={this.props.failure} />
       }
       {this.props.error ?
-        <ErrorBox message={this.props.error} /> :
+        <NegativeBox message={this.props.error} /> :
         <RecipeComponent recipe={this.state.recipe} />
       }
     </ZeroMarginedMain>

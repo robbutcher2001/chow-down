@@ -12,7 +12,7 @@ import { putDaysRequest } from '../store/domain/days/actions';
 import Main from '../components/Main';
 import Form from '../components/Form';
 import Textarea from '../components/Textarea';
-import { ErrorBox } from '../components/MessageBox';
+import { NegativeBox } from '../components/MessageBox';
 
 interface DispatchProps {
   putDay: (day: Day) => PutDayApiRequest
@@ -61,7 +61,7 @@ class NewAlternateDayPage extends Component<CombinedProps, OwnState> {
   render = () => (
     <Main title='Alternate Day' >
       {!this.state.displayDay ?
-        <ErrorBox message='Selected date cannot not be used' /> :
+        <NegativeBox message='Selected date cannot not be used' /> :
         <>
           <h3>Set {this.state.displayDay} as an alternative day</h3>
           <Form

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { Day, RecipeIngredient, PutDayApiRequest } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
-import { ErrorBox } from '../MessageBox';
+import { NegativeBox } from '../MessageBox';
 
 interface DayProps {
   isLoading: boolean,
@@ -144,7 +144,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
 
   return (
     !props.isLoading && (!props.day || !props.day.recipe) ?
-      <ErrorBox message='We could not find a recipe associated to this day' /> :
+      <NegativeBox message='We could not find a recipe associated to this day' /> :
       <StyledDay
         image={props.day?.recipe.image}
         className={props.isLoading ? 'spinner spinning' : 'spinner'}
