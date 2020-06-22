@@ -63,7 +63,7 @@ const RecipeDetail = styled.span<{ image: string }>`
     }
 
     > section {
-      box-shadow: 0 0 12px 2px rgba(0,0,0,0.4);
+      box-shadow: 0 5px 20px 0 rgba(0,0,0,0.2);
       border-radius: 8px;
       box-sizing: border-box;
       background: #fff;
@@ -102,17 +102,17 @@ const RecipeDetail = styled.span<{ image: string }>`
       }
 
       > span {
-        box-shadow: 0 4px 30px 2px rgba(0,0,0,0.2);
+        box-shadow: 0 -10px 20px -14px rgba(0,0,0,0.2);
         border-radius: 50px;
         box-sizing: border-box;
         background: #fff;
         padding: 6px 16px;
         position: absolute;
         right: 5%;
-        top: -5%;
+        top: -4%;
   
         ${medium`
-          top: -10%;
+          top: -20%;
         `}
 
         > section {
