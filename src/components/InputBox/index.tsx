@@ -20,7 +20,7 @@ const Label = styled.label`
   margin-bottom: 0.75rem;
 
   > input {
-    border: solid 2px #e4e4e4;
+    border: solid 1px #e4e4e4;
     border-radius: 5px;
     padding: 0 0.5em;
     margin: 0.5rem 0;
