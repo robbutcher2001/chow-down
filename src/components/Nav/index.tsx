@@ -12,7 +12,12 @@ const Nav = styled.nav`
   position: sticky;
   top: 0;
   z-index: 200;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 12px 5px;
   background: #000;
+
+  @media (prefers-color-scheme: light) {
+    background: #fff;
+  }
 
   > a {
     background: #000;
@@ -25,6 +30,12 @@ const Nav = styled.nav`
     transition: box-shadow 0.4s ease-in-out;
     color: #fff;
     text-decoration: none;
+
+    @media (prefers-color-scheme: light) {
+      background: #fff;
+      color: black;
+      font-weight: 700;
+    }
 
     &.active {
       box-shadow: 0px 2px 0 0px #4acaa8;
@@ -41,6 +52,10 @@ const Nav = styled.nav`
         height: 100%;
         animation: rotate 8s linear infinite;
         animation-play-state: paused;
+
+        @media (prefers-color-scheme: light) {
+          filter: invert(1);
+        }
       }
     }
   }
