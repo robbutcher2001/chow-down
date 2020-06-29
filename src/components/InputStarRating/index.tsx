@@ -11,15 +11,27 @@ export interface StarRatingProps {
 };
 
 const Label = styled.label`
-  margin-bottom: 0.75rem;
+  background-color: rgb(245, 248, 250);
+  margin-bottom: 2rem;
+  border-radius: 5px;
+  border-bottom: 2px solid rgb(101, 119, 134);
 
-  label {
-    color: #4acaa8;
-    font-size: 3rem;
-    font-family: Times;
-    margin-right: 0.5rem;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+  > span {
+    padding: 0.25rem 0.5rem 0;
+    color: rgb(101, 119, 134);
+  }
+
+  > div {
+    padding: 0 0.5rem 0.25rem 0.5rem;
+
+    > label {
+      color: #4acaa8;
+      font-family: Times;
+      font-size: 3rem;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
   }
 
   .filled::before {
@@ -52,7 +64,7 @@ class StarRating extends Component<StarRatingProps, {}> {
 
   render = () => (
     <Label htmlFor={this.props.name}>
-      {this.props.label}
+      <span>{this.props.label}</span>
       <div id={this.props.name}>
         <label
           htmlFor='rating_1'

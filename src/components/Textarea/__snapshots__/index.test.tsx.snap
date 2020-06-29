@@ -2,10 +2,12 @@
 
 exports[`Textarea basic snapshot render 1`] = `
 <label
-  className="sc-bdVaJa fQJcG"
+  className="sc-bdVaJa xJUnl"
   htmlFor="title"
 >
-  The Textarea Title
+  <span>
+    The Textarea Title
+  </span>
   <textarea
     id="title"
     name="title"

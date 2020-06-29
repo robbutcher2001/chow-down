@@ -61,7 +61,7 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
                 name='ingredient'
                 type='text'
                 label='Ingredient name'
-                validator={(value: string) => value && value.length > 1}
+                validator={(value: string) => value && value.length > 0}
               />
             </Form>
           </div>

@@ -2,7 +2,7 @@
 
 exports[`Form basic snapshot render 1`] = `
 <form
-  className="sc-bdVaJa bgwYpC"
+  className="sc-bdVaJa cFbomx"
   id="form"
   onReset={[Function]}
   onSubmit={[Function]}

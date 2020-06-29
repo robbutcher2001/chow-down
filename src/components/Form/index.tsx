@@ -38,12 +38,13 @@ type CombinedProps = StateProps & DispatchProps & OwnProps;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
 
   > .button-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 0 2em;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 
     > button {
       border-radius: 5px;
