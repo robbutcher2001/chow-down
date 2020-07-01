@@ -40,30 +40,11 @@ const Form = styled.form`
   flex-direction: column;
   margin-top: 1rem;
 
-  > .button-group {
+  > .buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 0 2em;
     margin-top: 0.5rem;
-
-    > button {
-      border-radius: 5px;
-      padding: 0 0.5em;
-      margin: 0.5rem 0;
-      height: 3rem;
-      font-size: 1rem;
-      border: none;
-      color: white;
-      cursor: pointer;
-  
-      &[type=submit] {
-        background-color: #4acaa8;
-      }
-  
-      &[type=reset] {
-        background-color: #989898;
-      }
-    }
   }
 `
 
@@ -163,11 +144,19 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     return (
       <Form id='form' onSubmit={this.onSubmit} onReset={this.onReset} >
         {children}
-        <div className='button-group'>
-          <button type='submit' form='form' value={this.props.submitText}>
+        <div className='buttons'>
+          <button
+            type='submit'
+            form='form'
+            className='chow-button--primary'
+            value={this.props.submitText} >
             {this.props.submitText}
           </button>
-          <button type='reset' form='form' value='Reset'>
+          <button
+            type='reset'
+            form='form'
+            className='chow-button--reset'
+            value='Reset' >
             Reset
           </button>
         </div>

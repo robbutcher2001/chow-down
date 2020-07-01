@@ -27,7 +27,6 @@ const StyledZeroMarginedMain = styled.main`
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      line-height: 2.5rem;
       margin: 0 1rem;
 
       > * {
@@ -40,17 +39,6 @@ const StyledZeroMarginedMain = styled.main`
         align-self: center;
         font-size: 2rem;
         color: #4acaa8;
-      }
-
-      a {
-        border: none;
-        border-radius: 5px;
-        padding: 0 1.5em;
-        height: 2.5rem;
-        font-size: 1rem;
-        color: white;
-        background-color: #4acaa8;
-        text-decoration: none;
       }
     }
   }
@@ -72,7 +60,9 @@ const Main = (props: MainProps) => (
       }
       {props.cta &&
         <Link
-          to={props.cta.link}>
+          role='button'
+          className='chow-button chow-button--primary'
+          to={props.cta.link} >
           {props.cta.text}
         </Link>
       }

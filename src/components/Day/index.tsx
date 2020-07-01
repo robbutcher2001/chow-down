@@ -27,15 +27,8 @@ const StyledDay = styled.section<{ image: string }>`
       justify-content: flex-start;
 
       a {
-        margin-right: 1rem !important;
-      }
-
-      a[class=link] {
         display: inline-block;
-        //TODO: make button component with bold prop
-        font-weight: 400;
-        color: #df3034;
-        text-decoration: underline;
+        margin: 0 1rem 1rem 0;
       }
     }
 
@@ -89,18 +82,6 @@ const StyledDay = styled.section<{ image: string }>`
     }
   }
 
-  .button {
-    border: none;
-    border-radius: 5px;
-    padding: .5rem 1.5em;
-    height: 2.5rem;
-    font-size: 1rem;
-    line-height: 2.5rem;
-    color: white;
-    background-color: #4acaa8;
-    text-decoration: none;
-  }
-
   .link {
     border: none;
     background: none;
@@ -151,10 +132,19 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
       >
         <header>
           <div>
-            <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
+            <Link
+              role='button'
+              className='chow-button chow-button--primary'
+              to='/recipes'
+              onClick={() => props.setSelectingDay(props.day.date)} >
               Change
             </Link>
-            <Link className='link' to='/' onClick={() => props.putDay({ date: props.day.date })}>
+            <Link
+              /* TODO: should this be a chow-link as thats what it looks like? */
+              role='button'
+              className='chow-button chow-button--reset'
+              to='/'
+              onClick={() => props.putDay({ date: props.day.date })} >
               Reset
             </Link>
           </div>
@@ -163,7 +153,11 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
         <section>
           <h3>{props.day?.recipe.title}</h3>
           {props.day &&
-            <a className='link' href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
+            <a
+              className='link'
+              href={props.day.recipe.url}
+              target='_blank'
+              rel='external noreferrer' >
               Web link &gt;
             </a>
           }

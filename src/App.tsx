@@ -3,7 +3,8 @@ import { Store } from 'redux';
 import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import './App.scss';
+import './styles';
+//TODO: should the spinner be a SCSS component?
 import './spinner';
 
 import { GlobalState } from './store';
