@@ -2,7 +2,7 @@
 
 exports[`Form basic snapshot render 1`] = `
 <form
-  className="sc-bdVaJa cFbomx"
+  className="sc-bdVaJa ebysqs"
   id="form"
   onReset={[Function]}
   onSubmit={[Function]}
@@ -16,9 +16,10 @@ exports[`Form basic snapshot render 1`] = `
     fake_child
   </div>
   <div
-    className="button-group"
+    className="buttons"
   >
     <button
+      className="chow-button--primary"
       form="form"
       type="submit"
       value="Submit Button"
@@ -26,6 +27,7 @@ exports[`Form basic snapshot render 1`] = `
       Submit Button
     </button>
     <button
+      className="chow-button--reset"
       form="form"
       type="reset"
       value="Reset"
