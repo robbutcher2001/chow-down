@@ -1,8 +1,0 @@
-button,
-.chow-button,
-a[role=button].chow-button {
-	@extend %chow-button;
-}
-
-.chow-button--primary { @extend %chow-button, %chow-button--primary; }
-.chow-button--reset { @extend %chow-button, %chow-button--reset; }

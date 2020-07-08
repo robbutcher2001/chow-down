@@ -3,13 +3,17 @@ import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { ThemeProvider } from 'styled-components';
 
+import theme from '../../theme';
 import Header from '.';
 
 test('Header basic snapshot render', () => {
   const header = renderer.create(
     <Router history={createMemoryHistory()}>
-      <Header />
+      <ThemeProvider theme={theme}>
+        <Header />
+      </ThemeProvider>
     </Router>
   );
 
@@ -19,7 +23,9 @@ test('Header basic snapshot render', () => {
 test('Header correct tag content assertion', () => {
   const { getByText } = render(
     <Router history={createMemoryHistory()}>
-      <Header />
+      <ThemeProvider theme={theme}>
+        <Header />
+      </ThemeProvider>
     </Router>
   );
 

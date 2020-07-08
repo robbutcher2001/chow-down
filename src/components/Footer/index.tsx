@@ -2,6 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { RawLink } from '../Clickable';
+
 const Footer = styled.footer`
   display: flex;
   flex-direction: column;
@@ -20,6 +22,17 @@ const Footer = styled.footer`
 export default () => (
   <Footer>
     <p>&copy; Rob Butcher 2020.</p>
-    <p>Images: <a href="https://unsplash.com/" target="_blank">Unsplash</a> and various recipe websites.</p>
+    <p>
+      {'Images: '}
+      <RawLink
+        $inline
+        $underline
+        $small
+        href='https://unsplash.com/'
+        target='_blank'>
+        Unsplash
+      </RawLink>
+      {' and various recipe websites.'}
+    </p>
   </Footer>
 );

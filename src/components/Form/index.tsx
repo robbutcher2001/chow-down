@@ -6,6 +6,7 @@ import { InputBoxProps } from '../InputBox';
 import { TextareaProps } from '../Textarea';
 import { ImageSelectorProps } from '../ImageSelector';
 import { RecipeIngredientsProps } from '../RecipeIngredients';
+import { Button } from '../Clickable';
 
 type CombinedInputProps = InputBoxProps | TextareaProps | ImageSelectorProps | RecipeIngredientsProps;
 
@@ -145,20 +146,19 @@ class FormComponent extends Component<CombinedProps, OwnState> {
       <Form id='form' onSubmit={this.onSubmit} onReset={this.onReset} >
         {children}
         <div className='buttons'>
-          <button
+          <Button
             type='submit'
             form='form'
-            className='chow-button--primary'
             value={this.props.submitText} >
             {this.props.submitText}
-          </button>
-          <button
+          </Button>
+          <Button
+            $reset
             type='reset'
             form='form'
-            className='chow-button--reset'
             value='Reset' >
             Reset
-          </button>
+          </Button>
         </div>
       </Form>
     );

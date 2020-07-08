@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
 import { Day, RecipeIngredient, PutDayApiRequest } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
 import { NegativeBox } from '../MessageBox';
+import { RouterLink, RawLink } from '../Clickable';
 
 interface DayProps {
   isLoading: boolean,
@@ -81,19 +81,6 @@ const StyledDay = styled.section<{ image: string }>`
       text-decoration: line-through;
     }
   }
-
-  .link {
-    border: none;
-    background: none;
-    margin: 1rem 0;
-    padding: 0;
-    font-size: 1rem;
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    color: #005ea5;
-    cursor: pointer;
-    text-decoration: none;
-  }
 `
 
 const Day: FunctionComponent<DayProps> = (props: DayProps) => {
@@ -132,34 +119,26 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
       >
         <header>
           <div>
-            <Link
-              role='button'
-              className='chow-button chow-button--primary'
-              to='/recipes'
-              onClick={() => props.setSelectingDay(props.day.date)} >
+            <RouterLink to='/recipes' onClick={() => props.setSelectingDay(props.day.date)} >
               Change
-            </Link>
-            <Link
-              /* TODO: should this be a chow-link as thats what it looks like? */
-              role='button'
-              className='chow-button chow-button--reset'
-              to='/'
-              onClick={() => props.putDay({ date: props.day.date })} >
+            </RouterLink>
+            <RouterLink $reset to='/' onClick={() => props.putDay({ date: props.day.date })} >
               Reset
-            </Link>
+            </RouterLink>
           </div>
           <figure />
         </header>
         <section>
           <h3>{props.day?.recipe.title}</h3>
           {props.day &&
-            <a
-              className='link'
+            <RawLink
+              $bold
+              $inline
               href={props.day.recipe.url}
               target='_blank'
               rel='external noreferrer' >
               Web link &gt;
-            </a>
+            </RawLink>
           }
         </section>
         <ul>

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 import foodImg from '../../food.jpg';
 import { xsmall } from '../../breakpoints';
+
+import { RouterLink } from '../Clickable';
 
 const Header = styled.header`
   display: grid;
@@ -23,13 +24,10 @@ const Header = styled.header`
     margin: 0;
   }
 
-  > h1 {
+  > h1 a {
     font-size: 3rem;
-
-    a {
-      color: white;
-      text-decoration: none;
-    }
+    color: white;
+    text-decoration: none;
   }
 
   > p {
@@ -42,7 +40,7 @@ const Header = styled.header`
       padding: 0.5rem;
     }
 
-    > h1 {
+    > h1 a {
       font-size: 2.2rem;
     }
 
@@ -55,9 +53,12 @@ const Header = styled.header`
 export default () => (
   <Header>
     <h1>
-      <Link to='/'>
+      <RouterLink
+        $bold
+        $inline
+        to='/' >
         Chow Down
-      </Link>
+      </RouterLink>
     </h1>
     <p>Chow down on a weekly plan of your evening meals.</p>
   </Header>

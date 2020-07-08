@@ -7,6 +7,7 @@ import { Ingredient } from '../../store/domain/ingredients/types';
 
 import RecipeIngredient from '../RecipeIngredient';
 import { Fields, FieldValidations } from '../Form';
+import { Button } from '../Clickable';
 
 export interface RecipeIngredientsProps {
   name: string,
@@ -40,15 +41,7 @@ const Label = styled.label`
   }
 
   button {
-    border: none;
-    background: none;
     margin: 1rem 0;
-    padding: 0;
-    font-size: 1rem;
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    color: #1d70b8;
-    cursor: pointer;
   }
 `
 
@@ -103,12 +96,14 @@ const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: Rec
             )
           }
         </ul>
-        <button
+        <Button
+          $bold
+          $inline
           type='button'
           onClick={event => newRecipeIngredient(event)}
         >
           Add Ingredient
-          </button>
+        </Button>
       </div>
     </Label>
   );

@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
+
+import { RouterLink } from '../Clickable';
 
 export interface CallToAction {
   text: string,
@@ -59,12 +60,9 @@ const Main = (props: MainProps) => (
         <h2>{props.title}</h2>
       }
       {props.cta &&
-        <Link
-          role='button'
-          className='chow-button chow-button--primary'
-          to={props.cta.link} >
+        <RouterLink to={props.cta.link} >
           {props.cta.text}
-        </Link>
+        </RouterLink>
       }
     </section>
     {props.children}

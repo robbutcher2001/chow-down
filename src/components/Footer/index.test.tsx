@@ -1,12 +1,16 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
 
+import theme from '../../theme';
 import Footer from '.';
 
 test('Footer basic snapshot render', () => {
   const footer = renderer.create(
-    <Footer />
+    <ThemeProvider theme={theme}>
+      <Footer />
+    </ThemeProvider>
   );
 
   expect(footer.toJSON()).toMatchSnapshot();
@@ -14,7 +18,9 @@ test('Footer basic snapshot render', () => {
 
 test('Footer correct tag content assertion', () => {
   const { getByText } = render(
-    <Footer />
+    <ThemeProvider theme={theme}>
+      <Footer />
+    </ThemeProvider>
   );
 
   expect(getByText(/Rob Butcher/).textContent).toEqual('© Rob Butcher 2020.');
