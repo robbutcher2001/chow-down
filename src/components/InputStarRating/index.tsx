@@ -34,11 +34,11 @@ const Label = styled.label`
     }
   }
 
-  .filled::before {
+  .filled:before {
     content: '★';
   }
 
-  .empty::before {
+  .empty:before {
     content: '☆';
   }
 `
