@@ -4,7 +4,7 @@ import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 //TODO: move reset to styled-components and remove all scss refs, remove scss loader
-import './theme/temp_reset';
+import './themes/temp_reset';
 //TODO: should the spinner be a SCSS component?
 import './spinner';
 

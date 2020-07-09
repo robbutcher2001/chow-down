@@ -12,7 +12,9 @@ const Navigation = styled.nav`
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
-  font-size: 1.2rem;
+  font-size: ${props =>
+    props.theme.typography.fontSize.large
+  };
 
   a {
     display: flex;

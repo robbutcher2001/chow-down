@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import { ThemeProvider } from 'styled-components';
 
-import theme from '../../theme';
+import theme from '../../themes';
 import Form from '.';
 
 test('Form basic snapshot render', () => {

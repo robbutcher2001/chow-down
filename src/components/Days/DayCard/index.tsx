@@ -49,7 +49,9 @@ const StyledDayCard = styled.li`
 
   > h3 {
     position: absolute;
-    font-size: 1.2rem;
+    font-size: ${props =>
+      props.theme.typography.fontSize.large
+    };
     width: 120px;
     text-align: center;
     margin: 0;

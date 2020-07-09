@@ -21,7 +21,9 @@ const Nav = styled.nav`
 
   > a {
     background: #000;
-    font-size: 1rem;
+    font-size: ${props =>
+      props.theme.typography.fontSize.normal
+    };
     height: 1.25rem;
     margin: 0.5rem;
     padding: 0.5rem;
@@ -34,7 +36,9 @@ const Nav = styled.nav`
     @media (prefers-color-scheme: light) {
       background: #fff;
       color: black;
-      font-weight: 700;
+      font-weight: ${props =>
+        props.theme.typography.fontWeight.bold
+      };
     }
 
     &.active {

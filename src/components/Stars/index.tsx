@@ -10,7 +10,9 @@ const Stars = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  font-size: 1.2rem;
+  font-size: ${props =>
+    props.theme.typography.fontSize.large
+  };
   padding: 0.5rem;
 
   > mark {

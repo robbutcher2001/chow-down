@@ -5,7 +5,7 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { ThemeProvider } from 'styled-components';
 
-import theme from '../../theme';
+import theme from '../../themes';
 import Main from '.';
 
 test('Main basic snapshot render', () => {

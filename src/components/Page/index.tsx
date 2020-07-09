@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../theme';
+import theme from '../../themes';
 
 import Footer from '../Footer';
 import Header from '../Header';

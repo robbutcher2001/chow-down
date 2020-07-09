@@ -22,7 +22,9 @@ const StyledDay = styled.section<{ image: string }>`
     align-items: baseline;
 
     h3 {
-      font-size: 1.3rem;
+      font-size: ${props =>
+        props.theme.typography.fontSize.xlarge
+      };
       margin: 1rem 1rem 1rem 0;
     }
 
@@ -69,7 +71,9 @@ const StyledDay = styled.section<{ image: string }>`
     padding: 2rem 1.5rem;
 
     h4 {
-      font-size: 1.1rem;
+      font-size: ${props =>
+        props.theme.typography.fontSize.large
+      };
       margin: 0 0 1.5rem;
     }
 

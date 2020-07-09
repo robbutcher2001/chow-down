@@ -17,12 +17,12 @@ const Clickable = styled.div<ClickableProps>`
     '0.75rem 1.5em'
   };
   font-size: ${props => props.$small ?
-    '0.8rem' :
-    '1rem'
+    props.theme.typography.fontSize.small :
+    props.theme.typography.fontSize.normal
   };
   font-weight: ${props => props.$bold ?
-    '700' :
-    '400'
+    props.theme.typography.fontWeight.bold :
+    props.theme.typography.fontWeight.normal
   };
   color: ${props => props.$reset ?
     props.theme.colour.semantic.reset :

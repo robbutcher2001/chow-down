@@ -25,27 +25,33 @@ const Header = styled.header`
   }
 
   > h1 a {
-    font-size: 3rem;
+    font-size: ${props =>
+      props.theme.typography.fontSize.largest
+    };
     color: white;
     text-decoration: none;
   }
 
   > p {
     color: white;
-    font-size: 1.5rem;
+    font-size: ${props =>
+      props.theme.typography.fontSize.xlarge
+    };
   }
 
-  ${xsmall`
+  ${props => xsmall`
     > * {
       padding: 0.5rem;
     }
 
     > h1 a {
-      font-size: 2.2rem;
+      font-size: ${props.theme.typography.fontSize.xxlarge};
     }
+  `}
 
+  ${props => xsmall`
     > p {
-      font-size: 1.2rem;
+      font-size: ${props.theme.typography.fontSize.large};
     }
   `}
 `

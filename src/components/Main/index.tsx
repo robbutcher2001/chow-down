@@ -38,7 +38,9 @@ const StyledZeroMarginedMain = styled.main`
         flex-grow: 1;
         min-width: 80%; //can this be improved?
         align-self: center;
-        font-size: 2rem;
+        font-size: ${props =>
+          props.theme.typography.fontSize.xxlarge
+        };
         color: #4acaa8;
       }
     }

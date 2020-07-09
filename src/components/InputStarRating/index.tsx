@@ -26,8 +26,12 @@ const Label = styled.label`
 
     > label {
       color: #4acaa8;
-      font-family: Times;
-      font-size: 3rem;
+      font-family: ${props =>
+        props.theme.typography.fontFamily.times
+      };
+      font-size: ${props =>
+        props.theme.typography.fontSize.largest
+      };
       margin-right: 0.5rem;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;

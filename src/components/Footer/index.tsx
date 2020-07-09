@@ -8,7 +8,9 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: ${props =>
+    props.theme.typography.fontSize.small
+  };
   padding: 3rem 0;
   color: #c0c0c0;
   background-color: #fafafa;

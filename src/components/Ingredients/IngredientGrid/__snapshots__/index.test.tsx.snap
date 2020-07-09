@@ -5,7 +5,7 @@ exports[`IngredientGrid basic isLoading snapshot render 1`] = `
   className="sc-AxhCb bjixBq spinner spinning"
 >
   <li
-    className="sc-AxirZ cSBHyA"
+    className="sc-AxirZ gVgYtT"
   >
     F
   </li>
@@ -27,7 +27,7 @@ exports[`IngredientGrid basic snapshot render 1`] = `
   className="sc-AxhCb bjixBq spinner"
 >
   <li
-    className="sc-AxirZ cSBHyA"
+    className="sc-AxirZ gVgYtT"
   >
     F
   </li>

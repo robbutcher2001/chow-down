@@ -1,7 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
 
+import theme from '../../../themes';
 import UnitCard from '.';
 import { Unit } from '../../../store/domain/units/types';
 
@@ -13,7 +15,9 @@ const mockUnit: Unit = {
 
 test('UnitCard basic snapshot render', () => {
   const unitCard = renderer.create(
-    <UnitCard unit={mockUnit} />
+    <ThemeProvider theme={theme}>
+      <UnitCard unit={mockUnit} />
+    </ThemeProvider>
   );
 
   expect(unitCard.toJSON()).toMatchSnapshot();
@@ -21,7 +25,9 @@ test('UnitCard basic snapshot render', () => {
 
 test('UnitCard correct tag content assertion', () => {
   const { getByText } = render(
-    <UnitCard unit={mockUnit} />
+    <ThemeProvider theme={theme}>
+      <UnitCard unit={mockUnit} />
+    </ThemeProvider>
   );
 
   expect(getByText(/fake_singular/).textContent).toEqual('fake_singularfake_plural');

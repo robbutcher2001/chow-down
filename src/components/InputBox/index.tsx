@@ -30,8 +30,12 @@ const Label = styled.label`
   > input {
     border: none;
     background-color: rgba(0, 0, 0, 0);
-    font-family: Lato, sans-serif;
-    font-size: 1.2rem;
+    font-family: ${props =>
+      props.theme.typography.fontFamily.app
+    };
+    font-size: ${props =>
+      props.theme.typography.fontSize.large
+    };
     margin: 0;
     padding: 0.25rem 0.5rem;
     -webkit-appearance: none;

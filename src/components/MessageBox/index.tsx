@@ -12,7 +12,9 @@ const Section = styled.section`
   flex-direction: column;
   align-items: center;
   margin-top: 1rem;
-  font-size: 1rem;
+  font-size: ${props =>
+    props.theme.typography.fontSize.normal
+  };
 
   img {
     width: 200px;
