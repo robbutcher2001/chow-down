@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
@@ -37,7 +37,7 @@ const StyledDay = styled.section<{ image: string }>`
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    margin: 1rem 0 2rem;
+    margin: 1rem 0;
 
     > div {
       flex-grow: 2;
@@ -64,24 +64,22 @@ const StyledDay = styled.section<{ image: string }>`
   }
 
   section:nth-of-type(2) {
-    box-shadow: 0 5px 20px 0 rgba(0,0,0,0.2);
-    border-radius: 8px;
-    box-sizing: border-box;
-    background: #fff;
-    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 
     h4 {
       font-size: ${props =>
         props.theme.typography.fontSize.large
       };
-      margin: 0 0 1.5rem;
+      margin: 1.5rem 0;
     }
 
     ul {
       margin: 0;
       padding: 0;
       list-style-type: none;
-  
+
       li {
         margin: 0 0 0.5rem;
         line-height: 1.5rem;
@@ -94,13 +92,63 @@ const StyledDay = styled.section<{ image: string }>`
           padding: 0.5rem 0.75rem;
         }
       }
-  
+
       .strikethrough {
         div {
           color: #6c757d;
           text-decoration: line-through;
         }
       }
+    }
+
+    .ingredients {
+      flex: 1 1 15rem;
+      position: sticky;
+      top: 3rem;
+      background: #fff;
+
+      ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        transition: margin 2s cubic-bezier(0, 1, 0, 1);
+      }
+
+      li {
+        flex-basis: 100%;
+        transition: flex-basis, margin, font-size, line-height 2s cubic-bezier(0, 1, 0, 1);
+
+        div {
+          transition: padding 0.5s ease-in;
+        }
+      }
+    }
+
+    .fixed {
+      h4 {
+        margin: 1rem 0;
+      }
+
+      ul {
+        margin: 0;
+      }
+
+      li {
+        flex-basis: 48%;
+        margin: 0 0.2rem 0.5rem 0;
+        font-size: ${props =>
+          props.theme.typography.fontSize.small
+        };
+        line-height: 1rem;
+
+        div {
+          padding: 0.25rem 1rem;
+        }
+      }
+    }
+
+    .method {
+      flex: 2 2 20rem;
     }
   }
 
@@ -117,6 +165,11 @@ const StyledDay = styled.section<{ image: string }>`
 
 const Day: FunctionComponent<DayProps> = (props: DayProps) => {
   const [strikethroughIndexes, setStrikethroughIndex] = useState([]);
+  const [ingredientsFixed, setIngredientsFixed] = useState(false);
+
+  const setSelectingDay = () => props.setSelectingDay(props.day.date);
+
+  const putDay = () => props.putDay({ date: props.day.date });
 
   const setStrikethrough = (strikethroughIndex: number) =>
     !strikethroughIndexes.includes(strikethroughIndex) &&
@@ -142,6 +195,20 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
       </li>
     );
 
+  useEffect(() => {
+    const onScroll = (event: any) => {
+      event.preventDefault();
+      if (event.target.documentElement.scrollTop > 225) {
+        setIngredientsFixed(true);
+      } else if (event.target.documentElement.scrollTop < 100) {
+        setIngredientsFixed(false);
+      }
+    };
+    window.addEventListener('scroll', onScroll);
+
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     !props.isLoading && (!props.day || !props.day.recipe) ?
       <NegativeBox message='We could not find a recipe associated to this day' /> :
@@ -164,20 +231,50 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
         </header>
         <section>
           <div>
-            <RouterLink to='/recipes' onClick={() => props.setSelectingDay(props.day.date)} >
+            <RouterLink to='/recipes' onClick={setSelectingDay} >
               Change
             </RouterLink>
-            <RouterLink $reset to='/' onClick={() => props.putDay({ date: props.day.date })} >
+            <RouterLink $reset to='/' onClick={putDay} >
               Reset
             </RouterLink>
           </div>
           <figure />
         </section>
         <section>
-          <h4>Recipe Ingredients</h4>
-          <ul>
-            {createRecipeIngredients(props.day?.recipe.ingredients || [])}
-          </ul>
+          <div className={ingredientsFixed ? 'ingredients fixed' : 'ingredients'}>
+            <h4>Recipe Ingredients</h4>
+            <ul>
+              {createRecipeIngredients(props.day?.recipe.ingredients || [])}
+            </ul>
+          </div>
+          <div className='method'>
+            <h4>Recipe Method</h4>
+            <ul>
+              <li>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+              </li>
+            </ul>
+          </div>
         </section>
       </StyledDay >
   );
