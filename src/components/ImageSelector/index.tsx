@@ -40,12 +40,16 @@ const Label = styled.label`
     width: 100%;
     max-width: 420px;
     min-height: 320px;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     cursor: pointer;
 
     > img {
       width: 100%;
     }
+  }
+
+  > figure, aside, figcaption, img {
+    border-radius: 20px;
   }
 `
 
