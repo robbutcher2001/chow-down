@@ -16,14 +16,28 @@ export interface TextareaProps {
 const Label = styled.label`
   display: flex;
   flex-direction: column;
-  margin-bottom: 0.75rem;
+  background-color: rgb(245, 248, 250);
+  margin-bottom: 2rem;
+  border-radius: 5px;
+  border-bottom: 2px solid rgb(101, 119, 134);
+
+  > span {
+    padding: 0.25rem 0.5rem 0;
+    color: rgb(101, 119, 134);
+  }
 
   > textarea {
-    border: solid 1px #e4e4e4;
-    border-radius: 5px;
-    padding: 0.5em;
-    margin: 0.5rem 0;
-    font-size: 1rem;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    font-family: ${props =>
+      props.theme.typography.fontFamily.app
+    };
+    font-size: ${props =>
+      props.theme.typography.fontSize.large
+    };
+    margin: 0;
+    padding: 0.25rem 0.5rem;
+    -webkit-appearance: none;
     resize: vertical;
   }
 `
@@ -41,13 +55,14 @@ class Textarea extends Component<TextareaProps, {}> {
   };
 
   render = () => (
-    <Label htmlFor={this.props.name}>
-      {this.props.label}
+    <Label
+      htmlFor={this.props.name}
+      className={this.props.validFields[this.props.name] === false ? 'red' : undefined} >
+      <span>{this.props.label}</span>
       <textarea
         id={this.props.name}
         name={this.props.name}
         rows={5}
-        className={this.props.validFields[this.props.name] === false ? 'red' : undefined}
         value={this.props.form[this.props.name] ? this.props.form[this.props.name] : ''}
         onChange={event => this.onChange(event)}
         onBlur={event => this.props.setValidationState(

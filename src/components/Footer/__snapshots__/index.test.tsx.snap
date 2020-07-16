@@ -2,7 +2,7 @@
 
 exports[`Footer basic snapshot render 1`] = `
 <footer
-  className="sc-bdVaJa hZcchM"
+  className="sc-AxhUy jRChcZ"
 >
   <p>
     © Rob Butcher 2020.
@@ -10,6 +10,7 @@ exports[`Footer basic snapshot render 1`] = `
   <p>
     Images: 
     <a
+      className="sc-AxiKw kgKkiN"
       href="https://unsplash.com/"
       target="_blank"
     >

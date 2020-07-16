@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
+import theme from '../../themes';
 
 import Footer from '../Footer';
 import Header from '../Header';
@@ -17,11 +18,18 @@ const Page = styled.div`
   min-height: 100vh;
 `
 
+//test - will need an event listener for changes though
+// const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+// console.log(isDarkTheme);
+// console.log(theme);
+
 export default (props: PageProps) => (
   <Page>
-    <Nav />
-    <Header />
-    {props.children}
-    <Footer />
+    <ThemeProvider theme={theme}>
+      <Nav />
+      <Header />
+      {props.children}
+      <Footer />
+    </ThemeProvider>
   </Page>
 );

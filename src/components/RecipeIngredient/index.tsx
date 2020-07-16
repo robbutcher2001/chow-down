@@ -54,8 +54,12 @@ const RecipeIngredient = styled.li`
       margin: 0.5rem 0;
       padding: 0 0.5em;
       height: 2rem;
-      font-size: 1rem;
-      font-family: 'Lato', sans-serif;
+      font-size: ${props =>
+        props.theme.typography.fontSize.normal
+      };
+      font-family: ${props =>
+        props.theme.typography.fontFamily.app
+      };
       -webkit-appearance: none;
     }
   }

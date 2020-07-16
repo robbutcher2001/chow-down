@@ -2,10 +2,11 @@
 
 exports[`Header basic snapshot render 1`] = `
 <header
-  className="sc-bdVaJa fTRPzr"
+  className="sc-AxhUy bodBIE"
 >
   <h1>
     <a
+      className="sc-AxhCb BGDUB"
       href="/"
       onClick={[Function]}
     >

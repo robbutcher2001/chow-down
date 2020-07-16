@@ -3,7 +3,9 @@ import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { ThemeProvider } from 'styled-components';
 
+import theme from '../../../themes';
 import RecipeCard from '.';
 
 const mockRecipe = {
@@ -19,7 +21,9 @@ const mockRecipe = {
 test('RecipeCard basic snapshot render', () => {
   const recipeCard = renderer.create(
     <Router history={createMemoryHistory()}>
-      <RecipeCard recipe={mockRecipe} />
+      <ThemeProvider theme={theme}>
+        <RecipeCard recipe={mockRecipe} />
+      </ThemeProvider>
     </Router>
   );
 
@@ -29,7 +33,9 @@ test('RecipeCard basic snapshot render', () => {
 test('RecipeCard correct tag content assertion', () => {
   const { getByText, getAllByText } = render(
     <Router history={createMemoryHistory()}>
-      <RecipeCard recipe={mockRecipe} />
+      <ThemeProvider theme={theme}>
+        <RecipeCard recipe={mockRecipe} />
+      </ThemeProvider>
     </Router>
   );
 

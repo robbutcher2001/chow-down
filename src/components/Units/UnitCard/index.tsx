@@ -20,7 +20,9 @@ const UnitCard = styled.li`
   box-sizing: border-box;
 
   aside {
-    font-size: 0.8rem;
+    font-size: ${props =>
+      props.theme.typography.fontSize.small
+    };
     font-style: italic;
     margin-top: 0.5rem;
 

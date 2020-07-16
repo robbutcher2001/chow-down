@@ -62,19 +62,16 @@ class NewAlternateDayPage extends Component<CombinedProps, OwnState> {
     <Main title='Alternate Day' >
       {!this.state.displayDay ?
         <NegativeBox message='Selected date cannot not be used' /> :
-        <>
-          <h3>Set {this.state.displayDay} as an alternative day</h3>
-          <Form
-            name='alternateDayForm'
-            dispatch={this.setAlternateDay}
-            submitText='Set'>
-            <Textarea
-              name='alternateDay'
-              label='What will you be doing instead?'
-              validator={(value: string) => value && value.length > 2}
-            />
-          </Form>
-        </>
+        <Form
+          name='alternateDayForm'
+          dispatch={this.setAlternateDay}
+          submitText='Set'>
+          <Textarea
+            name='alternateDay'
+            label={`What will you be doing on ${this.state.displayDay} instead?`}
+            validator={(value: string) => value && value.length > 2}
+          />
+        </Form>
       }
     </Main>
   )

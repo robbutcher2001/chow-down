@@ -26,8 +26,12 @@ const AlternateDay = styled.figure`
     right: 0;
     bottom: 0;
     left: 0;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: ${props =>
+      props.theme.typography.fontSize.xxlarge
+    };
+    font-weight: ${props =>
+      props.theme.typography.fontWeight.bold
+    };
     color: white;
     background: rgba(40, 40, 40, 0.90);
     text-transform: capitalize;

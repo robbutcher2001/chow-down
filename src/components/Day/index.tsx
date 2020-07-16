@@ -1,11 +1,11 @@
-import React, { FunctionComponent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
 import { Day, RecipeIngredient, PutDayApiRequest } from '../../store/domain/days/types';
 import { UserAction } from '../../store/app/user/types';
 import { NegativeBox } from '../MessageBox';
+import { RouterLink, RawLink } from '../Clickable';
 
 interface DayProps {
   isLoading: boolean,
@@ -15,27 +15,37 @@ interface DayProps {
 };
 
 const StyledDay = styled.section<{ image: string }>`
-  margin: 2rem 0;
+  header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
 
-  > header {
+    h3 {
+      font-size: ${props =>
+        props.theme.typography.fontSize.xlarge
+      };
+      margin: 1rem 1rem 1rem 0;
+    }
+
+    a {
+      flex-shrink: 0;
+    }
+  }
+
+  section:nth-of-type(1) {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    margin: 1rem 0;
 
     > div {
       flex-grow: 2;
       justify-content: flex-start;
 
       a {
-        margin-right: 1rem !important;
-      }
-
-      a[class=link] {
         display: inline-block;
-        //TODO: make button component with bold prop
-        font-weight: 400;
-        color: #df3034;
-        text-decoration: underline;
+        margin: 0 1rem 1rem 0;
       }
     }
 
@@ -53,70 +63,113 @@ const StyledDay = styled.section<{ image: string }>`
     }
   }
 
-  section {
+  section:nth-of-type(2) {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
+    flex-wrap: wrap;
 
-    h3 {
-      margin: 1rem 1rem 1rem 0;
+    h4 {
+      font-size: ${props =>
+        props.theme.typography.fontSize.large
+      };
+      margin: 1.5rem 0;
     }
 
-    a {
-      flex-shrink: 0;
-    }
-  }
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
 
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
+      li {
+        margin: 0 0 0.5rem;
+        line-height: 1.5rem;
+        cursor: pointer;
 
-    li {
-      padding: 0.5rem 0.75rem;
-      line-height: 1.5rem;
-      cursor: pointer;
+        div {
+          display: inline-block;
+          background: #f1f7f7;
+          border-radius: 50px;
+          padding: 0.5rem 0.75rem;
+        }
+      }
 
-      &:nth-child(odd) {
-        background: #f1f7f7;
+      .strikethrough {
+        div {
+          color: #6c757d;
+          text-decoration: line-through;
+        }
       }
     }
 
-    .strikethrough {
-      color: #6c757d;
-      text-decoration: line-through;
+    .ingredients {
+      flex: 1 1 15rem;
+      position: sticky;
+      top: 3rem;
+      background: #fff;
+
+      ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        transition: margin 2s cubic-bezier(0, 1, 0, 1);
+      }
+
+      li {
+        flex-basis: 100%;
+        transition: flex-basis, margin, font-size, line-height 2s cubic-bezier(0, 1, 0, 1);
+
+        div {
+          transition: padding 0.5s ease-in;
+        }
+      }
+    }
+
+    .fixed {
+      h4 {
+        margin: 1rem 0;
+      }
+
+      ul {
+        margin: 0;
+      }
+
+      li {
+        flex-basis: 48%;
+        margin: 0 0.2rem 0.5rem 0;
+        font-size: ${props =>
+          props.theme.typography.fontSize.small
+        };
+        line-height: 1rem;
+
+        div {
+          padding: 0.25rem 1rem;
+        }
+      }
+    }
+
+    .method {
+      flex: 2 2 20rem;
     }
   }
 
-  .button {
-    border: none;
-    border-radius: 5px;
-    padding: .5rem 1.5em;
-    height: 2.5rem;
-    font-size: 1rem;
-    line-height: 2.5rem;
-    color: white;
-    background-color: #4acaa8;
-    text-decoration: none;
-  }
+  &.blur {
+    * {
+      filter: blur(0.3rem);
+    }
 
-  .link {
-    border: none;
-    background: none;
-    margin: 1rem 0;
-    padding: 0;
-    font-size: 1rem;
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    color: #005ea5;
-    cursor: pointer;
-    text-decoration: none;
+    h3:before {
+      content: 'Recipe is loading';
+    }
   }
 `
 
 const Day: FunctionComponent<DayProps> = (props: DayProps) => {
   const [strikethroughIndexes, setStrikethroughIndex] = useState([]);
+  const [ingredientsFixed, setIngredientsFixed] = useState(false);
+
+  const setSelectingDay = () => props.setSelectingDay(props.day.date);
+
+  const putDay = () => props.putDay({ date: props.day.date });
 
   const setStrikethrough = (strikethroughIndex: number) =>
     !strikethroughIndexes.includes(strikethroughIndex) &&
@@ -129,7 +182,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
         className={strikethroughIndexes.includes(index) ? 'strikethrough' : ''}
         onClick={() => setStrikethrough(index)}
       >
-        <span>
+        <div>
           {recipeIngredient.quantity}
           {' '}
           {recipeIngredient.quantity === 1 ?
@@ -138,39 +191,91 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
           }
           {' '}
           {recipeIngredient.ingredientName.toLowerCase()}
-        </span>
+        </div>
       </li>
     );
+
+  useEffect(() => {
+    const onScroll = (event: any) => {
+      event.preventDefault();
+      if (event.target.documentElement.scrollTop > 225) {
+        setIngredientsFixed(true);
+      } else if (event.target.documentElement.scrollTop < 100) {
+        setIngredientsFixed(false);
+      }
+    };
+    window.addEventListener('scroll', onScroll);
+
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     !props.isLoading && (!props.day || !props.day.recipe) ?
       <NegativeBox message='We could not find a recipe associated to this day' /> :
       <StyledDay
         image={props.day?.recipe.image}
-        className={props.isLoading ? 'spinner spinning' : 'spinner'}
+        className={props.isLoading ? 'spinner spinning blur' : 'spinner'}
       >
         <header>
-          <div>
-            <Link className='button' to='/recipes' onClick={() => props.setSelectingDay(props.day.date)}>
-              Change
-            </Link>
-            <Link className='link' to='/' onClick={() => props.putDay({ date: props.day.date })}>
-              Reset
-            </Link>
-          </div>
-          <figure />
-        </header>
-        <section>
           <h3>{props.day?.recipe.title}</h3>
           {props.day &&
-            <a className='link' href={props.day.recipe.url} target='_blank' rel='external noreferrer'>
+            <RawLink
+              $bold
+              $inline
+              href={props.day.recipe.url}
+              target='_blank'
+              rel='external noreferrer' >
               Web link &gt;
-            </a>
+            </RawLink>
           }
+        </header>
+        <section>
+          <div>
+            <RouterLink to='/recipes' onClick={setSelectingDay} >
+              Change
+            </RouterLink>
+            <RouterLink $reset to='/' onClick={putDay} >
+              Reset
+            </RouterLink>
+          </div>
+          <figure />
         </section>
-        <ul>
-          {createRecipeIngredients(props.day?.recipe.ingredients || [])}
-        </ul>
+        <section>
+          <div className={ingredientsFixed ? 'ingredients fixed' : 'ingredients'}>
+            <h4>Recipe Ingredients</h4>
+            <ul>
+              {createRecipeIngredients(props.day?.recipe.ingredients || [])}
+            </ul>
+          </div>
+          <div className='method'>
+            <h4>Recipe Method</h4>
+            <ul>
+              <li>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Duis aute irure dolor in reprehenderit in
+                  voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+              </li>
+              <li>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                  labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
+              </li>
+            </ul>
+          </div>
+        </section>
       </StyledDay >
   );
 };

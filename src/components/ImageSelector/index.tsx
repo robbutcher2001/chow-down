@@ -25,19 +25,31 @@ interface OwnState {
 const Label = styled.label`
   display: flex;
   flex-direction: column;
-  margin-bottom: 0.75rem;
+  background-color: rgb(245, 248, 250);
+  margin-bottom: 2rem;
+  border-radius: 5px;
+  border-bottom: 2px solid rgb(101, 119, 134);
+
+  > span {
+    padding: 0.25rem 0.5rem 0;
+    color: rgb(101, 119, 134);
+  }
 
   > figure {
     align-self: center;
     width: 100%;
     max-width: 420px;
     min-height: 320px;
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     cursor: pointer;
 
     > img {
       width: 100%;
     }
+  }
+
+  > figure, aside, figcaption, img {
+    border-radius: 20px;
   }
 `
 
@@ -113,7 +125,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
       htmlFor={this.props.name}
       className={this.props.validFields[this.props.name] === false ? 'red' : undefined}
     >
-      {this.props.label}
+      <span>{this.props.label}</span>
       <input
         id={this.props.name}
         name={this.props.name}
@@ -128,7 +140,7 @@ class ImageSelector extends Component<ImageSelectorProps, OwnState> {
         </figure> :
         <UnknownImage />
       }
-      <div className='red'>{this.state.error}</div>
+      <div>{this.state.error}</div>
     </Label>
   );
 };

@@ -3,21 +3,25 @@ import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { ThemeProvider } from 'styled-components';
 
+import theme from '../../themes';
 import Main from '.';
 
 test('Main basic snapshot render', () => {
   const main = renderer.create(
     <Router history={createMemoryHistory()}>
-      <Main
-        title='fake_title'
-        cta={{
-          text: 'fake_cta',
-          link: 'fake_link'
-        }}
-      >
-        <div>fake_child</div>
-      </Main>
+      <ThemeProvider theme={theme}>
+        <Main
+          title='fake_title'
+          cta={{
+            text: 'fake_cta',
+            link: 'fake_link'
+          }}
+        >
+          <div>fake_child</div>
+        </Main>
+      </ThemeProvider>
     </Router>
   );
 
@@ -27,15 +31,17 @@ test('Main basic snapshot render', () => {
 test('Main correct tag content assertion', () => {
   const { getByText } = render(
     <Router history={createMemoryHistory()}>
-      <Main
-        title='fake_title'
-        cta={{
-          text: 'fake_cta',
-          link: 'fake_link'
-        }}
-      >
-        <div>fake_child</div>
-      </Main>
+      <ThemeProvider theme={theme}>
+        <Main
+          title='fake_title'
+          cta={{
+            text: 'fake_cta',
+            link: 'fake_link'
+          }}
+        >
+          <div>fake_child</div>
+        </Main>
+      </ThemeProvider>
     </Router>
   );
 

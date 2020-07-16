@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
 
@@ -8,6 +7,7 @@ import { Recipe } from '../../../store/domain/recipes/types';
 import { Day, PutDayApiRequest } from '../../../store/domain/days/types';
 
 import RecipeCard from '../RecipeCard';
+import { RouterLink } from '../../Clickable';
 import { NegativeBox } from '../../MessageBox';
 
 interface RecipeGridProps {
@@ -19,18 +19,6 @@ interface RecipeGridProps {
 
 const UserInstruction = styled.div`
   margin: 1rem 0 2rem;
-
-  .link {
-    border: none;
-    background: none;
-    margin: 1rem 0;
-    padding: 0;
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    color: #005ea5;
-    cursor: pointer;
-    text-decoration: underline;
-  }
 `
 
 const RecipeGrid = styled.ul`
@@ -48,9 +36,9 @@ export default (props: RecipeGridProps) =>
     {props.selectedDay &&
       <UserInstruction>
         <span>Select for {moment(props.selectedDay).format('dddd')} or set as </span>
-        <Link className='link' to={`/days/alternate/new?date=` + props.selectedDay} >
+        <RouterLink $bold $inline $underline to={`/days/alternate/new?date=` + props.selectedDay} >
           alternate day
-        </Link>
+        </RouterLink>
         <span>.</span>
       </UserInstruction>
     }

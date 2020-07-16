@@ -2,10 +2,10 @@
 
 exports[`Page basic snapshot render 1`] = `
 <div
-  className="sc-bxivhb jUPexl"
+  className="sc-Axmtr cGmjPE"
 >
   <nav
-    className="sc-htpNat fNawMe"
+    className="sc-AxheI hoyqxa"
   >
     <a
       className="active"
@@ -32,10 +32,11 @@ exports[`Page basic snapshot render 1`] = `
     </a>
   </nav>
   <header
-    className="sc-bwzfXH bqDNJO"
+    className="sc-AxgMl jLaQVi"
   >
     <h1>
       <a
+        className="sc-AxhCb BGDUB"
         href="/"
         onClick={[Function]}
       >
@@ -50,7 +51,7 @@ exports[`Page basic snapshot render 1`] = `
     fake_child
   </div>
   <footer
-    className="sc-bdVaJa hZcchM"
+    className="sc-AxhUy jRChcZ"
   >
     <p>
       © Rob Butcher 2020.
@@ -58,6 +59,7 @@ exports[`Page basic snapshot render 1`] = `
     <p>
       Images: 
       <a
+        className="sc-AxiKw kgKkiN"
         href="https://unsplash.com/"
         target="_blank"
       >

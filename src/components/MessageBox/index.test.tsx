@@ -1,12 +1,16 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
 
+import theme from '../../themes';
 import { NegativeBox } from '.';
 
 test('NegativeBox basic snapshot render', () => {
   const negativeBox = renderer.create(
-    <NegativeBox message='test_negative' />
+    <ThemeProvider theme={theme}>
+      <NegativeBox message='test_negative' />
+    </ThemeProvider>
   );
 
   expect(negativeBox.toJSON()).toMatchSnapshot();
@@ -14,7 +18,9 @@ test('NegativeBox basic snapshot render', () => {
 
 test('NegativeBox correct tag content assertion', () => {
   const { getByText } = render(
-    <NegativeBox message='test_negative' />
+    <ThemeProvider theme={theme}>
+      <NegativeBox message='test_negative' />
+    </ThemeProvider>
   );
 
   expect(getByText(/test_negative/).textContent).toEqual('test_negative');

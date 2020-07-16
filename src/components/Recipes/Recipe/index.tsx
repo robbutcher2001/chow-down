@@ -56,7 +56,9 @@ const RecipeDetail = styled.span<{ image: string }>`
     }
 
     > h3 {
-      font-size: 1.35rem;
+      font-size: ${props =>
+        props.theme.typography.fontSize.xlarge
+      };
       margin: 0;
       padding: 1rem;
       text-align: right;

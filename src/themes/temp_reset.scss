@@ -9,7 +9,7 @@ body {
   margin: 0;
   overflow-y: scroll;
 
-  a, button, input, select {
+  a, button, input, textarea, select {
     &:focus {
       outline: none;
     }
@@ -17,6 +17,5 @@ body {
 
   .red {
     border-color: #ca4a6c !important;
-    color: #ca4a6c !important;
   }
 }

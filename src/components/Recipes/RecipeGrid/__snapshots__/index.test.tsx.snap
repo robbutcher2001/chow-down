@@ -2,10 +2,10 @@
 
 exports[`RecipeGrid basic isLoading snapshot render 1`] = `
 <ul
-  className="sc-ifAKCX fmEAZJ spinner spinning"
+  className="sc-AxmLO iclHBY spinner spinning"
 >
   <li
-    className="sc-bwzfXH fFeMtW"
+    className="sc-AxirZ fDUGAk"
   >
     <a
       href="/recipe/123"
@@ -20,7 +20,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-bdVaJa dyQPNL"
+        className="sc-AxjAm fnlqDi"
       >
         <mark>
           ★
@@ -41,7 +41,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-bwzfXH ewGyNd"
+    className="sc-AxirZ fuUofT"
   >
     <a
       href="/recipe/124"
@@ -56,7 +56,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-bdVaJa dyQPNL"
+        className="sc-AxjAm fnlqDi"
       >
         <mark>
           ★
@@ -78,10 +78,10 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
 
 exports[`RecipeGrid basic snapshot render 1`] = `
 <ul
-  className="sc-ifAKCX fmEAZJ spinner"
+  className="sc-AxmLO iclHBY spinner"
 >
   <li
-    className="sc-bwzfXH fFeMtW"
+    className="sc-AxirZ fDUGAk"
   >
     <a
       href="/recipe/123"
@@ -96,7 +96,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-bdVaJa dyQPNL"
+        className="sc-AxjAm fnlqDi"
       >
         <mark>
           ★
@@ -117,7 +117,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-bwzfXH ewGyNd"
+    className="sc-AxirZ fuUofT"
   >
     <a
       href="/recipe/124"
@@ -132,7 +132,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-bdVaJa dyQPNL"
+        className="sc-AxjAm fnlqDi"
       >
         <mark>
           ★

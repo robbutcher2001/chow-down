@@ -1,7 +1,8 @@
 import React, { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
 
 import styled from 'styled-components';
+
+import { RouterLink } from '../Clickable';
 
 export interface CallToAction {
   text: string,
@@ -27,7 +28,6 @@ const StyledZeroMarginedMain = styled.main`
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      line-height: 2.5rem;
       margin: 0 1rem;
 
       > * {
@@ -38,19 +38,10 @@ const StyledZeroMarginedMain = styled.main`
         flex-grow: 1;
         min-width: 80%; //can this be improved?
         align-self: center;
-        font-size: 2rem;
+        font-size: ${props =>
+          props.theme.typography.fontSize.xxlarge
+        };
         color: #4acaa8;
-      }
-
-      a {
-        border: none;
-        border-radius: 5px;
-        padding: 0 1.5em;
-        height: 2.5rem;
-        font-size: 1rem;
-        color: white;
-        background-color: #4acaa8;
-        text-decoration: none;
       }
     }
   }
@@ -71,10 +62,9 @@ const Main = (props: MainProps) => (
         <h2>{props.title}</h2>
       }
       {props.cta &&
-        <Link
-          to={props.cta.link}>
+        <RouterLink to={props.cta.link} >
           {props.cta.text}
-        </Link>
+        </RouterLink>
       }
     </section>
     {props.children}

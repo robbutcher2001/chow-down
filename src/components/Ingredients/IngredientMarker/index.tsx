@@ -7,7 +7,9 @@ interface IngredientMarkerProps {
 };
 
 const IngredientMarker = styled.li`
-  font-size: 2rem;
+  font-size: ${props =>
+    props.theme.typography.fontSize.xxlarge
+  };
   border-left-style: solid;
   border-left-width: 0.5rem;
   border-left-color: #ca4a6c;
