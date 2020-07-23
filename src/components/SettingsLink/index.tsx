@@ -21,11 +21,11 @@ const Navigation = styled.nav`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
+    background-color: rgb(245, 248, 250);
     color: black;
     text-decoration: none;
-    border: solid #4acaa8;
-    border-width: 0 0 3px 0;
+    border-radius: 8px;
     padding: 1rem;
   }
 
