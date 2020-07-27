@@ -1,13 +1,19 @@
 import { DefaultTheme } from 'styled-components';
 
-import colour from './defs/_colour';
-import effect from './defs/_effect';
+import { lightColour, darkColour } from './defs/_colour';
+import { lightEffect, darkEffect } from './defs/_effect';
 import typography from './defs/_typography';
 
-const theme: DefaultTheme = {
-  colour,
-  effect,
+export const lightTheme: DefaultTheme = {
+  colour: lightColour,
+  effect: lightEffect,
   typography
 };
 
-export default theme;
+export const darkTheme: DefaultTheme = {
+  colour: darkColour,
+  effect: darkEffect,
+  typography
+};
+
+export default lightTheme;

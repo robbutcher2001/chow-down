@@ -41,7 +41,9 @@ const StyledZeroMarginedMain = styled.main`
         font-size: ${props =>
           props.theme.typography.fontSize.xxlarge
         };
-        color: #4acaa8;
+        color: ${props =>
+          props.theme.colour.turquoise
+        };
       }
     }
   }

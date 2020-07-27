@@ -1,4 +1,4 @@
-const colour = {
+export const lightColour = {
   black: '#000',
   grey: '#989898',
   darkGrey: '#657786', //rgb(101,119,134)
@@ -14,12 +14,36 @@ const colour = {
   semantic: {}
 };
 
-colour.semantic = {
-  theme: colour.turquoise,
-  text: colour.black,
-  link: colour.blue,
-  reset: colour.red,
-  negative: colour.pink
+lightColour.semantic = {
+  theme: lightColour.turquoise,
+  text: lightColour.black,
+  link: lightColour.blue,
+  reset: lightColour.red,
+  negative: lightColour.pink
 };
 
-export default colour;
+export const darkColour = {
+  black: '#000',
+  grey: '#989898',
+  darkGrey: '#657786', //rgb(101,119,134)
+  lightGrey: '#f5f8fa', //rgb(245,248,250)
+  white: '#fff',
+
+  red: '#df3034',
+  pink: '#ca4a6c',
+  turquoise: 'hsl(164 40% 54% / 1)',
+  lightBlue: '#0693e3',
+  blue: '#005ea5', //rgb(0, 94, 165)
+
+  semantic: {}
+};
+
+darkColour.semantic = {
+  theme: darkColour.turquoise,
+  text: darkColour.black,
+  link: darkColour.blue,
+  reset: darkColour.red,
+  negative: darkColour.pink
+};
+
+export default lightColour;

@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 
 import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../themes';
+import { lightTheme, darkTheme } from '../../themes';
 
 import Footer from '../Footer';
 import Header from '../Header';
@@ -16,20 +16,31 @@ const Page = styled.div`
   align-items: flex-start;
   grid-template-rows: auto auto 1fr auto;
   min-height: 100vh;
+  background-color: ${props =>
+    props.theme.effect.backgroundColour
+  };
 `
 
-//test - will need an event listener for changes though
-// const isDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
-// console.log(isDarkTheme);
-// console.log(theme);
+export default (props: PageProps) => {
+  const darkThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  const [isDarkTheme, setDarkTheme] = useState(darkThemeMediaQuery.matches);
 
-export default (props: PageProps) => (
-  <Page>
-    <ThemeProvider theme={theme}>
-      <Nav />
-      <Header />
-      {props.children}
-      <Footer />
+  useEffect(() => {
+    const checkTheme = (query: any) => setDarkTheme(query.matches);
+    darkThemeMediaQuery.addListener(checkTheme);
+    return function cleanup() {
+      darkThemeMediaQuery.removeListener(checkTheme);
+    };
+  }, []);
+
+  return (
+    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <Page>
+        <Nav />
+        <Header />
+        {props.children}
+        <Footer />
+      </Page>
     </ThemeProvider>
-  </Page>
-);
+  );
+};

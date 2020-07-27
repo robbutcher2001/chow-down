@@ -2,7 +2,7 @@
 
 exports[`Page basic snapshot render 1`] = `
 <div
-  className="sc-Axmtr cGmjPE"
+  className="sc-Axmtr fujJoP"
 >
   <nav
     className="sc-AxheI hoyqxa"
@@ -51,7 +51,7 @@ exports[`Page basic snapshot render 1`] = `
     fake_child
   </div>
   <footer
-    className="sc-AxhUy jRChcZ"
+    className="sc-AxhUy dJnaFG"
   >
     <p>
       © Rob Butcher 2020.

@@ -13,7 +13,9 @@ const Footer = styled.footer`
   };
   padding: 3rem 0;
   color: #c0c0c0;
-  background-color: #fafafa;
+  background-color: ${props =>
+    props.theme.effect.footer.backgroundColour
+  };
 
   > p {
     margin: 1rem;
