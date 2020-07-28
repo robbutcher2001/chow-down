@@ -20,7 +20,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★
@@ -56,7 +56,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★
@@ -96,7 +96,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★
@@ -132,7 +132,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★

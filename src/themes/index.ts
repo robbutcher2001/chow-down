@@ -7,13 +7,15 @@ import typography from './defs/_typography';
 export const lightTheme: DefaultTheme = {
   colour: lightColour,
   effect: lightEffect,
-  typography
+  typography,
+  isDark: false
 };
 
 export const darkTheme: DefaultTheme = {
   colour: darkColour,
   effect: darkEffect,
-  typography
+  typography,
+  isDark: true
 };
 
 export default lightTheme;

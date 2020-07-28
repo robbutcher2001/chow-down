@@ -1,7 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { render } from '@testing-library/react';
+import { ThemeProvider } from 'styled-components';
 
+import theme from '../../themes';
 import ImageSelector from '.';
 
 const mockFormState = {
@@ -10,15 +12,17 @@ const mockFormState = {
 
 test('ImageSelector basic snapshot render', () => {
   const imageSelector = renderer.create(
-    <ImageSelector
-      name='title'
-      label='The Image Selector Title'
-      validator={() => true}
-      form={mockFormState}
-      validFields={{}}
-      setNewFormState={jest.fn}
-      setValidationState={jest.fn}
-    />
+    <ThemeProvider theme={theme}>
+      <ImageSelector
+        name='title'
+        label='The Image Selector Title'
+        validator={() => true}
+        form={mockFormState}
+        validFields={{}}
+        setNewFormState={jest.fn}
+        setValidationState={jest.fn}
+      />
+    </ThemeProvider>
   );
 
   expect(imageSelector.toJSON()).toMatchSnapshot();
@@ -26,15 +30,17 @@ test('ImageSelector basic snapshot render', () => {
 
 test('ImageSelector correct tag content assertion', () => {
   const { getByText } = render(
-    <ImageSelector
-      name='title'
-      label='The Image Selector Title'
-      validator={() => true}
-      form={mockFormState}
-      validFields={{}}
-      setNewFormState={jest.fn}
-      setValidationState={jest.fn}
-    />
+    <ThemeProvider theme={theme}>
+      <ImageSelector
+        name='title'
+        label='The Image Selector Title'
+        validator={() => true}
+        form={mockFormState}
+        validFields={{}}
+        setNewFormState={jest.fn}
+        setValidationState={jest.fn}
+      />
+    </ThemeProvider>
   );
 
   expect(getByText(/The Image Selector Title/).textContent).toEqual('The Image Selector Title');

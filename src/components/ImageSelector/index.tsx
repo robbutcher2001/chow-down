@@ -25,7 +25,9 @@ interface OwnState {
 const Label = styled.label`
   display: flex;
   flex-direction: column;
-  background-color: rgb(245, 248, 250);
+  background-color: ${props =>
+    props.theme.colour.lightGrey
+  };
   margin-bottom: 2rem;
   border-radius: 5px;
   border-bottom: 2px solid rgb(101, 119, 134);

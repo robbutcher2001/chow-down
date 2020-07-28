@@ -17,7 +17,9 @@ export interface InputBoxProps {
 const Label = styled.label`
   display: flex;
   flex-direction: column;
-  background-color: rgb(245, 248, 250);
+  background-color: ${props =>
+    props.theme.colour.lightGrey
+  };
   margin-bottom: 2rem;
   border-radius: 5px;
   border-bottom: 2px solid rgb(101, 119, 134);
@@ -29,7 +31,10 @@ const Label = styled.label`
 
   > input {
     border: none;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: transparent;
+    ${props => props.theme.isDark &&
+      `color: ${props.theme.colour.white};`
+    };
     font-family: ${props =>
       props.theme.typography.fontFamily.app
     };

@@ -16,7 +16,9 @@ const Stars = styled.section`
   padding: 0.5rem;
 
   > mark {
-    color: #4acaa8;
+    color: ${props =>
+      props.theme.colour.semantic.theme
+    };
     background-color: rgba(0, 0, 0, 0);
   }
 `

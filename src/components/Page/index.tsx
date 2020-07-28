@@ -16,8 +16,9 @@ const Page = styled.div`
   align-items: flex-start;
   grid-template-rows: auto auto 1fr auto;
   min-height: 100vh;
-  background-color: ${props =>
-    props.theme.effect.backgroundColour
+  background-color: ${props => props.theme.isDark ?
+    props.theme.colour.darkGrey :
+    props.theme.colour.white
   };
 `
 

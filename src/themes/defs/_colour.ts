@@ -1,8 +1,10 @@
 export const lightColour = {
   black: '#000',
+  lightBlack: 'rgba(0, 0, 0, 0.6)',
   grey: '#989898',
   darkGrey: '#657786', //rgb(101,119,134)
   lightGrey: '#f5f8fa', //rgb(245,248,250)
+  lightestGrey: '#fafafa',
   white: '#fff',
 
   red: '#df3034',
@@ -24,9 +26,11 @@ lightColour.semantic = {
 
 export const darkColour = {
   black: '#000',
+  lightBlack: 'rgba(0, 0, 0, 0.6)',
   grey: '#989898',
-  darkGrey: '#657786', //rgb(101,119,134)
-  lightGrey: '#f5f8fa', //rgb(245,248,250)
+  darkGrey: '#201f1f',
+  lightGrey: '#2d2c2c',
+  lightestGrey: '#fafafa',
   white: '#fff',
 
   red: '#df3034',

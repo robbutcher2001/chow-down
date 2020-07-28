@@ -2,7 +2,7 @@
 
 exports[`SettingsLink basic snapshot render 1`] = `
 <nav
-  className="sc-AxjAm fXrmjf"
+  className="sc-AxjAm ddLWSW"
 >
   <a
     href="/fake_link"
