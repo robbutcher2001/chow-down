@@ -95,7 +95,9 @@ const StyledDay = styled.section<{ image: string }>`
 
       .strikethrough {
         div {
-          color: #6c757d;
+          color: ${props =>
+            props.theme.colour.grey
+          };
           text-decoration: line-through;
         }
       }

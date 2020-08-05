@@ -5,7 +5,7 @@ exports[`Page basic snapshot render 1`] = `
   className="sc-Axmtr fujJoP"
 >
   <nav
-    className="sc-AxheI hoyqxa"
+    className="sc-AxheI csFpdV"
   >
     <a
       className="active"
@@ -32,7 +32,7 @@ exports[`Page basic snapshot render 1`] = `
     </a>
   </nav>
   <header
-    className="sc-AxgMl jLaQVi"
+    className="sc-AxgMl QypzS"
   >
     <h1>
       <a
@@ -51,7 +51,7 @@ exports[`Page basic snapshot render 1`] = `
     fake_child
   </div>
   <footer
-    className="sc-AxhUy dJnaFG"
+    className="sc-AxhUy hgSSXO"
   >
     <p>
       © Rob Butcher 2020.

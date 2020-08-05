@@ -12,7 +12,13 @@ const UnitCard = styled.li`
   background: rgba(171, 184, 195, 0.25);
   border-left-style: solid;
   border-left-width: 0.35rem;
-  border-left-color: #0693E3;
+  border-left-color: ${props =>
+    props.theme.colour.lightBlue
+  };
+  color: ${props => props.theme.isDark ?
+    props.theme.colour.lightestGrey :
+    props.theme.colour.black
+  };
   margin: 0.5rem;
   padding: 0.75rem;
   border-radius: 4px;

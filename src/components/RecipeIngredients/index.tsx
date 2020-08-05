@@ -30,6 +30,11 @@ export interface RecipeIngredient {
 };
 
 const Label = styled.label`
+  color: ${props => props.theme.isDark ?
+    props.theme.colour.grey :
+    props.theme.colour.darkGrey
+  };
+
   > div.spinning {
     min-height: 200px;
   }

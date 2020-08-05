@@ -5,17 +5,17 @@ exports[`IngredientGrid basic isLoading snapshot render 1`] = `
   className="sc-AxhCb bjixBq spinner spinning"
 >
   <li
-    className="sc-AxirZ gVgYtT"
+    className="sc-AxirZ zzNUa"
   >
     F
   </li>
   <li
-    className="sc-AxjAm jylUCG"
+    className="sc-AxjAm kiPfQz"
   >
     fake_ingredient1
   </li>
   <li
-    className="sc-AxjAm jylUCG"
+    className="sc-AxjAm kiPfQz"
   >
     fake_ingredient2
   </li>
@@ -27,17 +27,17 @@ exports[`IngredientGrid basic snapshot render 1`] = `
   className="sc-AxhCb bjixBq spinner"
 >
   <li
-    className="sc-AxirZ gVgYtT"
+    className="sc-AxirZ zzNUa"
   >
     F
   </li>
   <li
-    className="sc-AxjAm jylUCG"
+    className="sc-AxjAm kiPfQz"
   >
     fake_ingredient1
   </li>
   <li
-    className="sc-AxjAm jylUCG"
+    className="sc-AxjAm kiPfQz"
   >
     fake_ingredient2
   </li>

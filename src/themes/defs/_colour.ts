@@ -34,9 +34,9 @@ export const darkColour = {
   white: '#fff',
 
   red: '#df3034',
-  pink: '#ca4a6c',
+  pink: 'hsl(344 45% 54% / 1)',
   turquoise: 'hsl(164 40% 54% / 1)',
-  lightBlue: '#0693e3',
+  lightBlue: 'hsl(202 50% 46% / 1)',
   blue: '#005ea5', //rgb(0, 94, 165)
 
   semantic: {}

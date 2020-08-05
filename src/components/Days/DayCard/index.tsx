@@ -61,7 +61,9 @@ const StyledDayCard = styled.li`
     width: 120px;
     text-align: center;
     margin: 0;
-    color: white;
+    color: ${props =>
+      props.theme.colour.white
+    };
     transform: rotate(-45deg);
     z-index: 50;
     top: 34px;
@@ -79,7 +81,9 @@ const StyledDayCard = styled.li`
   }
 
   a {
-    color: black;
+    color: ${props =>
+      props.theme.colour.black
+    };
     text-decoration: none;
   }
 `
@@ -111,7 +115,9 @@ const DayRecipe = styled.figure<{ url: string }>`
     width: 100%;
 
     > h3 {
-      color: white;
+      color: ${props =>
+        props.theme.colour.white
+      };
       padding: .5rem .5rem 0;
       margin: 0;
     }

@@ -16,11 +16,19 @@ const Label = styled.label`
   };
   margin-bottom: 2rem;
   border-radius: 5px;
-  border-bottom: 2px solid rgb(101, 119, 134);
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: ${props => props.theme.isDark ?
+    props.theme.colour.grey :
+    props.theme.colour.darkGrey
+  };
 
   > span {
     padding: 0.25rem 0.5rem 0;
-    color: rgb(101, 119, 134);
+    color: ${props => props.theme.isDark ?
+      props.theme.colour.grey :
+      props.theme.colour.darkGrey
+    };
   }
 
   > div {

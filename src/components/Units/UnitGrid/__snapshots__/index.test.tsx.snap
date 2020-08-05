@@ -5,7 +5,7 @@ exports[`UnitGrid basic isLoading snapshot render 1`] = `
   className="sc-AxiKw gXXqCg spinner spinning"
 >
   <li
-    className="sc-AxjAm jePfOF"
+    className="sc-AxjAm iNhScg"
   >
     fake_singular1
     <aside>
@@ -13,7 +13,7 @@ exports[`UnitGrid basic isLoading snapshot render 1`] = `
     </aside>
   </li>
   <li
-    className="sc-AxjAm jePfOF"
+    className="sc-AxjAm iNhScg"
   >
     fake_singular2
     <aside>
@@ -28,7 +28,7 @@ exports[`UnitGrid basic snapshot render 1`] = `
   className="sc-AxiKw gXXqCg spinner"
 >
   <li
-    className="sc-AxjAm jePfOF"
+    className="sc-AxjAm iNhScg"
   >
     fake_singular1
     <aside>
@@ -36,7 +36,7 @@ exports[`UnitGrid basic snapshot render 1`] = `
     </aside>
   </li>
   <li
-    className="sc-AxjAm jePfOF"
+    className="sc-AxjAm iNhScg"
   >
     fake_singular2
     <aside>

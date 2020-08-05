@@ -21,7 +21,9 @@ const RecipeCard = styled.li<{ url: string }>`
   border-radius: 8px;
 
   > a {
-    color: black;
+    color: ${props =>
+      props.theme.colour.black
+    };
     text-decoration: none;
 
     > figure {
@@ -55,7 +57,9 @@ const RecipeCard = styled.li<{ url: string }>`
         width: 100%;
   
         > h3 {
-          color: white;
+          color: ${props =>
+            props.theme.colour.white
+          };
           padding: .5rem;
           margin: 0;
         }
@@ -63,7 +67,10 @@ const RecipeCard = styled.li<{ url: string }>`
     }
   
     > p {
-      color: #888;
+      color: ${props => props.theme.isDark ?
+        props.theme.colour.lightestGrey :
+        props.theme.colour.lightBlack
+      };
       padding: 0 0.5rem 1.5rem;
       margin: 0;
     }

@@ -22,11 +22,19 @@ const Label = styled.label`
   };
   margin-bottom: 2rem;
   border-radius: 5px;
-  border-bottom: 2px solid rgb(101, 119, 134);
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: ${props => props.theme.isDark ?
+    props.theme.colour.grey :
+    props.theme.colour.darkGrey
+  };
 
   > span {
     padding: 0.25rem 0.5rem 0;
-    color: rgb(101, 119, 134);
+    color: ${props => props.theme.isDark ?
+      props.theme.colour.grey :
+      props.theme.colour.darkGrey
+    };
   }
 
   > input {
@@ -44,6 +52,12 @@ const Label = styled.label`
     margin: 0;
     padding: 0.25rem 0.5rem;
     -webkit-appearance: none;
+  }
+
+  &.pink {
+    border-color: ${props =>
+      props.theme.colour.pink
+    };
   }
 `
 
@@ -66,7 +80,7 @@ class InputBox extends Component<InputBoxProps, {}> {
   render = () => (
     <Label
       htmlFor={this.props.name}
-      className={this.props.validFields[this.props.name] === false ? 'red' : undefined} >
+      className={this.props.validFields[this.props.name] === false ? 'pink' : undefined} >
       <span>{this.props.label}</span>
       <input
         id={this.props.name}
