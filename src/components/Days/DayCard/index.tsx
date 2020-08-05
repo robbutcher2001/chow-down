@@ -30,12 +30,12 @@ const StyledDayCard = styled.li`
   overflow: hidden;
   position: relative;
   border-radius: 8px;
-  box-shadow: 4px 4px 12px 2px rgba(0,0,0,0.6);
+  box-shadow: 4px 4px 12px 2px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
 
   ${xsmall`
     margin: 1rem 0;
-    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.6);
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.6);
   `}
 
   > span {
@@ -88,14 +88,14 @@ const StyledDayCard = styled.li`
   }
 `
 
-const DayRecipe = styled.figure<{ url: string }>`
-  background-image: url(${props => props.url});
-  background-size: cover;
-  background-position: 50%;
-  margin: 0;
+const DayRecipe = styled.figure`
   height: 100%;
+  margin: 0;
+  position: relative;
+  z-index: 0;
 
-  > aside {
+  &:before {
+    content: '';
     background-image: url(${placeholderImg});
     background-size: cover;
     background-position: 50%;
@@ -108,6 +108,31 @@ const DayRecipe = styled.figure<{ url: string }>`
     z-index: -50;
   }
 
+  > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+    &:after {
+      content: attr(alt) ' missing';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding-top: 2rem;
+      background-color: ${props => props.theme.isDark ?
+        props.theme.colour.darkGrey :
+        props.theme.colour.white
+      };
+      color: ${props => props.theme.isDark ?
+        props.theme.colour.lightestGrey :
+        props.theme.colour.black
+      };
+      text-align: center;
+    }
+  }
+
   > figcaption {
     position: absolute;
     bottom: 0;
@@ -118,7 +143,7 @@ const DayRecipe = styled.figure<{ url: string }>`
       color: ${props =>
         props.theme.colour.white
       };
-      padding: .5rem .5rem 0;
+      padding: 0.5rem 0.5rem 0;
       margin: 0;
     }
   }
@@ -147,8 +172,8 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
               <AlternateDay title={props.day.alternateDay} />
             </Link> :
             <Link to={`/days/${props.date}`}>
-              <DayRecipe url={props.day.recipe.image} >
-                <aside />
+              <DayRecipe>
+                <img src={props.day.recipe.image} alt={`${props.day.recipe.title} image`} />
                 <figcaption>
                   <h3>{props.day.recipe.title}</h3>
                   <Stars rating={props.day.recipe.rating} />

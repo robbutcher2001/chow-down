@@ -28,8 +28,8 @@ export const darkColour = {
   black: '#000',
   lightBlack: 'rgba(0, 0, 0, 0.6)',
   grey: '#989898',
-  darkGrey: '#201f1f',
-  lightGrey: '#2d2c2c',
+  darkGrey: '#201f1f', //this is the background
+  lightGrey: '#2d2c2c', //this is the text box background
   lightestGrey: '#fafafa',
   white: '#fff',
 

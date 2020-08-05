@@ -26,7 +26,7 @@ const Navigation = styled.nav`
       props.theme.colour.lightGrey
     };
     color: ${props => props.theme.isDark ?
-      props.theme.colour.white :
+      props.theme.colour.lightestGrey :
       props.theme.colour.black
     };
     text-decoration: none;
@@ -38,7 +38,7 @@ const Navigation = styled.nav`
     border: solid;
     border-width: 0 2px 2px 0;
     border-color: ${props => props.theme.isDark ?
-      props.theme.colour.white :
+      props.theme.colour.lightestGrey :
       props.theme.colour.black
     };
     display: inline-block;

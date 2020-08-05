@@ -16,6 +16,8 @@ interface RecipeDetailProps {
 const RecipeDetail = styled.span<{ image: string }>`
   display: flex;
   justify-content: center;
+  position: relative;
+  z-index: 0;
 
   > div {
     min-height: 500px;
@@ -42,7 +44,8 @@ const RecipeDetail = styled.span<{ image: string }>`
       background-position: 75%;
     `}
 
-    > aside {
+    &:before {
+      content: '';
       background-image: url(${placeholderImg});
       background-size: cover;
       background-position: 50%;
@@ -129,7 +132,6 @@ export default (props: RecipeDetailProps) =>
   props.recipe ?
     <RecipeDetail image={props.recipe.image} >
       <div>
-        <aside />
         <h3>{props.recipe.title}</h3>
         <section className='ingredients' >
           <div>Recipe ingredients coming soon!</div>
