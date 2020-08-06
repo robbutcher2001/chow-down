@@ -2,6 +2,7 @@ import React, { ReactNode, useState, useEffect } from 'react';
 
 import styled, { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from '../../themes';
+import GlobalStyles from '../../themes/global';
 
 import Footer from '../Footer';
 import Header from '../Header';
@@ -36,6 +37,7 @@ export default (props: PageProps) => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <GlobalStyles />
       <Page>
         <Nav />
         <Header />
