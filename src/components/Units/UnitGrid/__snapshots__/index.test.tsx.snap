@@ -1,47 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UnitGrid basic isLoading snapshot render 1`] = `
-<ul
-  className="sc-AxiKw gXXqCg spinner spinning"
+<div
+  className="sc-AxiKw kpokka"
 >
-  <li
-    className="sc-AxjAm iNhScg"
+  <h3>
+    fake
+  </h3>
+  <ul
+    className="spinner spinning"
   >
-    fake_singular1
-    <aside>
-      fake_plural1
-    </aside>
-  </li>
-  <li
-    className="sc-AxjAm iNhScg"
-  >
-    fake_singular2
-    <aside>
-      fake_plural2
-    </aside>
-  </li>
-</ul>
+    <li
+      className="sc-AxjAm fvkVhc"
+    >
+      fake_singular1
+      <aside>
+        fake_plural1
+      </aside>
+    </li>
+    <li
+      className="sc-AxjAm fvkVhc"
+    >
+      fake_singular2
+      <aside>
+        fake_plural2
+      </aside>
+    </li>
+  </ul>
+</div>
 `;
 
 exports[`UnitGrid basic snapshot render 1`] = `
-<ul
-  className="sc-AxiKw gXXqCg spinner"
+<div
+  className="sc-AxiKw kpokka"
 >
-  <li
-    className="sc-AxjAm iNhScg"
+  <h3>
+    fake
+  </h3>
+  <ul
+    className="spinner"
   >
-    fake_singular1
-    <aside>
-      fake_plural1
-    </aside>
-  </li>
-  <li
-    className="sc-AxjAm iNhScg"
-  >
-    fake_singular2
-    <aside>
-      fake_plural2
-    </aside>
-  </li>
-</ul>
+    <li
+      className="sc-AxjAm fvkVhc"
+    >
+      fake_singular1
+      <aside>
+        fake_plural1
+      </aside>
+    </li>
+    <li
+      className="sc-AxjAm fvkVhc"
+    >
+      fake_singular2
+      <aside>
+        fake_plural2
+      </aside>
+    </li>
+  </ul>
+</div>
 `;

@@ -9,20 +9,30 @@ import { NegativeBox } from '../../MessageBox';
 
 interface IngredientGridProps {
   isLoading: boolean,
+  title: string,
   ingredients: Ingredient[]
 };
 
-const IngredientGrid = styled.ul`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  min-height: 120px;
+const IngredientGrid = styled.div`
+  h3 {
+    color: ${props => props.theme.isDark ?
+      props.theme.colour.lightestGrey :
+      props.theme.colour.black
+    };
+  }
 
-  li:first-child {
-    margin-top: 0.5rem;
+  ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    min-height: 120px;
+
+    li:first-child {
+      margin-top: 0.5rem;
+    }
   }
 `
 
@@ -54,6 +64,9 @@ const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
 export default (props: IngredientGridProps) =>
   !props.isLoading && props.ingredients.length === 0 ?
     <NegativeBox message='No ingredients yet!' /> :
-    <IngredientGrid className={props.isLoading ? 'spinner spinning' : 'spinner'}>
-      {ingredientsWithMarkers(props.ingredients)}
+    <IngredientGrid>
+      <h3>{props.title}</h3>
+      <ul className={props.isLoading ? 'spinner spinning' : 'spinner'}>
+        {ingredientsWithMarkers(props.ingredients)}
+      </ul>
     </IngredientGrid>;

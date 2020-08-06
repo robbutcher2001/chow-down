@@ -65,9 +65,9 @@ class NewIngredientPage extends Component<CombinedProps, OwnState> {
               />
             </Form>
           </div>
-          <h4>Existing ingredients</h4>
           <IngredientGrid
             isLoading={this.props.ui.pending.get}
+            title='Existing ingredients'
             ingredients={this.props.ingredients}
           />
         </>

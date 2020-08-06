@@ -23,11 +23,18 @@ const RecipeDetail = styled.span<{ image: string }>`
     min-height: 500px;
     width: 100%;
     max-width: 768px;
-    background-image: radial-gradient(
-      farthest-corner at 50% 55%,
-      rgba(255, 255, 255, 0) 30%,
-      rgba(255, 255, 255, 1) 65%
-    ), url(${props => props.image});
+    background-image: ${props => props.theme.isDark ?
+      `radial-gradient(
+        farthest-corner at 50% 55%,
+        ${props.theme.colour.darkGrey}00 30%,
+        ${props.theme.colour.darkGrey}ff 65%
+      ), url(${props.image});` :
+      `radial-gradient(
+        farthest-corner at 50% 55%,
+        ${props.theme.colour.white}00 30%,
+        ${props.theme.colour.white}ff 65%
+      ), url(${props.image});`
+    };
     background-size: cover;
     background-position: 75% 35%;
     position: relative;

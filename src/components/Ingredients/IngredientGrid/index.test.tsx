@@ -19,7 +19,7 @@ const mockIngredients: Ingredient[] = [{
 test('IngredientGrid basic snapshot render', () => {
   const ingredientGrid = renderer.create(
     <ThemeProvider theme={theme}>
-      <IngredientGrid isLoading={false} ingredients={mockIngredients} />
+      <IngredientGrid isLoading={false} title='fake' ingredients={mockIngredients} />
     </ThemeProvider>
   );
 
@@ -29,7 +29,7 @@ test('IngredientGrid basic snapshot render', () => {
 test('IngredientGrid basic isLoading snapshot render', () => {
   const ingredientGrid = renderer.create(
     <ThemeProvider theme={theme}>
-      <IngredientGrid isLoading={true} ingredients={mockIngredients} />
+      <IngredientGrid isLoading={true} title='fake' ingredients={mockIngredients} />
     </ThemeProvider>
   );
 
@@ -39,7 +39,7 @@ test('IngredientGrid basic isLoading snapshot render', () => {
 test('IngredientGrid correct tag content assertion', () => {
   const { getByText } = render(
     <ThemeProvider theme={theme}>
-      <IngredientGrid isLoading={false} ingredients={mockIngredients} />
+      <IngredientGrid isLoading={false} title='fake' ingredients={mockIngredients} />
     </ThemeProvider>
   );
 
@@ -49,7 +49,7 @@ test('IngredientGrid correct tag content assertion', () => {
 test('IngredientGrid render multiple ingredients assertion', () => {
   const { getByText } = render(
     <ThemeProvider theme={theme}>
-      <IngredientGrid isLoading={false} ingredients={mockIngredients} />
+      <IngredientGrid isLoading={false} title='fake' ingredients={mockIngredients} />
     </ThemeProvider>
   );
 
@@ -60,7 +60,7 @@ test('IngredientGrid render multiple ingredients assertion', () => {
 test('IngredientGrid correct class when not loading', () => {
   const { container } = render(
     <ThemeProvider theme={theme}>
-      <IngredientGrid isLoading={false} ingredients={mockIngredients} />
+      <IngredientGrid isLoading={false} title='fake' ingredients={mockIngredients} />
     </ThemeProvider>
   );
 
@@ -71,7 +71,7 @@ test('IngredientGrid correct class when not loading', () => {
 test('IngredientGrid correct class when loading', () => {
   const { container } = render(
     <ThemeProvider theme={theme}>
-      <IngredientGrid isLoading={true} ingredients={mockIngredients} />
+      <IngredientGrid isLoading={true} title='fake' ingredients={mockIngredients} />
     </ThemeProvider>
   );
 

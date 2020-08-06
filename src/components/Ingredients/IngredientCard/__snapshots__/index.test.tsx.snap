@@ -2,7 +2,7 @@
 
 exports[`IngredientCard basic snapshot render 1`] = `
 <li
-  className="sc-AxjAm kiPfQz"
+  className="sc-AxjAm fBOoyb"
 >
   fake_ingredient
 </li>

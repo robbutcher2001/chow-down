@@ -2,10 +2,10 @@
 
 exports[`Page basic snapshot render 1`] = `
 <div
-  className="sc-Axmtr fujJoP"
+  className="sc-Axmtr iVDwXJ"
 >
   <nav
-    className="sc-AxheI csFpdV"
+    className="sc-AxheI cgFafN"
   >
     <a
       className="active"
@@ -32,7 +32,7 @@ exports[`Page basic snapshot render 1`] = `
     </a>
   </nav>
   <header
-    className="sc-AxgMl QypzS"
+    className="sc-AxgMl hVjBKq"
   >
     <h1>
       <a

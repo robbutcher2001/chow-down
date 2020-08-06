@@ -21,7 +21,7 @@ const mockUnits: Unit[] = [{
 test('UnitGrid basic snapshot render', () => {
   const unitGrid = renderer.create(
     <ThemeProvider theme={theme}>
-      <UnitGrid isLoading={false} units={mockUnits} />
+      <UnitGrid isLoading={false} title='fake' units={mockUnits} />
     </ThemeProvider>
   );
 
@@ -31,7 +31,7 @@ test('UnitGrid basic snapshot render', () => {
 test('UnitGrid basic isLoading snapshot render', () => {
   const unitGrid = renderer.create(
     <ThemeProvider theme={theme}>
-      <UnitGrid isLoading={true} units={mockUnits} />
+      <UnitGrid isLoading={true} title='fake' units={mockUnits} />
     </ThemeProvider>
   );
 
@@ -41,7 +41,7 @@ test('UnitGrid basic isLoading snapshot render', () => {
 test('UnitGrid correct tag content assertion', () => {
   const { getByText } = render(
     <ThemeProvider theme={theme}>
-      <UnitGrid isLoading={false} units={mockUnits} />
+      <UnitGrid isLoading={false} title='fake' units={mockUnits} />
     </ThemeProvider>
   );
 
@@ -51,7 +51,7 @@ test('UnitGrid correct tag content assertion', () => {
 test('UnitGrid render multiple units assertion', () => {
   const { getByText } = render(
     <ThemeProvider theme={theme}>
-      <UnitGrid isLoading={false} units={mockUnits} />
+      <UnitGrid isLoading={false} title='fake' units={mockUnits} />
     </ThemeProvider>
   );
 
@@ -61,7 +61,7 @@ test('UnitGrid render multiple units assertion', () => {
 test('UnitGrid correct class when not loading', () => {
   const { container } = render(
     <ThemeProvider theme={theme}>
-      <UnitGrid isLoading={false} units={mockUnits} />
+      <UnitGrid isLoading={false} title='fake' units={mockUnits} />
     </ThemeProvider>
   );
 
@@ -72,7 +72,7 @@ test('UnitGrid correct class when not loading', () => {
 test('UnitGrid correct class when loading', () => {
   const { container } = render(
     <ThemeProvider theme={theme}>
-      <UnitGrid isLoading={true} units={mockUnits} />
+      <UnitGrid isLoading={true} title='fake' units={mockUnits} />
     </ThemeProvider>
   );
 

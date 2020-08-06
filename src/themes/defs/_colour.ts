@@ -1,11 +1,11 @@
 export const lightColour = {
-  black: '#000',
+  black: '#000000',
   lightBlack: 'rgba(0, 0, 0, 0.6)',
   grey: '#989898',
   darkGrey: '#657786', //rgb(101,119,134)
   lightGrey: '#f5f8fa', //rgb(245,248,250)
   lightestGrey: '#fafafa',
-  white: '#fff',
+  white: '#ffffff',
 
   red: '#df3034',
   pink: '#ca4a6c',
@@ -25,19 +25,19 @@ lightColour.semantic = {
 };
 
 export const darkColour = {
-  black: '#000',
+  black: '#000000',
   lightBlack: 'rgba(0, 0, 0, 0.6)',
   grey: '#989898',
   darkGrey: '#201f1f', //this is the background
   lightGrey: '#2d2c2c', //this is the text box background
   lightestGrey: '#fafafa',
-  white: '#fff',
+  white: '#ffffff',
 
   red: '#df3034',
   pink: 'hsl(344 45% 54% / 1)',
   turquoise: 'hsl(164 40% 54% / 1)',
   lightBlue: 'hsl(202 50% 46% / 1)',
-  blue: '#005ea5', //rgb(0, 94, 165)
+  blue: '#2196f3', //rgb(0, 94, 165)
 
   semantic: {}
 };

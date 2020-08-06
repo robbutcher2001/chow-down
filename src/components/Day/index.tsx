@@ -22,6 +22,10 @@ const StyledDay = styled.section<{ image: string }>`
     align-items: baseline;
 
     h3 {
+      color: ${props => props.theme.isDark ?
+        props.theme.colour.lightestGrey :
+        props.theme.colour.black
+      };
       font-size: ${props =>
         props.theme.typography.fontSize.xlarge
       };
@@ -87,7 +91,7 @@ const StyledDay = styled.section<{ image: string }>`
 
         div {
           display: inline-block;
-          background: #f1f7f7;
+          background: ${props => props.theme.colour.lightGrey};
           border-radius: 50px;
           padding: 0.5rem 0.75rem;
         }
@@ -107,7 +111,14 @@ const StyledDay = styled.section<{ image: string }>`
       flex: 1 1 15rem;
       position: sticky;
       top: 3rem;
-      background: #fff;
+      color: ${props => props.theme.isDark ?
+        props.theme.colour.lightestGrey :
+        props.theme.colour.black
+      };
+      background: ${props => props.theme.isDark ?
+        props.theme.colour.darkGrey :
+        props.theme.colour.white
+      };
 
       ul {
         display: flex;
@@ -151,6 +162,10 @@ const StyledDay = styled.section<{ image: string }>`
 
     .method {
       flex: 2 2 20rem;
+      color: ${props => props.theme.isDark ?
+        props.theme.colour.lightestGrey :
+        props.theme.colour.black
+      };
     }
   }
 

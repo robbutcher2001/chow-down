@@ -19,6 +19,13 @@ interface RecipeGridProps {
 
 const UserInstruction = styled.div`
   margin: 1rem 0 2rem;
+
+  > span {
+    color: ${props => props.theme.isDark ?
+      props.theme.colour.lightestGrey :
+      props.theme.colour.black
+    };
+  }
 `
 
 const RecipeGrid = styled.ul`
