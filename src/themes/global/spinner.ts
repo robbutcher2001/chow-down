@@ -11,7 +11,10 @@ export default css`
       right: 0px;
       bottom: 0px;
       left: 0px;
-      background: rgba(255, 255, 255, 0.75);
+      background: ${props => props.theme.isDark ?
+        props.theme.colour.darkGrey + 'bf' :
+        'rgba(255, 255, 255, 0.75)'
+      };
       opacity: 0;
       pointer-events: none;
       transition: opacity 1s;
@@ -22,7 +25,7 @@ export default css`
       content: '';
       border-radius: 50%;
       border: 4px solid transparent;
-      border-top-color: #4acaa8;
+      border-top-color: ${({ theme }) => theme.colour.semantic.theme};
       width: 100px;
       height: 100px;
       position: absolute;
