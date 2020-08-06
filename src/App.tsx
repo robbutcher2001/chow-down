@@ -3,8 +3,6 @@ import { Store } from 'redux';
 import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-//TODO: should the spinner be a SCSS component? move to styled-components and remove all scss refs, remove scss loader
-import './spinner';
 
 import { GlobalState } from './store';
 import Routes from './Routes';

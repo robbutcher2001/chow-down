@@ -56,14 +56,6 @@ module.exports = {
         ]
       },
       {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
-        ]
-      },
-      {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
           'url-loader'
@@ -77,7 +69,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.ttf', '.scss', '.jpg']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   plugins: [
     new htmlWebpack({
