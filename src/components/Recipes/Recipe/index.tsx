@@ -1,9 +1,9 @@
 import React from 'react';
 
 import styled, { css } from 'styled-components';
-import { xsmall, small, medium } from '../../../breakpoints';
+import { xsmall, small, medium } from '../../../themes/breakpoints';
 import Stars from '../../Stars';
-import placeholderImg from '../../../placeholder.svg';
+import placeholderImg from '../../../themes/placeholder.svg';
 
 import { Recipe } from '../../../store/domain/recipes/types';
 

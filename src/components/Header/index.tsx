@@ -1,8 +1,8 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import foodImg from '../../food.jpg';
-import { xsmall } from '../../breakpoints';
+import foodImg from '../../themes/food.jpg';
+import { xsmall } from '../../themes/breakpoints';
 
 import { RouterLink } from '../Clickable';
 

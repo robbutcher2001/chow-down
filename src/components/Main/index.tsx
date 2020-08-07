@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
-import { small } from '../../breakpoints';
+import { small } from '../../themes/breakpoints';
 
 import { RouterLink } from '../Clickable';
 
