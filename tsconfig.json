@@ -9,8 +9,6 @@
     "jsx": "react"
   },
   "include": [
-    "src",
-    "image-import.d.ts",
-    "image-resizer.d.ts"
+    "src"
   ]
 }

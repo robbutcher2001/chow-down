@@ -12,8 +12,14 @@ const Footer = styled.footer`
     props.theme.typography.fontSize.small
   };
   padding: 3rem 0;
-  color: #c0c0c0;
-  background-color: #fafafa;
+  color: ${props => props.theme.isDark ?
+    props.theme.colour.grey :
+    props.theme.colour.lightBlack
+  };
+  background-color: ${props => props.theme.isDark ?
+    props.theme.colour.lightBlack :
+    props.theme.colour.lightestGrey
+  };
 
   > p {
     margin: 1rem;

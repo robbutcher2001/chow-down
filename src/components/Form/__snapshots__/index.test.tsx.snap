@@ -19,7 +19,7 @@ exports[`Form basic snapshot render 1`] = `
     className="buttons"
   >
     <button
-      className="sc-AxirZ jYqksi"
+      className="sc-AxirZ gYlvWM"
       form="form"
       type="submit"
       value="Submit Button"

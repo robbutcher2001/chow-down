@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import styled from 'styled-components';
+import { small } from '../../breakpoints';
 
 import { RouterLink } from '../Clickable';
 
@@ -28,20 +29,22 @@ const StyledZeroMarginedMain = styled.main`
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
       margin: 0 1rem;
 
-      > * {
-        margin: 0.5rem 0;
-      }
-
       h2 {
-        flex-grow: 1;
-        min-width: 80%; //can this be improved?
-        align-self: center;
+        margin: 1.5rem 0;
         font-size: ${props =>
           props.theme.typography.fontSize.xxlarge
         };
-        color: #4acaa8;
+        color: ${props =>
+          props.theme.colour.turquoise
+        };
+
+        ${small`
+          margin: 0.5rem 2rem 0.5rem 0;
+        `}
       }
     }
   }

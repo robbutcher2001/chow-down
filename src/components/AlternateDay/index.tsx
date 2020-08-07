@@ -32,7 +32,9 @@ const AlternateDay = styled.figure`
     font-weight: ${props =>
       props.theme.typography.fontWeight.bold
     };
-    color: white;
+    color: ${props =>
+      props.theme.colour.white
+    };
     background: rgba(40, 40, 40, 0.90);
     text-transform: capitalize;
     text-align: center;

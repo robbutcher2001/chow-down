@@ -26,7 +26,9 @@ const RecipeIngredient = styled.li`
   background: rgba(171, 184, 195, 0.15);
   border-left-style: solid;
   border-left-width: 0.15rem;
-  border-left-color: #0693E3;
+  border-left-color: ${props =>
+    props.theme.colour.lightBlue
+  };
   margin: 0 0 1rem 0;
   padding: 0.75rem;
 
@@ -48,9 +50,16 @@ const RecipeIngredient = styled.li`
 
     > input, select {
       box-sizing: border-box;
-      border: dashed 2px #e4e4e4;
+      border-width: 2px;
+      border-style: dashed;
+      border-color: ${props => props.theme.isDark ?
+        props.theme.colour.lightBlack :
+        props.theme.colour.grey
+      };
       border-radius: 5px;
-      background-color: #fff;
+      background-color: ${props =>
+        props.theme.colour.white
+      };
       margin: 0.5rem 0;
       padding: 0 0.5em;
       height: 2rem;
@@ -75,6 +84,12 @@ const RecipeIngredient = styled.li`
 
   p {
     align-self: center;
+  }
+
+  .pink {
+    border-color: ${props =>
+      props.theme.colour.pink
+    };
   }
 `
 
@@ -112,7 +127,7 @@ const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props:
           type='number'
           step='0.01'
           min='0'
-          className={props.validFields[quantityId] === false ? 'red' : undefined}
+          className={props.validFields[quantityId] === false ? 'pink' : undefined}
           value={props.recipeIngredient.quantity.toString()}
           onChange={event => onChange({
             quantity: event.currentTarget.value.endsWith('.') ?
@@ -131,7 +146,7 @@ const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props:
         Unit
         <select
           id={unitId}
-          className={props.validFields[unitId] === false ? 'red' : undefined}
+          className={props.validFields[unitId] === false ? 'pink' : undefined}
           value={props.recipeIngredient.unitId}
           onChange={event => onChange({
             unitId: event.currentTarget.value
@@ -152,7 +167,7 @@ const StyledRecipeIngredient: FunctionComponent<RecipeIngredientProps> = (props:
         Ingredient
         <select
           id={ingredientId}
-          className={props.validFields[ingredientId] === false ? 'red' : undefined}
+          className={props.validFields[ingredientId] === false ? 'pink' : undefined}
           value={props.recipeIngredient.ingredientId}
           onChange={event => onChange({
             ingredientId: event.currentTarget.value

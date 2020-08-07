@@ -5,14 +5,17 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
   className="sc-AxmLO iclHBY spinner spinning"
 >
   <li
-    className="sc-AxirZ fDUGAk"
+    className="sc-AxirZ fjMSrX"
   >
     <a
       href="/recipe/123"
       onClick={[Function]}
     >
       <figure>
-        <aside />
+        <img
+          alt="fake_title1 image"
+          src="fake_alt_text1"
+        />
         <figcaption>
           <h3>
             fake_title1
@@ -20,7 +23,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★
@@ -41,14 +44,17 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-AxirZ fuUofT"
+    className="sc-AxirZ fjMSrX"
   >
     <a
       href="/recipe/124"
       onClick={[Function]}
     >
       <figure>
-        <aside />
+        <img
+          alt="fake_title2 image"
+          src="fake_alt_text2"
+        />
         <figcaption>
           <h3>
             fake_title2
@@ -56,7 +62,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★
@@ -81,14 +87,17 @@ exports[`RecipeGrid basic snapshot render 1`] = `
   className="sc-AxmLO iclHBY spinner"
 >
   <li
-    className="sc-AxirZ fDUGAk"
+    className="sc-AxirZ fjMSrX"
   >
     <a
       href="/recipe/123"
       onClick={[Function]}
     >
       <figure>
-        <aside />
+        <img
+          alt="fake_title1 image"
+          src="fake_alt_text1"
+        />
         <figcaption>
           <h3>
             fake_title1
@@ -96,7 +105,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★
@@ -117,14 +126,17 @@ exports[`RecipeGrid basic snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-AxirZ fuUofT"
+    className="sc-AxirZ fjMSrX"
   >
     <a
       href="/recipe/124"
       onClick={[Function]}
     >
       <figure>
-        <aside />
+        <img
+          alt="fake_title2 image"
+          src="fake_alt_text2"
+        />
         <figcaption>
           <h3>
             fake_title2
@@ -132,7 +144,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fnlqDi"
+        className="sc-AxjAm fbYiwZ"
       >
         <mark>
           ★

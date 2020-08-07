@@ -28,12 +28,16 @@ const Header = styled.header`
     font-size: ${props =>
       props.theme.typography.fontSize.largest
     };
-    color: white;
+    color: ${props =>
+      props.theme.colour.white
+    };
     text-decoration: none;
   }
 
   > p {
-    color: white;
+    color: ${props =>
+      props.theme.colour.white
+    };
     font-size: ${props =>
       props.theme.typography.fontSize.xlarge
     };

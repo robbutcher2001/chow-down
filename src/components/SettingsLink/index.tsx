@@ -21,17 +21,26 @@ const Navigation = styled.nav`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 500px;
-    color: black;
+    max-width: 400px;
+    background-color: ${props =>
+      props.theme.colour.lightGrey
+    };
+    color: ${props => props.theme.isDark ?
+      props.theme.colour.lightestGrey :
+      props.theme.colour.black
+    };
     text-decoration: none;
-    border: solid #4acaa8;
-    border-width: 0 0 3px 0;
+    border-radius: 8px;
     padding: 1rem;
   }
 
   i {
-    border: solid black;
+    border: solid;
     border-width: 0 2px 2px 0;
+    border-color: ${props => props.theme.isDark ?
+      props.theme.colour.lightestGrey :
+      props.theme.colour.black
+    };
     display: inline-block;
     padding: 6px;
     transform: rotate(-45deg);
@@ -42,7 +51,7 @@ export default (props: SettingsLinkProps) => (
   <Navigation>
     <Link to={props.to}>
       {props.children}
-      <i/>
+      <i />
     </Link>
   </Navigation>
 );

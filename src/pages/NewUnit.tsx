@@ -71,9 +71,9 @@ class NewUnitPage extends Component<CombinedProps, OwnState> {
               />
             </Form>
           </div>
-          <h3>Existing units</h3>
           <UnitGrid
             isLoading={this.props.ui.pending.get}
+            title='Existing units'
             units={this.props.units}
           />
         </>

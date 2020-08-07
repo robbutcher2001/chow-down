@@ -2,7 +2,7 @@
 
 exports[`Main basic snapshot render 1`] = `
 <main
-  className="sc-AxhUy sc-AxgMl iHeufv"
+  className="sc-AxhUy sc-AxgMl hQKHtI"
 >
   <div>
     <section>
@@ -10,7 +10,7 @@ exports[`Main basic snapshot render 1`] = `
         fake_title
       </h2>
       <a
-        className="sc-AxhCb gcaMgG"
+        className="sc-AxhCb ekVBfQ"
         href="/fake_link"
         onClick={[Function]}
       >

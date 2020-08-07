@@ -44,11 +44,15 @@ module.exports = {
         ]
       },
       {
-        test: /\.scss$/,
+        test: /\.ttf$/,
         use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader'
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'assets/fonts/'
+            }
+          }
         ]
       },
       {
@@ -65,7 +69,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.scss', '.jpg']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   plugins: [
     new htmlWebpack({

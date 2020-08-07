@@ -1,45 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`IngredientGrid basic isLoading snapshot render 1`] = `
-<ul
-  className="sc-AxhCb bjixBq spinner spinning"
+<div
+  className="sc-AxhCb kAePDU"
 >
-  <li
-    className="sc-AxirZ gVgYtT"
+  <h3>
+    fake
+  </h3>
+  <ul
+    className="spinner spinning"
   >
-    F
-  </li>
-  <li
-    className="sc-AxjAm jylUCG"
-  >
-    fake_ingredient1
-  </li>
-  <li
-    className="sc-AxjAm jylUCG"
-  >
-    fake_ingredient2
-  </li>
-</ul>
+    <li
+      className="sc-AxirZ gIiacW"
+    >
+      F
+    </li>
+    <li
+      className="sc-AxjAm fBOoyb"
+    >
+      fake_ingredient1
+    </li>
+    <li
+      className="sc-AxjAm fBOoyb"
+    >
+      fake_ingredient2
+    </li>
+  </ul>
+</div>
 `;
 
 exports[`IngredientGrid basic snapshot render 1`] = `
-<ul
-  className="sc-AxhCb bjixBq spinner"
+<div
+  className="sc-AxhCb kAePDU"
 >
-  <li
-    className="sc-AxirZ gVgYtT"
+  <h3>
+    fake
+  </h3>
+  <ul
+    className="spinner"
   >
-    F
-  </li>
-  <li
-    className="sc-AxjAm jylUCG"
-  >
-    fake_ingredient1
-  </li>
-  <li
-    className="sc-AxjAm jylUCG"
-  >
-    fake_ingredient2
-  </li>
-</ul>
+    <li
+      className="sc-AxirZ gIiacW"
+    >
+      F
+    </li>
+    <li
+      className="sc-AxjAm fBOoyb"
+    >
+      fake_ingredient1
+    </li>
+    <li
+      className="sc-AxjAm fBOoyb"
+    >
+      fake_ingredient2
+    </li>
+  </ul>
+</div>
 `;
