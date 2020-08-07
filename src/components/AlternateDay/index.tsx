@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import foodImg from '../../food.jpg';
+import foodImg from '../../themes/food.jpg';
 
 interface AlternateDayProps {
   title: string

@@ -4,16 +4,16 @@ import { Route, Switch } from 'react-router-dom';
 import Page from './components/Page';
 import ScrollTop from './components/ScrollTop';
 
-import Days from './pages/Days';
-import Day from './pages/Day';
-import Recipes from './pages/Recipes';
-import Recipe from './pages/Recipe';
-import NewAlternateDay from './pages/NewAlternateDay';
-import NewRecipe from './pages/NewRecipe';
-import NewUnit from './pages/NewUnit';
-import NewIngredient from './pages/NewIngredient';
-import Settings from './pages/Settings';
-import NotFound from './pages/NotFound';
+import Days from './views/Days';
+import Day from './views/Day';
+import Recipes from './views/Recipes';
+import Recipe from './views/Recipe';
+import NewAlternateDay from './views/NewAlternateDay';
+import NewRecipe from './views/NewRecipe';
+import NewUnit from './views/NewUnit';
+import NewIngredient from './views/NewIngredient';
+import Settings from './views/Settings';
+import NotFound from './views/NotFound';
 
 const Routes: FunctionComponent = () => (
   <Page>

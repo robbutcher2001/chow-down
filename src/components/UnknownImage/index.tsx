@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 import questionImg from './question.svg';
-import foodImg from '../../food.jpg';
+import foodImg from '../../themes/food.jpg';
 
 interface UnknownImageProps {
   hide?: boolean
