@@ -1,7 +1,8 @@
 import React from 'react';
 
 import styled from 'styled-components';
-import negativeImg from './negative.svg';
+import negativeLightImg from './negative_light.svg';
+import negativeDarkImg from './negative_dark.svg';
 
 interface MessageBoxProps {
   message?: string
@@ -16,17 +17,26 @@ const Section = styled.section`
   };
 
   img {
+    content: url(${props => props.theme.isDark ?
+      negativeDarkImg :
+      negativeLightImg
+    });
     width: 200px;
     height: 200px;
     margin-bottom: 1rem;
   }
+
+  div {
+    color: ${props => props.theme.isDark ?
+      props.theme.colour.lightestGrey :
+      props.theme.colour.black
+    };
+  }
 `
 
-//TODO: base64 inline the loading and error images as they sometimes don't download quickly
-//TODO: should these be of type FunctionComponent e.g. Box: FunctionComponent<MessageBoxProps> = () =>
 export const NegativeBox = (props: MessageBoxProps) => (
   <Section>
-    <img src={negativeImg}></img>
+    <img alt='Negative image' />
     <div>{props.message}</div>
   </Section>
 );

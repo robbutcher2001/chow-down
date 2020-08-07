@@ -2,10 +2,10 @@
 
 exports[`NegativeBox basic snapshot render 1`] = `
 <section
-  className="sc-AxjAm jIRUdr"
+  className="sc-AxjAm kRcdCd"
 >
   <img
-    src="test-file-stub"
+    alt="Negative image"
   />
   <div>
     test_negative

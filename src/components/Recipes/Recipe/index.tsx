@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { xsmall, small, medium } from '../../../breakpoints';
 import Stars from '../../Stars';
 import placeholderImg from '../../../placeholder.svg';
@@ -13,6 +13,36 @@ interface RecipeDetailProps {
   recipe: Recipe
 };
 
+const largeBackgroundMixin = (image: string) => css`
+  background-image: ${props => props.theme.isDark ?
+    `radial-gradient(
+      farthest-corner at 50% 55%,
+      ${props.theme.colour.darkGrey}00 30%,
+      ${props.theme.colour.darkGrey}ff 65%
+    ), url(${image});` :
+    `radial-gradient(
+      farthest-corner at 50% 55%,
+      ${props.theme.colour.white}00 30%,
+      ${props.theme.colour.white}ff 65%
+    ), url(${image});`
+  };
+`
+
+const smallBackgroundMixin = (image: string) => css`
+  background-image: ${props => props.theme.isDark ?
+    `radial-gradient(
+      farthest-corner at 35% 55%,
+      ${props.theme.colour.darkGrey}00 30%,
+      ${props.theme.colour.darkGrey}ff 65%
+    ), url(${image});` :
+    `radial-gradient(
+      farthest-corner at 35% 55%,
+      ${props.theme.colour.white}00 30%,
+      ${props.theme.colour.white}ff 65%
+    ), url(${image});`
+  };
+`
+
 const RecipeDetail = styled.span<{ image: string }>`
   display: flex;
   justify-content: center;
@@ -23,28 +53,13 @@ const RecipeDetail = styled.span<{ image: string }>`
     min-height: 500px;
     width: 100%;
     max-width: 768px;
-    background-image: ${props => props.theme.isDark ?
-      `radial-gradient(
-        farthest-corner at 50% 55%,
-        ${props.theme.colour.darkGrey}00 30%,
-        ${props.theme.colour.darkGrey}ff 65%
-      ), url(${props.image});` :
-      `radial-gradient(
-        farthest-corner at 50% 55%,
-        ${props.theme.colour.white}00 30%,
-        ${props.theme.colour.white}ff 65%
-      ), url(${props.image});`
-    };
+    ${props => largeBackgroundMixin(props.image)}
     background-size: cover;
     background-position: 75% 35%;
     position: relative;
 
     ${props => small`
-      background-image: radial-gradient(
-        farthest-corner at 35% 55%,
-        rgba(255, 255, 255, 0) 30%,
-        rgba(255, 255, 255, 1) 65%
-      ), url(${props.image});
+      ${smallBackgroundMixin(props.image)}
     `}
 
     ${xsmall`
@@ -69,6 +84,10 @@ const RecipeDetail = styled.span<{ image: string }>`
       font-size: ${props =>
         props.theme.typography.fontSize.xlarge
       };
+      color: ${props => props.theme.isDark ?
+        props.theme.colour.lightestGrey :
+        props.theme.colour.black
+      };
       margin: 0;
       padding: 1rem;
       text-align: right;
@@ -78,7 +97,14 @@ const RecipeDetail = styled.span<{ image: string }>`
       box-shadow: 0 5px 20px 0 rgba(0,0,0,0.2);
       border-radius: 8px;
       box-sizing: border-box;
-      background: #fff;
+      background: ${props => props.theme.isDark ?
+        props.theme.colour.lightGrey :
+        props.theme.colour.white
+      };
+      color: ${props => props.theme.isDark ?
+        props.theme.colour.lightestGrey :
+        props.theme.colour.black
+      };
       padding: 2rem 1.5rem;
       position: absolute;
       z-index: 50;
@@ -117,7 +143,10 @@ const RecipeDetail = styled.span<{ image: string }>`
         box-shadow: 0 -10px 20px -14px rgba(0,0,0,0.2);
         border-radius: 50px;
         box-sizing: border-box;
-        background: #fff;
+        background: ${props => props.theme.isDark ?
+          props.theme.colour.lightGrey :
+          props.theme.colour.white
+        };
         padding: 6px 16px;
         position: absolute;
         right: 5%;
