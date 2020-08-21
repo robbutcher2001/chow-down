@@ -1,17 +1,21 @@
 import { DayActionTypes, DaysUiChange } from './types';
 
-export const pendingGetDays = (): DaysUiChange => ({
-    type: DayActionTypes.GET_DAYS_PENDING
+export const pendingGetDay = (date: string): DaysUiChange => ({
+    type: DayActionTypes.GET_DAY_PENDING,
+    date
 });
 
-export const clearPendingGetDays = (): DaysUiChange => ({
-    type: DayActionTypes.CLEAR_GET_DAYS_PENDING
+export const clearPendingGetDay = (date: string): DaysUiChange => ({
+    type: DayActionTypes.CLEAR_GET_DAY_PENDING,
+    date
 });
 
-export const pendingPutDays = (): DaysUiChange => ({
-    type: DayActionTypes.PUT_DAYS_PENDING
+export const pendingPutDay = (date: string): DaysUiChange => ({
+    type: DayActionTypes.PUT_DAY_PENDING,
+    date
 });
 
-export const clearPendingPutDays = (): DaysUiChange => ({
-    type: DayActionTypes.CLEAR_PUT_DAYS_PENDING
+export const clearPendingPutDay = (date: string): DaysUiChange => ({
+    type: DayActionTypes.CLEAR_PUT_DAY_PENDING,
+    date
 });

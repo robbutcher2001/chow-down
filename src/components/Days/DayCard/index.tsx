@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 
@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { xsmall } from '../../../themes/breakpoints';
 import placeholderImg from '../../../themes/placeholder.svg';
 
-import { Day } from '../../../store/domain/days/types';
+import { Day, GetDayApiRequest } from '../../../store/domain/days/types';
 import { UserAction } from '../../../store/app/user/types';
 import { NegativeBox } from '../../MessageBox';
 import Stars from '../../Stars';
@@ -15,9 +15,11 @@ import AlternateDay from '../../AlternateDay';
 
 interface DayCardProps {
   failed?: string,
+  isLoading: boolean,
   dateFormat: string,
   date: string,
   day?: Day,
+  getDay: (date: string) => GetDayApiRequest,
   setSelectingDay?: (day: string) => UserAction
 };
 
@@ -72,6 +74,7 @@ const StyledDayCard = styled.li`
 
   .failed {
     display: flex;
+    justify-content: center;
     align-items: center;
     height: 100%;
 
@@ -155,20 +158,26 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
   const isTomorrow: boolean = moment(today).add(1, 'd').isSame(props.date);
   const displayDay: string = isTonight ? 'Tonight' : isTomorrow ? 'Tomorrow' : moment(props.date).format('dddd');
 
+  const setSelectingDay = () => props.setSelectingDay(props.date);
+
+  useEffect(() => void (!props.isLoading && props.getDay(props.date)), []);
+
   return (
-    <StyledDayCard>
+    <StyledDayCard className={props.isLoading ? 'spinner spinning' : 'spinner'} >
       <span />
       <h3>{displayDay}</h3>
       {props.failed ?
         <div className='failed' >
-          <NegativeBox message={props.failed} />
+          <Link to='/recipes' onClick={setSelectingDay}>
+            <NegativeBox message={props.failed} />
+          </Link>
         </div> :
         !props.day ?
-          <Link to='/recipes' onClick={() => props.setSelectingDay(props.date)}>
+          <Link to='/recipes' onClick={setSelectingDay}>
             <UnknownImage />
           </Link> :
           props.day.alternateDay ?
-            <Link to='/recipes' onClick={() => props.setSelectingDay(props.date)}>
+            <Link to='/recipes' onClick={setSelectingDay}>
               <AlternateDay title={props.day.alternateDay} />
             </Link> :
             <Link to={`/days/${props.date}`}>

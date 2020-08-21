@@ -38,6 +38,11 @@ const AlternateDay = styled.figure`
     background: rgba(40, 40, 40, 0.90);
     text-transform: capitalize;
     text-align: center;
+    word-break: break-word;
+
+    > div {
+      padding: 2rem;
+    }
   }
 `
 

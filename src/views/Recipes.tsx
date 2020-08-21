@@ -7,7 +7,7 @@ import { Recipe, GetRecipesApiRequest } from '../store/domain/recipes/types';
 import { Day, PutDayApiRequest } from '../store/domain/days/types';
 import { UserAction } from '../store/app/user/types';
 import { getRecipesRequest } from '../store/domain/recipes/actions';
-import { putDaysRequest } from '../store/domain/days/actions';
+import { putDayRequest } from '../store/domain/days/actions';
 import { clearUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
@@ -71,7 +71,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
   );
 };
 
-const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): StateProps => ({
+const mapStateToProps = ({ app, domain, ui }: GlobalState, _ownProps: OwnProps): StateProps => ({
   error: app.error.message,
   failure: domain.recipe.failure,
   recipes: domain.recipe.recipes,
@@ -84,9 +84,9 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, ownProps: OwnProps): 
   }
 });
 
-const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps): DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch, _ownProps: OwnProps): DispatchProps => ({
   getRecipes: () => dispatch(getRecipesRequest()),
-  putDay: (day: Day) => dispatch(putDaysRequest(day)),
+  putDay: (day: Day) => dispatch(putDayRequest(day)),
   clearSelectingDay: () => dispatch(clearUserIsSelectingDay())
 });
 

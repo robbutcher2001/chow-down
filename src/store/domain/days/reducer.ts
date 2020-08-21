@@ -1,47 +1,61 @@
 import { Reducer } from 'redux';
 
-import { Day, DayActionTypes, DaysFailureApiResponse, DaysState, GetDaysApiResponse, GetDaysSuccessApiResponse, PutDaySuccessApiResponse } from './types';
+import { Day, DayActionTypes, DayFailureApiResponse, DaysState, GetDayApiResponse, GetDaySuccessApiResponse, PutDaySuccessApiResponse } from './types';
 
 const initialState: DaysState = {
-    failure: null,
-    days: []
+    failures: {},
+    days: {}
 }
 
-interface DaysFailureResponse {
+interface DayFailureResponse {
     message: string
 }
 
 //TODO: should we type-cast here?
-export const daysReducer: Reducer<DaysState, GetDaysApiResponse> = (state = initialState, action: GetDaysApiResponse) => {
+export const daysReducer: Reducer<DaysState, GetDayApiResponse> = (state = initialState, action: GetDayApiResponse) => {
+    const failures = Object.assign({}, state.failures);
+    const days = Object.assign({}, state.days);
     switch (action.type) {
 
-        case DayActionTypes.GET_DAYS_SUCCESS:
-            const successGetResponse = action as GetDaysSuccessApiResponse;
+        case DayActionTypes.GET_DAY_SUCCESS:
+            const successGetResponse = action as GetDaySuccessApiResponse;
+            delete failures[successGetResponse.date];
 
             return {
-                failure: null,
-                days: successGetResponse.days
+                failures,
+                days: successGetResponse.day ?
+                  Object.assign({}, days, {
+                    [successGetResponse.date]: successGetResponse.day
+                  }) :
+                  days
             };
 
-        case DayActionTypes.PUT_DAYS_SUCCESS:
+        case DayActionTypes.PUT_DAY_SUCCESS:
             const successPutResponse = action as PutDaySuccessApiResponse;
-            const otherDays: Day[] = state.days.filter(day => day.date !== successPutResponse.day.date);
+            delete failures[successPutResponse.day.date];
+            delete days[successPutResponse.day.date];
 
             return {
-                failure: null,
+                failures,
                 days: successPutResponse.day.recipe || successPutResponse.day.alternateDay ?
-                  otherDays.concat(successPutResponse.day) :
-                  otherDays
+                  Object.assign({}, days, {
+                    [successPutResponse.day.date]: successPutResponse.day
+                  }) :
+                  days
             };
 
-        case DayActionTypes.GET_DAYS_FAILURE:
-        case DayActionTypes.PUT_DAYS_FAILURE:
-            const failureResponse = action as DaysFailureApiResponse;
-            const failureJson = failureResponse.json as DaysFailureResponse;
+        case DayActionTypes.GET_DAY_FAILURE:
+        case DayActionTypes.PUT_DAY_FAILURE:
+            const failureResponse = action as DayFailureApiResponse;
+            const failureJson = failureResponse.json as DayFailureResponse;
 
+            console.log('destructed `message` from response json:');
+            console.log(failureJson.message);
             return {
-                failure: failureJson.message,
-                days: []
+                ...state,
+                failures: Object.assign({}, failures, {
+                  [failureResponse.failedDay]: failureJson.message || 'Not able to load'
+                })
             };
 
         default:

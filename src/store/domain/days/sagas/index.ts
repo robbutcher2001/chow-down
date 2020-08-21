@@ -1,4 +1,4 @@
-import { all, takeLatest } from 'redux-saga/effects';
+import { all, takeEvery } from 'redux-saga/effects';
 
 import { DayActionTypes } from '../types';
 
@@ -8,7 +8,7 @@ import putSaga from './put';
 export default function* daysSaga() {
     console.log('[saga] Started days saga');
     yield all([
-        takeLatest(DayActionTypes.GET_DAYS_REQUEST, getSaga),
-        takeLatest(DayActionTypes.PUT_DAYS_REQUEST, putSaga)
+        takeEvery(DayActionTypes.GET_DAY_REQUEST, getSaga),
+        takeEvery(DayActionTypes.PUT_DAY_REQUEST, putSaga)
     ]);
 }
