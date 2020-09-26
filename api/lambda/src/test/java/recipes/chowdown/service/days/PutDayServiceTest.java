@@ -37,6 +37,7 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.DayRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
+import recipes.chowdown.service.cache.QueryString;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -81,7 +82,8 @@ public class PutDayServiceTest {
     when(mockField.getStringValue()).thenReturn("fake_date");
     when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context))
         .thenReturn(Collections.singletonList(Day.builder().date("20200412").recipeId("fake_id").build()));
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class), Mockito.any(QueryString.class)))
+        .thenReturn("fake_invalidation");
 
     Day returnedDay = this.service.handleRequest(day, this.context);
 
@@ -91,6 +93,7 @@ public class PutDayServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenMultipleDayPut() throws Exception {
+    Day day = Day.builder().date("20200412").build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -104,7 +107,7 @@ public class PutDayServiceTest {
     when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
 
-    assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), this.context));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(day, this.context));
   }
 
   @Test
@@ -128,13 +131,14 @@ public class PutDayServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenNoDayPut() throws Exception {
+    Day day = Day.builder().date("20200412").build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
     when(this.context.getLogger()).thenReturn(this.logger);
     when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
-    assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), this.context));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(day, this.context));
   }
 
   @Test
@@ -149,7 +153,8 @@ public class PutDayServiceTest {
     when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake_date");
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class), Mockito.any(QueryString.class)))
+        .thenReturn("fake_invalidation");
 
     Day returnedDay = this.service.handleRequest(day, this.context);
 
@@ -173,7 +178,8 @@ public class PutDayServiceTest {
     when(mockField.getStringValue()).thenReturn("fake_date");
     when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context))
         .thenReturn(Collections.singletonList(Day.builder().date("20200412").recipeId("not_valid").build()));
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class), Mockito.any(QueryString.class)))
+        .thenReturn("fake_invalidation");
 
     Day returnedDay = this.service.handleRequest(day, this.context);
 
@@ -193,7 +199,8 @@ public class PutDayServiceTest {
     when(this.repository.putDay(Mockito.any(Day.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake_date");
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class), Mockito.any(QueryString.class)))
+        .thenReturn("fake_invalidation");
 
     Day returnedDay = this.service.handleRequest(day, this.context);
 
@@ -218,7 +225,8 @@ public class PutDayServiceTest {
     when(mockField.getStringValue()).thenReturn("fake_date");
     when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context))
         .thenReturn(Collections.singletonList(Day.builder().date("20200412").recipeId("not_valid").build()));
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class), Mockito.any(QueryString.class)))
+        .thenReturn("fake_invalidation");
 
     Day returnedDay = this.service.handleRequest(day, this.context);
 
@@ -241,7 +249,8 @@ public class PutDayServiceTest {
     when(mockField.getStringValue()).thenReturn("fake_date");
     when(this.getDaysService.getDays(day.getDate(), day.getDate(), this.context))
         .thenReturn(Collections.singletonList(Day.builder().date("20200412").recipeId("not_valid").build()));
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class), Mockito.any(QueryString.class)))
+        .thenReturn("fake_invalidation");
 
     Day returnedDay = this.service.handleRequest(day, this.context);
 
@@ -253,6 +262,7 @@ public class PutDayServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenNoIdReturnedFromDb() throws Exception {
+    Day day = Day.builder().date("20200412").build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -263,11 +273,12 @@ public class PutDayServiceTest {
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("");
 
-    assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), this.context));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(day, this.context));
   }
 
   @Test
   void handleRequest_shouldThrowException_whenNullReturnedFromDb() throws Exception {
+    Day day = Day.builder().date("20200412").build();
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -278,27 +289,29 @@ public class PutDayServiceTest {
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn(null);
 
-    assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), this.context));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(day, this.context));
   }
 
   @Test
   void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
+    Day day = Day.builder().date("20200412").build();
     when(this.context.getLogger()).thenReturn(this.logger);
     when(this.repository.putDay(Mockito.any(Day.class))).thenThrow(BadRequestException.class);
 
     ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(new Day(), this.context));
+        () -> this.service.handleRequest(day, this.context));
     assertTrue(returnedException.getMessage().contains("unable to complete request"));
   }
 
   @Test
   void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
+    Day day = Day.builder().date("20200412").build();
     when(this.context.getLogger()).thenReturn(this.logger);
     when(this.repository.putDay(Mockito.any(Day.class))).thenThrow(new AWSRDSDataException(
         "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
 
     ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(new Day(), this.context));
+        () -> this.service.handleRequest(day, this.context));
     assertTrue(returnedException.getMessage().contains("unable to complete request"));
     assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
     assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
@@ -313,7 +326,8 @@ public class PutDayServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenNullContext() throws Exception {
-    assertThrows(ServerException.class, () -> this.service.handleRequest(new Day(), null));
+    Day day = Day.builder().date("20200412").build();
+    assertThrows(ServerException.class, () -> this.service.handleRequest(day, null));
   }
 
   @Test

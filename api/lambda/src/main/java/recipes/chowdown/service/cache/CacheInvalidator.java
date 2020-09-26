@@ -14,12 +14,17 @@ public class CacheInvalidator {
   private static final String DISTRIBUTION_ID = System.getenv("DISTRIBUTION_ID");
 
   public String invalidate(final Endpoint endpoint) {
+    return this.invalidate(endpoint, null);
+  }
+
+  public String invalidate(final Endpoint endpoint, final QueryString queryStringItems) {
     AmazonCloudFront cloudFront = null;
+    final String queryString = queryStringItems != null ? queryStringItems.toString() : "";
 
     try {
       cloudFront = AmazonCloudFrontClientBuilder.defaultClient();
       CreateInvalidationRequest invalidationRequest = new CreateInvalidationRequest(DISTRIBUTION_ID,
-          createInvalidationBatch(endpoint.getPath()));
+          createInvalidationBatch(endpoint.getPath() + queryString));
       CreateInvalidationResult result = cloudFront.createInvalidation(invalidationRequest);
 
       return result.getInvalidation().getStatus();
