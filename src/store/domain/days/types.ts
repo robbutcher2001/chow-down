@@ -1,12 +1,12 @@
 import { Action } from 'redux';
 
 export enum DayActionTypes {
-  GET_DAYS_REQUEST = '@@days/GET_REQUEST',
-  GET_DAYS_SUCCESS = '@@days/GET_SUCCESS',
-  GET_DAYS_FAILURE = '@@days/GET_FAILURE',
-  PUT_DAYS_REQUEST = '@@days/PUT_REQUEST',
-  PUT_DAYS_SUCCESS = '@@days/PUT_SUCCESS',
-  PUT_DAYS_FAILURE = '@@days/PUT_FAILURE'
+  GET_DAY_REQUEST = '@@days/GET_REQUEST',
+  GET_DAY_SUCCESS = '@@days/GET_SUCCESS',
+  GET_DAY_FAILURE = '@@days/GET_FAILURE',
+  PUT_DAY_REQUEST = '@@days/PUT_REQUEST',
+  PUT_DAY_SUCCESS = '@@days/PUT_SUCCESS',
+  PUT_DAY_FAILURE = '@@days/PUT_FAILURE'
 }
 
 //TODO: maybe combine these with ~/store/domain/recipes
@@ -33,14 +33,17 @@ export interface Day {
 }
 
 export interface DaysState {
-  readonly failure: string,
-  readonly days: Day[]
+  readonly failures: {
+    [date: string]: string
+  },
+  readonly days: {
+    [date: string]: Day
+  }
 }
 
-export interface GetDaysApiRequest extends Action {
+export interface GetDayApiRequest extends Action {
   type: DayActionTypes,
-  from: string,
-  to: string
+  date: string
 }
 
 export interface PutDayApiRequest extends Action {
@@ -48,9 +51,10 @@ export interface PutDayApiRequest extends Action {
   day: Day
 }
 
-export interface GetDaysSuccessApiResponse extends Action {
+export interface GetDaySuccessApiResponse extends Action {
   type: DayActionTypes,
-  days: Day[]
+  date: string,
+  day: Day
 }
 
 export interface PutDaySuccessApiResponse extends Action {
@@ -58,10 +62,11 @@ export interface PutDaySuccessApiResponse extends Action {
   day: Day
 }
 
-export interface DaysFailureApiResponse extends Action {
+export interface DayFailureApiResponse extends Action {
   type: DayActionTypes,
   code: number,
+  failedDay: string,
   json: object
 }
 
-export type GetDaysApiResponse = GetDaysSuccessApiResponse | PutDaySuccessApiResponse | DaysFailureApiResponse;
+export type GetDayApiResponse = GetDaySuccessApiResponse | PutDaySuccessApiResponse | DayFailureApiResponse;

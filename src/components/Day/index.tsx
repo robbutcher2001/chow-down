@@ -161,6 +161,9 @@ const StyledDay = styled.section<{ image: string }>`
     }
 
     .method {
+      //TODO: remove when add methods
+      display: none;
+      //end TODO
       flex: 2 2 20rem;
       color: ${props => props.theme.isDark ?
         props.theme.colour.lightestGrey :

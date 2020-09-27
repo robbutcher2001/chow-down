@@ -14,6 +14,7 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.DayRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
+import recipes.chowdown.service.cache.QueryString;
 
 public class PutDayService implements RequestHandler<Day, Day> {
 
@@ -35,6 +36,9 @@ public class PutDayService implements RequestHandler<Day, Day> {
     try {
       LOGGER = context.getLogger();
       Day dayToReturn = null;
+      final QueryString cacheInvalidatorQS = new QueryString();
+      cacheInvalidatorQS.add("from", day.getDate());
+      cacheInvalidatorQS.add("to", day.getDate());
 
       ExecuteStatementResult result = this.repository.putDay(day);
 
@@ -64,7 +68,7 @@ public class PutDayService implements RequestHandler<Day, Day> {
         dayToReturn = day;
       }
 
-      String response = this.cacheInvalidator.invalidate(Endpoint.DAY);
+      String response = this.cacheInvalidator.invalidate(Endpoint.DAY, cacheInvalidatorQS);
       LOGGER.log("Day cache purge status [" + response + "]");
 
       return dayToReturn;

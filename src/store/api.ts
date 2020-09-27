@@ -25,27 +25,27 @@ interface ResponseBody {
 
 //TODO: need to type the return of the callbacks, any is not good
 export interface SuccessCallback {
-    (json: object): any
+    (json: object, ...passThrough: string[]): any
 };
 
 export interface FailCallback {
-    (code: number, json: object): any
+    (code: number, json: object, ...passThrough: string[]): any
 };
 
 //TODO: need to type the response from fetch, any is not good
-function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback) {
+function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback, ...passThrough: string[]) {
     try {
-        if (response.status && response.status >= 200 && response.status <= 500) {
+        if (response.status && response.status >= 200 && response.status <= 504) {
             const json: ResponseBody = {
                 data: yield response.json()
             };
 
             if (response.status < 300) {
-                yield* success(json.data);
+                yield* success(json.data, ...passThrough);
             }
             //TODO: does json.data.message actually get parsed in failure reducer? don't know until we return error >=400 && <500
-            else if (response.status >= 400 && response.status < 500) {
-                yield* failure(response.status, json.data);
+            else if (response.status >= 400 && response.status < 500 || response.status > 500) {
+                yield* failure(response.status, json.data, ...passThrough);
             }
             else if (response.status === 500) {
                 const error = { ...json.data } as ErrorMessageApiResponse;
@@ -74,7 +74,7 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
     }
 };
 
-function* doFetch(method: Method, url: string, success: SuccessCallback, failure: FailCallback, payload?: object) {
+function* doFetch(method: Method, url: string, success: SuccessCallback, failure: FailCallback, payload?: object, ...passThrough: string[]) {
     const headers: RequestHeaders = {
         'Accept': Headers.ACCEPT
     };
@@ -94,13 +94,15 @@ function* doFetch(method: Method, url: string, success: SuccessCallback, failure
         yield* handleResponse(
             yield call(fetch, url, init),
             success,
-            failure
+            failure,
+            ...passThrough
         );
     } catch (err) {
         yield* handleResponse(
             err,
             success,
-            failure
+            failure,
+            ...passThrough
         );
     }
 };
@@ -109,28 +111,32 @@ export const post = (
     url: string,
     successCallback: SuccessCallback,
     failCallback: FailCallback,
-    payload: object
+    payload: object,
+    ...passThrough: string[]
 ) =>
-    doFetch(Method.POST, url, successCallback, failCallback, payload);
+    doFetch(Method.POST, url, successCallback, failCallback, payload, ...passThrough);
 
 export const get = (
     url: string,
     successCallback: SuccessCallback,
-    failCallback: FailCallback
+    failCallback: FailCallback,
+    ...passThrough: string[]
 ) =>
-    doFetch(Method.GET, url, successCallback, failCallback);
+    doFetch(Method.GET, url, successCallback, failCallback, null, ...passThrough);
 
 export const put = (
     url: string,
     successCallback: SuccessCallback,
     failCallback: FailCallback,
-    payload: object
+    payload: object,
+    ...passThrough: string[]
 ) =>
-    doFetch(Method.PUT, url, successCallback, failCallback, payload);
+    doFetch(Method.PUT, url, successCallback, failCallback, payload, ...passThrough);
 
 export const del = (
     url: string,
     successCallback: SuccessCallback,
-    failCallback: FailCallback
+    failCallback: FailCallback,
+    ...passThrough: string[]
 ) =>
-    doFetch(Method.DELETE, url, successCallback, failCallback);
+    doFetch(Method.DELETE, url, successCallback, failCallback, null, ...passThrough);

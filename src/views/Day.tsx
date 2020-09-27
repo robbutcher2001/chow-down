@@ -5,9 +5,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import moment from 'moment';
 
 import { GlobalState } from '../store';
-import { Day, GetDaysApiRequest, PutDayApiRequest } from '../store/domain/days/types';
+import { Day, GetDayApiRequest, PutDayApiRequest } from '../store/domain/days/types';
 import { UserAction } from '../store/app/user/types';
-import { getDaysRequest, putDaysRequest } from '../store/domain/days/actions';
+import { getDayRequest, putDayRequest } from '../store/domain/days/actions';
 import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import DayComponent from '../components/Day';
@@ -16,17 +16,21 @@ import { NegativeBox } from '../components/MessageBox';
 
 interface StateProps {
   error: string,
-  failure: string,
-  days: Day[]
+  failure: {
+    [date: string]: string
+  },
+  days: {
+    [date: string]: Day
+  },
   ui: {
     pending: {
-      get: boolean
+      get: string[]
     }
   }
 };
 
 interface DispatchProps {
-  getDay: (date: string) => GetDaysApiRequest,
+  getDay: (date: string) => GetDayApiRequest,
   putDay: (day: Day) => PutDayApiRequest,
   setSelectingDay: (day: string) => UserAction
 };
@@ -36,6 +40,7 @@ interface DayUrlParamProps {
 };
 
 interface OwnState {
+  date: string,
   displayDay: string,
   day: Day
 };
@@ -48,18 +53,18 @@ class DayPage extends Component<CombinedProps, OwnState> {
     super(props);
 
     this.state = {
+      date: null,
       displayDay: null,
       day: null
     }
   }
 
-  findDay = (date: string) => this.props.days.find(day => day.date === date);
-
   componentDidMount = () => {
     const { date } = this.props.match.params;
-    const day: Day = this.findDay(date);
+    const day: Day = this.props.days[date];
 
     this.setState({
+      date,
       displayDay: moment(date).isValid() ? moment(date).format('dddd') : ''
     });
 
@@ -75,7 +80,7 @@ class DayPage extends Component<CombinedProps, OwnState> {
 
   componentDidUpdate = (_prevProps: CombinedProps, prevState: OwnState) => {
     const { date } = this.props.match.params;
-    const day: Day = this.findDay(date);
+    const day: Day = this.props.days[date];
 
     if (day && day !== prevState.day) {
       this.setState({
@@ -86,17 +91,16 @@ class DayPage extends Component<CombinedProps, OwnState> {
 
   render = () => (
     <Main title={this.state.displayDay} >
-      {this.props.failure &&
-        <NegativeBox message={this.props.failure} />
-      }
       {this.props.error ?
         <NegativeBox message={this.props.error} /> :
-        <DayComponent
-          isLoading={this.props.ui.pending.get}
-          day={this.state.day}
-          setSelectingDay={this.props.setSelectingDay}
-          putDay={this.props.putDay}
-        />
+        this.props.failure[this.state.date] ?
+          <NegativeBox message={this.props.failure[this.state.date]} /> :
+          <DayComponent
+            isLoading={this.props.ui.pending.get.includes(this.state.date)}
+            day={this.state.day}
+            setSelectingDay={this.props.setSelectingDay}
+            putDay={this.props.putDay}
+          />
       }
     </Main>
   );
@@ -104,7 +108,7 @@ class DayPage extends Component<CombinedProps, OwnState> {
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
   error: app.error.message,
-  failure: domain.day.failure,
+  failure: domain.day.failures,
   days: domain.day.days,
   ui: {
     pending: {
@@ -114,8 +118,8 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  getDay: (date: string) => dispatch(getDaysRequest(date, date)),
-  putDay: (day: Day) => dispatch(putDaysRequest(day)),
+  getDay: (date: string) => dispatch(getDayRequest(date)),
+  putDay: (day: Day) => dispatch(putDayRequest(day)),
   setSelectingDay: (day: string) => dispatch(setUserIsSelectingDay(day))
 });
 

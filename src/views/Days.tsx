@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import moment from 'moment';
 
 import { GlobalState } from '../store';
-import { Day, GetDaysApiRequest } from '../store/domain/days/types';
+import { Day, GetDayApiRequest } from '../store/domain/days/types';
 import { UserAction } from '../store/app/user/types';
-import { getDaysRequest } from '../store/domain/days/actions';
+import { getDayRequest } from '../store/domain/days/actions';
 import { setUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
@@ -20,57 +19,52 @@ const cta: CallToAction = {
 
 interface StateProps {
   error: string,
-  failure: string,
-  days: Day[]
+  failures: {
+    [date: string]: string
+  },
+  days: {
+    [date: string]: Day
+  },
   ui: {
     pending: {
-      get: boolean,
-      put: boolean
+      get: string[],
+      put: string[]
     }
   }
 };
 
 interface DispatchProps {
-  getDays: (from: string, to: string) => GetDaysApiRequest,
+  getDay: (date: string) => GetDayApiRequest,
   setSelectingDay: (day: string) => UserAction
-};
-
-interface OwnState {
-  dateFormat: string,
-  seekDays: number
 };
 
 type CombinedProps = StateProps & DispatchProps;
 
-//TODO: convert to FunctionComponent and useEffect()
-class DaysPage extends Component<CombinedProps, OwnState> {
-  constructor(props: CombinedProps) {
-    super(props);
+const DaysPage: FunctionComponent<CombinedProps> = (props: CombinedProps) => {
 
-    this.state = {
-      dateFormat: 'YYYYMMDD',
-      seekDays: 7
-    }
-  };
+  // componentDidMount = () => !this.props.ui.pending.put && this.props.getDays(
+  //   moment().format(this.state.dateFormat),
+  //   moment().add(this.state.seekDays - 1, 'd').format(this.state.dateFormat)
+  // );
 
-  componentDidMount = () => !this.props.ui.pending.put && this.props.getDays(
-    moment().format(this.state.dateFormat),
-    moment().add(this.state.seekDays - 1, 'd').format(this.state.dateFormat)
-  );
-
-  render = () => (
+  //why do we get two re-renders?
+  console.log('props.days');
+  console.log(props.days);
+  console.log('props.failures');
+  console.log(props.failures);
+  return (
     <Main title='Your week' >
-      {this.props.failure &&
+      {/* {this.props.failure &&
         <NegativeBox message={this.props.failure} />
-      }
-      {this.props.error ?
-        <NegativeBox message={this.props.error} /> :
+      } */}
+      {props.error ?
+        <NegativeBox message={props.error} /> :
         <DayGrid
-          dateFormat={this.state.dateFormat}
-          seekDays={this.state.seekDays}
-          isLoading={this.props.ui.pending.get || this.props.ui.pending.put}
-          days={this.props.days}
-          setSelectingDay={this.props.setSelectingDay}
+          loading={props.ui.pending.get.concat(props.ui.pending.put)}
+          failures={props.failures}
+          days={props.days}
+          getDay={props.getDay}
+          setSelectingDay={props.setSelectingDay}
         />
       }
     </Main>
@@ -79,10 +73,10 @@ class DaysPage extends Component<CombinedProps, OwnState> {
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
   error: app.error.message,
-  failure: domain.day.failure,
+  failures: domain.day.failures, //this needs to be day -> failure map
   days: domain.day.days,
   ui: {
-    pending: {
+    pending: { //this needs to be day -> loading map
       get: ui.day.getPending,
       put: ui.day.putPending
     }
@@ -90,7 +84,7 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  getDays: (from: string, to: string) => dispatch(getDaysRequest(from, to)),
+  getDay: (date: string) => dispatch(getDayRequest(date)),
   setSelectingDay: (day: string) => dispatch(setUserIsSelectingDay(day))
 });
 

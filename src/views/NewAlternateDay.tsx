@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import { GlobalState } from '../store';
 import { Day, PutDayApiRequest } from '../store/domain/days/types';
-import { putDaysRequest } from '../store/domain/days/actions';
+import { putDayRequest } from '../store/domain/days/actions';
 
 import Main from '../components/Main';
 import Form from '../components/Form';
@@ -78,7 +78,7 @@ class NewAlternateDayPage extends Component<CombinedProps, OwnState> {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  putDay: (day: Day) => dispatch(putDaysRequest(day))
+  putDay: (day: Day) => dispatch(putDayRequest(day))
 });
 
 export default connect<null, DispatchProps, null, GlobalState>
