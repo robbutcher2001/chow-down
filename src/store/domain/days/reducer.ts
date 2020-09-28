@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { Day, DayActionTypes, DayFailureApiResponse, DaysState, GetDayApiResponse, GetDaySuccessApiResponse, PutDaySuccessApiResponse } from './types';
+import { DayActionTypes, DayFailureApiResponse, DaysState, GetDayApiResponse, GetDaySuccessApiResponse, PutDaySuccessApiResponse } from './types';
 
 const initialState: DaysState = {
     failures: {},
@@ -13,8 +13,12 @@ interface DayFailureResponse {
 
 //TODO: should we type-cast here?
 export const daysReducer: Reducer<DaysState, GetDayApiResponse> = (state = initialState, action: GetDayApiResponse) => {
-    const failures = Object.assign({}, state.failures);
-    const days = Object.assign({}, state.days);
+    const failures = {
+      ...state.failures
+    };
+    const days = {
+      ...state.days
+    };
     switch (action.type) {
 
         case DayActionTypes.GET_DAY_SUCCESS:
@@ -24,9 +28,10 @@ export const daysReducer: Reducer<DaysState, GetDayApiResponse> = (state = initi
             return {
                 failures,
                 days: successGetResponse.day ?
-                  Object.assign({}, days, {
+                  {
+                    ...days,
                     [successGetResponse.date]: successGetResponse.day
-                  }) :
+                  } :
                   days
             };
 
@@ -38,9 +43,10 @@ export const daysReducer: Reducer<DaysState, GetDayApiResponse> = (state = initi
             return {
                 failures,
                 days: successPutResponse.day.recipe || successPutResponse.day.alternateDay ?
-                  Object.assign({}, days, {
+                  {
+                    ...days,
                     [successPutResponse.day.date]: successPutResponse.day
-                  }) :
+                  } :
                   days
             };
 
@@ -53,9 +59,10 @@ export const daysReducer: Reducer<DaysState, GetDayApiResponse> = (state = initi
             console.log(failureJson.message);
             return {
                 ...state,
-                failures: Object.assign({}, failures, {
+                failures: {
+                  ...failures,
                   [failureResponse.failedDay]: failureJson.message || 'Not able to load'
-                })
+                }
             };
 
         default:
