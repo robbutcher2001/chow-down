@@ -346,7 +346,8 @@ components:
       properties:
         id:
           type: string
-        ingredient:
+        # TODO: check that putting a new ingredient now works with this name change
+        name:
           type: string
       required:
       - ingredient
@@ -356,20 +357,14 @@ components:
       properties:
         quantity:
           type: number
-        unitId:
-          type: string
-        unitSingularName:
-          type: string
-        unitPluralName:
-          type: string
-        ingredientId:
-          type: string
-        ingredientName:
-          type: string
+        unit:
+          $ref: "#/components/schemas/Unit"
+        ingredient:
+          $ref: "#/components/schemas/Ingredient"
       required:
       - quantity
-      - unitId
-      - ingredientId
+      - unit
+      - ingredient
     Recipe:
       title: "Recipe schema"
       type: object

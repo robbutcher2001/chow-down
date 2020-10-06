@@ -44,9 +44,34 @@ public class ServiceMock implements ApiApi {
   final List<Recipe> recipes = new ArrayList<>();
   final List<Day> days = new ArrayList<>();
   boolean initRequest = true;
+  final int TOTAL_UNITS = 12;
+  final int TOTAL_INGREDIENTS = 120;
 
   public ServiceMock() {
     this.faker = new Faker();
+
+    for (int i = 0; i < this.TOTAL_UNITS; i++) {
+      Unit unit = new Unit();
+      unit.setId(this.faker.internet().uuid());
+
+      String measurement = this.faker.food().measurement();
+      if (measurement.contains(" ")) {
+        measurement = measurement.split(" ")[1];
+      }
+
+      unit.setSingular(measurement);
+      unit.setPlural(measurement.concat("s"));
+
+      this.units.add(unit);
+    }
+
+    for (int i = 0; i < this.TOTAL_INGREDIENTS; i++) {
+      Ingredient ingredient = new Ingredient();
+      ingredient.setId(this.faker.internet().uuid());
+      ingredient.setName(this.faker.food().ingredient());
+
+      this.ingredients.add(ingredient);
+    }
 
     for (int i = 0; i < 20; i++) {
       Recipe recipe = new Recipe();
@@ -64,44 +89,16 @@ public class ServiceMock implements ApiApi {
       for (int j = 0; j < new Random().nextInt(40); j++) {
         RecipeIngredient recipeIngredient = new RecipeIngredient();
         recipeIngredient.setQuantity(new BigDecimal(this.faker.random().nextInt(0, 40)));
-
-        String measurement = this.faker.food().measurement();
-        if (measurement.contains(" ")) {
-          measurement = measurement.split(" ")[1];
-        }
-
-        recipeIngredient.setUnitSingularName(measurement);
-        recipeIngredient.setUnitPluralName(measurement.concat("s"));
-        recipeIngredient.setIngredientName(this.faker.food().ingredient());
+        // TODO: unit and ingredient POJOs added need to be auto-generated for domain in
+        // api/lambda folder
+        recipeIngredient.setUnit(this.units.get(new Random().nextInt(this.TOTAL_UNITS)));
+        recipeIngredient.setIngredient(this.ingredients.get(new Random().nextInt(this.TOTAL_INGREDIENTS)));
         ingredients.add(recipeIngredient);
       }
 
       recipe.setIngredients(ingredients);
 
       this.recipes.add(recipe);
-    }
-
-    for (int i = 0; i < 12; i++) {
-      Unit unit = new Unit();
-      unit.setId(this.faker.internet().uuid());
-
-      String measurement = this.faker.food().measurement();
-      if (measurement.contains(" ")) {
-        measurement = measurement.split(" ")[1];
-      }
-
-      unit.setSingular(measurement);
-      unit.setPlural(measurement.concat("s"));
-
-      this.units.add(unit);
-    }
-
-    for (int i = 0; i < 120; i++) {
-      Ingredient ingredient = new Ingredient();
-      ingredient.setId(this.faker.internet().uuid());
-      ingredient.setIngredient(this.faker.food().ingredient());
-
-      this.ingredients.add(ingredient);
     }
 
     for (int i = 0; i < 7; i++) {
