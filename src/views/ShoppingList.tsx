@@ -1,8 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
+import aggregate from '../services/ShoppingListService';
+
 import { GlobalState } from '../store';
-import { Day, RecipeIngredient } from '../store/domain/days/types';
+import { Day } from '../store/domain/days/types';
 
 import Main from '../components/Main';
 
@@ -22,49 +24,17 @@ interface StateProps {
 };
 
 const ShoppingList: FunctionComponent<StateProps> = (props: StateProps) => {
-  const isLoading = () => props.ui.pending.get.length > 0;
+  const [isLoading, setLoading] = useState(false);
 
-  const combineRecipeIngredients = (): RecipeIngredient[] =>
-    Object.keys(props.days).reduce((ingredients: RecipeIngredient[][], dayKey: string) => {
-      const day: Day = props.days[dayKey];
-      if (!day.alternateDay) {
-        ingredients.push(day.recipe.ingredients);
-      }
-      return ingredients;
-    }, []).flat();
-
-  //TODO: move to service
-  const aggregate = (ingredients: RecipeIngredient[]) =>
-    ingredients.reduce((aggregation: any, ingredient: any) => {
-      //TODO: function now knows about data structure
-      const ingredientId = ingredient.ingredient.id;
-      const unitId = ingredient.unit.id;
-      aggregation[ingredientId] = {
-        ...aggregation[ingredientId],
-        [unitId]: {
-          quantity:
-            aggregation[ingredientId] && aggregation[ingredientId][unitId]
-              ? (aggregation[ingredientId][unitId].quantity += ingredient.quantity)
-              : ingredient.quantity,
-          unit: ingredient.unit.singular,
-          name: ingredient.ingredient.name
-        }
-      };
-
-      return aggregation;
-    }, {});
-
-  //TODO: use flat or flatMap here
-  const flatten = (ingredients: any) =>
-    Object.entries(ingredients).flatMap(([_key, ingredient]) =>
-      Object.entries(ingredient).map(([_key, unit]) => unit));
+  useEffect(() => setLoading(props.ui.pending.get.length > 0));
 
   return (
     <Main title='Shopping List'>
-      {isLoading() ?
+      {isLoading ?
         <div>loading</div> :
         <>
-          {flatten(aggregate(combineRecipeIngredients())).sort((a, b) => a.unit.localeCompare(b.unit)).map((ingredient: any, index: number) =>
+          {/* TODO: type the any */}
+          {aggregate(props.days).sort((a: any, b: any) => a.unit.localeCompare(b.unit)).map((ingredient: any, index: number) =>
             <div key={index}>
               {ingredient.quantity} {ingredient.unit} of {ingredient.name}
             </div>)}
