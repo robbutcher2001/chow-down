@@ -20,7 +20,7 @@ public class DayRepository {
 
   private static final String GET_SQL = "SELECT * "
     + "FROM ("
-    + "  SELECT d.date, d.alternate_day, r.title, r.rating, r.image, r.url, ri.quantity, u.singular, u.plural, i.ingredient "
+    + "  SELECT d.date, d.alternate_day, r.title, r.rating, r.image, r.url, ri.quantity, u.id, u.singular, u.plural, i.id, i.ingredient "
     + "  FROM chow.recipe_ingredients ri "
     + "  INNER JOIN chow.units u "
     + "    ON u.id = ri.unit_id "
@@ -32,7 +32,7 @@ public class DayRepository {
     + "    ON d.recipe_id = r.id "
     + "    AND d.date BETWEEN :from::date AND :to::date "
     + "UNION "
-    + "  SELECT d.date, d.alternate_day, null, -1, null, null, -1, null, null, null "
+    + "  SELECT d.date, d.alternate_day, null, -1, null, null, -1, null, null, null, null, null "
     + "  FROM chow.days d "
     + "  WHERE d.alternate_day IS NOT NULL "
     + "    AND d.date BETWEEN :from::date AND :to::date "
