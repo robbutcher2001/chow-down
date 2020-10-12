@@ -1,4 +1,6 @@
 import { Action } from 'redux';
+import { Unit } from '../units/types';
+import { Ingredient } from '../ingredients/types';
 
 export enum DayActionTypes {
   GET_DAY_REQUEST = '@@days/GET_REQUEST',
@@ -12,9 +14,8 @@ export enum DayActionTypes {
 //TODO: maybe combine these with ~/store/domain/recipes
 export interface RecipeIngredient {
   quantity: number,
-  unitSingularName: string,
-  unitPluralName: string,
-  ingredientName: string
+  unit: Unit,
+  ingredient: Ingredient
 }
 
 interface Recipe {

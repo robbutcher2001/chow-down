@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import aggregate from '../services/ShoppingListService';
-
 import { GlobalState } from '../store';
 import { Day } from '../store/domain/days/types';
 
 import Main from '../components/Main';
+import { NegativeBox } from '../components/MessageBox';
+import ShoppingList from '../components/ShoppingList';
 
 interface StateProps {
   error: string,
@@ -23,25 +23,21 @@ interface StateProps {
   }
 };
 
-const ShoppingList: FunctionComponent<StateProps> = (props: StateProps) => {
+const ShoppingListPage: FunctionComponent<StateProps> = (props: StateProps) => {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => setLoading(props.ui.pending.get.length > 0));
 
   return (
-    <Main title='Shopping List'>
-      {isLoading ?
-        <div>loading</div> :
-        <>
-          {/* TODO: type the any */}
-          {aggregate(props.days).sort((a: any, b: any) => a.unit.localeCompare(b.unit)).map((ingredient: any, index: number) =>
-            <div key={index}>
-              {ingredient.quantity} {ingredient.unit} of {ingredient.name}
-            </div>)}
-        </>
+    <Main title='Your shopping list'>
+      {props.error ?
+        <NegativeBox message={props.error} /> :
+        !!Object.keys(props.failures).length ?
+          <NegativeBox message='One or more week days failed to return' /> :
+          <ShoppingList isLoading={isLoading} days={props.days} />
       }
     </Main>
-  )
+  );
 };
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
@@ -56,4 +52,4 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
 });
 
 export default connect<StateProps, null, null, GlobalState>
-  (mapStateToProps)(ShoppingList);
+  (mapStateToProps)(ShoppingListPage);

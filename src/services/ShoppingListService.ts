@@ -11,8 +11,7 @@ const combineRecipeIngredients = (days: {
     return ingredients;
   }, []).flat();
 
-//TODO: move to service
-const aggregate = (ingredients: RecipeIngredient[]) =>
+  const aggregate = (ingredients: RecipeIngredient[]) =>
   ingredients.reduce((aggregation: any, ingredient: any) => {
     //TODO: function now knows about data structure
     const ingredientId = ingredient.ingredient.id;

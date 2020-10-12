@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 import { Unit } from '../../store/domain/units/types';
 import { Ingredient } from '../../store/domain/ingredients/types';
+import { RecipeIngredient } from '../../store/domain/days/types';
 
-import RecipeIngredient from '../RecipeIngredient';
+import RecipeIngredientComponent from '../RecipeIngredient';
 import { Fields, FieldValidations } from '../Form';
 import { Button } from '../Clickable';
 
@@ -21,12 +22,6 @@ export interface RecipeIngredientsProps {
   validFields?: FieldValidations,
   setNewFormState?: (field: string, newValue: RecipeIngredient[]) => void,
   setValidationState?: (field: string, isValid?: boolean) => void
-};
-
-export interface RecipeIngredient {
-  quantity: number,
-  unitId: string,
-  ingredientId: string
 };
 
 const Label = styled.label`
@@ -67,8 +62,12 @@ const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: Rec
     const recipeIngredients: RecipeIngredient[] = Object.assign([], props.form[props.name]);
     recipeIngredients.push({
       quantity: 0,
-      unitId: 'PLACEHOLDER',
-      ingredientId: 'PLACEHOLDER'
+      unit: {
+        id: 'PLACEHOLDER'
+      },
+      ingredient: {
+        id: 'PLACEHOLDER'
+      }
     });
 
     props.setNewFormState(
@@ -86,7 +85,7 @@ const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: Rec
         <ul id={props.name}>
           {recipeIngredients &&
             recipeIngredients.map((recipeIngredient: RecipeIngredient, index: number) =>
-              <RecipeIngredient
+              <RecipeIngredientComponent
                 key={index}
                 index={index}
                 units={props.units}

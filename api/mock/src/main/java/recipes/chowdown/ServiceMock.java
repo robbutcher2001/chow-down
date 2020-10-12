@@ -30,6 +30,8 @@ import recipes.chowdown.schema.Day;
 import recipes.chowdown.schema.Ingredient;
 import recipes.chowdown.schema.Recipe;
 import recipes.chowdown.schema.RecipeIngredient;
+import recipes.chowdown.schema.RecipeIngredientIngredient;
+import recipes.chowdown.schema.RecipeIngredientUnit;
 import recipes.chowdown.schema.Unit;
 
 @RestController
@@ -91,8 +93,19 @@ public class ServiceMock implements ApiApi {
         recipeIngredient.setQuantity(new BigDecimal(this.faker.random().nextInt(0, 40)));
         // TODO: unit and ingredient POJOs added need to be auto-generated for domain in
         // api/lambda folder
-        recipeIngredient.setUnit(this.units.get(new Random().nextInt(this.TOTAL_UNITS)));
-        recipeIngredient.setIngredient(this.ingredients.get(new Random().nextInt(this.TOTAL_INGREDIENTS)));
+        Unit unit = this.units.get(new Random().nextInt(this.TOTAL_UNITS));
+        RecipeIngredientUnit newRecipeUnit = new RecipeIngredientUnit();
+        newRecipeUnit.setId(unit.getId());
+        newRecipeUnit.setSingular(unit.getSingular());
+        newRecipeUnit.setPlural(unit.getPlural());
+        recipeIngredient.setUnit(newRecipeUnit);
+
+        Ingredient ingredient = this.ingredients.get(new Random().nextInt(this.TOTAL_INGREDIENTS));
+        RecipeIngredientIngredient newRecipeIngredient = new RecipeIngredientIngredient();
+        newRecipeIngredient.setId(ingredient.getId());
+        newRecipeIngredient.setName(ingredient.getName());
+        recipeIngredient.setIngredient(newRecipeIngredient);
+
         ingredients.add(recipeIngredient);
       }
 
@@ -207,7 +220,34 @@ public class ServiceMock implements ApiApi {
 
   @Override
   public ResponseEntity<Recipe> apiRecipesPost(@Valid Recipe recipe) {
+    List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+
     recipe.setId(this.faker.internet().uuid());
+    recipe.getIngredients().forEach(payloadIngredient -> {
+      RecipeIngredientUnit newRecipeUnit = new RecipeIngredientUnit();
+      Unit existingUnit = this.units.stream().filter(unit -> unit.getId().equals(payloadIngredient.getUnit().getId()))
+          .findFirst().orElse(null);
+
+      newRecipeUnit.setId(existingUnit.getId());
+      newRecipeUnit.setSingular(existingUnit.getSingular());
+      newRecipeUnit.setPlural(existingUnit.getPlural());
+
+      RecipeIngredientIngredient newRecipeIngredient = new RecipeIngredientIngredient();
+      Ingredient existingIngredient = this.ingredients.stream()
+          .filter(ingredient -> ingredient.getId().equals(payloadIngredient.getIngredient().getId())).findFirst()
+          .orElse(null);
+
+      newRecipeIngredient.setId(existingIngredient.getId());
+      newRecipeIngredient.setName(existingIngredient.getName());
+
+      RecipeIngredient recipeIngredient = new RecipeIngredient();
+      recipeIngredient.setQuantity(payloadIngredient.getQuantity());
+      recipeIngredient.setUnit(newRecipeUnit);
+      recipeIngredient.setIngredient(newRecipeIngredient);
+
+      recipeIngredients.add(recipeIngredient);
+    });
+    recipe.setIngredients(recipeIngredients);
     this.recipes.add(recipe);
 
     randomSleep(2);

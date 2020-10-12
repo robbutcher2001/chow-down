@@ -11,8 +11,8 @@ export enum UnitActionTypes {
 
 export interface Unit {
     id: string,
-    singular: string,
-    plural: string
+    singular?: string,
+    plural?: string
 }
 
 export interface UnitsState {

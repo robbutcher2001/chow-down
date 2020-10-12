@@ -350,7 +350,7 @@ components:
         name:
           type: string
       required:
-      - ingredient
+      - name
     RecipeIngredient:
       title: "Recipe ingredients schema"
       type: object
@@ -358,9 +358,21 @@ components:
         quantity:
           type: number
         unit:
-          $ref: "#/components/schemas/Unit"
+          type: object
+          properties:
+            id:
+              type: string
+            singular:
+              type: string
+            plural:
+              type: string
         ingredient:
-          $ref: "#/components/schemas/Ingredient"
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
       required:
       - quantity
       - unit
