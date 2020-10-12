@@ -110,7 +110,7 @@ public class GetDaysServiceTest {
     assertEquals("tin", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnit().getSingular());
     assertEquals("tins", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnit().getPlural());
     assertEquals("ingredientId", returnedDays.get(0).getRecipe().getIngredients().get(0).getIngredient().getId());
-    assertEquals("tomatoes", returnedDays.get(0).getRecipe().getIngredients().get(0).getIngredient().getIngredient());
+    assertEquals("tomatoes", returnedDays.get(0).getRecipe().getIngredients().get(0).getIngredient().getName());
   }
 
   @Test

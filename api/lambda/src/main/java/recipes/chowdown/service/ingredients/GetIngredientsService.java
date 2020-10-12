@@ -38,7 +38,7 @@ public class GetIngredientsService implements RequestHandler<Object, List<Ingred
 
       for (List<Field> fields : result.getRecords()) {
         ingredients.add(
-            Ingredient.builder().id(fields.get(0).getStringValue()).ingredient(fields.get(1).getStringValue()).build());
+            Ingredient.builder().id(fields.get(0).getStringValue()).name(fields.get(1).getStringValue()).build());
       }
 
       return ingredients;

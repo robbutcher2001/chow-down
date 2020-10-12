@@ -13,5 +13,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Ingredient {
   private String id;
-  private String ingredient;
+  private String name;
 }

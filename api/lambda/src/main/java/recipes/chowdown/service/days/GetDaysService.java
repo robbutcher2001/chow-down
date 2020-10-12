@@ -105,7 +105,7 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
     Unit unit = Unit.builder().id(fields.get(7).getStringValue()).singular(fields.get(8).getStringValue())
         .plural(fields.get(9).getStringValue()).build();
     Ingredient ingredient = Ingredient.builder().id(fields.get(10).getStringValue())
-        .ingredient(fields.get(11).getStringValue()).build();
+        .name(fields.get(11).getStringValue()).build();
 
     return RecipeIngredient.builder().quantity(fields.get(6).getDoubleValue()).unit(unit).ingredient(ingredient)
         .build();

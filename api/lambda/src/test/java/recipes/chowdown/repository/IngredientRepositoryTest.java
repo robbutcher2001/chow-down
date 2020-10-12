@@ -63,7 +63,7 @@ public class IngredientRepositoryTest {
 
     @Test
     void putIngredient_shouldReturnResults_whenRequestValidIngredient() throws Exception {
-        Ingredient ingredient = Ingredient.builder().ingredient("tomato").build();
+        Ingredient ingredient = Ingredient.builder().name("tomato").build();
         ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
         when(this.rdsData.executeStatement(Mockito.any(ExecuteStatementRequest.class))).thenReturn(mockResult);

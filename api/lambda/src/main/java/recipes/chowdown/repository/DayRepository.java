@@ -20,7 +20,7 @@ public class DayRepository {
 
   private static final String GET_SQL = "SELECT * "
     + "FROM ("
-    + "  SELECT d.date, d.alternate_day, r.title, r.rating, r.image, r.url, ri.quantity, u.id, u.singular, u.plural, i.id, i.ingredient "
+    + "  SELECT d.date, d.alternate_day, r.title, r.rating, r.image, r.url, ri.quantity, u.id, u.singular, u.plural, i.id, i.name "
     + "  FROM chow.recipe_ingredients ri "
     + "  INNER JOIN chow.units u "
     + "    ON u.id = ri.unit_id "
