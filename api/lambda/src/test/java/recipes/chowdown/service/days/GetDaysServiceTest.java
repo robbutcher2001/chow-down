@@ -102,9 +102,9 @@ public class GetDaysServiceTest {
     assertEquals("/image/url/123", returnedDays.get(0).getRecipe().getImage());
     assertEquals("a url", returnedDays.get(0).getRecipe().getUrl());
     assertEquals(4, returnedDays.get(0).getRecipe().getIngredients().get(0).getQuantity());
-    assertEquals("tin", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnitSingularName());
-    assertEquals("tins", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnitPluralName());
-    assertEquals("tomatoes", returnedDays.get(0).getRecipe().getIngredients().get(0).getIngredientName());
+    assertEquals("tin", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnit().getSingular());
+    assertEquals("tins", returnedDays.get(0).getRecipe().getIngredients().get(0).getUnit().getPlural());
+    assertEquals("tomatoes", returnedDays.get(0).getRecipe().getIngredients().get(0).getIngredient().getIngredient());
   }
 
   @Test
