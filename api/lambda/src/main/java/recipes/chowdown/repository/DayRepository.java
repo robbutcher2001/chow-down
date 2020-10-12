@@ -37,7 +37,7 @@ public class DayRepository {
     + "  WHERE d.alternate_day IS NOT NULL "
     + "    AND d.date BETWEEN :from::date AND :to::date "
     + ") wrapper "
-    + "ORDER BY wrapper.date, wrapper.quantity, wrapper.singular, wrapper.ingredient";
+    + "ORDER BY wrapper.date, wrapper.quantity, wrapper.singular, wrapper.name";
 
   private static final String PUT_SQL = "INSERT INTO chow.days (date, recipe_id, alternate_day) "
     + "VALUES (:date::date, :recipeId::uuid, :alternateDay) "
