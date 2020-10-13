@@ -20,6 +20,8 @@ export const daysReducer: Reducer<DaysState, GetDayApiResponse> = (state = initi
         case DayActionTypes.GET_DAY_SUCCESS:
             const successGetResponse = action as GetDaySuccessApiResponse;
             delete failures[successGetResponse.date];
+            delete days[successGetResponse.date];
+            console.log('this is the successGetResponse.day', successGetResponse.day);
 
             return {
                 failures,
