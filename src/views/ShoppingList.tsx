@@ -18,7 +18,8 @@ interface StateProps {
   },
   ui: {
     pending: {
-      get: string[]
+      get: string[],
+      put: string[]
     }
   }
 };
@@ -26,7 +27,7 @@ interface StateProps {
 const ShoppingListPage: FunctionComponent<StateProps> = (props: StateProps) => {
   const [isLoading, setLoading] = useState(false);
 
-  useEffect(() => setLoading(props.ui.pending.get.length > 0));
+  useEffect(() => setLoading([...props.ui.pending.get, ...props.ui.pending.put].length > 0));
 
   return (
     <Main title='Your shopping list'>
@@ -46,7 +47,8 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
   days: domain.day.days,
   ui: {
     pending: {
-      get: ui.day.getPending
+      get: ui.day.getPending,
+      put: ui.day.putPending
     }
   }
 });
