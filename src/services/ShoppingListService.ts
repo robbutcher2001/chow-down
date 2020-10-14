@@ -11,7 +11,7 @@ const combineRecipeIngredients = (days: {
     return ingredients;
   }, []).flat();
 
-  const aggregate = (ingredients: RecipeIngredient[]) =>
+const aggregate = (ingredients: RecipeIngredient[]) =>
   ingredients.reduce((aggregation: any, ingredient: any) => {
     //TODO: function now knows about data structure
     const ingredientId = ingredient.ingredient.id;
@@ -23,7 +23,7 @@ const combineRecipeIngredients = (days: {
           aggregation[ingredientId] && aggregation[ingredientId][unitId]
             ? (aggregation[ingredientId][unitId].quantity += ingredient.quantity)
             : ingredient.quantity,
-        unit: ingredient.unit.singular,
+        unit: ingredient.unit,
         name: ingredient.ingredient.name
       }
     };

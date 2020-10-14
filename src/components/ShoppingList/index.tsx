@@ -91,7 +91,7 @@ const ShoppingList: FunctionComponent<ShoppingListProps> = (props: ShoppingListP
     setStrikethroughIndex(strikethroughIndexes.filter(index => index !== currentTarget.dataset.ingredient)) :
     setStrikethroughIndex([...strikethroughIndexes, currentTarget.dataset.ingredient]);
 
-  useEffect(() => setShoppingList(aggregate(props.days).sort((a: any, b: any) => a.unit.localeCompare(b.unit))), [props.days]);
+  useEffect(() => setShoppingList(aggregate(props.days).sort((a: any, b: any) => a.unit.plural.localeCompare(b.unit.plural))), [props.days]);
 
   return (
     !props.isLoading && !!!shoppingList.length ?
@@ -106,7 +106,7 @@ const ShoppingList: FunctionComponent<ShoppingListProps> = (props: ShoppingListP
             className={strikethroughIndexes.includes(index.toString()) ? 'strikethrough' : ''}
           >
             <mark>&#10003;</mark>
-            <span>{`${ingredient.quantity} ${ingredient.quantity === 1 ? ingredient.unit : ingredient.unit} of ${ingredient.name}`}</span>
+            <span>{`${ingredient.quantity} ${ingredient.quantity === 1 ? ingredient.unit.singular : ingredient.unit.plural} of ${ingredient.name}`}</span>
           </li>
         )}
       </StyledShoppingList >

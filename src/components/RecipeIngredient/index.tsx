@@ -53,22 +53,22 @@ const RecipeIngredient = styled.li`
       border-width: 2px;
       border-style: dashed;
       border-color: ${props => props.theme.isDark ?
-    props.theme.colour.lightBlack :
-    props.theme.colour.grey
-  };
+        props.theme.colour.lightBlack :
+        props.theme.colour.grey
+      };
       border-radius: 5px;
       background-color: ${props =>
-    props.theme.colour.white
-  };
+        props.theme.colour.white
+      };
       margin: 0.5rem 0;
       padding: 0 0.5em;
       height: 2rem;
       font-size: ${props =>
-    props.theme.typography.fontSize.normal
-  };
+        props.theme.typography.fontSize.normal
+      };
       font-family: ${props =>
-    props.theme.typography.fontFamily.app
-  };
+        props.theme.typography.fontFamily.app
+      };
       -webkit-appearance: none;
     }
   }
@@ -88,8 +88,8 @@ const RecipeIngredient = styled.li`
 
   .pink {
     border-color: ${props =>
-    props.theme.colour.pink
-  };
+      props.theme.colour.pink
+    };
   }
 `
 
