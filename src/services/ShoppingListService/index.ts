@@ -1,15 +1,17 @@
-import { Day, RecipeIngredient } from '../store/domain/days/types';
+import { Day, RecipeIngredient } from '../../store/domain/days/types';
 
 const combineRecipeIngredients = (days: {
   [date: string]: Day
 }): RecipeIngredient[] =>
-  Object.keys(days).reduce((ingredients: RecipeIngredient[][], dayKey: string) => {
-    const day: Day = days[dayKey];
-    if (!day.alternateDay) {
-      ingredients.push(day.recipe.ingredients);
-    }
-    return ingredients;
-  }, []).flat();
+  days ?
+    Object.keys(days).reduce((ingredients: RecipeIngredient[][], dayKey: string) => {
+      const day: Day = days[dayKey];
+      if (!day.alternateDay) {
+        ingredients.push(day.recipe.ingredients);
+      }
+      return ingredients;
+    }, []).flat() :
+    [];
 
 const aggregate = (ingredients: RecipeIngredient[]) =>
   ingredients.reduce((aggregation: any, ingredient: any) => {
@@ -36,10 +38,6 @@ const flatten = (ingredients: any) =>
   Object.entries(ingredients).flatMap(([_key, ingredient]) =>
     Object.entries(ingredient).map(([_key, unit]) => unit));
 
-const compose = (a: Function, b: Function, c: Function) => (days: {
-  [date: string]: Day
-}) => a(b(c(days)));
-
 export default (days: {
   [date: string]: Day
-}) => compose(flatten, aggregate, combineRecipeIngredients)(days);
+}) => flatten(aggregate(combineRecipeIngredients(days)));
