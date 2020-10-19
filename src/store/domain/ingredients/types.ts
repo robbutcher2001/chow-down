@@ -11,7 +11,7 @@ export enum IngredientActionTypes {
 
 export interface Ingredient {
     id: string,
-    ingredient: string
+    name?: string
 }
 
 export interface IngredientsState {

@@ -8,6 +8,7 @@ import Days from './views/Days';
 import Day from './views/Day';
 import Recipes from './views/Recipes';
 import Recipe from './views/Recipe';
+import ShoppingList from './views/ShoppingList';
 import NewAlternateDay from './views/NewAlternateDay';
 import NewRecipe from './views/NewRecipe';
 import NewUnit from './views/NewUnit';
@@ -23,6 +24,7 @@ const Routes: FunctionComponent = () => (
         <Route exact path='/days/:date' component={Day} />
         <Route exact path='/recipes' component={Recipes} />
         <Route exact path='/recipe/:id' component={Recipe} />
+        <Route exact path='/shopping/ingredients' component={ShoppingList} />
         <Route exact path='/days/alternate/new' component={NewAlternateDay} />
         <Route exact path='/recipes/new' component={NewRecipe} />
         <Route exact path='/units/new' component={NewUnit} />

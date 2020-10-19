@@ -40,8 +40,8 @@ const ingredientsWithMarkers = (ingredients: Ingredient[]): ReactNode[] => {
   let previousLetter: string;
 
   return ingredients.reduce((arr, ingredient, i) => {
-    if (ingredient.ingredient) {
-      const currentLetter: string = ingredient.ingredient.charAt(0).toLocaleLowerCase();
+    if (ingredient.name) {
+      const currentLetter: string = ingredient.name.charAt(0).toLocaleLowerCase();
 
       if (currentLetter !== previousLetter) {
         previousLetter = currentLetter;

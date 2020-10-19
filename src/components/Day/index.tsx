@@ -206,11 +206,11 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
           {recipeIngredient.quantity}
           {' '}
           {recipeIngredient.quantity === 1 ?
-            recipeIngredient.unitSingularName.toLowerCase() :
-            recipeIngredient.unitPluralName.toLowerCase()
+            recipeIngredient.unit.singular.toLowerCase() :
+            recipeIngredient.unit.plural.toLowerCase()
           }
           {' '}
-          {recipeIngredient.ingredientName.toLowerCase()}
+          {recipeIngredient.ingredient.name.toLowerCase()}
         </div>
       </li>
     );

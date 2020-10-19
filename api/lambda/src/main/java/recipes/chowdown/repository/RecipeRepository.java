@@ -113,9 +113,9 @@ public class RecipeRepository {
         parameters.add(new SqlParameter().withName("quantity")
             .withValue(new Field().withDoubleValue(recipeIngredient.getQuantity())));
         parameters.add(
-            new SqlParameter().withName("unitId").withValue(new Field().withStringValue(recipeIngredient.getUnitId())));
+            new SqlParameter().withName("unitId").withValue(new Field().withStringValue(recipeIngredient.getUnit().getId())));
         parameters.add(new SqlParameter().withName("ingredientId")
-            .withValue(new Field().withStringValue(recipeIngredient.getIngredientId())));
+            .withValue(new Field().withStringValue(recipeIngredient.getIngredient().getId())));
         parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(recipe.getId())));
 
         recipeIngredientParameters.add(parameters);

@@ -13,8 +13,8 @@ import DayGrid from '../components/Days/DayGrid';
 import { NegativeBox } from '../components/MessageBox';
 
 const cta: CallToAction = {
-  text: 'Get week\'s ingredients',
-  link: '/ingredients/week/this'
+  text: 'Shopping List',
+  link: '/shopping/ingredients'
 };
 
 interface StateProps {
@@ -53,7 +53,7 @@ const DaysPage: FunctionComponent<CombinedProps> = (props: CombinedProps) => {
   console.log('props.failures');
   console.log(props.failures);
   return (
-    <Main title='Your week' >
+    <Main title='Your week' cta={cta} >
       {/* {this.props.failure &&
         <NegativeBox message={this.props.failure} />
       } */}

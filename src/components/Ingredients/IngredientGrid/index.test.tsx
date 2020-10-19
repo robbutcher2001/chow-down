@@ -9,11 +9,11 @@ import { Ingredient } from '../../../store/domain/ingredients/types';
 
 const mockIngredients: Ingredient[] = [{
   id: '123',
-  ingredient: 'fake_ingredient1'
+  name: 'fake_ingredient1'
 },
 {
   id: '124',
-  ingredient: 'fake_ingredient2'
+  name: 'fake_ingredient2'
 }];
 
 test('IngredientGrid basic snapshot render', () => {

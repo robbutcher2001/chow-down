@@ -138,7 +138,7 @@ public class GetIngredientsServiceTest {
 
         assertEquals(1, returnedIngredients.size());
         assertEquals("fake", returnedIngredients.get(0).getId());
-        assertEquals("fake", returnedIngredients.get(0).getIngredient());
+        assertEquals("fake", returnedIngredients.get(0).getName());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class GetIngredientsServiceTest {
 
         assertEquals(1, returnedIngredients.size());
         assertEquals("", returnedIngredients.get(0).getId());
-        assertEquals("", returnedIngredients.get(0).getIngredient());
+        assertEquals("", returnedIngredients.get(0).getName());
     }
 
     @Test
@@ -176,7 +176,7 @@ public class GetIngredientsServiceTest {
 
         assertEquals(1, returnedIngredients.size());
         assertNull(returnedIngredients.get(0).getId());
-        assertNull(returnedIngredients.get(0).getIngredient());
+        assertNull(returnedIngredients.get(0).getName());
     }
 
     @Test

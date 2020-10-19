@@ -28,8 +28,10 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import recipes.chowdown.domain.Ingredient;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.domain.RecipeIngredient;
+import recipes.chowdown.domain.Unit;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +74,8 @@ public class RecipeRepositoryTest {
   @Test
   void putRecipe_shouldReturnResults_whenRequestValidRecipe() throws Exception {
     List<RecipeIngredient> recipeIngredients = Collections
-        .singletonList(RecipeIngredient.builder().quantity(2l).unitId("unit_id").ingredientId("ingredient_id").build());
+        .singletonList(RecipeIngredient.builder().quantity(2l).unit(Unit.builder().id("unit_id").build())
+            .ingredient(Ingredient.builder().id("ingredient_id").build()).build());
     Recipe recipe = Recipe.builder().title("katsu curry").description("good food").rating(5l).url("url").image("src")
         .createdDate(LocalDateTime.now().toString()).ingredients(recipeIngredients).build();
     BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);

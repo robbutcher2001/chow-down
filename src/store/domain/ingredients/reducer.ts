@@ -52,4 +52,4 @@ export const ingredientsReducer: Reducer<IngredientsState, GetIngredientsApiResp
 };
 
 const ingredientsSort = (ingredients: Ingredient[]) =>
-    ingredients.sort((a, b) => a.ingredient.localeCompare(b.ingredient));
+    ingredients.sort((a, b) => a.name.localeCompare(b.name));

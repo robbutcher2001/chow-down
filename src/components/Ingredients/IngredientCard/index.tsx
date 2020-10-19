@@ -28,6 +28,6 @@ const IngredientCard = styled.li`
 
 export default (props: IngredientCardProps) => (
   <IngredientCard>
-    {props.ingredient.ingredient}
+    {props.ingredient.name}
   </IngredientCard>
 );

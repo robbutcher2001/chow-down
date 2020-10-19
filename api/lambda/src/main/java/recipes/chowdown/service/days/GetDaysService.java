@@ -17,8 +17,10 @@ import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 import com.amazonaws.services.rdsdata.model.Field;
 
 import recipes.chowdown.domain.Day;
+import recipes.chowdown.domain.Ingredient;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.domain.RecipeIngredient;
+import recipes.chowdown.domain.Unit;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.DayRepository;
 
@@ -100,8 +102,12 @@ public class GetDaysService implements RequestHandler<GetRequest, List<Day>> {
   }
 
   private RecipeIngredient buildRecipeIngredients(final List<Field> fields) {
-    return RecipeIngredient.builder().quantity(fields.get(6).getDoubleValue())
-        .unitSingularName(fields.get(7).getStringValue()).unitPluralName(fields.get(8).getStringValue())
-        .ingredientName(fields.get(9).getStringValue()).build();
+    Unit unit = Unit.builder().id(fields.get(7).getStringValue()).singular(fields.get(8).getStringValue())
+        .plural(fields.get(9).getStringValue()).build();
+    Ingredient ingredient = Ingredient.builder().id(fields.get(10).getStringValue())
+        .name(fields.get(11).getStringValue()).build();
+
+    return RecipeIngredient.builder().quantity(fields.get(6).getDoubleValue()).unit(unit).ingredient(ingredient)
+        .build();
   }
 }

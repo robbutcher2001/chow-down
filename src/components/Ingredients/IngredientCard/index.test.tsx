@@ -9,7 +9,7 @@ import { Ingredient } from '../../../store/domain/ingredients/types';
 
 const mockIngredient: Ingredient = {
   id: '123',
-  ingredient: 'fake_ingredient'
+  name: 'fake_ingredient'
 };
 
 test('IngredientCard basic snapshot render', () => {

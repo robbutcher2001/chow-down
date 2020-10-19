@@ -30,6 +30,8 @@ import recipes.chowdown.schema.Day;
 import recipes.chowdown.schema.Ingredient;
 import recipes.chowdown.schema.Recipe;
 import recipes.chowdown.schema.RecipeIngredient;
+import recipes.chowdown.schema.RecipeIngredientIngredient;
+import recipes.chowdown.schema.RecipeIngredientUnit;
 import recipes.chowdown.schema.Unit;
 
 @RestController
@@ -44,44 +46,13 @@ public class ServiceMock implements ApiApi {
   final List<Recipe> recipes = new ArrayList<>();
   final List<Day> days = new ArrayList<>();
   boolean initRequest = true;
+  final int TOTAL_UNITS = 12;
+  final int TOTAL_INGREDIENTS = 120;
 
   public ServiceMock() {
     this.faker = new Faker();
 
-    for (int i = 0; i < 20; i++) {
-      Recipe recipe = new Recipe();
-      recipe.setId(this.faker.internet().uuid());
-      recipe.setTitle(this.faker.food().dish());
-      recipe.setDescription(this.faker.hitchhikersGuideToTheGalaxy().marvinQuote());
-      recipe.setRating(this.faker.number().numberBetween(0, 6));
-      recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
-      // recipe.setImage(getRandomImageUrl());
-      recipe.setImage(this.faker.internet().image());
-      recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-
-      List<RecipeIngredient> ingredients = new ArrayList<>();
-
-      for (int j = 0; j < new Random().nextInt(40); j++) {
-        RecipeIngredient recipeIngredient = new RecipeIngredient();
-        recipeIngredient.setQuantity(new BigDecimal(this.faker.random().nextInt(0, 40)));
-
-        String measurement = this.faker.food().measurement();
-        if (measurement.contains(" ")) {
-          measurement = measurement.split(" ")[1];
-        }
-
-        recipeIngredient.setUnitSingularName(measurement);
-        recipeIngredient.setUnitPluralName(measurement.concat("s"));
-        recipeIngredient.setIngredientName(this.faker.food().ingredient());
-        ingredients.add(recipeIngredient);
-      }
-
-      recipe.setIngredients(ingredients);
-
-      this.recipes.add(recipe);
-    }
-
-    for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < this.TOTAL_UNITS; i++) {
       Unit unit = new Unit();
       unit.setId(this.faker.internet().uuid());
 
@@ -96,12 +67,51 @@ public class ServiceMock implements ApiApi {
       this.units.add(unit);
     }
 
-    for (int i = 0; i < 120; i++) {
+    for (int i = 0; i < this.TOTAL_INGREDIENTS; i++) {
       Ingredient ingredient = new Ingredient();
       ingredient.setId(this.faker.internet().uuid());
-      ingredient.setIngredient(this.faker.food().ingredient());
+      ingredient.setName(this.faker.food().ingredient());
 
       this.ingredients.add(ingredient);
+    }
+
+    for (int i = 0; i < 20; i++) {
+      Recipe recipe = new Recipe();
+      recipe.setId(this.faker.internet().uuid());
+      recipe.setTitle(this.faker.food().dish());
+      recipe.setDescription(this.faker.hitchhikersGuideToTheGalaxy().marvinQuote());
+      recipe.setRating(this.faker.number().numberBetween(0, 6));
+      recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
+      recipe.setImage(getRandomImageUrl());
+      // recipe.setImage(this.faker.internet().image());
+      recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+
+      List<RecipeIngredient> ingredients = new ArrayList<>();
+
+      for (int j = 0; j < new Random().nextInt(40); j++) {
+        RecipeIngredient recipeIngredient = new RecipeIngredient();
+        recipeIngredient.setQuantity(new BigDecimal(this.faker.random().nextInt(0, 40)));
+        // TODO: unit and ingredient POJOs added need to be auto-generated for domain in
+        // api/lambda folder
+        Unit unit = this.units.get(new Random().nextInt(this.TOTAL_UNITS));
+        RecipeIngredientUnit newRecipeUnit = new RecipeIngredientUnit();
+        newRecipeUnit.setId(unit.getId());
+        newRecipeUnit.setSingular(unit.getSingular());
+        newRecipeUnit.setPlural(unit.getPlural());
+        recipeIngredient.setUnit(newRecipeUnit);
+
+        Ingredient ingredient = this.ingredients.get(new Random().nextInt(this.TOTAL_INGREDIENTS));
+        RecipeIngredientIngredient newRecipeIngredient = new RecipeIngredientIngredient();
+        newRecipeIngredient.setId(ingredient.getId());
+        newRecipeIngredient.setName(ingredient.getName());
+        recipeIngredient.setIngredient(newRecipeIngredient);
+
+        ingredients.add(recipeIngredient);
+      }
+
+      recipe.setIngredients(ingredients);
+
+      this.recipes.add(recipe);
     }
 
     for (int i = 0; i < 7; i++) {
@@ -210,7 +220,34 @@ public class ServiceMock implements ApiApi {
 
   @Override
   public ResponseEntity<Recipe> apiRecipesPost(@Valid Recipe recipe) {
+    List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+
     recipe.setId(this.faker.internet().uuid());
+    recipe.getIngredients().forEach(payloadIngredient -> {
+      RecipeIngredientUnit newRecipeUnit = new RecipeIngredientUnit();
+      Unit existingUnit = this.units.stream().filter(unit -> unit.getId().equals(payloadIngredient.getUnit().getId()))
+          .findFirst().orElse(null);
+
+      newRecipeUnit.setId(existingUnit.getId());
+      newRecipeUnit.setSingular(existingUnit.getSingular());
+      newRecipeUnit.setPlural(existingUnit.getPlural());
+
+      RecipeIngredientIngredient newRecipeIngredient = new RecipeIngredientIngredient();
+      Ingredient existingIngredient = this.ingredients.stream()
+          .filter(ingredient -> ingredient.getId().equals(payloadIngredient.getIngredient().getId())).findFirst()
+          .orElse(null);
+
+      newRecipeIngredient.setId(existingIngredient.getId());
+      newRecipeIngredient.setName(existingIngredient.getName());
+
+      RecipeIngredient recipeIngredient = new RecipeIngredient();
+      recipeIngredient.setQuantity(payloadIngredient.getQuantity());
+      recipeIngredient.setUnit(newRecipeUnit);
+      recipeIngredient.setIngredient(newRecipeIngredient);
+
+      recipeIngredients.add(recipeIngredient);
+    });
+    recipe.setIngredients(recipeIngredients);
     this.recipes.add(recipe);
 
     randomSleep(2);
