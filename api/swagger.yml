@@ -346,7 +346,6 @@ components:
       properties:
         id:
           type: string
-        # TODO: check that putting a new ingredient now works with this name change
         name:
           type: string
       required:
