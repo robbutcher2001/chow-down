@@ -82,8 +82,8 @@ public class ServiceMock implements ApiApi {
       recipe.setDescription(this.faker.hitchhikersGuideToTheGalaxy().marvinQuote());
       recipe.setRating(this.faker.number().numberBetween(0, 6));
       recipe.setUrl(this.faker.internet().url() + "/" + this.faker.internet().domainWord());
-      // recipe.setImage(getRandomImageUrl());
-      recipe.setImage(this.faker.internet().image());
+      recipe.setImage(getRandomImageUrl());
+      // recipe.setImage(this.faker.internet().image());
       recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
       List<RecipeIngredient> ingredients = new ArrayList<>();
