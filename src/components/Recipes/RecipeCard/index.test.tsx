@@ -15,7 +15,8 @@ const mockRecipe = {
   rating: 4,
   url: 'fake_url',
   image: 'fake_image',
-  createdDate: 'fake_created_date'
+  createdDate: 'fake_created_date',
+  getSearchableKeywords: jest.fn()
 };
 
 test('RecipeCard basic snapshot render', () => {

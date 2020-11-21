@@ -10,6 +10,10 @@ import { recipesReducer } from './recipes/reducer';
 import { unitsReducer } from './units/reducer';
 import { daysReducer } from './days/reducer';
 
+export interface Searchable {
+  getSearchableKeywords(): string[]
+}
+
 export interface DomainState {
     ingredient: IngredientsState,
     recipe: RecipesState,

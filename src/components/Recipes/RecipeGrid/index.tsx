@@ -18,7 +18,7 @@ interface RecipeGridProps {
 };
 
 const UserInstruction = styled.div`
-  margin: 1rem 0 2rem;
+  margin: 2rem 0 0.5rem;
 
   > span {
     color: ${props => props.theme.isDark ?
@@ -50,7 +50,7 @@ export default (props: RecipeGridProps) =>
       </UserInstruction>
     }
     {!props.isLoading && props.recipes.length === 0 ?
-      <NegativeBox message='No recipes yet!' /> :
+      <NegativeBox message='Nothing found &#x2639;' /> :
       <RecipeGrid className={props.isLoading ? 'spinner spinning' : 'spinner'} >
         {props.recipes.map((recipe, i) =>
           <RecipeCard

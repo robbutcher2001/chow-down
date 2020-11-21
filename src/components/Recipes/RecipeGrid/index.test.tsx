@@ -16,7 +16,8 @@ const mockRecipes: Recipe[] = [{
   rating: 4,
   url: 'fake_url1',
   image: 'fake_alt_text1',
-  createdDate: 'fake_date1'
+  createdDate: 'fake_date1',
+  getSearchableKeywords: jest.fn()
 },
 {
   id: '124',
@@ -25,7 +26,8 @@ const mockRecipes: Recipe[] = [{
   rating: 3,
   url: 'fake_url2',
   image: 'fake_alt_text2',
-  createdDate: 'fake_date2'
+  createdDate: 'fake_date2',
+  getSearchableKeywords: jest.fn()
 }];
 
 test('RecipeGrid basic snapshot render', () => {

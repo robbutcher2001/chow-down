@@ -1,4 +1,5 @@
 import { Action } from 'redux';
+import { Searchable } from '..';
 
 export enum RecipeActionTypes {
     GET_RECIPES_REQUEST = '@@recipes/GET_REQUEST',
@@ -9,7 +10,7 @@ export enum RecipeActionTypes {
     POST_RECIPES_FAILURE = '@@recipes/POST_FAILURE'
 }
 
-export interface Recipe {
+export interface Recipe extends Searchable {
     id: string,
     title: string,
     description: string,

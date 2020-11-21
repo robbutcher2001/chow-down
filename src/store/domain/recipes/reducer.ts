@@ -21,6 +21,8 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
       // to remove type-casting, we should be able to move to this once failure is implmented below
       // need a separate failure reducer so we don't need to use GetRecipesApiResponse anymore
       // const successResponse: RecipesSuccessApiResponse = action;
+      recipeSearchableKeywords(successResponse.recipes);
+
       return {
         failure: null,
         recipes: successResponse.recipes
@@ -30,6 +32,7 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
       const successResponsePost = action as RecipesSuccessApiResponse;
       const recipes = state.recipes.concat(successResponsePost.recipes);
       recipesSort(recipes);
+      recipeSearchableKeywords(successResponse.recipes);
 
       return {
         failure: null,
@@ -53,3 +56,9 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
 
 const recipesSort = (recipes: Recipe[]) =>
   recipes.sort((a, b) => a.title.localeCompare(b.title));
+
+const recipeSearchableKeywords = (recipes: Recipe[]) =>
+  recipes.forEach(recipe =>
+    recipe.getSearchableKeywords = () =>
+    [...recipe.title.split(' '), ...recipe.description.split(' ')]
+  );

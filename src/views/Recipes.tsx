@@ -11,6 +11,7 @@ import { putDayRequest } from '../store/domain/days/actions';
 import { clearUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
+import Search from '../components/Search';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
 import { NegativeBox } from '../components/MessageBox';
 
@@ -40,16 +41,24 @@ interface DispatchProps {
 
 interface OwnProps { };
 
-interface OwnState { };
+interface OwnState {
+  filteredRecipes: Recipe[]
+};
 
 type CombinedProps = StateProps & DispatchProps & OwnProps;
 
 class RecipesPage extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
+
+    this.state = {
+      filteredRecipes: []
+    };
   }
 
   componentDidMount = () => !this.props.ui.pending.post && this.props.getRecipes();
+
+  updateFilteredRecipes = (filteredRecipes: Recipe[]) => this.setState({ filteredRecipes });
 
   componentWillUnmount = () => this.props.clearSelectingDay();
 
@@ -60,12 +69,18 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
       }
       {this.props.error ?
         <NegativeBox message={this.props.error} /> :
-        <RecipeGrid
-          isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
-          recipes={this.props.recipes}
-          selectedDay={this.props.selectedDay}
-          putDay={this.props.putDay}
-        />
+        <>
+          <Search
+            label='Search'
+            searchableItems={this.props.recipes}
+            resultsCb={this.updateFilteredRecipes} />
+          <RecipeGrid
+            isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
+            recipes={this.state.filteredRecipes}
+            selectedDay={this.props.selectedDay}
+            putDay={this.props.putDay}
+          />
+        </>
       }
     </Main>
   );
