@@ -2,11 +2,12 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 
 import styled from 'styled-components';
 
-import { Recipe } from '../../store/domain/recipes/types';
+import { Searchable } from '../../store/domain';
+import FuzzySearch from '../../services/SearchService';
 
 interface SearchProps {
   label: string,
-  searchItems: Recipe[], // TODO: make searchable with searchable interface on objects?
+  searchableItems: Searchable[],
   resultsCb: Function
 };
 
@@ -51,25 +52,31 @@ const StyledSearch = styled.form`
 
 const Search: FunctionComponent<SearchProps> = (props: SearchProps) => {
   const [search, setSearch] = useState('');
+  const fs = new FuzzySearch(props.searchableItems);
 
   useEffect(() => {
-    props.resultsCb(props.searchItems.filter((item) => item.title.toLowerCase().includes(search.toLowerCase())));
-  }, [props.searchItems, search]);
+    props.resultsCb(fs.search(search));
+  }, [props.searchableItems, search]);
 
   return (
-      <StyledSearch id='searchForm' >
-        <label htmlFor='search'>
-          <span>{props.label}</span>
-          <input
-            id='search'
-            type='text'
-            name='search'
-            value={search}
-            onChange={e => setSearch(e.currentTarget.value)}
-          />
-        </label>
-      </StyledSearch>
-    );
+    <StyledSearch id='searchForm' >
+      <label htmlFor='search'>
+        <span>{props.label}</span>
+        <input
+          id='search'
+          type='text'
+          name='search'
+          value={search}
+          onChange={e => setSearch(e.currentTarget.value)}
+          onFocus={e => e.currentTarget.select()}
+          autoComplete='off'
+          autoCorrect='off'
+          autoCapitalize='off'
+          spellCheck='false'
+        />
+      </label>
+    </StyledSearch>
+  );
 };
 
 export default Search;

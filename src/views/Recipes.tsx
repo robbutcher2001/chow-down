@@ -72,7 +72,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
         <>
           <Search
             label='Search'
-            searchItems={this.props.recipes}
+            searchableItems={this.props.recipes}
             resultsCb={this.updateFilteredRecipes} />
           <RecipeGrid
             isLoading={this.props.ui.pending.get || this.props.ui.pending.post}

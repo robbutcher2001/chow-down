@@ -18,7 +18,7 @@ interface RecipeGridProps {
 };
 
 const UserInstruction = styled.div`
-  margin: 1rem 0 2rem;
+  margin: 2rem 0 0.5rem;
 
   > span {
     color: ${props => props.theme.isDark ?
