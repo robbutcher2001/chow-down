@@ -12,7 +12,6 @@ import { NegativeBox } from '../../MessageBox';
 import Stars from '../../Stars';
 import UnknownImage from '../../UnknownImage';
 import AlternateDay from '../../AlternateDay';
-import Tag from '../../Tag';
 
 interface DayCardProps {
   failed?: string,
@@ -137,17 +136,6 @@ const DayRecipe = styled.figure`
     }
   }
 
-  > div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    position: absolute;
-    max-width: 70%;
-    margin: 2px;
-    top: 0;
-    right: 0;
-  }
-
   > figcaption {
     position: absolute;
     bottom: 0;
@@ -195,13 +183,6 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
             <Link to={`/days/${props.date}`}>
               <DayRecipe>
                 <img src={props.day.recipe.image} alt={`${props.day.recipe.title} image`} />
-                <div>
-                  <Tag label='Under 20 mins' $colour='#6f42c1' />
-                  <Tag label='Slimming world' $colour='#d73a49' />
-                  <Tag label='Chicken' $colour='#009688' />
-                  <Tag label='Beef' $colour='#ca4a6c' />
-                  <Tag label='Vegetables' $colour='#005ea5' />
-                </div>
                 <figcaption>
                   <h3>{props.day.recipe.title}</h3>
                   <Stars rating={props.day.recipe.rating} />
