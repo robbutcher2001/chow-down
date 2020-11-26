@@ -2,7 +2,7 @@
 
 exports[`RecipeCard basic snapshot render 1`] = `
 <li
-  className="sc-AxirZ fjMSrX"
+  className="sc-AxiKw dJXIWd"
 >
   <a
     href="/recipe/fake_id"
@@ -13,6 +13,33 @@ exports[`RecipeCard basic snapshot render 1`] = `
         alt="fake_title image"
         src="fake_image"
       />
+      <div>
+        <span
+          className="sc-AxjAm WdyXH"
+        >
+          Slimming world
+        </span>
+        <span
+          className="sc-AxjAm hhSEQo"
+        >
+          Chicken
+        </span>
+        <span
+          className="sc-AxjAm jsJdsd"
+        >
+          Beef
+        </span>
+        <span
+          className="sc-AxjAm dfxpbz"
+        >
+          Vegetables
+        </span>
+        <span
+          className="sc-AxjAm hGYUIv"
+        >
+          Under 20 mins
+        </span>
+      </div>
       <figcaption>
         <h3>
           fake_title
@@ -20,7 +47,7 @@ exports[`RecipeCard basic snapshot render 1`] = `
       </figcaption>
     </figure>
     <section
-      className="sc-AxjAm fbYiwZ"
+      className="sc-AxirZ jBBJVq"
     >
       <mark>
         ★
