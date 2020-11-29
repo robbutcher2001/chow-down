@@ -88,10 +88,14 @@ const RecipeCard = styled.li`
         flex-wrap: wrap;
         justify-content: flex-end;
         position: absolute;
-        max-width: 80%;
+        max-width: 70%;
         margin: 2px;
         top: 0;
         right: 0;
+
+        > * {
+          margin: 1px;
+        }
       }
 
       > figcaption {

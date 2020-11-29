@@ -3,20 +3,28 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
 interface TagProps {
-  label: string,
-  $colour?: string
+  label: string;
+  $colour?: string;
+  $large?: boolean;
 };
 
 interface StyledTagProps {
-  $colour?: string
+  readonly $colour?: string;
+  readonly $large?: boolean;
 }
 
 const StyledTag = styled.span<StyledTagProps>`
   color: #fff;
+  display: inline-block;
   background-color: ${props => props.$colour};
-  margin: 1px;
-  padding: 0 0.5rem;
-  font-size: 12px;
+  padding: ${props => props.$large ?
+    '0.5rem 1rem':
+    '0 0.5rem'
+  };
+  font-size: ${props => props.$large ?
+    '14px':
+    '12px'
+  };
   border: 2px solid transparent;
   border-radius: 2em;
 `
@@ -24,7 +32,7 @@ const StyledTag = styled.span<StyledTagProps>`
 const Tag: FunctionComponent<TagProps> = (props: TagProps) => {
 
   return (
-    <StyledTag $colour={props.$colour} >
+    <StyledTag $colour={props.$colour} $large={props.$large} >
       {props.label}
     </StyledTag>
   );
