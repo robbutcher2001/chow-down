@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, MouseEvent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -16,6 +16,7 @@ import HorizontalScroller from '../components/HorizontalScroller';
 import Tag from '../components/Tag';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
 import { NegativeBox } from '../components/MessageBox';
+import { TagButton } from '../components/Clickable';
 
 const cta: CallToAction = {
   text: 'New recipe',
@@ -62,6 +63,10 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
   updateFilteredRecipes = (filteredRecipes: Recipe[]) => this.setState({ filteredRecipes });
 
+  handleTagClick = ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
+    console.log(currentTarget.dataset.tag);
+  };
+
   componentWillUnmount = () => this.props.clearSelectingDay();
 
   render = () => (
@@ -77,13 +82,13 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             searchableItems={this.props.recipes}
             resultsCb={this.updateFilteredRecipes} />
           <HorizontalScroller>
-            <Tag label='Slimming world' $colour='#d73a49' $large />
-            <Tag label='Chicken' $colour='#009688' $large />
-            <Tag label='Beef' $colour='#ca4a6c' $large />
-            <Tag label='Vegetables' $colour='#005ea5' $large />
-            <Tag label='Under 20 mins' $colour='#6f42c1' $large />
-            <Tag label='Quick meals' $colour='#6f42c1' $large />
-            <Tag label='Under 500 calories' $colour='#6f42c1' $large />
+            <TagButton dataTag='0' $colour='#d73a49' onClick={this.handleTagClick}>Slimming world</TagButton>
+            <TagButton dataTag='1' $colour='#009688' onClick={this.handleTagClick}>Chicken</TagButton>
+            <TagButton dataTag='2' $colour='#ca4a6c' onClick={this.handleTagClick}>Beef</TagButton>
+            <TagButton dataTag='3' $colour='#005ea5' onClick={this.handleTagClick} disabled>Vegetables</TagButton>
+            <TagButton dataTag='4' $colour='#6f42c1' onClick={this.handleTagClick}>Under 20 mins</TagButton>
+            <TagButton dataTag='5' $colour='#d73a49' onClick={this.handleTagClick}>Quick meals</TagButton>
+            <TagButton dataTag='6' $colour='#009688' onClick={this.handleTagClick}>Under 500 calories</TagButton>
           </HorizontalScroller>
           <RecipeGrid
             isLoading={this.props.ui.pending.get || this.props.ui.pending.post}

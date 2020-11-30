@@ -5,35 +5,26 @@ import styled from 'styled-components';
 interface TagProps {
   label: string;
   $colour?: string;
-  $large?: boolean;
 };
 
 interface StyledTagProps {
   readonly $colour?: string;
-  readonly $large?: boolean;
 }
 
 const StyledTag = styled.span<StyledTagProps>`
-  color: #fff;
-  display: inline-block;
+  color: ${props => props.theme.colour.white};
   background-color: ${props => props.$colour};
-  padding: ${props => props.$large ?
-    '0.5rem 1rem':
-    '0 0.5rem'
-  };
-  font-size: ${props => props.$large ?
-    '14px':
-    '12px'
-  };
+  padding: 0 0.5rem;
+  font-size: ${props => props.theme.typography.fontSize.xsmall};
   border: 2px solid transparent;
-  border-radius: 2em;
+  border-radius: 5px;
   cursor: pointer;
 `
 
 const Tag: FunctionComponent<TagProps> = (props: TagProps) => {
 
   return (
-    <StyledTag $colour={props.$colour} $large={props.$large} >
+    <StyledTag $colour={props.$colour}>
       {props.label}
     </StyledTag>
   );
