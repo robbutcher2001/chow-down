@@ -15,27 +15,27 @@ exports[`RecipeCard basic snapshot render 1`] = `
       />
       <div>
         <span
-          className="sc-AxjAm bvDzNL"
+          className="sc-AxjAm dEuBqR"
         >
           Slimming world
         </span>
         <span
-          className="sc-AxjAm gMVqdg"
+          className="sc-AxjAm kEFBRm"
         >
           Chicken
         </span>
         <span
-          className="sc-AxjAm czXwAh"
+          className="sc-AxjAm ghKQTr"
         >
           Beef
         </span>
         <span
-          className="sc-AxjAm dopHzL"
+          className="sc-AxjAm kxxzth"
         >
           Vegetables
         </span>
         <span
-          className="sc-AxjAm biKGRT"
+          className="sc-AxjAm eFNuud"
         >
           Under 20 mins
         </span>

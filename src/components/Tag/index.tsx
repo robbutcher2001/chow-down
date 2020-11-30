@@ -27,6 +27,7 @@ const StyledTag = styled.span<StyledTagProps>`
   };
   border: 2px solid transparent;
   border-radius: 2em;
+  cursor: pointer;
 `
 
 const Tag: FunctionComponent<TagProps> = (props: TagProps) => {

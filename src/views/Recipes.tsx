@@ -12,7 +12,7 @@ import { clearUserIsSelectingDay } from '../store/app/user/actions';
 
 import Main, { CallToAction } from '../components/Main';
 import Search from '../components/Search';
-import TagSelector from '../components/TagSelector';
+import HorizontalScroller from '../components/HorizontalScroller';
 import Tag from '../components/Tag';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
 import { NegativeBox } from '../components/MessageBox';
@@ -76,7 +76,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             label='Search'
             searchableItems={this.props.recipes}
             resultsCb={this.updateFilteredRecipes} />
-          <TagSelector>
+          <HorizontalScroller>
             <Tag label='Slimming world' $colour='#d73a49' $large />
             <Tag label='Chicken' $colour='#009688' $large />
             <Tag label='Beef' $colour='#ca4a6c' $large />
@@ -84,7 +84,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             <Tag label='Under 20 mins' $colour='#6f42c1' $large />
             <Tag label='Quick meals' $colour='#6f42c1' $large />
             <Tag label='Under 500 calories' $colour='#6f42c1' $large />
-          </TagSelector>
+          </HorizontalScroller>
           <RecipeGrid
             isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
             recipes={this.state.filteredRecipes}
