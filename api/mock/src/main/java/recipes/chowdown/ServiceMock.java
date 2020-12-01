@@ -32,6 +32,8 @@ import recipes.chowdown.schema.Recipe;
 import recipes.chowdown.schema.RecipeIngredient;
 import recipes.chowdown.schema.RecipeIngredientIngredient;
 import recipes.chowdown.schema.RecipeIngredientUnit;
+import recipes.chowdown.schema.Tag;
+import recipes.chowdown.schema.TagColours;
 import recipes.chowdown.schema.Unit;
 
 @RestController
@@ -43,11 +45,13 @@ public class ServiceMock implements ApiApi {
   final Faker faker;
   final List<Unit> units = new ArrayList<>();
   final List<Ingredient> ingredients = new ArrayList<>();
+  final List<Tag> tags = new ArrayList<>();
   final List<Recipe> recipes = new ArrayList<>();
   final List<Day> days = new ArrayList<>();
   boolean initRequest = true;
   final int TOTAL_UNITS = 12;
   final int TOTAL_INGREDIENTS = 120;
+  final int TOTAL_TAGS = 8;
 
   public ServiceMock() {
     this.faker = new Faker();
@@ -75,6 +79,19 @@ public class ServiceMock implements ApiApi {
       this.ingredients.add(ingredient);
     }
 
+    for (int i = 0; i < this.TOTAL_TAGS; i++) {
+      Tag tag = new Tag();
+      tag.setId(this.faker.internet().uuid());
+      tag.setName(this.faker.funnyName().name());
+
+      TagColours colours = new TagColours();
+      colours.setBackground(this.faker.color().hex());
+      colours.setText(this.faker.color().hex());
+      tag.setColours(colours);
+
+      this.tags.add(tag);
+    }
+
     for (int i = 0; i < 20; i++) {
       Recipe recipe = new Recipe();
       recipe.setId(this.faker.internet().uuid());
@@ -86,7 +103,7 @@ public class ServiceMock implements ApiApi {
       // recipe.setImage(this.faker.internet().image());
       recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
-      List<RecipeIngredient> ingredients = new ArrayList<>();
+      List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
       for (int j = 0; j < new Random().nextInt(40); j++) {
         RecipeIngredient recipeIngredient = new RecipeIngredient();
@@ -106,10 +123,14 @@ public class ServiceMock implements ApiApi {
         newRecipeIngredient.setName(ingredient.getName());
         recipeIngredient.setIngredient(newRecipeIngredient);
 
-        ingredients.add(recipeIngredient);
+        recipeIngredients.add(recipeIngredient);
       }
 
-      recipe.setIngredients(ingredients);
+      recipe.setIngredients(recipeIngredients);
+
+      for (int j = 0; j < new Random().nextInt(7); j++) {
+        recipe.addTagsItem(this.tags.get(new Random().nextInt(this.TOTAL_TAGS)));
+      }
 
       this.recipes.add(recipe);
     }
@@ -313,5 +334,27 @@ public class ServiceMock implements ApiApi {
     }
 
     return new ResponseEntity<Day>(subsequentDatabaseGet.get(), HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<List<Tag>> apiTagsGet() {
+    if (initRequest) {
+      initRequest = !initRequest;
+      return new ResponseEntity<List<Tag>>(Collections.emptyList(), HttpStatus.OK);
+    }
+
+    randomSleep(2);
+
+    return new ResponseEntity<List<Tag>>(this.tags, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<Tag> apiTagsPut(@Valid Tag tag) {
+    tag.setId(this.faker.internet().uuid());
+    this.tags.add(tag);
+
+    randomSleep(2);
+
+    return new ResponseEntity<>(tag, HttpStatus.CREATED);
   }
 }

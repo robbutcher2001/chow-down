@@ -14,12 +14,12 @@ export default function* postSaga(action: PostIngredientApiRequest) {
 
 function* successCallback(ingredients: Ingredient[]) {
     console.log('Calling postIngredientSuccessCallback');
-    yield put(clearPendingPostIngredients());
     yield put(postIngredientsSuccess(ingredients));
+    yield put(clearPendingPostIngredients());
 };
 
 function* failCallback(code: number, json: object) {
     console.log('Calling postIngredientFailCallback');
-    yield put(clearPendingPostIngredients());
     yield put(postIngredientsFailure(code, json));
+    yield put(clearPendingPostIngredients());
 };

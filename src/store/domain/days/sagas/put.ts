@@ -14,14 +14,14 @@ export default function* putSaga(action: PutDayApiRequest) {
 
 function* successCallback(day: Day) {
     console.log('Calling putDaySuccessCallback');
-    yield put(clearPendingPutDay(day.date));
     yield put(putDaySuccess(day));
+    yield put(clearPendingPutDay(day.date));
 };
 
 function* failCallback(code: number, json: object, ...dates: string[]) {
     console.log('Calling putDayFailCallback');
     for (let i = 0; i < dates.length; i++) {
-      yield put(clearPendingPutDay(dates[i]));
       yield put(putDayFailure(code, dates[i], json));
+      yield put(clearPendingPutDay(dates[i]));
     }
 };

@@ -14,12 +14,12 @@ export default function* getSaga() {
 
 function* successCallback(units: Unit[]) {
     console.log('Calling getUnitSuccessCallback');
-    yield put(clearPendingGetUnits());
     yield put(getUnitsSuccess(units));
+    yield put(clearPendingGetUnits());
 };
 
 function* failCallback(code: number, json: object) {
     console.log('Calling getUnitFailCallback');
-    yield put(clearPendingGetUnits());
     yield put(getUnitsFailure(code, json));
+    yield put(clearPendingGetUnits());
 };

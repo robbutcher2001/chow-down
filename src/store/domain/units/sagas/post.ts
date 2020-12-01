@@ -14,12 +14,12 @@ export default function* postSaga(action: PostUnitApiRequest) {
 
 function* successCallback(units: Unit[]) {
     console.log('Calling postUnitSuccessCallback');
-    yield put(clearPendingPostUnits());
     yield put(postUnitsSuccess(units));
+    yield put(clearPendingPostUnits());
 };
 
 function* failCallback(code: number, json: object) {
     console.log('Calling postUnitFailCallback');
-    yield put(clearPendingPostUnits());
     yield put(postUnitsFailure(code, json));
+    yield put(clearPendingPostUnits());
 };

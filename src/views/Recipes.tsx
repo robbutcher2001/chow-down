@@ -13,7 +13,6 @@ import { clearUserIsSelectingDay } from '../store/app/user/actions';
 import Main, { CallToAction } from '../components/Main';
 import Search from '../components/Search';
 import HorizontalScroller from '../components/HorizontalScroller';
-import Tag from '../components/Tag';
 import RecipeGrid from '../components/Recipes/RecipeGrid';
 import { NegativeBox } from '../components/MessageBox';
 import { TagButton } from '../components/Clickable';
@@ -45,7 +44,9 @@ interface DispatchProps {
 interface OwnProps { };
 
 interface OwnState {
-  filteredRecipes: Recipe[]
+  searchFilteredRecipes: Recipe[];
+  tagFilteredRecipes: Recipe[];
+  resultantRecipes: Recipe[];
 };
 
 type CombinedProps = StateProps & DispatchProps & OwnProps;
@@ -55,13 +56,33 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     super(props);
 
     this.state = {
-      filteredRecipes: []
+      searchFilteredRecipes: [],
+      tagFilteredRecipes: [],
+      resultantRecipes: []
     };
   }
 
   componentDidMount = () => !this.props.ui.pending.post && this.props.getRecipes();
 
-  updateFilteredRecipes = (filteredRecipes: Recipe[]) => this.setState({ filteredRecipes });
+  componentDidUpdate(prevProps: CombinedProps) {
+    if (this.props.ui.pending.get !== prevProps.ui.pending.get) {
+      this.setState({
+        searchFilteredRecipes: this.props.recipes,
+        tagFilteredRecipes: this.props.recipes,
+        resultantRecipes: this.props.recipes
+      });
+    }
+  };
+
+  updateSearchFilteredRecipes = (searchFilteredRecipes: Recipe[]) => {
+    const resultantRecipes = searchFilteredRecipes.filter(recipe => this.state.tagFilteredRecipes.includes(recipe));
+    this.setState({ searchFilteredRecipes, resultantRecipes })
+  };
+
+  updateTagFilteredRecipes = (tagFilteredRecipes: Recipe[]) => {
+    const resultantRecipes = tagFilteredRecipes.filter(recipe => this.state.searchFilteredRecipes.includes(recipe));
+    this.setState({ tagFilteredRecipes, resultantRecipes })
+  };
 
   handleTagClick = ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
     console.log(currentTarget.dataset.tag);
@@ -78,9 +99,13 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
         <NegativeBox message={this.props.error} /> :
         <>
           <Search
-            label='Search'
+            label='SearchA'
             searchableItems={this.props.recipes}
-            resultsCb={this.updateFilteredRecipes} />
+            resultsCb={this.updateSearchFilteredRecipes} />
+          <Search
+            label='SearchB'
+            searchableItems={this.props.recipes}
+            resultsCb={this.updateTagFilteredRecipes} />
           <HorizontalScroller>
             <TagButton dataTag='0' $colour='#d73a49' onClick={this.handleTagClick}>Slimming world</TagButton>
             <TagButton dataTag='1' $colour='#009688' onClick={this.handleTagClick}>Chicken</TagButton>
@@ -92,7 +117,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
           </HorizontalScroller>
           <RecipeGrid
             isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
-            recipes={this.state.filteredRecipes}
+            recipes={this.state.resultantRecipes}
             selectedDay={this.props.selectedDay}
             putDay={this.props.putDay}
           />

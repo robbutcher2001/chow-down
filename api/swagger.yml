@@ -325,6 +325,82 @@ paths:
           application/json: "$input.body"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
+  # Tags
+  /api/tags:
+    get:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetTagsFunction.Arn}/invocations"
+        responses:
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+        required: true
+      responses:
+        201:
+          description: "201 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutTagFunction.Arn}/invocations"
+        responses:
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "$input.body"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
 components:
   schemas:
     Unit:
@@ -396,6 +472,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecipeIngredient"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
         createdDate:
           type: string
       required:
@@ -418,6 +498,24 @@ components:
           $ref: "#/components/schemas/Recipe"
       required:
       - date
+    Tag:
+      title: "Tag schema"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        colours:
+          type: object
+          properties:
+            background:
+              type: string
+            text:
+              type: string
+      required:
+      - name
+      - colours
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false

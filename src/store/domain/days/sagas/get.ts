@@ -15,15 +15,15 @@ export default function* getSaga(action: GetDayApiRequest) {
 function* successCallback(days: Day[], ...dates: string[]) {
     console.log('Calling getDaySuccessCallback');
     for (let i = 0; i < dates.length; i++) {
-      yield put(clearPendingGetDay(dates[i]));
       yield put(getDaySuccess(dates[i], days.find(day => day.date === dates[i])));
+      yield put(clearPendingGetDay(dates[i]));
     }
 };
 
 function* failCallback(code: number, json: object, ...dates: string[]) {
     console.log('Calling getDayFailCallback');
     for (let i = 0; i < dates.length; i++) {
-      yield put(clearPendingGetDay(dates[i]));
       yield put(getDayFailure(code, dates[i], json));
+      yield put(clearPendingGetDay(dates[i]));
     }
 };

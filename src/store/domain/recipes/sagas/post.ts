@@ -14,12 +14,12 @@ export default function* postSaga(action: PostRecipeApiRequest) {
 
 function* successCallback(recipes: Recipe[]) {
     console.log('Calling postRecipeSuccessCallback');
-    yield put(clearPendingPostRecipes());
     yield put(postRecipesSuccess(recipes));
+    yield put(clearPendingPostRecipes());
 };
 
 function* failCallback(code: number, json: object) {
     console.log('Calling postRecipeFailCallback');
-    yield put(clearPendingPostRecipes());
     yield put(postRecipesFailure(code, json));
+    yield put(clearPendingPostRecipes());
 };

@@ -76,7 +76,7 @@ const Search: FunctionComponent<SearchProps> = (props: SearchProps) => {
 
   useEffect(() => {
     props.resultsCb(fs.search(search));
-  }, [props.searchableItems, search]);
+  }, [search]);
 
   const handleReset = (event: MouseEvent<HTMLLIElement>) => {
     event.preventDefault();

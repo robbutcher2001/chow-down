@@ -14,12 +14,12 @@ export default function* getSaga() {
 
 function* successCallback(ingredients: Ingredient[]) {
     console.log('Calling getIngredientSuccessCallback');
-    yield put(clearPendingGetIngredients());
     yield put(getIngredientsSuccess(ingredients));
+    yield put(clearPendingGetIngredients());
 };
 
 function* failCallback(code: number, json: object) {
     console.log('Calling getIngredientFailCallback');
-    yield put(clearPendingGetIngredients());
     yield put(getIngredientsFailure(code, json));
+    yield put(clearPendingGetIngredients());
 };
