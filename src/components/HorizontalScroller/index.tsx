@@ -49,15 +49,12 @@ const StyledHorizontalScroller = styled.div`
   }
 `
 
-const HorizontalScroller: FunctionComponent<HorizontalScrollerProps> = (props: HorizontalScrollerProps) => {
-
-  return (
-    <StyledHorizontalScroller>
-      <div className='scroller'>
-        {props.children}
-      </div>
-    </StyledHorizontalScroller>
-  );
-};
+const HorizontalScroller: FunctionComponent<HorizontalScrollerProps> = (props: HorizontalScrollerProps) => (
+  <StyledHorizontalScroller>
+    <div className='scroller'>
+      {props.children}
+    </div>
+  </StyledHorizontalScroller>
+);
 
 export default HorizontalScroller;

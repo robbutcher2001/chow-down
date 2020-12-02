@@ -4,9 +4,11 @@ import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
 import { Recipe, GetRecipesApiRequest } from '../store/domain/recipes/types';
+import { Tag, GetTagsApiRequest } from '../store/domain/tags/types';
 import { Day, PutDayApiRequest } from '../store/domain/days/types';
 import { UserAction } from '../store/app/user/types';
 import { getRecipesRequest } from '../store/domain/recipes/actions';
+import { getTagsRequest } from '../store/domain/tags/actions';
 import { putDayRequest } from '../store/domain/days/actions';
 import { clearUserIsSelectingDay } from '../store/app/user/actions';
 
@@ -26,17 +28,27 @@ interface StateProps {
   error: string,
   failure: string,
   recipes: Recipe[],
+  tags: Tag[],
   selectedDay: string,
   ui: {
     pending: {
-      get: boolean,
-      post: boolean
+      gets: {
+        recipes: boolean,
+        tags: boolean
+      },
+      posts: {
+        recipes: boolean
+      },
+      puts: {
+        tags: boolean
+      }
     }
   }
 };
 
 interface DispatchProps {
   getRecipes: () => GetRecipesApiRequest,
+  getTags: () => GetTagsApiRequest,
   putDay: (day: Day) => PutDayApiRequest,
   clearSelectingDay: () => UserAction
 };
@@ -44,6 +56,7 @@ interface DispatchProps {
 interface OwnProps { };
 
 interface OwnState {
+  selectedTags: string[];
   searchFilteredRecipes: Recipe[];
   tagFilteredRecipes: Recipe[];
   resultantRecipes: Recipe[];
@@ -56,16 +69,20 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     super(props);
 
     this.state = {
+      selectedTags: [],
       searchFilteredRecipes: [],
       tagFilteredRecipes: [],
       resultantRecipes: []
     };
   }
 
-  componentDidMount = () => !this.props.ui.pending.post && this.props.getRecipes();
+  componentDidMount = () => {
+    !this.props.ui.pending.posts.recipes && this.props.getRecipes()
+    !this.props.ui.pending.puts.tags && this.props.getTags()
+  };
 
   componentDidUpdate(prevProps: CombinedProps) {
-    if (this.props.ui.pending.get !== prevProps.ui.pending.get) {
+    if (this.props.ui.pending.gets.recipes !== prevProps.ui.pending.gets.recipes) {
       this.setState({
         searchFilteredRecipes: this.props.recipes,
         tagFilteredRecipes: this.props.recipes,
@@ -79,9 +96,18 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     this.setState({ searchFilteredRecipes, resultantRecipes })
   };
 
-  updateTagFilteredRecipes = (tagFilteredRecipes: Recipe[]) => {
+  updateTagFilteredRecipes = (newId: string) => {
+    const selectedTags = this.state.selectedTags.includes(newId) ?
+      this.state.selectedTags.filter(existingId => existingId !== newId) :
+      [...this.state.selectedTags, newId];
+
+    const tagFilteredRecipes = this.props.recipes.filter(recipe =>
+      selectedTags.length === 0 ||
+      selectedTags.filter(selectedTag => recipe.tags &&
+        recipe.tags.map(tag => tag.id).includes(selectedTag)).length === selectedTags.length);
     const resultantRecipes = tagFilteredRecipes.filter(recipe => this.state.searchFilteredRecipes.includes(recipe));
-    this.setState({ tagFilteredRecipes, resultantRecipes })
+    // const resultantRecipes = tagFilteredRecipes.filter(recipe => this.state.searchFilteredRecipes.includes(recipe));
+    this.setState({ selectedTags, tagFilteredRecipes, resultantRecipes })
   };
 
   handleTagClick = ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
@@ -99,24 +125,23 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
         <NegativeBox message={this.props.error} /> :
         <>
           <Search
-            label='SearchA'
+            label='Search'
             searchableItems={this.props.recipes}
             resultsCb={this.updateSearchFilteredRecipes} />
-          <Search
-            label='SearchB'
-            searchableItems={this.props.recipes}
-            resultsCb={this.updateTagFilteredRecipes} />
           <HorizontalScroller>
-            <TagButton dataTag='0' $colour='#d73a49' onClick={this.handleTagClick}>Slimming world</TagButton>
-            <TagButton dataTag='1' $colour='#009688' onClick={this.handleTagClick}>Chicken</TagButton>
-            <TagButton dataTag='2' $colour='#ca4a6c' onClick={this.handleTagClick}>Beef</TagButton>
-            <TagButton dataTag='3' $colour='#005ea5' onClick={this.handleTagClick} disabled>Vegetables</TagButton>
-            <TagButton dataTag='4' $colour='#6f42c1' onClick={this.handleTagClick}>Under 20 mins</TagButton>
-            <TagButton dataTag='5' $colour='#d73a49' onClick={this.handleTagClick}>Quick meals</TagButton>
-            <TagButton dataTag='6' $colour='#009688' onClick={this.handleTagClick}>Under 500 calories</TagButton>
+            {this.props.tags.map(tag =>
+              <TagButton
+                key={tag.id}
+                dataTag={tag.id}
+                dataSelected={this.state.selectedTags.includes(tag.id)}
+                $colour={tag.colours.background}
+                onClick={() => this.updateTagFilteredRecipes(tag.id)}>
+                {tag.name}
+              </TagButton>
+            )}
           </HorizontalScroller>
           <RecipeGrid
-            isLoading={this.props.ui.pending.get || this.props.ui.pending.post}
+            isLoading={this.props.ui.pending.gets.recipes || this.props.ui.pending.posts.recipes}
             recipes={this.state.resultantRecipes}
             selectedDay={this.props.selectedDay}
             putDay={this.props.putDay}
@@ -131,17 +156,27 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, _ownProps: OwnProps):
   error: app.error.message,
   failure: domain.recipe.failure,
   recipes: domain.recipe.recipes,
+  tags: domain.tag.tags,
   selectedDay: app.user.selectedDay,
   ui: {
     pending: {
-      get: ui.recipe.getPending,
-      post: ui.recipe.postPending
+      gets: {
+        recipes: ui.recipe.getPending,
+        tags: ui.tag.getPending
+      },
+      posts: {
+        recipes: ui.recipe.postPending
+      },
+      puts: {
+        tags: ui.tag.putPending
+      }
     }
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, _ownProps: OwnProps): DispatchProps => ({
   getRecipes: () => dispatch(getRecipesRequest()),
+  getTags: () => dispatch(getTagsRequest()),
   putDay: (day: Day) => dispatch(putDayRequest(day)),
   clearSelectingDay: () => dispatch(clearUserIsSelectingDay())
 });

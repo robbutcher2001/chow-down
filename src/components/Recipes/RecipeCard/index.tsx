@@ -130,11 +130,13 @@ const RecipeCardContents = (props: RecipeCardProps) => (
     <figure>
       <img src={props.recipe.image} alt={`${props.recipe.title} image`} />
       <div>
-        <Tag label='Slimming world' $colour='#d73a49' />
-        <Tag label='Chicken' $colour='#009688' />
-        <Tag label='Beef' $colour='#ca4a6c' />
-        <Tag label='Vegetables' $colour='#005ea5' />
-        <Tag label='Under 20 mins' $colour='#6f42c1' />
+        {props.recipe.tags && props.recipe.tags.map((tag, index) =>
+          <Tag
+            key={index}
+            $colour={tag.colours.background}>
+            {tag.name}
+          </Tag>
+        )}
       </div>
       <figcaption>
         <h3>{props.recipe.title}</h3>

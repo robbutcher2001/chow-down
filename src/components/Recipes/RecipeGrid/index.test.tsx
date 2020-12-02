@@ -16,6 +16,14 @@ const mockRecipes: Recipe[] = [{
   rating: 4,
   url: 'fake_url1',
   image: 'fake_alt_text1',
+  tags: [{
+    id: '456',
+    name: 'Chicken',
+    colours: {
+      background: 'red',
+      text: 'white'
+    }
+  }],
   createdDate: 'fake_date1',
   getSearchableKeywords: jest.fn()
 },
@@ -26,6 +34,14 @@ const mockRecipes: Recipe[] = [{
   rating: 3,
   url: 'fake_url2',
   image: 'fake_alt_text2',
+  tags: [{
+    id: '457',
+    name: 'Beef',
+    colours: {
+      background: 'green',
+      text: 'white'
+    }
+  }],
   createdDate: 'fake_date2',
   getSearchableKeywords: jest.fn()
 }];

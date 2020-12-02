@@ -1,4 +1,4 @@
-import React, { ReactNode, MouseEvent } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ interface ClickableProps {
   readonly $largeBorderRadius?: boolean;
   readonly $colour?: string;
   readonly $reset?: boolean;
-  onClick?: (event: MouseEvent) => void;
+  onClick?: (data: any) => void;
 };
 
 const Clickable = styled.div<ClickableProps>`
@@ -74,7 +74,7 @@ interface TagButtonProps {
   $colour: string;
   dataTag: string;
   dataSelected: boolean;
-  onClick: (event: MouseEvent) => void;
+  onClick: (data: any) => void;
 };
 
 export const TagButton = (props: TagButtonProps) =>

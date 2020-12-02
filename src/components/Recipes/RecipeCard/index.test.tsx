@@ -15,6 +15,14 @@ const mockRecipe = {
   rating: 4,
   url: 'fake_url',
   image: 'fake_image',
+  tags: [{
+    id: '123',
+    name: 'Chicken',
+    colours: {
+      background: 'red',
+      text: 'white'
+    }
+  }],
   createdDate: 'fake_created_date',
   getSearchableKeywords: jest.fn()
 };

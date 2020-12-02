@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 
 import styled from 'styled-components';
 
 interface TagProps {
-  label: string;
+  children: ReactNode;
   $colour?: string;
 };
 
@@ -25,7 +25,7 @@ const Tag: FunctionComponent<TagProps> = (props: TagProps) => {
 
   return (
     <StyledTag $colour={props.$colour}>
-      {props.label}
+      {props.children}
     </StyledTag>
   );
 };

@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { Searchable } from '..';
+import { Tag } from '../tags/types';
 
 export enum RecipeActionTypes {
     GET_RECIPES_REQUEST = '@@recipes/GET_REQUEST',
@@ -17,6 +18,7 @@ export interface Recipe extends Searchable {
     rating: number,
     url: string,
     image: string,
+    tags: Tag[],
     createdDate: string
 }
 
