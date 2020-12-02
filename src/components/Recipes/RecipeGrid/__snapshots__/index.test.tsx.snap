@@ -18,29 +18,9 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         />
         <div>
           <span
-            className="sc-AxjAm bTAzwj"
-          >
-            Slimming world
-          </span>
-          <span
-            className="sc-AxjAm fQwMwA"
+            className="sc-AxjAm gFinTz"
           >
             Chicken
-          </span>
-          <span
-            className="sc-AxjAm gsnwOF"
-          >
-            Beef
-          </span>
-          <span
-            className="sc-AxjAm buesxT"
-          >
-            Vegetables
-          </span>
-          <span
-            className="sc-AxjAm giUyuj"
-          >
-            Under 20 mins
           </span>
         </div>
         <figcaption>
@@ -84,29 +64,9 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         />
         <div>
           <span
-            className="sc-AxjAm bTAzwj"
-          >
-            Slimming world
-          </span>
-          <span
-            className="sc-AxjAm fQwMwA"
-          >
-            Chicken
-          </span>
-          <span
-            className="sc-AxjAm gsnwOF"
+            className="sc-AxjAm jlSkkD"
           >
             Beef
-          </span>
-          <span
-            className="sc-AxjAm buesxT"
-          >
-            Vegetables
-          </span>
-          <span
-            className="sc-AxjAm giUyuj"
-          >
-            Under 20 mins
           </span>
         </div>
         <figcaption>
@@ -154,29 +114,9 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         />
         <div>
           <span
-            className="sc-AxjAm bTAzwj"
-          >
-            Slimming world
-          </span>
-          <span
-            className="sc-AxjAm fQwMwA"
+            className="sc-AxjAm gFinTz"
           >
             Chicken
-          </span>
-          <span
-            className="sc-AxjAm gsnwOF"
-          >
-            Beef
-          </span>
-          <span
-            className="sc-AxjAm buesxT"
-          >
-            Vegetables
-          </span>
-          <span
-            className="sc-AxjAm giUyuj"
-          >
-            Under 20 mins
           </span>
         </div>
         <figcaption>
@@ -220,29 +160,9 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         />
         <div>
           <span
-            className="sc-AxjAm bTAzwj"
-          >
-            Slimming world
-          </span>
-          <span
-            className="sc-AxjAm fQwMwA"
-          >
-            Chicken
-          </span>
-          <span
-            className="sc-AxjAm gsnwOF"
+            className="sc-AxjAm jlSkkD"
           >
             Beef
-          </span>
-          <span
-            className="sc-AxjAm buesxT"
-          >
-            Vegetables
-          </span>
-          <span
-            className="sc-AxjAm giUyuj"
-          >
-            Under 20 mins
           </span>
         </div>
         <figcaption>
