@@ -19,8 +19,14 @@ const StyledHorizontalScroller = styled.div`
     bottom: 0;
     pointer-events: none;
     z-index: 10;
-    background: linear-gradient(to right, rgba(32, 31, 31, 0), rgba(32, 31, 31, 1));
-    width: 20%;
+    background: ${props => props.theme.isDark ?
+      'linear-gradient(to right, rgba(32, 31, 31, 0), rgba(32, 31, 31, 1))' :
+      'linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))'
+    };
+    width: ${props => props.theme.isDark ?
+      '20%' :
+      '10%'
+    };
   }
 
   .scroller {

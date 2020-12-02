@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, MouseEvent } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -12,8 +12,7 @@ interface ClickableProps {
   readonly $largeBorderRadius?: boolean;
   readonly $colour?: string;
   readonly $reset?: boolean;
-  // onClick: (e?: React.MouseEvent) => void
-  onClick?: (e?: any) => void;
+  onClick?: (event: MouseEvent) => void;
 };
 
 const Clickable = styled.div<ClickableProps>`
@@ -57,14 +56,25 @@ const Clickable = styled.div<ClickableProps>`
     'none'
   };
   cursor: pointer;
+
+  &[data-selected=false] {
+    background-color: ${props =>
+      props.theme.colour.lightGrey
+    };
+    color: ${props => props.theme.isDark ?
+      props.theme.colour.grey :
+      props.theme.colour.darkGrey
+    };
+  }
 `
 
 interface TagButtonProps {
   children: ReactNode;
   disabled?: boolean;
   $colour: string;
-  onClick?: (e?: any) => void;
   dataTag: string;
+  dataSelected: boolean;
+  onClick: (event: MouseEvent) => void;
 };
 
 export const TagButton = (props: TagButtonProps) =>
@@ -73,6 +83,7 @@ export const TagButton = (props: TagButtonProps) =>
     disabled={props.disabled}
     onClick={props.onClick}
     data-tag={props.dataTag}
+    data-selected={props.dataSelected}
     $smallFont
     $smallPadding
     $largeBorderRadius
