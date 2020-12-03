@@ -32,7 +32,7 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
       const successResponsePost = action as RecipesSuccessApiResponse;
       const recipes = state.recipes.concat(successResponsePost.recipes);
       recipesSort(recipes);
-      recipeSearchableKeywords(successResponse.recipes);
+      recipeSearchableKeywords(recipes);
 
       return {
         failure: null,

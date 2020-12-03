@@ -26,7 +26,10 @@ const cta: CallToAction = {
 
 interface StateProps {
   error: string,
-  failure: string,
+  failures: {
+    recipe: string,
+    tag: string
+  },
   recipes: Recipe[],
   tags: Tag[],
   selectedDay: string,
@@ -114,8 +117,8 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
   updateTagFilteredRecipes = (selectedTags: string[]) => {
     const tagFilteredRecipes = selectedTags.length > 0 ?
-    this.props.recipes.filter(recipe => recipe.tags && selectedTags.every(selectedTag => recipe.tags.map(tag => tag.id).includes(selectedTag))) :
-    this.props.recipes;
+      this.props.recipes.filter(recipe => recipe.tags && selectedTags.every(selectedTag => recipe.tags.map(tag => tag.id).includes(selectedTag))) :
+      this.props.recipes;
 
     const resultantRecipes = tagFilteredRecipes.filter(recipe => this.state.searchFilteredRecipes.includes(recipe));
 
@@ -126,8 +129,8 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
   render = () => (
     <Main title='Your recipes' cta={!this.props.selectedDay ? cta : undefined} >
-      {this.props.failure &&
-        <NegativeBox message={this.props.failure} />
+      {this.props.failures.recipe &&
+        <NegativeBox message={this.props.failures.recipe} />
       }
       {this.props.error ?
         <NegativeBox message={this.props.error} /> :
@@ -137,16 +140,19 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             searchableItems={this.props.recipes}
             resultsCb={this.updateSearchFilteredRecipes} />
           <HorizontalScroller>
-            {this.props.ui.pending.gets.tags ? this.fakeLoadingTags() :
-              this.props.tags.map(tag =>
-                <TagButton
-                  key={tag.id}
-                  colour={tag.colours.background}
-                  selected={this.state.selectedTags.includes(tag.id)}
-                  onClick={() => this.selectedTags(tag.id)}>
-                  {tag.name}
-                </TagButton>
-              )
+            {this.props.failures.tag ?
+              <div>{this.props.failures.tag}</div> :
+              this.props.ui.pending.gets.tags ?
+                this.fakeLoadingTags() :
+                this.props.tags.map(tag =>
+                  <TagButton
+                    key={tag.id}
+                    colour={tag.colours.background}
+                    selected={this.state.selectedTags.includes(tag.id)}
+                    onClick={() => this.selectedTags(tag.id)}>
+                    {tag.name}
+                  </TagButton>
+                )
             }
           </HorizontalScroller>
           <RecipeGrid
@@ -163,7 +169,10 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
 
 const mapStateToProps = ({ app, domain, ui }: GlobalState, _ownProps: OwnProps): StateProps => ({
   error: app.error.message,
-  failure: domain.recipe.failure,
+  failures: {
+    recipe: domain.recipe.failure,
+    tag: domain.tag.failure
+  },
   recipes: domain.recipe.recipes,
   tags: domain.tag.tags,
   selectedDay: app.user.selectedDay,
