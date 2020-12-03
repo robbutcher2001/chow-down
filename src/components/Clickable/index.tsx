@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, MouseEvent } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +12,14 @@ interface ClickableProps {
   readonly $largeBorderRadius?: boolean;
   readonly $colour?: string;
   readonly $reset?: boolean;
-  onClick?: (data: any) => void;
+};
+
+interface TagButtonProps {
+  colour?: string;
+  selected?: boolean;
+  loading?: boolean;
+  onClick?: (data: MouseEvent<HTMLButtonElement>) => void;
+  children?: ReactNode;
 };
 
 const Clickable = styled.div<ClickableProps>`
@@ -57,7 +64,7 @@ const Clickable = styled.div<ClickableProps>`
   };
   cursor: pointer;
 
-  &[data-selected=false] {
+  &.unselected {
     background-color: ${props =>
       props.theme.colour.lightGrey
     };
@@ -66,28 +73,48 @@ const Clickable = styled.div<ClickableProps>`
       props.theme.colour.darkGrey
     };
   }
-`
 
-interface TagButtonProps {
-  children: ReactNode;
-  disabled?: boolean;
-  $colour: string;
-  dataTag: string;
-  dataSelected: boolean;
-  onClick: (data: any) => void;
-};
+  &.loading {
+    cursor: auto;
+    color: ${props =>
+      props.theme.colour.lightGrey
+    };
+    position: relative;
+    // filter: blur(2px);
+
+    &:after {
+      content: '';
+      border-radius: 50%;
+      border: 1px solid ${({ theme }) => theme.colour.white};
+      border-top-color: transparent;
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      // opacity: 1;
+      // transition: opacity 0.8s;
+      animation: spin 0.8s linear infinite;
+    }
+  }
+`
 
 export const TagButton = (props: TagButtonProps) =>
   <Clickable
     as='button'
-    disabled={props.disabled}
     onClick={props.onClick}
-    data-tag={props.dataTag}
-    data-selected={props.dataSelected}
+    className={
+      !props.selected ?
+        props.loading ?
+        'unselected loading' :
+        'unselected' :
+      undefined
+    }
+    disabled={props.loading}
     $smallFont
     $smallPadding
     $largeBorderRadius
-    $colour={props.$colour}
+    $colour={props.colour}
   >
     {props.children}
   </Clickable>;

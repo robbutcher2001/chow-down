@@ -199,7 +199,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
     recipeIngredients.map((recipeIngredient, index) =>
       <li
         key={index}
-        className={strikethroughIndexes.includes(index) ? 'strikethrough' : ''}
+        className={strikethroughIndexes.includes(index) ? 'strikethrough' : undefined}
         onClick={() => setStrikethrough(index)}
       >
         <div>

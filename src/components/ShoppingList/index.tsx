@@ -96,14 +96,14 @@ const ShoppingList: FunctionComponent<ShoppingListProps> = (props: ShoppingListP
   return (
     !props.isLoading && !!!shoppingList.length ?
       <NegativeBox message='We could not find any recipes associated to this week' /> :
-      <StyledShoppingList className={props.isLoading ? 'spinner spinning blur' : 'spinner'} >
+      <StyledShoppingList className={props.isLoading ? 'spinner spinning' : 'spinner'} >
         {/* TODO: type the any */}
         {shoppingList.map((ingredient: any, index: number) =>
           <li
             key={index}
             data-ingredient={index}
             onClick={toggleStrikethrough}
-            className={strikethroughIndexes.includes(index.toString()) ? 'strikethrough' : ''}
+            className={strikethroughIndexes.includes(index.toString()) ? 'strikethrough' : undefined}
           >
             <mark>&#10003;</mark>
             <span>{`${ingredient.quantity} ${ingredient.quantity === 1 ? ingredient.unit.singular : ingredient.unit.plural} ${ingredient.name}`}</span>

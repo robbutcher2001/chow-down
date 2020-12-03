@@ -7,6 +7,7 @@ import placeholderImg from '../../../themes/placeholder.svg';
 
 import { Recipe } from '../../../store/domain/recipes/types';
 
+import Tag from '../../Tag';
 import { NegativeBox } from '../../MessageBox';
 
 interface RecipeDetailProps {
@@ -93,6 +94,27 @@ const RecipeDetail = styled.span<{ image: string }>`
       text-align: right;
     }
 
+    > .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      position: absolute;
+      max-width: 50%;
+      right: 1rem;
+
+      ${medium`
+        max-width: 75%;
+      `}
+
+      > * {
+        margin: 0 0 4px 10px;
+
+        ${medium`
+          margin: 0 0 4px 4px;
+        `}
+      }
+    }
+
     > section {
       box-shadow: 0 5px 20px 0 rgba(0,0,0,0.2);
       border-radius: 8px;
@@ -169,6 +191,15 @@ export default (props: RecipeDetailProps) =>
     <RecipeDetail image={props.recipe.image} >
       <div>
         <h3>{props.recipe.title}</h3>
+        <div className='tags'>
+          {props.recipe.tags && props.recipe.tags.map((tag, index) =>
+            <Tag
+              key={index}
+              $colour={tag.colours.background}>
+              {tag.name}
+            </Tag>
+          )}
+        </div>
         <section className='ingredients' >
           <div>Recipe ingredients coming soon!</div>
           {props.recipe.rating > 0 &&

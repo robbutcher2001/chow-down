@@ -91,27 +91,35 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     }
   };
 
+  fakeLoadingTags = () => [0, 1, 2, 3, 4].map(index =>
+    <TagButton
+      key={index}
+      loading={true}>
+      Tags loading..
+    </TagButton>
+  );
+
   updateSearchFilteredRecipes = (searchFilteredRecipes: Recipe[]) => {
     const resultantRecipes = searchFilteredRecipes.filter(recipe => this.state.tagFilteredRecipes.includes(recipe));
     this.setState({ searchFilteredRecipes, resultantRecipes })
   };
 
-  updateTagFilteredRecipes = (newId: string) => {
-    const selectedTags = this.state.selectedTags.includes(newId) ?
-      this.state.selectedTags.filter(existingId => existingId !== newId) :
-      [...this.state.selectedTags, newId];
+  selectedTags = (newTagId: string) => {
+    const selectedTags = this.state.selectedTags.includes(newTagId) ?
+      this.state.selectedTags.filter(existingId => existingId !== newTagId) :
+      [...this.state.selectedTags, newTagId];
 
-    const tagFilteredRecipes = this.props.recipes.filter(recipe =>
-      selectedTags.length === 0 ||
-      selectedTags.filter(selectedTag => recipe.tags &&
-        recipe.tags.map(tag => tag.id).includes(selectedTag)).length === selectedTags.length);
-    const resultantRecipes = tagFilteredRecipes.filter(recipe => this.state.searchFilteredRecipes.includes(recipe));
-    // const resultantRecipes = tagFilteredRecipes.filter(recipe => this.state.searchFilteredRecipes.includes(recipe));
-    this.setState({ selectedTags, tagFilteredRecipes, resultantRecipes })
+    this.updateTagFilteredRecipes(selectedTags);
   };
 
-  handleTagClick = ({ currentTarget }: MouseEvent<HTMLButtonElement>) => {
-    console.log(currentTarget.dataset.tag);
+  updateTagFilteredRecipes = (selectedTags: string[]) => {
+    const tagFilteredRecipes = selectedTags.length > 0 ?
+    this.props.recipes.filter(recipe => recipe.tags && selectedTags.every(selectedTag => recipe.tags.map(tag => tag.id).includes(selectedTag))) :
+    this.props.recipes;
+
+    const resultantRecipes = tagFilteredRecipes.filter(recipe => this.state.searchFilteredRecipes.includes(recipe));
+
+    this.setState({ selectedTags, tagFilteredRecipes, resultantRecipes })
   };
 
   componentWillUnmount = () => this.props.clearSelectingDay();
@@ -129,16 +137,17 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
             searchableItems={this.props.recipes}
             resultsCb={this.updateSearchFilteredRecipes} />
           <HorizontalScroller>
-            {this.props.tags.map(tag =>
-              <TagButton
-                key={tag.id}
-                dataTag={tag.id}
-                dataSelected={this.state.selectedTags.includes(tag.id)}
-                $colour={tag.colours.background}
-                onClick={() => this.updateTagFilteredRecipes(tag.id)}>
-                {tag.name}
-              </TagButton>
-            )}
+            {this.props.ui.pending.gets.tags ? this.fakeLoadingTags() :
+              this.props.tags.map(tag =>
+                <TagButton
+                  key={tag.id}
+                  colour={tag.colours.background}
+                  selected={this.state.selectedTags.includes(tag.id)}
+                  onClick={() => this.selectedTags(tag.id)}>
+                  {tag.name}
+                </TagButton>
+              )
+            }
           </HorizontalScroller>
           <RecipeGrid
             isLoading={this.props.ui.pending.gets.recipes || this.props.ui.pending.posts.recipes}

@@ -85,7 +85,7 @@ export default () => {
   };
 
   const isActive = (route: string) =>
-    route === pathname ? 'active' : '';
+    route === pathname ? 'active' : undefined;
 
   return (
     <Nav>

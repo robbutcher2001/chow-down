@@ -18,7 +18,6 @@ const StyledTag = styled.span<StyledTagProps>`
   font-size: ${props => props.theme.typography.fontSize.xsmall};
   border: 2px solid transparent;
   border-radius: 5px;
-  cursor: pointer;
 `
 
 const Tag: FunctionComponent<TagProps> = (props: TagProps) => {
