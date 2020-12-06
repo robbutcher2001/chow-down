@@ -20,13 +20,9 @@ const StyledTag = styled.span<StyledTagProps>`
   border-radius: 5px;
 `
 
-const Tag: FunctionComponent<TagProps> = (props: TagProps) => {
-
-  return (
-    <StyledTag $colour={props.$colour}>
-      {props.children}
-    </StyledTag>
-  );
-};
+const Tag: FunctionComponent<TagProps> = (props: TagProps) =>
+  <StyledTag $colour={props.$colour}>
+    {props.children}
+  </StyledTag>;
 
 export default Tag;
