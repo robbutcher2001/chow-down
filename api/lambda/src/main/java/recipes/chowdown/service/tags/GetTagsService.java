@@ -29,19 +29,19 @@ public class GetTagsService implements RequestHandler<Object, List<Tag>> {
     try {
       LOGGER = context.getLogger();
 
-      final List<Tag> tags = new ArrayList<>();
+      // final List<Tag> tags = new ArrayList<>();
 
-      ExecuteStatementResult result = this.repository.getTags();
+      // ExecuteStatementResult result = this.repository.getTags();
 
-      if (result.getRecords().size() < 1) {
-        LOGGER.log("No tags found");
-      }
+      // if (result.getRecords().size() < 1) {
+      //   LOGGER.log("No tags found");
+      // }
 
-      for (List<Field> fields : result.getRecords()) {
-        tags.add(Tag.builder().id(fields.get(0).getStringValue()).name(fields.get(1).getStringValue()).colours(
-            Colour.builder().background(fields.get(2).getStringValue()).text(fields.get(3).getStringValue()).build())
-            .build());
-      }
+      // for (List<Field> fields : result.getRecords()) {
+      //   tags.add(Tag.builder().id(fields.get(0).getStringValue()).name(fields.get(1).getStringValue()).colours(
+      //       Colour.builder().background(fields.get(2).getStringValue()).text(fields.get(3).getStringValue()).build())
+      //       .build());
+      // }
 
       // DEPLOYED TEST
       // return tags;
