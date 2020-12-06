@@ -43,7 +43,23 @@ public class GetTagsService implements RequestHandler<Object, List<Tag>> {
             .build());
       }
 
-      return tags;
+      // DEPLOYED TEST
+      // return tags;
+      Tag tag0 = Tag.builder().name("Slimming world").colours(Colour.builder().background("#d73a49").text("#fff").build()).build();
+      Tag tag1 = Tag.builder().name("Chicken").colours(Colour.builder().background("#009688").text("#fff").build()).build();
+      Tag tag2 = Tag.builder().name("Beef").colours(Colour.builder().background("#ca4a6c").text("#fff").build()).build();
+      Tag tag3 = Tag.builder().name("Vegetables").colours(Colour.builder().background("#005ea5").text("#fff").build()).build();
+      Tag tag4 = Tag.builder().name("Under 20 mins").colours(Colour.builder().background("#6f42c1").text("#fff").build()).build();
+      Tag tag5 = Tag.builder().name("Quick meals").colours(Colour.builder().background("#d73a49").text("#fff").build()).build();
+      List<Tag> fakeTags = new ArrayList<>();
+      fakeTags.add(tag0);
+      fakeTags.add(tag1);
+      fakeTags.add(tag2);
+      fakeTags.add(tag3);
+      fakeTags.add(tag4);
+      fakeTags.add(tag5);
+      return fakeTags;
+      // END DEPLOYED TEST
     } catch (AmazonServiceException ase) {
       LOGGER.log(ase.getMessage());
       throw new ServerException("unable to complete request");
