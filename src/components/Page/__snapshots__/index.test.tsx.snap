@@ -15,14 +15,12 @@ exports[`Page basic snapshot render 1`] = `
       Your Week
     </a>
     <a
-      className=""
       href="/recipes"
       onClick={[Function]}
     >
       Recipes
     </a>
     <a
-      className=""
       href="/settings"
       onClick={[Function]}
     >
@@ -36,7 +34,7 @@ exports[`Page basic snapshot render 1`] = `
   >
     <h1>
       <a
-        className="sc-AxhCb ieiFMb"
+        className="sc-AxhCb jfrBiP"
         href="/"
         onClick={[Function]}
       >
@@ -59,7 +57,7 @@ exports[`Page basic snapshot render 1`] = `
     <p>
       Images: 
       <a
-        className="sc-AxiKw heKCDP"
+        className="sc-AxiKw hxvvtX"
         href="https://unsplash.com/"
         target="_blank"
       >

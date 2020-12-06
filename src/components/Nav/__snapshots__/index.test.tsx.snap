@@ -12,14 +12,12 @@ exports[`Nav basic snapshot render 1`] = `
     Your Week
   </a>
   <a
-    className=""
     href="/recipes"
     onClick={[Function]}
   >
     Recipes
   </a>
   <a
-    className=""
     href="/settings"
     onClick={[Function]}
   >

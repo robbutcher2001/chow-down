@@ -35,4 +35,24 @@ public class EndpointTest {
     void recipeEndpoint_shouldReturnCorrectPath_whenCalledPath() throws Exception {
         assertEquals("/api/recipes", Endpoint.RECIPE.getPath());
     }
+
+    @Test
+    void dayEndpoint_shouldReturnName_whenConvertedToString() throws Exception {
+        assertEquals("DAY", Endpoint.DAY.toString());
+    }
+
+    @Test
+    void dayEndpoint_shouldReturnCorrectPath_whenCalledPath() throws Exception {
+        assertEquals("/api/days", Endpoint.DAY.getPath());
+    }
+
+    @Test
+    void tagEndpoint_shouldReturnName_whenConvertedToString() throws Exception {
+        assertEquals("TAG", Endpoint.TAG.toString());
+    }
+
+    @Test
+    void tagEndpoint_shouldReturnCorrectPath_whenCalledPath() throws Exception {
+        assertEquals("/api/tags", Endpoint.TAG.getPath());
+    }
 }
