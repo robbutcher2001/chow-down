@@ -45,12 +45,12 @@ public class GetTagsService implements RequestHandler<Object, List<Tag>> {
 
       // DEPLOYED TEST
       // return tags;
-      Tag tag0 = Tag.builder().name("Slimming world").colours(Colour.builder().background("#d73a49").text("#fff").build()).build();
-      Tag tag1 = Tag.builder().name("Chicken").colours(Colour.builder().background("#009688").text("#fff").build()).build();
-      Tag tag2 = Tag.builder().name("Beef").colours(Colour.builder().background("#ca4a6c").text("#fff").build()).build();
-      Tag tag3 = Tag.builder().name("Vegetables").colours(Colour.builder().background("#005ea5").text("#fff").build()).build();
-      Tag tag4 = Tag.builder().name("Under 20 mins").colours(Colour.builder().background("#6f42c1").text("#fff").build()).build();
-      Tag tag5 = Tag.builder().name("Quick meals").colours(Colour.builder().background("#d73a49").text("#fff").build()).build();
+      Tag tag0 = Tag.builder().id("123").name("Slimming world").colours(Colour.builder().background("#d73a49").text("#fff").build()).build();
+      Tag tag1 = Tag.builder().id("456").name("Chicken").colours(Colour.builder().background("#009688").text("#fff").build()).build();
+      Tag tag2 = Tag.builder().id("789").name("Beef").colours(Colour.builder().background("#ca4a6c").text("#fff").build()).build();
+      Tag tag3 = Tag.builder().id("abc").name("Vegetables").colours(Colour.builder().background("#005ea5").text("#fff").build()).build();
+      Tag tag4 = Tag.builder().id("def").name("Under 20 mins").colours(Colour.builder().background("#6f42c1").text("#fff").build()).build();
+      Tag tag5 = Tag.builder().id("ghi").name("Quick meals").colours(Colour.builder().background("#d73a49").text("#fff").build()).build();
       List<Tag> fakeTags = new ArrayList<>();
       fakeTags.add(tag0);
       fakeTags.add(tag1);
