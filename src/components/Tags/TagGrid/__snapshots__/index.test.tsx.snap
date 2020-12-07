@@ -2,7 +2,7 @@
 
 exports[`TagGrid basic isLoading snapshot render 1`] = `
 <div
-  className="sc-AxiKw jKMHjR"
+  className="sc-AxiKw hJnbkr"
 >
   <h3>
     Tags
@@ -30,7 +30,7 @@ exports[`TagGrid basic isLoading snapshot render 1`] = `
 
 exports[`TagGrid basic snapshot render 1`] = `
 <div
-  className="sc-AxiKw jKMHjR"
+  className="sc-AxiKw hJnbkr"
 >
   <h3>
     Tags

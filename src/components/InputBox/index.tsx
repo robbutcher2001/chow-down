@@ -86,7 +86,7 @@ class InputBox extends Component<InputBoxProps, {}> {
         id={this.props.name}
         name={this.props.name}
         type={this.props.type}
-        value={this.props.form[this.props.name] ? this.props.form[this.props.name] : ''}
+        value={this.props.form[this.props.name] ? (this.props.form[this.props.name] as string | number) : ''}
         onChange={event => this.onChange(event)}
         onBlur={event => this.props.setValidationState(
           this.props.name,

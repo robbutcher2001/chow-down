@@ -3,19 +3,25 @@ import renderer from 'react-test-renderer';
 import { ThemeProvider } from 'styled-components';
 
 import theme from '../../themes';
-import InputBox from '.';
+import ColourPicker from '.';
 
 const mockFormState = {
   field: 'value'
 };
 
-test('InputBox basic snapshot render', () => {
-  const inputBox = renderer.create(
+test('ColourPicker basic snapshot render', () => {
+  const colourPicker = renderer.create(
     <ThemeProvider theme={theme}>
-      <InputBox
-        name='title'
-        type='text'
-        label='The Input Title'
+      <ColourPicker
+        name='colours'
+        label='Pick a colour'
+        colours={[{
+          background: 'red',
+          text: 'white'
+        }, {
+          background: 'blue',
+          text: 'red'
+        }]}
         validator={() => true}
         form={mockFormState}
         validFields={{}}
@@ -24,5 +30,5 @@ test('InputBox basic snapshot render', () => {
     </ThemeProvider>
   );
 
-  expect(inputBox.toJSON()).toMatchSnapshot();
+  expect(colourPicker.toJSON()).toMatchSnapshot();
 });

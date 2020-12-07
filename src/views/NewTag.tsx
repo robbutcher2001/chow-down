@@ -3,14 +3,13 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { GlobalState } from '../store';
-import { Tag, GetTagsApiRequest, PutTagApiRequest } from '../store/domain/tags/types';
+import { Tag, GetTagsApiRequest, PutTagApiRequest, TagColour } from '../store/domain/tags/types';
 import { getTagsRequest, putTagsRequest } from '../store/domain/tags/actions';
 
 import Main from '../components/Main';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
 import { NegativeBox } from '../components/MessageBox';
-import TagComponent from '../components/Tags/Tag';
 import TagGrid from '../components/Tags/TagGrid';
 import ColourPicker from '../components/ColourPicker';
 
@@ -33,13 +32,34 @@ interface DispatchProps {
 
 interface OwnProps { };
 
-interface OwnState { };
+interface OwnState {
+  colours: TagColour[]
+};
 
 type CombinedProps = StateProps & DispatchProps & OwnProps;
 
 class NewTagPage extends Component<CombinedProps, OwnState> {
   constructor(props: CombinedProps) {
     super(props);
+
+    this.state = {
+      colours: [{
+        background: '#d73a49',
+        text: '#fff'
+      }, {
+        background: '#009688',
+        text: '#fff'
+      }, {
+        background: '#ca4a6c',
+        text: '#fff'
+      }, {
+        background: '#005ea5',
+        text: '#fff'
+      }, {
+        background: '#6f42c1',
+        text: '#fff'
+      }]
+    }
   }
 
   addTag = (form: Tag) => this.props.putTag(form);
@@ -55,13 +75,6 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
         <NegativeBox message={this.props.error} /> :
         <>
           <div className={this.props.ui.pending.put ? 'spinner spinning' : 'spinner'}>
-            <div>
-              Preview
-              <TagComponent
-                $colour='#AB32CB'>
-                Preview me
-              </TagComponent>
-            </div>
             <Form
               name='tagForm'
               dispatch={this.addTag}
@@ -74,17 +87,10 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
               />
               <ColourPicker
                 name='colours'
-                colours={[{
-                  background: 'red',
-                  text: ''
-                },{
-                  background: 'blue',
-                  text: ''
-                }]}
-                validator={(value: string) => value.length > 3}
+                label='Pick a colour scheme'
+                colours={this.state.colours}
+                validator={(value: object) => !!value}
               />
-              {/* <div>background and text colour picker, displays in preview above</div> */}
-              {/* do we need a styled wrapper on this page for fear of creating too many unreusable components? */}
             </Form>
           </div>
           <TagGrid

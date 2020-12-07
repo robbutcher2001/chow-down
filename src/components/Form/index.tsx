@@ -11,7 +11,7 @@ import { Button } from '../Clickable';
 type CombinedInputProps = InputBoxProps | TextareaProps | ImageSelectorProps | RecipeIngredientsProps;
 
 export interface Fields {
-  [key: string]: string | number | Array<any>
+  [key: string]: string | number | object | Array<any>
 };
 
 export interface FieldValidations {
@@ -84,7 +84,7 @@ class FormComponent extends Component<CombinedProps, OwnState> {
     }, {} as Fields);
 
   //TODO: need to rename this - tests complain
-  setNewFormState = (field: string, newValue: string | number | Array<any>) => {
+  setNewFormState = (field: string, newValue: string | number | object | Array<any>) => {
     this.setState(prevState => {
       const newState = {
         form: Object.assign({}, prevState.form)

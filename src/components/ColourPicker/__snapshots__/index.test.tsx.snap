@@ -1,20 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InputBox basic snapshot render 1`] = `
+exports[`ColourPicker basic snapshot render 1`] = `
 <label
-  className="sc-AxjAm eBGUJt"
-  htmlFor="title"
+  className="sc-AxjAm WzsEu"
+  htmlFor="colours"
 >
   <span>
-    The Input Title
+    Pick a colour
   </span>
-  <input
-    id="title"
-    name="title"
-    onBlur={[Function]}
-    onChange={[Function]}
-    type="text"
-    value=""
-  />
+  <div
+    id="colours"
+  >
+    <label
+      className="sc-AxirZ iQZeUv"
+      htmlFor="colour_0"
+    >
+      <input
+        checked={false}
+        hidden={true}
+        id="colour_0"
+        name="colours"
+        onChange={[Function]}
+        type="radio"
+        value="red"
+      />
+    </label>
+    <label
+      className="sc-AxirZ fNUFiK"
+      htmlFor="colour_1"
+    >
+      <input
+        checked={false}
+        hidden={true}
+        id="colour_1"
+        name="colours"
+        onChange={[Function]}
+        type="radio"
+        value="blue"
+      />
+    </label>
+  </div>
 </label>
 `;

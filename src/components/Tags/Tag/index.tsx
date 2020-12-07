@@ -9,7 +9,7 @@ interface TagProps {
 
 interface StyledTagProps {
   readonly $colour?: string;
-}
+};
 
 const StyledTag = styled.span<StyledTagProps>`
   color: ${props => props.theme.colour.white};

@@ -31,6 +31,7 @@ const TagGrid = styled.div`
 
     > li {
       flex: 1 1 50%;
+      margin-bottom: 0.5rem;
     }
   }
 `
