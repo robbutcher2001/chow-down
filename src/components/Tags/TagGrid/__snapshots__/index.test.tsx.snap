@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TagGrid basic isLoading snapshot render 1`] = `
+<div
+  className="sc-AxiKw jKMHjR"
+>
+  <h3>
+    Tags
+  </h3>
+  <ul
+    className="spinner spinning"
+  >
+    <li>
+      <span
+        className="sc-AxjAm kYKFnd"
+      >
+        fake_tag1
+      </span>
+    </li>
+    <li>
+      <span
+        className="sc-AxjAm jPLcvw"
+      >
+        fake_tag2
+      </span>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`TagGrid basic snapshot render 1`] = `
+<div
+  className="sc-AxiKw jKMHjR"
+>
+  <h3>
+    Tags
+  </h3>
+  <ul
+    className="spinner"
+  >
+    <li>
+      <span
+        className="sc-AxjAm kYKFnd"
+      >
+        fake_tag1
+      </span>
+    </li>
+    <li>
+      <span
+        className="sc-AxjAm jPLcvw"
+      >
+        fake_tag2
+      </span>
+    </li>
+  </ul>
+</div>
+`;

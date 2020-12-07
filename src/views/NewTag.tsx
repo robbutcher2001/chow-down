@@ -10,7 +10,9 @@ import Main from '../components/Main';
 import Form from '../components/Form';
 import InputBox from '../components/InputBox';
 import { NegativeBox } from '../components/MessageBox';
-import TagComponent from '../components/Tag';
+import TagComponent from '../components/Tags/Tag';
+import TagGrid from '../components/Tags/TagGrid';
+import ColourPicker from '../components/ColourPicker';
 
 interface StateProps {
   error: string,
@@ -19,7 +21,7 @@ interface StateProps {
   ui: {
     pending: {
       get: boolean,
-      post: boolean
+      put: boolean
     }
   }
 };
@@ -52,7 +54,7 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
       {this.props.error ?
         <NegativeBox message={this.props.error} /> :
         <>
-          <div className={this.props.ui.pending.post ? 'spinner spinning' : 'spinner'}>
+          <div className={this.props.ui.pending.put ? 'spinner spinning' : 'spinner'}>
             <div>
               Preview
               <TagComponent
@@ -70,17 +72,26 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
                 label='Tag name'
                 validator={(value: string) => value.length > 3}
               />
-              <div>background and text colour picker, displays in preview above</div>
+              <ColourPicker
+                name='colours'
+                colours={[{
+                  background: 'red',
+                  text: ''
+                },{
+                  background: 'blue',
+                  text: ''
+                }]}
+                validator={(value: string) => value.length > 3}
+              />
+              {/* <div>background and text colour picker, displays in preview above</div> */}
               {/* do we need a styled wrapper on this page for fear of creating too many unreusable components? */}
             </Form>
           </div>
-          {this.props.tags && this.props.tags.map((tag, index) =>
-            <TagComponent
-              key={index}
-              $colour={tag.colours.background}>
-              {tag.name}
-            </TagComponent>
-          )}
+          <TagGrid
+            isLoading={this.props.ui.pending.get}
+            title='Existing tags'
+            tags={this.props.tags}
+          />
         </>
       }
     </Main>
@@ -94,7 +105,7 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, _ownProps: OwnProps):
   ui: {
     pending: {
       get: ui.tag.getPending,
-      post: ui.tag.putPending
+      put: ui.tag.putPending
     }
   }
 });

@@ -9,7 +9,7 @@ export enum TagActionTypes {
   PUT_TAGS_FAILURE = '@@tags/PUT_FAILURE'
 }
 
-interface TagColour {
+export interface TagColour {
   background: string,
   text: string
 }
