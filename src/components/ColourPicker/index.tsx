@@ -65,7 +65,7 @@ const ColourLabel = styled.label<ColourProps>`
   background-color: ${props => props.$background};
   color: ${props => props.$text};
   cursor: pointer;
-  // -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 
   &:before {
     content: 'Tag name';
@@ -77,8 +77,9 @@ const ColourLabel = styled.label<ColourProps>`
   &.selected {
     border-color: ${props => props.theme.isDark ?
       props.theme.colour.white :
-      props.theme.colour.black
+      props.theme.colour.grey
     };
+    ${props => !props.theme.isDark && 'box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.6);'}
   }
 `
 

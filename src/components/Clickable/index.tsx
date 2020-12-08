@@ -63,6 +63,7 @@ const Clickable = styled.div<ClickableProps>`
     'none'
   };
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 
   &.unselected {
     background-color: ${props =>
