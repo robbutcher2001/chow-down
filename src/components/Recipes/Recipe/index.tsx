@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent, useState } from 'react';
 
 import styled, { css } from 'styled-components';
 import { xsmall, small, medium } from '../../../themes/breakpoints';
@@ -6,12 +6,19 @@ import Stars from '../../Stars';
 import placeholderImg from '../../../themes/placeholder.svg';
 
 import { Recipe } from '../../../store/domain/recipes/types';
+import { Tag } from '../../../store/domain/tags/types';
 
-import Tag from '../../Tags/Tag';
+import HorizontalScroller from '../../HorizontalScroller';
+import { TagButton } from '../../Clickable';
+import TagComponent from '../../Tags/Tag';
 import { NegativeBox } from '../../MessageBox';
 
 interface RecipeDetailProps {
-  recipe: Recipe
+  recipe: Recipe;
+  tag: {
+    loading: boolean;
+    tags: Tag[];
+  }
 };
 
 const largeBackgroundMixin = (image: string) => css`
@@ -98,9 +105,13 @@ const RecipeDetail = styled.span<{ image: string }>`
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
+      border: none;
+      background: transparent;
+      padding: 0;
       position: absolute;
       max-width: 50%;
       right: 1rem;
+      cursor: copy;
 
       ${medium`
         max-width: 75%;
@@ -112,6 +123,14 @@ const RecipeDetail = styled.span<{ image: string }>`
         ${medium`
           margin: 0 0 4px 4px;
         `}
+      }
+
+      &.invisible {
+        // pointer-events: none;
+
+        // > * {
+        //   pointer-events: all;
+        // }
       }
     }
 
@@ -186,31 +205,66 @@ const RecipeDetail = styled.span<{ image: string }>`
   }
 `
 
-export default (props: RecipeDetailProps) =>
-  props.recipe ?
-    <RecipeDetail image={props.recipe.image} >
-      <div>
-        <h3>{props.recipe.title}</h3>
-        <div className='tags'>
-          {props.recipe.tags && props.recipe.tags.map((tag, index) =>
-            <Tag
-              key={index}
-              $colour={tag.colours.background}>
-              {tag.name}
-            </Tag>
-          )}
+const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDetailProps) => {
+  const [editTags, setEditTags] = useState(false);
+
+  const editMode = () => setEditTags(true);
+
+  const readMode = () => setEditTags(false);
+
+  const fakeLoadingTags = () => [0, 1, 2, 3, 4].map(index =>
+    <TagButton
+      key={index}
+      loading={true}>
+      Tags loading..
+    </TagButton>
+  );
+
+  return (
+    props.recipe ?
+      <RecipeDetail image={props.recipe.image} >
+        <div>
+          <h3>{props.recipe.title}</h3>
+          <button className={editTags ? 'tags invisible' : 'tags'} onClick={editMode} onBlur={readMode} >
+            {editTags ?
+              <HorizontalScroller small>
+                {props.tag.loading ?
+                  fakeLoadingTags() :
+                  props.tag.tags.map(tag =>
+                    <TagButton
+                      key={tag.id}
+                      colour={tag.colours.background}
+                      selected={true}
+                      onClick={() => {}}>
+                      {tag.name}
+                    </TagButton>
+                  )
+                }
+              </HorizontalScroller> :
+              props.recipe.tags && props.recipe.tags.map((tag, index) =>
+                <TagComponent
+                  key={index}
+                  $colour={tag.colours.background}>
+                  {tag.name}
+                </TagComponent>
+              )
+            }
+          </button>
+          <section className='ingredients' >
+            <div>Recipe ingredients coming soon!</div>
+            {props.recipe.rating > 0 &&
+              <span>
+                <Stars rating={props.recipe.rating} />
+              </span>
+            }
+          </section>
+          <section className='method' >
+            Recipe methods coming soon!
+          </section>
         </div>
-        <section className='ingredients' >
-          <div>Recipe ingredients coming soon!</div>
-          {props.recipe.rating > 0 &&
-            <span>
-              <Stars rating={props.recipe.rating} />
-            </span>
-          }
-        </section>
-        <section className='method' >
-          Recipe methods coming soon!
-        </section>
-      </div>
-    </RecipeDetail> :
-    <NegativeBox message='Direct recipe retrieval not implemented yet.' />;
+      </RecipeDetail> :
+      <NegativeBox message='Direct recipe retrieval not implemented yet.' />
+  );
+};
+
+export default RecipeComponent;

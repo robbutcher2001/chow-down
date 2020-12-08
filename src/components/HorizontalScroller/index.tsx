@@ -3,10 +3,11 @@ import React, { FunctionComponent, ReactNode } from 'react';
 import styled from 'styled-components';
 
 interface HorizontalScrollerProps {
-  children: ReactNode
+  children: ReactNode;
+  small?: boolean;
 };
 
-const StyledHorizontalScroller = styled.div`
+const StyledHorizontalScroller = styled.div<{small?: boolean}>`
   display: grid;
   grid-template-columns: 100%;
   position: relative;
@@ -33,7 +34,10 @@ const StyledHorizontalScroller = styled.div`
     overflow-x: scroll;
     white-space: nowrap;
     scrollbar-width: none;
-    padding: 1rem 0;
+    padding: ${props => props.small ?
+      '0' :
+      '1rem 0'
+    };
 
     > * {
       margin-right: 0.5rem;
@@ -50,7 +54,7 @@ const StyledHorizontalScroller = styled.div`
 `
 
 const HorizontalScroller: FunctionComponent<HorizontalScrollerProps> = (props: HorizontalScrollerProps) => (
-  <StyledHorizontalScroller>
+  <StyledHorizontalScroller small={props.small}>
     <div className='scroller'>
       {props.children}
     </div>

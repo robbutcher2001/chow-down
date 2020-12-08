@@ -12,7 +12,7 @@ exports[`ColourPicker basic snapshot render 1`] = `
     id="colours"
   >
     <label
-      className="sc-AxirZ iQZeUv"
+      className="sc-AxirZ kdoobD"
       htmlFor="colour_0"
     >
       <input
@@ -26,7 +26,7 @@ exports[`ColourPicker basic snapshot render 1`] = `
       />
     </label>
     <label
-      className="sc-AxirZ fNUFiK"
+      className="sc-AxirZ zwHNS"
       htmlFor="colour_1"
     >
       <input
