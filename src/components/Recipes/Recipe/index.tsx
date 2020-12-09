@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, MouseEvent } from 'react';
+import React, { FunctionComponent, useState, useEffect, MouseEvent } from 'react';
 
 import styled, { css } from 'styled-components';
 import { xsmall, small, medium } from '../../../themes/breakpoints';
@@ -9,7 +9,7 @@ import { Recipe } from '../../../store/domain/recipes/types';
 import { Tag, PutTagApiRequest } from '../../../store/domain/tags/types';
 
 import HorizontalScroller from '../../HorizontalScroller';
-import { TagButton } from '../../Clickable';
+import { Button, TagButton } from '../../Clickable';
 import TagComponent from '../../Tags/Tag';
 import { NegativeBox } from '../../MessageBox';
 
@@ -120,7 +120,7 @@ const RecipeDetail = styled.span<{ image: string }>`
         `}
       }
 
-      > button {
+      > .selector {
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-end;
@@ -211,7 +211,12 @@ const RecipeDetail = styled.span<{ image: string }>`
 `
 
 const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDetailProps) => {
-  const [editTags, setEditTags] = useState(false);
+  const [editTags, setEditTags] = useState<boolean>(false);
+  const [recipeTags, setRecipeTags] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    props.recipe && props.recipe.tags && setRecipeTags(props.recipe.tags);
+  }, [props.recipe]);
 
   const stopPropagation = (event: MouseEvent<any>) => event.stopPropagation();
 
@@ -222,10 +227,21 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
 
   const readMode = () => setEditTags(false);
 
-  const updateRecipe = (tag: Tag) =>
+  const updateRecipeTags = (newTag: Tag) => {
+    const remove = recipeTags.map(recipeTag => recipeTag.id).includes(newTag.id);
+
+    const newRecipeTags = remove ?
+      recipeTags.filter(recipeTag => recipeTag.id !== newTag.id) :
+      [...recipeTags, newTag];
+
+    setRecipeTags(newRecipeTags);
+    updateRecipe(newRecipeTags);
+  };
+
+  const updateRecipe = (tags: Tag[]) =>
     props.updateRecipe({
       id: props.recipe.id,
-      tags: [tag],
+      tags,
     });
 
   const fakeLoadingTags = () => [0, 1, 2, 3, 4].map(index =>
@@ -252,22 +268,31 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
                         key={tag.id}
                         colour={tag.colours.background}
                         selected={props.recipe.tags && props.recipe.tags.map(tag => tag.id).includes(tag.id)}
-                        onClick={() => updateRecipe(tag)}>
+                        onClick={() => updateRecipeTags(tag)}>
                         {tag.name}
                       </TagButton>
                     )
                   }
                 </HorizontalScroller>
               </div> :
-              <button onClick={editMode} >
-                {props.recipe.tags && props.recipe.tags.map((tag, index) =>
-                  <TagComponent
-                    key={index}
-                    $colour={tag.colours.background}>
-                    {tag.name}
-                  </TagComponent>
-                )}
-              </button>
+              props.recipe.tags ?
+                <button className='selector' onClick={editMode} >
+                  {props.recipe.tags.map((tag, index) =>
+                    <TagComponent
+                      key={index}
+                      $colour={tag.colours.background}>
+                      {tag.name}
+                    </TagComponent>
+                  )}
+                </button> :
+                <Button
+                  $bold
+                  $inline
+                  $xsmallFont
+                  onClick={editMode}
+                >
+                  Add tags
+                </Button>
             }
           </div>
           <section className='ingredients' >
