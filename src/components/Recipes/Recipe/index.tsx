@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, MouseEvent } from 'react';
 
 import styled, { css } from 'styled-components';
 import { xsmall, small, medium } from '../../../themes/breakpoints';
@@ -102,27 +102,39 @@ const RecipeDetail = styled.span<{ image: string }>`
     }
 
     > .tags {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      border: none;
-      background: transparent;
-      padding: 0;
       position: absolute;
-      max-width: 50%;
       right: 1rem;
-      cursor: copy;
+      max-width: 50%;
 
       ${medium`
         max-width: 75%;
       `}
 
-      > * {
-        margin: 0 0 4px 10px;
+      &.edit {
+        max-width: 70%;
 
         ${medium`
-          margin: 0 0 4px 4px;
+          max-width: unset;
+          margin-left: 1rem;
         `}
+      }
+
+      > button {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        border: none;
+        background: transparent;
+        padding: 0;
+        cursor: copy;
+
+        > * {
+          margin: 0 0 4px 10px;
+  
+          ${medium`
+            margin: 0 0 4px 4px;
+          `}
+        }
       }
     }
 
@@ -200,10 +212,12 @@ const RecipeDetail = styled.span<{ image: string }>`
 const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDetailProps) => {
   const [editTags, setEditTags] = useState(false);
 
-  const editMode = (e: any) => {
-    e.stopPropagation();
+  const stopPropagation = (event: MouseEvent<any>) => event.stopPropagation();
+
+  const editMode = (event: MouseEvent<any>) => {
     setEditTags(true);
-  }
+    stopPropagation(event);
+  };
 
   const readMode = () => setEditTags(false);
 
@@ -220,31 +234,35 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
       <RecipeDetail image={props.recipe.image} onClick={readMode} >
         <div>
           <h3>{props.recipe.title}</h3>
-          <button className='tags' onClick={editMode} >
+          <div className={editTags ? 'tags edit' : 'tags'} >
             {editTags ?
-              <HorizontalScroller small>
-                {props.tag.loading ?
-                  fakeLoadingTags() :
-                  props.tag.tags.map(tag =>
-                    <TagButton
-                      key={tag.id}
-                      colour={tag.colours.background}
-                      selected={true}
-                      onClick={() => {}}>
-                      {tag.name}
-                    </TagButton>
-                  )
-                }
-              </HorizontalScroller> :
-              props.recipe.tags && props.recipe.tags.map((tag, index) =>
-                <TagComponent
-                  key={index}
-                  $colour={tag.colours.background}>
-                  {tag.name}
-                </TagComponent>
-              )
+              <div onClick={stopPropagation} >
+                <HorizontalScroller small>
+                  {props.tag.loading ?
+                    fakeLoadingTags() :
+                    props.tag.tags.map(tag =>
+                      <TagButton
+                        key={tag.id}
+                        colour={tag.colours.background}
+                        selected={false}
+                        onClick={() => {console.log('clicked', tag.name)}}>
+                        {tag.name}
+                      </TagButton>
+                    )
+                  }
+                </HorizontalScroller>
+              </div> :
+              <button onClick={editMode} >
+                {props.recipe.tags && props.recipe.tags.map((tag, index) =>
+                  <TagComponent
+                    key={index}
+                    $colour={tag.colours.background}>
+                    {tag.name}
+                  </TagComponent>
+                )}
+              </button>
             }
-          </button>
+          </div>
           <section className='ingredients' >
             <div>Recipe ingredients coming soon!</div>
             {props.recipe.rating > 0 &&
