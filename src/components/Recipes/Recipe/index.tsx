@@ -124,14 +124,6 @@ const RecipeDetail = styled.span<{ image: string }>`
           margin: 0 0 4px 4px;
         `}
       }
-
-      &.invisible {
-        // pointer-events: none;
-
-        // > * {
-        //   pointer-events: all;
-        // }
-      }
     }
 
     > section {
@@ -208,7 +200,10 @@ const RecipeDetail = styled.span<{ image: string }>`
 const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDetailProps) => {
   const [editTags, setEditTags] = useState(false);
 
-  const editMode = () => setEditTags(true);
+  const editMode = (e: any) => {
+    e.stopPropagation();
+    setEditTags(true);
+  }
 
   const readMode = () => setEditTags(false);
 
@@ -222,10 +217,10 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
 
   return (
     props.recipe ?
-      <RecipeDetail image={props.recipe.image} >
+      <RecipeDetail image={props.recipe.image} onClick={readMode} >
         <div>
           <h3>{props.recipe.title}</h3>
-          <button className={editTags ? 'tags invisible' : 'tags'} onClick={editMode} onBlur={readMode} >
+          <button className='tags' onClick={editMode} >
             {editTags ?
               <HorizontalScroller small>
                 {props.tag.loading ?
