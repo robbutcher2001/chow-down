@@ -6,7 +6,7 @@ import Stars from '../../Stars';
 import placeholderImg from '../../../themes/placeholder.svg';
 
 import { Recipe } from '../../../store/domain/recipes/types';
-import { Tag } from '../../../store/domain/tags/types';
+import { Tag, PutTagApiRequest } from '../../../store/domain/tags/types';
 
 import HorizontalScroller from '../../HorizontalScroller';
 import { TagButton } from '../../Clickable';
@@ -18,7 +18,8 @@ interface RecipeDetailProps {
   tag: {
     loading: boolean;
     tags: Tag[];
-  }
+  };
+  updateRecipe: (recipe: Recipe) => void //PutTagApiRequest; needs to be update recipe, which is PUT verb on recipe
 };
 
 const largeBackgroundMixin = (image: string) => css`
@@ -221,6 +222,12 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
 
   const readMode = () => setEditTags(false);
 
+  const updateRecipe = (tag: Tag) =>
+    props.updateRecipe({
+      id: props.recipe.id,
+      tags: [tag],
+    });
+
   const fakeLoadingTags = () => [0, 1, 2, 3, 4].map(index =>
     <TagButton
       key={index}
@@ -244,8 +251,8 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
                       <TagButton
                         key={tag.id}
                         colour={tag.colours.background}
-                        selected={false}
-                        onClick={() => {console.log('clicked', tag.name)}}>
+                        selected={props.recipe.tags && props.recipe.tags.map(tag => tag.id).includes(tag.id)}
+                        onClick={() => updateRecipe(tag)}>
                         {tag.name}
                       </TagButton>
                     )

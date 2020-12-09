@@ -60,6 +60,8 @@ class RecipePage extends Component<CombinedProps, OwnState> {
 
   findRecipe = (id: string) => this.props.recipes.find(recipe => recipe.id === id);
 
+  updateRecipe = (recipe: Recipe) => console.log('putting tag on recipe in view', recipe);
+
   componentDidMount = () => {
     const { id } = this.props.match.params;
     const recipe: Recipe = this.findRecipe(id);
@@ -101,6 +103,7 @@ class RecipePage extends Component<CombinedProps, OwnState> {
         <RecipeComponent
           recipe={this.state.recipe}
           tag={{loading: this.state.tag.loading, tags: this.state.tag.tags}}
+          updateRecipe={this.updateRecipe}
         />
       }
     </ZeroMarginedMain>

@@ -13,7 +13,7 @@ import { daysReducer } from './days/reducer';
 import { tagsReducer } from './tags/reducer';
 
 export interface Searchable {
-  getSearchableKeywords(): string[]
+  getSearchableKeywords?(): string[]
 }
 
 export interface DomainState {

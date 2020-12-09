@@ -12,14 +12,14 @@ export enum RecipeActionTypes {
 }
 
 export interface Recipe extends Searchable {
-    id: string,
-    title: string,
-    description: string,
-    rating: number,
-    url: string,
-    image: string,
-    tags: Tag[],
-    createdDate: string
+    id?: string,
+    title?: string,
+    description?: string,
+    rating?: number,
+    url?: string,
+    image?: string,
+    tags?: Tag[],
+    createdDate?: string
 }
 
 export interface RecipesState {
