@@ -44,19 +44,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.ttf$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]',
-              outputPath: 'assets/fonts/'
-            }
-          }
-        ]
-      },
-      {
-        test: /\.(gif|png|jpe?g|svg)$/i,
+        test: /\.(gif|png|jpe?g|svg|ttf)$/i,
         use: [
           'url-loader'
         ]
@@ -101,7 +89,8 @@ module.exports = {
       externals: [
         '/api/recipes',
         '/api/ingredients',
-        '/api/units'
+        '/api/units',
+        '/api/tags'
       ],
       autoUpdate: true
     })
