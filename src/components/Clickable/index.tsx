@@ -10,12 +10,14 @@ interface ClickableProps {
   readonly $smallFont?: boolean;
   readonly $smallPadding?: boolean;
   readonly $largeBorderRadius?: boolean;
-  readonly $colour?: string;
+  readonly $backgroundColour?: string;
+  readonly $textColour?: string;
   readonly $reset?: boolean;
 };
 
 interface TagButtonProps {
-  colour?: string;
+  backgroundColour?: string;
+  textColour?: string;
   selected?: boolean;
   loading?: boolean;
   onClick?: (data: MouseEvent<HTMLButtonElement>) => void;
@@ -48,14 +50,16 @@ const Clickable = styled.div<ClickableProps>`
   };
   color: ${props => props.$reset ?
     props.theme.colour.semantic.reset :
+    props.$textColour ?
+      props.$textColour :
     props.$inline ?
       props.theme.colour.blue :
       props.theme.colour.white
   };
   background-color: ${props => props.$reset || props.$inline ?
     'transparent' :
-    props.$colour ?
-      props.$colour :
+    props.$backgroundColour ?
+      props.$backgroundColour :
     props.theme.colour.semantic.theme
   };
   text-decoration: ${props => props.$reset || props.$underline ?
@@ -81,7 +85,6 @@ const Clickable = styled.div<ClickableProps>`
       props.theme.colour.lightGrey
     };
     position: relative;
-    // filter: blur(2px);
 
     &:after {
       content: '';
@@ -93,8 +96,6 @@ const Clickable = styled.div<ClickableProps>`
       position: absolute;
       left: 50%;
       top: 50%;
-      // opacity: 1;
-      // transition: opacity 0.8s;
       animation: spin 0.8s linear infinite;
     }
   }
@@ -115,7 +116,8 @@ export const TagButton = (props: TagButtonProps) =>
     $smallFont
     $smallPadding
     $largeBorderRadius
-    $colour={props.colour}
+    $backgroundColour={props.backgroundColour}
+    $textColour={props.textColour}
   >
     {props.children}
   </Clickable>;

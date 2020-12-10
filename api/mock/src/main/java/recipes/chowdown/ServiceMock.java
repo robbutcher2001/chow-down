@@ -41,6 +41,7 @@ import recipes.chowdown.schema.Unit;
 public class ServiceMock implements ApiApi {
 
   static final String IMAGE_URL = "https://source.unsplash.com/random";
+  static final String[][] COLOURS = new String[10][2];
 
   final Faker faker;
   final List<Unit> units = new ArrayList<>();
@@ -51,10 +52,31 @@ public class ServiceMock implements ApiApi {
   boolean initRequest = true;
   final int TOTAL_UNITS = 12;
   final int TOTAL_INGREDIENTS = 120;
-  final int TOTAL_TAGS = 8;
+  final int TOTAL_TAGS = 10;
 
   public ServiceMock() {
     this.faker = new Faker();
+
+    COLOURS[0][0] = "#005ea5";
+    COLOURS[0][1] = "#ffffffd4";
+    COLOURS[1][0] = "#17a2b8";
+    COLOURS[1][1] = "#000000d4";
+    COLOURS[2][0] = "#008672";
+    COLOURS[2][1] = "#fff";
+    COLOURS[3][0] = "#88b04b";
+    COLOURS[3][1] = "#fff";
+    COLOURS[4][0] = "#efc050";
+    COLOURS[4][1] = "#000000e0";
+    COLOURS[5][0] = "#d73a49";
+    COLOURS[5][1] = "#fff";
+    COLOURS[6][0] = "#c3447a";
+    COLOURS[6][1] = "#fff";
+    COLOURS[7][0] = "#d876e3";
+    COLOURS[7][1] = "#000";
+    COLOURS[8][0] = "#ff6f61";
+    COLOURS[8][1] = "#000000e0";
+    COLOURS[9][0] = "#6f42c1";
+    COLOURS[9][1] = "#fff";
 
     for (int i = 0; i < this.TOTAL_UNITS; i++) {
       Unit unit = new Unit();
@@ -85,8 +107,8 @@ public class ServiceMock implements ApiApi {
       tag.setName(this.faker.funnyName().name());
 
       TagColours colours = new TagColours();
-      colours.setBackground(this.faker.color().hex());
-      colours.setText(this.faker.color().hex());
+      colours.setBackground(COLOURS[i][0]);
+      colours.setText(COLOURS[i][1]);
       tag.setColours(colours);
 
       this.tags.add(tag);

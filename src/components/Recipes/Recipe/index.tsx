@@ -266,7 +266,8 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
                     props.tag.tags.map(tag =>
                       <TagButton
                         key={tag.id}
-                        colour={tag.colours.background}
+                        backgroundColour={tag.colours.background}
+                        textColour={tag.colours.text}
                         selected={props.recipe.tags && props.recipe.tags.map(tag => tag.id).includes(tag.id)}
                         onClick={() => updateRecipeTags(tag)}>
                         {tag.name}
@@ -280,7 +281,9 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
                   {props.recipe.tags.map((tag, index) =>
                     <TagComponent
                       key={index}
-                      $colour={tag.colours.background}>
+                      $backgroundColour={tag.colours.background}
+                      $textColour={tag.colours.text}
+                    >
                       {tag.name}
                     </TagComponent>
                   )}

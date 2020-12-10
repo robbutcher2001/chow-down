@@ -4,16 +4,18 @@ import styled from 'styled-components';
 
 interface TagProps {
   children: ReactNode;
-  $colour?: string;
+  $backgroundColour?: string;
+  $textColour?: string;
 };
 
 interface StyledTagProps {
-  readonly $colour?: string;
+  readonly $backgroundColour?: string;
+  readonly $textColour?: string;
 };
 
 const StyledTag = styled.span<StyledTagProps>`
-  color: ${props => props.theme.colour.white};
-  background-color: ${props => props.$colour};
+  background-color: ${props => props.$backgroundColour};
+  color: ${props => props.$textColour};
   padding: 0 0.5rem;
   font-size: ${props => props.theme.typography.fontSize.xsmall};
   border: 2px solid transparent;
@@ -21,7 +23,10 @@ const StyledTag = styled.span<StyledTagProps>`
 `
 
 const Tag: FunctionComponent<TagProps> = (props: TagProps) =>
-  <StyledTag $colour={props.$colour}>
+  <StyledTag
+    $backgroundColour={props.$backgroundColour}
+    $textColour={props.$textColour}
+  >
     {props.children}
   </StyledTag>;
 

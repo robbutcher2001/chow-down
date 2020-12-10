@@ -44,7 +44,10 @@ export default (props: TagGridProps) =>
       <ul className={props.isLoading ? 'spinner spinning' : 'spinner'} >
         {props.tags.map(tag =>
           <li key={tag.id}>
-            <TagComponent $colour={tag.colours.background}>
+            <TagComponent
+              $backgroundColour={tag.colours.background}
+              $textColour={tag.colours.text}
+            >
               {tag.name}
             </TagComponent>
           </li>

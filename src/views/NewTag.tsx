@@ -65,7 +65,7 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
         background: '#c3447a',
         text: '#fff'
       }, {
-        background: '#D876E3',
+        background: '#d876e3',
         text: '#000'
       }, {
         background: '#ff6f61',

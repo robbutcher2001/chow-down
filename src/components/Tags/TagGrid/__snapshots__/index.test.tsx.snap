@@ -12,14 +12,14 @@ exports[`TagGrid basic isLoading snapshot render 1`] = `
   >
     <li>
       <span
-        className="sc-AxjAm kYKFnd"
+        className="sc-AxjAm bvsuMB"
       >
         fake_tag1
       </span>
     </li>
     <li>
       <span
-        className="sc-AxjAm jPLcvw"
+        className="sc-AxjAm hgQdmQ"
       >
         fake_tag2
       </span>
@@ -40,14 +40,14 @@ exports[`TagGrid basic snapshot render 1`] = `
   >
     <li>
       <span
-        className="sc-AxjAm kYKFnd"
+        className="sc-AxjAm bvsuMB"
       >
         fake_tag1
       </span>
     </li>
     <li>
       <span
-        className="sc-AxjAm jPLcvw"
+        className="sc-AxjAm hgQdmQ"
       >
         fake_tag2
       </span>

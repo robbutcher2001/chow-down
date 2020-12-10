@@ -133,7 +133,9 @@ const RecipeCardContents = (props: RecipeCardProps) => (
         {props.recipe.tags && props.recipe.tags.map((tag, index) =>
           <Tag
             key={index}
-            $colour={tag.colours.background}>
+            $backgroundColour={tag.colours.background}
+            $textColour={tag.colours.text}
+          >
             {tag.name}
           </Tag>
         )}
