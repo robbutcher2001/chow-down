@@ -178,6 +178,7 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
               <ColourPicker
                 name='colours'
                 label='Pick a colour scheme'
+                tagNameFieldKey='name'
                 colours={this.state.colours}
                 validator={(value: object) => !!value}
               />

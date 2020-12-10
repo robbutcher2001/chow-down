@@ -7,6 +7,7 @@ import { Fields, FieldValidations } from '../Form';
 interface ColourPickerProps {
   name: string,
   label: string,
+  tagNameFieldKey?: string,
   colours: TagColour[],
   validator: (value: object) => boolean,
   form?: Fields,
@@ -66,13 +67,13 @@ const ColourLabel = styled.label<ColourProps>`
   color: ${props => props.$text};
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 
-  &:before {
-    content: 'Tag name';
-    font-size: ${props =>
-      props.theme.typography.fontSize.small
-    };
-  }
+  font-size: ${props =>
+    props.theme.typography.fontSize.small
+  };
 
   &.selected {
     border-color: ${props => props.theme.isDark ?
@@ -118,6 +119,7 @@ class ColourPicker extends Component<ColourPickerProps, {}> {
               hidden
               onChange={() => this.onChange(colour)}
             />
+            {this.props.form[this.props.tagNameFieldKey] ? this.props.form[this.props.tagNameFieldKey] : 'Tag name'}
           </ColourLabel>
         )}
       </div>
