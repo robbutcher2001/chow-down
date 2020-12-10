@@ -44,109 +44,34 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
 
     this.state = {
       colours: [{
-        background: '#d73a49',
-        text: '#fff'
-      }, {
-        background: '#009688',
-        text: '#fff'
-      }, {
-        background: '#ca4a6c',
-        text: '#fff'
-      }, {
         background: '#005ea5',
-        text: '#fff'
-      }, {
-        background: '#6f42c1',
-        text: '#fff'
+        text: '#ffffffd4'
       }, {
         background: '#17a2b8',
-        text: '#000'
+        text: '#000000d4'
       }, {
-        background: '#912b88',
-        text: '#fff'
-      }, {
-        background: '#34568b',
-        text: '#fff'
-      }, {
-        background: '#ff6f61',
-        text: '#000'
-      }, {
-        background: '#6b5b95',
+        background: '#008672',
         text: '#fff'
       }, {
         background: '#88b04b',
         text: '#fff'
       }, {
-        background: '#92a8d1',
-        text: '#fff'
-      }, {
-        background: '#955251',
-        text: '#fff'
-      }, {
-        background: '#b565a7',
-        text: '#fff'
-      }, {
-        background: '#009b77',
-        text: '#fff'
-      }, {
-        background: '#dd4124',
-        text: '#fff'
-      }, {
-        background: '#d65076',
-        text: '#fff'
-      }, {
-        background: '#45b8ac',
-        text: '#fff'
-      }, {
         background: '#efc050',
-        text: '#000'
+        text: '#000000e0'
       }, {
-        background: '#5b5ea6',
-        text: '#fff'
-      }, {
-        background: '#9b2335',
-        text: '#fff'
-      }, {
-        background: '#55b4b0',
-        text: '#fff'
-      }, {
-        background: '#e15d44',
-        text: '#fff'
-      }, {
-        background: '#bc243c',
+        background: '#d73a49',
         text: '#fff'
       }, {
         background: '#c3447a',
         text: '#fff'
       }, {
-        background: '#98b4d4',
-        text: '#000'
-      }, {
-        background: '#D73A4A',
-        text: '#fff'
-      }, {
-        background: '#0366D6',
-        text: '#fff'
-      }, {
-        background: '#0075CA',
-        text: '#fff'
-      }, {
-        background: '#CFD3D7',
-        text: '#000'
-      }, {
-        background: '#A2EEEF',
-        text: '#000'
-      }, {
-        background: '#7057FF',
-        text: '#fff'
-      }, {
-        background: '#008672',
-        text: '#fff'
-      }, {
-        background: '#E4E669',
-        text: '#000'
-      }, {
         background: '#D876E3',
+        text: '#000'
+      }, {
+        background: '#ff6f61',
+        text: '#000000e0'
+      }, {
+        background: '#6f42c1',
         text: '#fff'
       }]
     }
