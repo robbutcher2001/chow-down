@@ -13,7 +13,6 @@ const Nav = styled.nav`
   top: 0;
   z-index: 200;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 12px 5px;
-  background: #000;
   background: ${props => props.theme.isDark ?
     props.theme.colour.black :
     props.theme.colour.white

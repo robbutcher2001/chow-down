@@ -147,7 +147,8 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
                 this.props.tags.map(tag =>
                   <TagButton
                     key={tag.id}
-                    colour={tag.colours.background}
+                    backgroundColour={tag.colours.background}
+                    textColour={tag.colours.text}
                     selected={this.state.selectedTags.includes(tag.id)}
                     onClick={() => this.selectedTags(tag.id)}>
                     {tag.name}
