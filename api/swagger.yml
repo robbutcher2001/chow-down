@@ -506,6 +506,7 @@ components:
           type: string
         name:
           type: string
+          maxLength: 20
         colours:
           type: object
           properties:
