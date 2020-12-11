@@ -68,6 +68,7 @@ const ColourLabel = styled.label<ColourProps>`
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 200px;
 

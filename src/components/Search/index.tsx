@@ -60,11 +60,11 @@ const StyledSearch = styled.form`
         line-height: 14px;
         border-radius: 8px;
         cursor: pointer;
-        background-color: ${props => props.theme.colour.darkGrey};
-        color: ${props => props.theme.isDark ?
-          props.theme.colour.white :
-          props.theme.colour.black
+        background-color: ${props => props.theme.isDark ?
+          props.theme.colour.darkGrey :
+          props.theme.colour.semantic.theme
         };
+        color: ${props => props.theme.colour.white};
       }
     }
   }

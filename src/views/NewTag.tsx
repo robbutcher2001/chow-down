@@ -98,7 +98,7 @@ class NewTagPage extends Component<CombinedProps, OwnState> {
                 name='name'
                 type='text'
                 label='Tag name'
-                validator={(value: string) => value.length > 3}
+                validator={(value: string) => value.length > 3 && value.length <= 20}
               />
               <ColourPicker
                 name='colours'
