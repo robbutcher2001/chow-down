@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import recipes.chowdown.schema.ApiApi;
 import recipes.chowdown.schema.Day;
 import recipes.chowdown.schema.Ingredient;
+import recipes.chowdown.schema.NewRecipe;
 import recipes.chowdown.schema.Recipe;
 import recipes.chowdown.schema.RecipeIngredient;
 import recipes.chowdown.schema.RecipeIngredientIngredient;
@@ -35,6 +36,7 @@ import recipes.chowdown.schema.RecipeIngredientUnit;
 import recipes.chowdown.schema.Tag;
 import recipes.chowdown.schema.TagColours;
 import recipes.chowdown.schema.Unit;
+import recipes.chowdown.schema.UpdateRecipe;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
@@ -262,11 +264,11 @@ public class ServiceMock implements ApiApi {
   }
 
   @Override
-  public ResponseEntity<Recipe> apiRecipesPost(@Valid Recipe recipe) {
+  public ResponseEntity<NewRecipe> apiRecipesPost(@Valid NewRecipe newRecipe) {
     List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-    recipe.setId(this.faker.internet().uuid());
-    recipe.getIngredients().forEach(payloadIngredient -> {
+    newRecipe.setId(this.faker.internet().uuid());
+    newRecipe.getIngredients().forEach(payloadIngredient -> {
       RecipeIngredientUnit newRecipeUnit = new RecipeIngredientUnit();
       Unit existingUnit = this.units.stream().filter(unit -> unit.getId().equals(payloadIngredient.getUnit().getId()))
           .findFirst().orElse(null);
@@ -290,12 +292,37 @@ public class ServiceMock implements ApiApi {
 
       recipeIngredients.add(recipeIngredient);
     });
-    recipe.setIngredients(recipeIngredients);
-    this.recipes.add(recipe);
+    newRecipe.setIngredients(recipeIngredients);
+    this.recipes.add(newRecipe);
 
     randomSleep(2);
 
-    return new ResponseEntity<>(recipe, HttpStatus.CREATED);
+    return new ResponseEntity<>(newRecipe, HttpStatus.CREATED);
+  }
+
+  @Override
+  public ResponseEntity<UpdateRecipe> apiRecipesPut(@Valid UpdateRecipe updateRecipe) {
+    UpdateRecipe updatedDatabaseGet = new UpdateRecipe();
+    Optional<Recipe> existingRecipe = this.recipes.stream().filter(recipe -> recipe.getId().equals(updateRecipe.getId())).findFirst();
+
+    if (!existingRecipe.isPresent()) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    else {
+      existingRecipe.get().setTags(updateRecipe.getTags());
+      updatedDatabaseGet.setId(existingRecipe.get().getId());
+      updatedDatabaseGet.setTitle(existingRecipe.get().getTitle());
+      updatedDatabaseGet.setDescription(existingRecipe.get().getDescription());
+      updatedDatabaseGet.setRating(existingRecipe.get().getRating());
+      updatedDatabaseGet.setUrl(existingRecipe.get().getUrl());
+      updatedDatabaseGet.setImage(existingRecipe.get().getImage());
+      updatedDatabaseGet.setIngredients(existingRecipe.get().getIngredients());
+      updatedDatabaseGet.setTags(existingRecipe.get().getTags());
+      updatedDatabaseGet.setCreatedDate(existingRecipe.get().getCreatedDate());
+    }
+
+    randomSleep(15);
+    return new ResponseEntity<>(updatedDatabaseGet, HttpStatus.OK);
   }
 
   @Override

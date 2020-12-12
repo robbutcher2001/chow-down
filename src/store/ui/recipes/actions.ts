@@ -15,3 +15,11 @@ export const pendingPostRecipes = (): RecipesUiChange => ({
 export const clearPendingPostRecipes = (): RecipesUiChange => ({
     type: RecipeUiActionTypes.CLEAR_POST_RECIPES_PENDING
 });
+
+export const pendingPutRecipes = (): RecipesUiChange => ({
+  type: RecipeUiActionTypes.PUT_RECIPES_PENDING
+});
+
+export const clearPendingPutRecipes = (): RecipesUiChange => ({
+  type: RecipeUiActionTypes.CLEAR_PUT_RECIPES_PENDING
+});

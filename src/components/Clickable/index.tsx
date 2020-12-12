@@ -99,6 +99,24 @@ const Clickable = styled.div<ClickableProps>`
       animation: spin 0.8s linear infinite;
     }
   }
+
+  &.error {
+    cursor: auto;
+    color: ${props =>
+      props.theme.colour.lightGrey
+    };
+    position: relative;
+
+    &:after {
+      content: '✕';
+      color: ${props =>
+        props.theme.colour.red
+      };
+      width: 100%;
+      position: absolute;
+      left: 0;
+    }
+  }
 `
 
 export const TagButton = (props: TagButtonProps) =>

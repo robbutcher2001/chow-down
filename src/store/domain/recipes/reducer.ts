@@ -39,8 +39,20 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
         recipes
       };
 
+    case RecipeActionTypes.PUT_RECIPE_UPDATE_SUCCESS:
+      const successResponsePut = action as RecipesSuccessApiResponse;
+      const updatedRecipes = state.recipes.filter(recipe => recipe.id !== (successResponsePut.recipes as Recipe).id).concat(successResponsePut.recipes);
+      recipesSort(updatedRecipes);
+      recipeSearchableKeywords(updatedRecipes);
+
+      return {
+        failure: null,
+        recipes: updatedRecipes
+      };
+
     case RecipeActionTypes.GET_RECIPES_FAILURE:
     case RecipeActionTypes.POST_RECIPES_FAILURE:
+    case RecipeActionTypes.PUT_RECIPE_UPDATE_FAILURE:
       const failureResponse = action as RecipesFailureApiResponse;
       const failureJson = failureResponse.json as RecipesFailureResponse;
 

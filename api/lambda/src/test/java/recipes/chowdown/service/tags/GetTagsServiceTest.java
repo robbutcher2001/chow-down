@@ -56,7 +56,7 @@ public class GetTagsServiceTest {
     this.service = new GetTagsService();
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldReturnTag_whenExistsSingle() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
@@ -73,7 +73,7 @@ public class GetTagsServiceTest {
     assertEquals(1, returnedTags.size());
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldReturnTags_whenExistsMultiple() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
@@ -90,7 +90,7 @@ public class GetTagsServiceTest {
     assertEquals(2, returnedTags.size());
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldNotReturnTags_whenNoTagsExist() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
@@ -103,7 +103,7 @@ public class GetTagsServiceTest {
     assertEquals(0, returnedTags.size());
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldThrowException_whenTooFewRowsReturnedFromDb() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
@@ -120,7 +120,7 @@ public class GetTagsServiceTest {
     assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), this.context));
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldReturnTag_whenTooManyRowsReturnedFromDb() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
@@ -143,7 +143,7 @@ public class GetTagsServiceTest {
     assertEquals("fake", returnedTags.get(0).getColours().getText());
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldReturnTag_whenNoRowDataReturnedFromDb() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
@@ -164,7 +164,7 @@ public class GetTagsServiceTest {
     assertEquals("", returnedTags.get(0).getColours().getText());
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldReturnTag_whenNullReturnedFromDb() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
@@ -185,7 +185,7 @@ public class GetTagsServiceTest {
     assertNull(returnedTags.get(0).getColours().getText());
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
     when(this.context.getLogger()).thenReturn(this.logger);
     when(this.repository.getTags()).thenThrow(BadRequestException.class);
@@ -195,7 +195,7 @@ public class GetTagsServiceTest {
     assertTrue(returnedException.getMessage().contains("unable to complete request"));
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
     when(this.context.getLogger()).thenReturn(this.logger);
     when(this.repository.getTags()).thenThrow(new AWSRDSDataException(
@@ -208,7 +208,7 @@ public class GetTagsServiceTest {
     assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
   }
 
-  // @Test
+  @Test
   void handleRequest_shouldReturnTag_whenNullInputObject() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
