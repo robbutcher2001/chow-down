@@ -5,11 +5,10 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -99,7 +98,7 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
       if (recipeTags.containsKey(recipeId)) {
         recipeTags.get(recipeId).add(tag);
       } else {
-        recipeTags.put(recipeId, Stream.of(tag).collect(Collectors.toList()));
+        recipeTags.put(recipeId, Arrays.asList(tag));
       }
     }
 

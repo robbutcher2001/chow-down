@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -13,6 +14,7 @@ import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
 import eu.maxschuster.dataurl.DataUrl;
 import recipes.chowdown.domain.Recipe;
+import recipes.chowdown.domain.Tag;
 import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
@@ -43,7 +45,7 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
     this.getRecipesService = new GetRecipesService();
   }
 
-  public Recipe handleRequest(final Recipe recipe, final Context context) throws RuntimeException {
+  public Recipe handleRequest(final Recipe newRecipeData, final Context context) throws RuntimeException {
     try {
       LOGGER = context.getLogger();
 
@@ -61,11 +63,26 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
 
       // TODO: need getRecipeById service
       final List<Recipe> existingRecipes = this.getRecipesService.getRecipes(context);
-      final Recipe returnRecipe = existingRecipes.stream()
-          .filter(existingRecipe -> existingRecipe.getId().equals(recipe.getId())).findAny().orElse(null);
+      final Recipe updatedRecipe = existingRecipes.stream()
+          .filter(existingRecipe -> existingRecipe.getId().equals(newRecipeData.getId())).findAny().orElse(null);
 
-      if (returnRecipe != null) {
-        returnRecipe.setTags(recipe.getTags());
+      if (updatedRecipe != null) {
+        final List<Tag> existingTags = updatedRecipe.getTags();
+        if (existingTags == null) {
+          LOGGER.log("existingTags null for " + newRecipeData.getTitle());
+        }
+        else {
+          List<String> existingTagIds = existingTags.stream().map(existingTag -> existingTag.getId()).collect(Collectors.toList());
+          List<String> newTagIds = newRecipeData.getTags().stream().map(newTag -> newTag.getId()).collect(Collectors.toList());
+
+          final List<String> toDelete = existingTagIds.stream().filter(existingTagId -> !newTagIds.contains(existingTagId)).collect(Collectors.toList());
+          final List<String> toAdd = newTagIds.stream().filter(newTagId -> !existingTagIds.contains(newTagId)).collect(Collectors.toList());
+          System.out.println("deleting");
+          System.out.println(toDelete);
+          System.out.println("adding");
+          System.out.println(toAdd);
+        }
+        updatedRecipe.setTags(newRecipeData.getTags());
       }
 
       // if (result.getRecords().size() != 1) {
@@ -86,7 +103,7 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
       // String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
       // LOGGER.log("Recipe cache purge status [" + response + "]");
 
-      return returnRecipe;
+      return updatedRecipe;
       // TODO: maybe BadRequestException / AmazonServiceException needs to move down
       // to the repository
     } catch (AmazonServiceException ase) {
