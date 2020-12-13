@@ -376,12 +376,12 @@ Resources:
           - Arn
       SourceArn:
         Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]
-  PutRecipeFunction:
+  PostRecipeFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName:
-        Fn::Join: [ '-', [ 'PutRecipeFunction', !Ref Env ] ]
-      Handler: recipes.chowdown.service.recipes.PutRecipeService::handleRequest
+        Fn::Join: [ '-', [ 'PostRecipeFunction', !Ref Env ] ]
+      Handler: recipes.chowdown.service.recipes.PostRecipeService::handleRequest
       Runtime: java8
       CodeUri:
         Bucket: !Ref ApiSourceCodeBucket
@@ -400,14 +400,14 @@ Resources:
           DATABASE_NAME: chowdown
           DISTRIBUTION_ID: !Ref DistributionId
           IMAGES_BUCKET: !Ref ChowDownImagesBucket
-  PutRecipeLambdaPermission:
+  PostRecipeLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       FunctionName:
         Fn::GetAtt:
-          - PutRecipeFunction
+          - PostRecipeFunction
           - Arn
       SourceArn:
         Fn::Join: [ ':', [ 'arn:aws:execute-api', !Ref 'AWS::Region', !Ref 'AWS::AccountId', '*' ] ]

@@ -55,13 +55,13 @@ public class PutRecipeServiceTest {
   private DataUrlService dataUrlService;
 
   @InjectMocks
-  private PutRecipeService service;
+  private PostRecipeService service;
 
   @BeforeAll
   void beforeAll() {
     MockitoAnnotations.initMocks(this);
 
-    this.service = new PutRecipeService();
+    this.service = new PostRecipeService();
   }
 
   @Test
@@ -72,7 +72,7 @@ public class PutRecipeServiceTest {
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(this.repository.postRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake_id");
     when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
@@ -94,7 +94,7 @@ public class PutRecipeServiceTest {
     rows.add(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(this.repository.postRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
 
     assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
@@ -105,7 +105,7 @@ public class PutRecipeServiceTest {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(this.repository.postRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(Collections.emptyList());
 
     assertThrows(ServerException.class, () -> this.service.handleRequest(new Recipe(), this.context));
@@ -119,7 +119,7 @@ public class PutRecipeServiceTest {
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(this.repository.postRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("");
 
@@ -134,7 +134,7 @@ public class PutRecipeServiceTest {
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
+    when(this.repository.postRecipe(Mockito.any(Recipe.class))).thenReturn(mockResult);
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn(null);
 
@@ -144,7 +144,7 @@ public class PutRecipeServiceTest {
   @Test
   void handleRequest_shouldThrowException_whenCannotCommunicateWithDb() throws Exception {
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenThrow(BadRequestException.class);
+    when(this.repository.postRecipe(Mockito.any(Recipe.class))).thenThrow(BadRequestException.class);
 
     ServerException returnedException = assertThrows(ServerException.class,
         () -> this.service.handleRequest(new Recipe(), this.context));
@@ -154,7 +154,7 @@ public class PutRecipeServiceTest {
   @Test
   void handleRequest_shouldThrowException_whenCannotAuthenticateWithDb() throws Exception {
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.putRecipe(Mockito.any(Recipe.class))).thenThrow(new AWSRDSDataException(
+    when(this.repository.postRecipe(Mockito.any(Recipe.class))).thenThrow(new AWSRDSDataException(
         "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
 
     ServerException returnedException = assertThrows(ServerException.class,

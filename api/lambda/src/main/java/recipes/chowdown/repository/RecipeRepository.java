@@ -27,9 +27,9 @@ public class RecipeRepository {
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
   private static final String GET_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image, r.created_date FROM chow.recipes r ORDER BY r.title";
-  private static final String PUT_RECIPE_BODY_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
+  private static final String POST_RECIPE_BODY_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
       + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
-  private static final String PUT_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
+  private static final String POST_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
       + "VALUES (DEFAULT, :quantity, :unitId::uuid, :ingredientId::uuid, :recipeId::uuid) RETURNING id";
 
   private AWSRDSData rdsData;
@@ -43,10 +43,10 @@ public class RecipeRepository {
         .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_SQL));
   }
 
-  public ExecuteStatementResult putRecipe(final Recipe recipe) {
+  public ExecuteStatementResult postRecipe(final Recipe recipe) {
     final String transactionId = beginTransaction();
 
-    final ExecuteStatementResult executeStatementResult = putRecipeBody(recipe, transactionId);
+    final ExecuteStatementResult executeStatementResult = postRecipeBody(recipe, transactionId);
 
     final int rowIndex = 0;
     final int columnIndex = 0;
@@ -57,7 +57,7 @@ public class RecipeRepository {
     }
 
     recipe.setId(returnedId);
-    putRecipeIngredients(recipe, transactionId);
+    postRecipeIngredients(recipe, transactionId);
 
     commitTransaction(transactionId);
 
@@ -68,7 +68,7 @@ public class RecipeRepository {
     return executeStatementResult;
   }
 
-  private ExecuteStatementResult putRecipeBody(final Recipe recipe, final String transactionId) {
+  private ExecuteStatementResult postRecipeBody(final Recipe recipe, final String transactionId) {
     if (transactionId == null || transactionId.isEmpty()) {
       throw new IllegalArgumentException("transactionId cannot be null or empty");
     }
@@ -94,12 +94,12 @@ public class RecipeRepository {
 
     final ExecuteStatementRequest executeStatementRequest = new ExecuteStatementRequest()
         .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
-        .withSql(PUT_RECIPE_BODY_SQL).withParameters(parameters);
+        .withSql(POST_RECIPE_BODY_SQL).withParameters(parameters);
 
     return this.rdsData.executeStatement(executeStatementRequest);
   }
 
-  private BatchExecuteStatementResult putRecipeIngredients(final Recipe recipe, final String transactionId) {
+  private BatchExecuteStatementResult postRecipeIngredients(final Recipe recipe, final String transactionId) {
     if (transactionId == null || transactionId.isEmpty()) {
       throw new IllegalArgumentException("transactionId cannot be null or empty");
     }
@@ -126,7 +126,7 @@ public class RecipeRepository {
 
     final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
         .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
-        .withSql(PUT_RECIPE_INGREDIENTS_SQL).withParameterSets(recipeIngredientParameters);
+        .withSql(POST_RECIPE_INGREDIENTS_SQL).withParameterSets(recipeIngredientParameters);
 
     return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
   }

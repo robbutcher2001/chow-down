@@ -72,7 +72,7 @@ public class RecipeRepositoryTest {
   }
 
   @Test
-  void putRecipe_shouldReturnResults_whenRequestValidRecipe() throws Exception {
+  void postRecipe_shouldReturnResults_whenRequestValidRecipe() throws Exception {
     List<RecipeIngredient> recipeIngredients = Collections
         .singletonList(RecipeIngredient.builder().quantity(2l).unit(Unit.builder().id("unit_id").build())
             .ingredient(Ingredient.builder().id("ingredient_id").build()).build());
@@ -90,13 +90,13 @@ public class RecipeRepositoryTest {
     when(mockResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake_id");
 
-    ExecuteStatementResult result = this.repository.putRecipe(recipe);
+    ExecuteStatementResult result = this.repository.postRecipe(recipe);
 
     assertEquals(mockResult, result);
   }
 
   @Test
-  void putRecipe_shouldThrowException_whenRequestInvalidRecipeTitle() throws Exception {
+  void postRecipe_shouldThrowException_whenRequestInvalidRecipeTitle() throws Exception {
     Recipe recipe = Recipe.builder().build();
     BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
 
@@ -104,12 +104,12 @@ public class RecipeRepositoryTest {
     when(mockBeginTransaction.getTransactionId()).thenReturn("mockTransactionId");
 
     IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
-        () -> this.repository.putRecipe(recipe));
+        () -> this.repository.postRecipe(recipe));
     assertTrue(returnedException.getMessage().contains("recipe or recipe title cannot be null or empty"));
   }
 
   @Test
-  void putRecipe_shouldThrowException_whenRequestInvalidRecipeIngredients() throws Exception {
+  void postRecipe_shouldThrowException_whenRequestInvalidRecipeIngredients() throws Exception {
     Recipe recipe = Recipe.builder().title("fake_title").description("fake_description").url("fake_url").build();
     BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
@@ -124,24 +124,24 @@ public class RecipeRepositoryTest {
     when(mockField.getStringValue()).thenReturn("fake_id");
 
     ResourceNotPersistedException returnedException = assertThrows(ResourceNotPersistedException.class,
-        () -> this.repository.putRecipe(recipe));
+        () -> this.repository.postRecipe(recipe));
     assertTrue(returnedException.getMessage().contains("part or all of the input Recipe Ingredient was null"));
   }
 
   @Test
-  void putRecipe_shouldThrowException_whenRequestNullRecipe() throws Exception {
+  void postRecipe_shouldThrowException_whenRequestNullRecipe() throws Exception {
     BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
 
     when(this.rdsData.beginTransaction(Mockito.any(BeginTransactionRequest.class))).thenReturn(mockBeginTransaction);
     when(mockBeginTransaction.getTransactionId()).thenReturn("mockTransactionId");
 
     IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
-        () -> this.repository.putRecipe(null));
+        () -> this.repository.postRecipe(null));
     assertTrue(returnedException.getMessage().contains("recipe or recipe title cannot be null or empty"));
   }
 
   @Test
-  void putRecipe_shouldThrowException_whenTransactionIdEmpty() throws Exception {
+  void postRecipe_shouldThrowException_whenTransactionIdEmpty() throws Exception {
     Recipe recipe = Recipe.builder().build();
     BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
 
@@ -149,12 +149,12 @@ public class RecipeRepositoryTest {
     when(mockBeginTransaction.getTransactionId()).thenReturn("");
 
     IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
-        () -> this.repository.putRecipe(recipe));
+        () -> this.repository.postRecipe(recipe));
     assertTrue(returnedException.getMessage().contains("transactionId cannot be null or empty"));
   }
 
   @Test
-  void putRecipe_shouldThrowException_whenTransactionIdNull() throws Exception {
+  void postRecipe_shouldThrowException_whenTransactionIdNull() throws Exception {
     Recipe recipe = Recipe.builder().build();
     BeginTransactionResult mockBeginTransaction = Mockito.mock(BeginTransactionResult.class);
 
@@ -162,7 +162,7 @@ public class RecipeRepositoryTest {
     when(mockBeginTransaction.getTransactionId()).thenReturn(null);
 
     IllegalArgumentException returnedException = assertThrows(IllegalArgumentException.class,
-        () -> this.repository.putRecipe(recipe));
+        () -> this.repository.postRecipe(recipe));
     assertTrue(returnedException.getMessage().contains("transactionId cannot be null or empty"));
   }
 }
