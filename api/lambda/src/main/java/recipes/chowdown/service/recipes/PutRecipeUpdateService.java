@@ -3,6 +3,7 @@ package recipes.chowdown.service.recipes;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,21 +69,19 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
 
       if (updatedRecipe != null) {
         final List<Tag> existingTags = updatedRecipe.getTags();
-        if (existingTags == null) {
-          LOGGER.log("existingTags null for " + newRecipeData.getTitle());
-        }
-        else {
-          List<String> existingTagIds = existingTags.stream().map(existingTag -> existingTag.getId()).collect(Collectors.toList());
-          List<String> newTagIds = newRecipeData.getTags().stream().map(newTag -> newTag.getId()).collect(Collectors.toList());
+        List<String> existingTagIds = existingTags != null ?
+          existingTags.stream().map(existingTag -> existingTag.getId()).collect(Collectors.toList()) :
+          Collections.emptyList();
+        List<String> newTagIds = newRecipeData.getTags().stream().map(newTag -> newTag.getId()).collect(Collectors.toList());
 
-          final List<String> toDeleteIds = existingTagIds.stream().filter(existingTagId -> !newTagIds.contains(existingTagId)).collect(Collectors.toList());
-          final List<String> toAddIds = newTagIds.stream().filter(newTagId -> !existingTagIds.contains(newTagId)).collect(Collectors.toList());
-          System.out.println("deleting");
-          System.out.println(toDeleteIds);
-          System.out.println("adding");
-          System.out.println(toAddIds);
-          this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
-        }
+        final List<String> toDeleteIds = existingTagIds.stream().filter(existingTagId -> !newTagIds.contains(existingTagId)).collect(Collectors.toList());
+        final List<String> toAddIds = newTagIds.stream().filter(newTagId -> !existingTagIds.contains(newTagId)).collect(Collectors.toList());
+        System.out.println("deleting");
+        System.out.println(toDeleteIds);
+        System.out.println("adding");
+        System.out.println(toAddIds);
+        this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
+
         updatedRecipe.setTags(newRecipeData.getTags());
       }
 
