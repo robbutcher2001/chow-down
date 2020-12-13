@@ -60,4 +60,8 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
       throw new ServerException(ex.getMessage(), ex);
     }
   }
+
+  public List<Recipe> getRecipes(final Context context) {
+    return this.handleRequest(null, context);
+  }
 }
