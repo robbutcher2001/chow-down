@@ -431,7 +431,7 @@ Resources:
         Variables:
           RESOURCE_ARN:
             Fn::Join: [ ':', [ 'arn:aws:rds', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'cluster', !Ref ChowDownDatabase ] ]
-          SECRET_ARN: !Ref ChowDownDatabaseCreateOnlyCreds
+          SECRET_ARN: !Ref ChowDownDatabaseUpdateOnlyCreds
           DATABASE_NAME: chowdown
           DISTRIBUTION_ID: !Ref DistributionId
           IMAGES_BUCKET: !Ref ChowDownImagesBucket

@@ -196,3 +196,56 @@ GRANT SELECT, INSERT, UPDATE ON TABLE chow.days to chow_create_only;
 GRANT SELECT ON TABLE chow.days to chow_read_only;
 GRANT SELECT, UPDATE ON TABLE chow.days to chow_update_only;
 GRANT SELECT, DELETE ON TABLE chow.days to chow_delete_only;
+
+-- Table: chow.tags
+
+CREATE TABLE chow.tags
+(
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    name text COLLATE pg_catalog."default" NOT NULL,
+    background_colour text COLLATE pg_catalog."default" NOT NULL,
+    text_colour text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT tags_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE chow.tags OWNER to chow_admin;
+
+GRANT ALL ON TABLE chow.tags to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.tags to chow_create_only;
+GRANT SELECT ON TABLE chow.tags to chow_read_only;
+GRANT SELECT, UPDATE ON TABLE chow.tags to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.tags to chow_delete_only;
+
+-- Table: chow.recipe_tags
+
+CREATE TABLE chow.recipe_tags
+(
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    tag_id uuid NOT NULL,
+    recipe_id uuid NOT NULL,
+    CONSTRAINT recipe_tags_pkey PRIMARY KEY (id),
+    CONSTRAINT tag_id FOREIGN KEY (tag_id)
+        REFERENCES chow.tags (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT recipe_id FOREIGN KEY (recipe_id)
+        REFERENCES chow.recipes (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE chow.recipe_tags OWNER to chow_admin;
+
+GRANT ALL ON TABLE chow.recipe_tags to chow_admin;
+GRANT SELECT, INSERT ON TABLE chow.recipe_tags to chow_create_only;
+GRANT SELECT ON TABLE chow.recipe_tags to chow_read_only;
+GRANT SELECT, UPDATE, DELETE ON TABLE chow.recipe_tags to chow_update_only;
+GRANT SELECT, DELETE ON TABLE chow.recipe_tags to chow_delete_only;

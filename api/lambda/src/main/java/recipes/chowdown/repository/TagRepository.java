@@ -18,7 +18,7 @@ public class TagRepository {
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
-  private static final String GET_SQL = "SELECT t.id, t.name, t.background_colour t.text_colour FROM chow.tags t";
+  private static final String GET_SQL = "SELECT t.id, t.name, t.background_colour, t.text_colour FROM chow.tags t";
   private static final String PUT_SQL = "INSERT INTO chow.tags (id, name, background_colour, text_colour) "
       + "VALUES (DEFAULT, :name, :background_colour, :text_colour) RETURNING id";
 
