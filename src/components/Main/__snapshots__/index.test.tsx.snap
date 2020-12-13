@@ -10,7 +10,7 @@ exports[`Main basic snapshot render 1`] = `
         fake_title
       </h2>
       <a
-        className="sc-AxhCb dzgrkE"
+        className="sc-AxhCb iIajtw"
         href="/fake_link"
         onClick={[Function]}
       >

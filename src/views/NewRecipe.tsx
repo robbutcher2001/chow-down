@@ -7,7 +7,7 @@ import { GlobalState } from '../store';
 import { Recipe, PostRecipeApiRequest } from '../store/domain/recipes/types';
 import { Unit, GetUnitsApiRequest } from '../store/domain/units/types';
 import { Ingredient, GetIngredientsApiRequest } from '../store/domain/ingredients/types';
-import { postRecipesRequest } from '../store/domain/recipes/actions';
+import { postRecipeRequest } from '../store/domain/recipes/actions';
 import { getUnitsRequest } from '../store/domain/units/actions';
 import { getIngredientsRequest } from '../store/domain/ingredients/actions';
 
@@ -131,7 +131,7 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState, _ownProps: OwnProps):
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, _ownProps: OwnProps): DispatchProps => ({
-  postRecipe: (form: Recipe) => dispatch(postRecipesRequest(form)),
+  postRecipe: (form: Recipe) => dispatch(postRecipeRequest(form)),
   getUnits: () => dispatch(getUnitsRequest()),
   getIngredients: () => dispatch(getIngredientsRequest())
 });

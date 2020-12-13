@@ -321,7 +321,7 @@ public class ServiceMock implements ApiApi {
       updatedDatabaseGet.setCreatedDate(existingRecipe.get().getCreatedDate());
     }
 
-    randomSleep(15);
+    randomSleep(5);
     return new ResponseEntity<>(updatedDatabaseGet, HttpStatus.OK);
   }
 

@@ -1,10 +1,22 @@
-import { Recipe, RecipeActionTypes, GetRecipesApiRequest, PostRecipeApiRequest, PutRecipeUpdateApiRequest, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
+import {
+  Recipe,
+  RecipeActionTypes,
+  GetRecipesApiRequest,
+  PostRecipeApiRequest,
+  PutRecipeUpdateTagApiRequest,
+  GetRecipesSuccessApiResponse,
+  PostRecipeSuccessApiResponse,
+  RecipesFailureApiResponse,
+  PutRecipeUpdateTagSuccessApiResponse,
+  PutRecipeUpdateTagFailureApiResponse,
+  ClearRecipeUpdateTagFailureApiResponse
+} from './types';
 
 export const getRecipesRequest = (): GetRecipesApiRequest => ({
     type: RecipeActionTypes.GET_RECIPES_REQUEST
 });
 
-export const getRecipesSuccess = (recipes: Recipe[]): RecipesSuccessApiResponse => ({
+export const getRecipesSuccess = (recipes: Recipe[]): GetRecipesSuccessApiResponse => ({
     type: RecipeActionTypes.GET_RECIPES_SUCCESS,
     recipes
 });
@@ -15,34 +27,42 @@ export const getRecipesFailure = (code: number, json: object): RecipesFailureApi
     json
 });
 
-export const postRecipesRequest = (recipe: Recipe): PostRecipeApiRequest => ({
-    type: RecipeActionTypes.POST_RECIPES_REQUEST,
+export const postRecipeRequest = (recipe: Recipe): PostRecipeApiRequest => ({
+    type: RecipeActionTypes.POST_RECIPE_REQUEST,
     recipe
 });
 
-export const postRecipesSuccess = (recipes: Recipe[]): RecipesSuccessApiResponse => ({
-    type: RecipeActionTypes.POST_RECIPES_SUCCESS,
-    recipes
+export const postRecipeSuccess = (recipe: Recipe): PostRecipeSuccessApiResponse => ({
+    type: RecipeActionTypes.POST_RECIPE_SUCCESS,
+    recipe
 });
 
-export const postRecipesFailure = (code: number, json: object): RecipesFailureApiResponse => ({
-    type: RecipeActionTypes.POST_RECIPES_FAILURE,
+export const postRecipeFailure = (code: number, json: object): RecipesFailureApiResponse => ({
+    type: RecipeActionTypes.POST_RECIPE_FAILURE,
     code,
     json
 });
 
-export const putRecipeUpdateRequest = (recipe: Recipe): PutRecipeUpdateApiRequest => ({
-  type: RecipeActionTypes.PUT_RECIPE_UPDATE_REQUEST,
-  recipe
+export const putRecipeUpdateTagRequest = (recipe: Recipe, updatedTagId: string): PutRecipeUpdateTagApiRequest => ({
+  type: RecipeActionTypes.PUT_RECIPE_UPDATE_TAG_REQUEST,
+  recipe,
+  updatedTagId
 });
 
-export const putRecipeUpdateSuccess = (recipes: Recipe[]): RecipesSuccessApiResponse => ({
-  type: RecipeActionTypes.PUT_RECIPE_UPDATE_SUCCESS,
-  recipes
+export const putRecipeUpdateTagSuccess = (recipe: Recipe, updateRecipeTagId: string): PutRecipeUpdateTagSuccessApiResponse => ({
+  type: RecipeActionTypes.PUT_RECIPE_UPDATE_TAG_SUCCESS,
+  recipe,
+  updateRecipeTagId
 });
 
-export const putRecipeUpdateFailure = (code: number, json: object): RecipesFailureApiResponse => ({
-  type: RecipeActionTypes.PUT_RECIPE_UPDATE_FAILURE,
+export const putRecipeUpdateTagFailure = (code: number, updateRecipeTagFailureId: string, json: object): PutRecipeUpdateTagFailureApiResponse => ({
+  type: RecipeActionTypes.PUT_RECIPE_UPDATE_TAG_FAILURE,
   code,
+  updateRecipeTagFailureId,
   json
+});
+
+export const clearRecipeUpdateTagFailure = (updateRecipeTagFailedId: string): ClearRecipeUpdateTagFailureApiResponse => ({
+  type: RecipeActionTypes.CLEAR_RECIPE_UPDATE_TAG_FAILURE,
+  updateRecipeTagFailedId
 });

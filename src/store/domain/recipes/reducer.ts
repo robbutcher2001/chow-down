@@ -1,9 +1,21 @@
 import { Reducer } from 'redux';
 
-import { Recipe, RecipesState, RecipeActionTypes, GetRecipesApiResponse, RecipesSuccessApiResponse, RecipesFailureApiResponse } from './types';
+import {
+  Recipe,
+  RecipesState,
+  RecipeActionTypes,
+  GetRecipesApiResponse,
+  GetRecipesSuccessApiResponse,
+  PostRecipeSuccessApiResponse,
+  RecipesFailureApiResponse,
+  PutRecipeUpdateTagSuccessApiResponse,
+  PutRecipeUpdateTagFailureApiResponse,
+  ClearRecipeUpdateTagFailureApiResponse
+} from './types';
 
 const initialState: RecipesState = {
   failure: null,
+  updateRecipeTagFailures: [],
   recipes: []
 }
 
@@ -17,7 +29,7 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
   switch (action.type) {
 
     case RecipeActionTypes.GET_RECIPES_SUCCESS:
-      const successResponse = action as RecipesSuccessApiResponse;
+      const successResponse = action as GetRecipesSuccessApiResponse;
       // to remove type-casting, we should be able to move to this once failure is implmented below
       // need a separate failure reducer so we don't need to use GetRecipesApiResponse anymore
       // const successResponse: RecipesSuccessApiResponse = action;
@@ -25,40 +37,61 @@ export const recipesReducer: Reducer<RecipesState, GetRecipesApiResponse> = (sta
 
       return {
         failure: null,
+        updateRecipeTagFailures: [],
         recipes: successResponse.recipes
       };
 
-    case RecipeActionTypes.POST_RECIPES_SUCCESS:
-      const successResponsePost = action as RecipesSuccessApiResponse;
-      const recipes = state.recipes.concat(successResponsePost.recipes);
+    case RecipeActionTypes.POST_RECIPE_SUCCESS:
+      const successResponsePost = action as PostRecipeSuccessApiResponse;
+      const recipes = state.recipes.concat(successResponsePost.recipe);
       recipesSort(recipes);
       recipeSearchableKeywords(recipes);
 
       return {
         failure: null,
+        updateRecipeTagFailures: [],
         recipes
       };
 
-    case RecipeActionTypes.PUT_RECIPE_UPDATE_SUCCESS:
-      const successResponsePut = action as RecipesSuccessApiResponse;
-      const updatedRecipes = state.recipes.filter(recipe => recipe.id !== (successResponsePut.recipes as Recipe).id).concat(successResponsePut.recipes);
+    case RecipeActionTypes.PUT_RECIPE_UPDATE_TAG_SUCCESS:
+      const successResponsePut = action as PutRecipeUpdateTagSuccessApiResponse;
+      const updatedRecipes = state.recipes.filter(recipe => recipe.id !== successResponsePut.recipe.id).concat(successResponsePut.recipe);
       recipesSort(updatedRecipes);
       recipeSearchableKeywords(updatedRecipes);
 
       return {
         failure: null,
+        updateRecipeTagFailures: state.updateRecipeTagFailures.filter(recipeTagFailure => recipeTagFailure !== successResponsePut.updateRecipeTagId),
         recipes: updatedRecipes
       };
 
     case RecipeActionTypes.GET_RECIPES_FAILURE:
-    case RecipeActionTypes.POST_RECIPES_FAILURE:
-    case RecipeActionTypes.PUT_RECIPE_UPDATE_FAILURE:
+    case RecipeActionTypes.POST_RECIPE_FAILURE:
       const failureResponse = action as RecipesFailureApiResponse;
       const failureJson = failureResponse.json as RecipesFailureResponse;
 
       return {
         failure: failureJson.message,
+        updateRecipeTagFailures: [],
         recipes: []
+      };
+
+    case RecipeActionTypes.PUT_RECIPE_UPDATE_TAG_FAILURE:
+      const updateFailureResponse = action as PutRecipeUpdateTagFailureApiResponse;
+
+      return {
+        ...state,
+        updateRecipeTagFailures: !state.updateRecipeTagFailures.includes(updateFailureResponse.updateRecipeTagFailureId) ?
+          state.updateRecipeTagFailures.concat(updateFailureResponse.updateRecipeTagFailureId) :
+          state.updateRecipeTagFailures
+      };
+
+    case RecipeActionTypes.CLEAR_RECIPE_UPDATE_TAG_FAILURE:
+      const clearFailure = action as ClearRecipeUpdateTagFailureApiResponse;
+
+      return {
+        ...state,
+        updateRecipeTagFailures: state.updateRecipeTagFailures.filter(recipeTagFailure => recipeTagFailure !== clearFailure.updateRecipeTagFailedId)
       };
 
     default:

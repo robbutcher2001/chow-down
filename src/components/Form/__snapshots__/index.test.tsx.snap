@@ -19,7 +19,7 @@ exports[`Form basic snapshot render 1`] = `
     className="buttons"
   >
     <button
-      className="sc-AxirZ cZgPDQ"
+      className="sc-AxirZ gPyBbg"
       form="form"
       type="submit"
       value="Submit Button"
@@ -27,7 +27,7 @@ exports[`Form basic snapshot render 1`] = `
       Submit Button
     </button>
     <button
-      className="sc-AxirZ euSGXl"
+      className="sc-AxirZ cvoHul"
       form="form"
       type="reset"
       value="Reset"

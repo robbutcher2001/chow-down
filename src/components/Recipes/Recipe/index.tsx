@@ -5,8 +5,8 @@ import { xsmall, small, medium } from '../../../themes/breakpoints';
 import Stars from '../../Stars';
 import placeholderImg from '../../../themes/placeholder.svg';
 
-import { Recipe } from '../../../store/domain/recipes/types';
-import { Tag, PutTagApiRequest } from '../../../store/domain/tags/types';
+import { Recipe, PutRecipeUpdateTagApiRequest } from '../../../store/domain/recipes/types';
+import { Tag } from '../../../store/domain/tags/types';
 
 import HorizontalScroller from '../../HorizontalScroller';
 import { Button, TagButton } from '../../Clickable';
@@ -16,10 +16,12 @@ import { NegativeBox } from '../../MessageBox';
 interface RecipeDetailProps {
   recipe: Recipe;
   tag: {
-    loading: boolean;
+    initialLoading: boolean;
     tags: Tag[];
   };
-  updateRecipe: (recipe: Recipe) => void //PutTagApiRequest; needs to be update recipe, which is PUT verb on recipe
+  updateRecipe: (recipe: Recipe, updatedTagId: string) => PutRecipeUpdateTagApiRequest;
+  recipeTagUpdateLoading: string[];
+  recipeTagUpdateFailures: string[];
 };
 
 const largeBackgroundMixin = (image: string) => css`
@@ -235,14 +237,14 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
       [...recipeTags, newTag];
 
     setRecipeTags(newRecipeTags);
-    updateRecipe(newRecipeTags);
+    updateRecipe(newRecipeTags, newTag.id);
   };
 
-  const updateRecipe = (tags: Tag[]) =>
+  const updateRecipe = (tags: Tag[], updatedTagId: string) =>
     props.updateRecipe({
       id: props.recipe.id,
-      tags,
-    });
+      tags
+    }, updatedTagId);
 
   const fakeLoadingTags = () => [0, 1, 2, 3, 4].map(index =>
     <TagButton
@@ -261,14 +263,20 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
             {editTags ?
               <div onClick={stopPropagation} >
                 <HorizontalScroller small>
-                  {props.tag.loading ?
+                  {props.tag.initialLoading ?
                     fakeLoadingTags() :
                     props.tag.tags.map(tag =>
                       <TagButton
                         key={tag.id}
                         backgroundColour={tag.colours.background}
                         textColour={tag.colours.text}
-                        selected={props.recipe.tags && props.recipe.tags.map(tag => tag.id).includes(tag.id)}
+                        loading={props.recipeTagUpdateLoading.includes(tag.id)}
+                        selected={
+                          props.recipe.tags &&
+                          !props.recipeTagUpdateLoading.includes(tag.id) &&
+                          props.recipe.tags.map(tag => tag.id).includes(tag.id)
+                        }
+                        loadFailure={props.recipeTagUpdateFailures.includes(tag.id)}
                         onClick={() => updateRecipeTags(tag)}>
                         {tag.name}
                       </TagButton>

@@ -4,9 +4,9 @@ import { Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router-dom';
 
 import { GlobalState } from '../store';
-import { Recipe, PutRecipeUpdateApiRequest } from '../store/domain/recipes/types';
+import { Recipe, PutRecipeUpdateTagApiRequest } from '../store/domain/recipes/types';
 import { Tag } from '../store/domain/tags/types';
-import { putRecipeUpdateRequest } from '../store/domain/recipes/actions';
+import { putRecipeUpdateTagRequest } from '../store/domain/recipes/actions';
 
 import RecipeComponent from '../components/Recipes/Recipe';
 import { ZeroMarginedMain } from '../components/Main';
@@ -15,7 +15,10 @@ import { NegativeBox } from '../components/MessageBox';
 interface StateProps {
   error: string,
   failures: {
-    recipe: string,
+    recipes: {
+      recipe: string,
+      tags: string[]
+    },
     tag: string
   },
   recipes: Recipe[],
@@ -26,7 +29,10 @@ interface StateProps {
         recipes: boolean,
         tags: boolean
       },
-      put: {
+      puts: {
+        recipe: {
+          tags: string[]
+        },
         tags: boolean
       }
     }
@@ -34,7 +40,7 @@ interface StateProps {
 };
 
 interface DispatchProps {
-  putRecipeUpdate: (recipe: Recipe) => PutRecipeUpdateApiRequest
+  putRecipeUpdate: (recipe: Recipe, updatedTagId: string) => PutRecipeUpdateTagApiRequest
 };
 
 interface RecipeUrlParamProps {
@@ -66,10 +72,7 @@ class RecipePage extends Component<CombinedProps, OwnState> {
 
   findRecipe = (id: string) => this.props.recipes.find(recipe => recipe.id === id);
 
-  updateRecipe = (recipe: Recipe) => {
-    console.log(recipe);
-    this.props.putRecipeUpdate(recipe);
-  }
+  updateRecipe = (recipe: Recipe, updatedTagId: string) => this.props.putRecipeUpdate(recipe, updatedTagId);
 
   componentDidMount = () => {
     const { id } = this.props.match.params;
@@ -111,16 +114,17 @@ class RecipePage extends Component<CombinedProps, OwnState> {
 
   render = () => (
     <ZeroMarginedMain>
-      {this.props.failures.recipe &&
-        <NegativeBox message={this.props.failures.recipe} />
+      {this.props.failures.recipes.recipe &&
+        <NegativeBox message={this.props.failures.recipes.recipe} />
       }
-      {console.log(this.props.recipes)}
       {this.props.error ?
         <NegativeBox message={this.props.error} /> :
         <RecipeComponent
           recipe={this.state.recipe}
-          tag={{loading: this.state.tag.loading, tags: this.state.tag.tags}}
+          tag={{initialLoading: this.state.tag.loading, tags: this.state.tag.tags}}
           updateRecipe={this.updateRecipe}
+          recipeTagUpdateLoading={this.props.ui.pending.puts.recipe.tags}
+          recipeTagUpdateFailures={this.props.failures.recipes.tags}
         />
       }
     </ZeroMarginedMain>
@@ -130,7 +134,10 @@ class RecipePage extends Component<CombinedProps, OwnState> {
 const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
   error: app.error.message,
   failures: {
-    recipe: domain.recipe.failure,
+    recipes: {
+      recipe: domain.recipe.failure,
+      tags: domain.recipe.updateRecipeTagFailures
+    },
     tag: domain.tag.failure
   },
   recipes: domain.recipe.recipes,
@@ -141,7 +148,10 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
         recipes: ui.recipe.getPending,
         tags: ui.tag.getPending
       },
-      put: {
+      puts: {
+        recipe: {
+          tags: ui.recipe.putPending
+        },
         tags: ui.tag.putPending
       }
     }
@@ -149,7 +159,7 @@ const mapStateToProps = ({ app, domain, ui }: GlobalState): StateProps => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
-  putRecipeUpdate: (recipe: Recipe) => dispatch(putRecipeUpdateRequest(recipe))
+  putRecipeUpdate: (recipe: Recipe, updatedTagId: string) => dispatch(putRecipeUpdateTagRequest(recipe, updatedTagId))
 });
 
 export default connect<StateProps, DispatchProps, null, GlobalState>

@@ -18,8 +18,9 @@ interface ClickableProps {
 interface TagButtonProps {
   backgroundColour?: string;
   textColour?: string;
-  selected?: boolean;
   loading?: boolean;
+  selected?: boolean;
+  loadFailure?: boolean;
   onClick?: (data: MouseEvent<HTMLButtonElement>) => void;
   children?: ReactNode;
 };
@@ -100,8 +101,7 @@ const Clickable = styled.div<ClickableProps>`
     }
   }
 
-  &.error {
-    cursor: auto;
+  &.failure {
     color: ${props =>
       props.theme.colour.lightGrey
     };
@@ -112,9 +112,9 @@ const Clickable = styled.div<ClickableProps>`
       color: ${props =>
         props.theme.colour.red
       };
-      width: 100%;
       position: absolute;
       left: 0;
+      right: 0;
     }
   }
 `
@@ -124,6 +124,8 @@ export const TagButton = (props: TagButtonProps) =>
     as='button'
     onClick={props.onClick}
     className={
+      props.loadFailure ?
+        'unselected failure' :
       !props.selected ?
         props.loading ?
         'unselected loading' :
