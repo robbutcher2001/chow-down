@@ -35,8 +35,10 @@ public class RecipeRepository {
       + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
   private static final String POST_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
       + "VALUES (DEFAULT, :quantity, :unitId::uuid, :ingredientId::uuid, :recipeId::uuid) RETURNING id";
-  private static final String PUT_RECIPE_TAG_UPDATE_SQL = "INSERT INTO chow.recipe_tags (id, tag_id, recipe_id) "
-      + "VALUES (DEFAULT, :tagId::uuid, :recipeId::uuid) RETURNING id";
+  private static final String PUT_RECIPE_TAG_SQL = "INSERT INTO chow.recipe_tags (id, tag_id, recipe_id) "
+      + "VALUES (DEFAULT, :tagId::uuid, :recipeId::uuid)";
+  private static final String DELETE_RECIPE_TAG_SQL = "DELETE FROM chow.recipe_tags rt "
+      + "WHERE rt.tag_id = :tagId::uuid AND rt.recipe_id = :recipeId::uuid";
 
   private AWSRDSData rdsData;
 
@@ -77,6 +79,15 @@ public class RecipeRepository {
     // `ExecuteStatementResult` and return object T to service (int, db count, id or
     // whatever)
     return executeStatementResult;
+  }
+
+  public void putRecipeTags(final String recipeId, final List<String> toDeleteIds, final List<String> toAddIds) {
+    final String transactionId = beginTransaction();
+
+    deleteRecipeTags(recipeId, toDeleteIds, transactionId);
+    putRecipeTags(recipeId, toAddIds, transactionId);
+
+    commitTransaction(transactionId);
   }
 
   private ExecuteStatementResult postRecipeBody(final Recipe recipe, final String transactionId) {
@@ -138,6 +149,60 @@ public class RecipeRepository {
     final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
         .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
         .withSql(POST_RECIPE_INGREDIENTS_SQL).withParameterSets(recipeIngredientParameters);
+
+    return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
+  }
+
+  private BatchExecuteStatementResult putRecipeTags(final String recipeId, final List<String> toAddIds,
+      final String transactionId) {
+    if (transactionId == null || transactionId.isEmpty()) {
+      throw new IllegalArgumentException("transactionId cannot be null or empty");
+    }
+
+    Collection<List<SqlParameter>> newRecipeTagParameters = new ArrayList<>();
+
+    try {
+      for (String tagId : toAddIds) {
+        List<SqlParameter> parameters = new ArrayList<>();
+        parameters.add(new SqlParameter().withName("tagId").withValue(new Field().withStringValue(tagId)));
+        parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(recipeId)));
+
+        newRecipeTagParameters.add(parameters);
+      }
+    } catch (NullPointerException npe) {
+      throw new ResourceNotPersistedException("part or all of the input Recipe Tag was null");
+    }
+
+    final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
+        .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
+        .withSql(PUT_RECIPE_TAG_SQL).withParameterSets(newRecipeTagParameters);
+
+    return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
+  }
+
+  private BatchExecuteStatementResult deleteRecipeTags(final String recipeId, final List<String> toDeleteIds,
+      final String transactionId) {
+    if (transactionId == null || transactionId.isEmpty()) {
+      throw new IllegalArgumentException("transactionId cannot be null or empty");
+    }
+
+    Collection<List<SqlParameter>> deleteRecipeTagParameters = new ArrayList<>();
+
+    try {
+      for (String tagId : toDeleteIds) {
+        List<SqlParameter> parameters = new ArrayList<>();
+        parameters.add(new SqlParameter().withName("tagId").withValue(new Field().withStringValue(tagId)));
+        parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(recipeId)));
+
+        deleteRecipeTagParameters.add(parameters);
+      }
+    } catch (NullPointerException npe) {
+      throw new ResourceNotPersistedException("part or all of the input Recipe Tag was null");
+    }
+
+    final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
+        .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
+        .withSql(DELETE_RECIPE_TAG_SQL).withParameterSets(deleteRecipeTagParameters);
 
     return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
   }

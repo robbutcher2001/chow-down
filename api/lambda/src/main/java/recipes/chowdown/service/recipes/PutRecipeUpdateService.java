@@ -75,12 +75,13 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
           List<String> existingTagIds = existingTags.stream().map(existingTag -> existingTag.getId()).collect(Collectors.toList());
           List<String> newTagIds = newRecipeData.getTags().stream().map(newTag -> newTag.getId()).collect(Collectors.toList());
 
-          final List<String> toDelete = existingTagIds.stream().filter(existingTagId -> !newTagIds.contains(existingTagId)).collect(Collectors.toList());
-          final List<String> toAdd = newTagIds.stream().filter(newTagId -> !existingTagIds.contains(newTagId)).collect(Collectors.toList());
+          final List<String> toDeleteIds = existingTagIds.stream().filter(existingTagId -> !newTagIds.contains(existingTagId)).collect(Collectors.toList());
+          final List<String> toAddIds = newTagIds.stream().filter(newTagId -> !existingTagIds.contains(newTagId)).collect(Collectors.toList());
           System.out.println("deleting");
-          System.out.println(toDelete);
+          System.out.println(toDeleteIds);
           System.out.println("adding");
-          System.out.println(toAdd);
+          System.out.println(toAddIds);
+          this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
         }
         updatedRecipe.setTags(newRecipeData.getTags());
       }
@@ -100,8 +101,8 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
       // LOGGER.log("New recipe persisted with id [" + returnedId + "]");
       // recipe.setId(returnedId);
 
-      // String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
-      // LOGGER.log("Recipe cache purge status [" + response + "]");
+      String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
+      LOGGER.log("Recipe cache purge status [" + response + "]");
 
       return updatedRecipe;
       // TODO: maybe BadRequestException / AmazonServiceException needs to move down
