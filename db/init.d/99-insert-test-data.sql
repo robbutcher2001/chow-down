@@ -2,16 +2,16 @@
 -- Data for Name: ingredients; Type: TABLE DATA; Schema: chow; Owner: chow-admin
 --
 
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('ba3f3324-ec8d-49d1-addb-f2d83f58b682', 'tomatoes');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('9eeb66a9-328b-4871-ad1a-92a014ea3230', 'mushrooms');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('78093c15-d3d7-4123-990f-a2cc332f16ed', 'peppers');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('d7ceb5ae-8dab-4a03-9cf3-4cc7661b6b1a', 'chicken');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('63c128cd-9c8c-4fef-a8ef-94bc6e5a26df', 'breadcrumbs');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('82081da4-28c5-413e-89c3-53df2a607f05', 'lettuce');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('529de86c-5e30-4592-84d8-e7cf123d9022', 'steak');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('c25bbf99-64d5-4973-a441-3ffe0260176f', 'noodles');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('110c66c6-d14a-4df5-9728-73bab88e5616', 'milk');
-INSERT INTO chow.ingredients (id, ingredient) VALUES ('20e88525-071d-4926-8b7c-ae0df67c3ffe', 'cheese');
+INSERT INTO chow.ingredients (id, name) VALUES ('ba3f3324-ec8d-49d1-addb-f2d83f58b682', 'tomatoes');
+INSERT INTO chow.ingredients (id, name) VALUES ('9eeb66a9-328b-4871-ad1a-92a014ea3230', 'mushrooms');
+INSERT INTO chow.ingredients (id, name) VALUES ('78093c15-d3d7-4123-990f-a2cc332f16ed', 'peppers');
+INSERT INTO chow.ingredients (id, name) VALUES ('d7ceb5ae-8dab-4a03-9cf3-4cc7661b6b1a', 'chicken');
+INSERT INTO chow.ingredients (id, name) VALUES ('63c128cd-9c8c-4fef-a8ef-94bc6e5a26df', 'breadcrumbs');
+INSERT INTO chow.ingredients (id, name) VALUES ('82081da4-28c5-413e-89c3-53df2a607f05', 'lettuce');
+INSERT INTO chow.ingredients (id, name) VALUES ('529de86c-5e30-4592-84d8-e7cf123d9022', 'steak');
+INSERT INTO chow.ingredients (id, name) VALUES ('c25bbf99-64d5-4973-a441-3ffe0260176f', 'noodles');
+INSERT INTO chow.ingredients (id, name) VALUES ('110c66c6-d14a-4df5-9728-73bab88e5616', 'milk');
+INSERT INTO chow.ingredients (id, name) VALUES ('20e88525-071d-4926-8b7c-ae0df67c3ffe', 'cheese');
 
 
 --

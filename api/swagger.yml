@@ -256,7 +256,7 @@ paths:
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutRecipeUpdateService.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutRecipeUpdateFunction.Arn}/invocations"
         responses:
           .*ServerException.*:
             statusCode: "500"
