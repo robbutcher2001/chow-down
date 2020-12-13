@@ -30,7 +30,7 @@ public class RecipeRepository {
   private static final String GET_RECIPE_TAGS_SQL = "SELECT rt.recipe_id, t.id, t.name, t.background_colour, t.text_colour "
       + "FROM chow.recipe_tags rt "
       + "INNER JOIN chow.tags t "
-      + "  ON t.id = rt.tag_id;";
+      + "  ON t.id = rt.tag_id";
   private static final String POST_RECIPE_BODY_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
       + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
   private static final String POST_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
