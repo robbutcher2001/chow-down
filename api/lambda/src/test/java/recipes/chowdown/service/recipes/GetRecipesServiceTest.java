@@ -63,15 +63,17 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldReturnRecipe_whenExistsSingle() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
         this.createdDate);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake");
 
     List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
@@ -81,15 +83,17 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldReturnRecipes_whenExistsMultiple() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
         this.createdDate);
     List<List<Field>> rows = Arrays.asList(columns, columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake");
 
     List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
@@ -99,7 +103,8 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldReturnCorrectCreatedDate_whenBritishSummerTime() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     this.createdDate.setStringValue("2020-06-01 14:00:10");
 
@@ -108,8 +113,9 @@ public class GetRecipesServiceTest {
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake");
 
     List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
@@ -120,7 +126,8 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldReturnCorrectCreatedDate_whenNotBritishSummerTime() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     this.createdDate.setStringValue("2020-01-01 14:00:10");
 
@@ -129,8 +136,9 @@ public class GetRecipesServiceTest {
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake");
 
     List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
@@ -141,11 +149,13 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldNotReturnRecipes_whenNoRecipesExist() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(Collections.emptyList());
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(Collections.emptyList());
 
     List<Recipe> returnedRecipes = this.service.handleRequest(new Object(), this.context);
 
@@ -154,7 +164,8 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenTooFewRowsReturnedFromDb() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
 
     // only return one column (id) and no other recipe fields
@@ -162,15 +173,17 @@ public class GetRecipesServiceTest {
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
 
     assertThrows(ServerException.class, () -> this.service.handleRequest(new Object(), this.context));
   }
 
   @Test
   void handleRequest_shouldReturnRecipe_whenTooManyRowsReturnedFromDb() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
 
     // return eight columns (too many for query)
@@ -179,8 +192,9 @@ public class GetRecipesServiceTest {
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake");
     when(mockField.getLongValue()).thenReturn(123l);
 
@@ -197,15 +211,17 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldReturnRecipe_whenNoRowDataReturnedFromDb() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
         this.createdDate);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("");
     when(mockField.getLongValue()).thenReturn(0l);
 
@@ -222,15 +238,17 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldReturnRecipe_whenNullReturnedFromDb() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
         this.createdDate);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn(null);
     when(mockField.getLongValue()).thenReturn(null);
 
@@ -270,15 +288,17 @@ public class GetRecipesServiceTest {
 
   @Test
   void handleRequest_shouldReturnRecipe_whenNullInputObject() throws Exception {
-    ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockRecipeResult = Mockito.mock(ExecuteStatementResult.class);
+    ExecuteStatementResult mockTagResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Arrays.asList(mockField, mockField, mockField, mockField, mockField, mockField,
         this.createdDate);
     List<List<Field>> rows = Collections.singletonList(columns);
 
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.repository.getRecipes()).thenReturn(mockResult);
-    when(mockResult.getRecords()).thenReturn(rows);
+    when(this.repository.getRecipes()).thenReturn(mockRecipeResult);
+    when(this.repository.getRecipeTags()).thenReturn(mockTagResult);
+    when(mockRecipeResult.getRecords()).thenReturn(rows);
     when(mockField.getStringValue()).thenReturn("fake");
 
     List<Recipe> returnedRecipes = this.service.handleRequest(null, this.context);

@@ -26,11 +26,17 @@ public class RecipeRepository {
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
-  private static final String GET_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image, r.created_date FROM chow.recipes r ORDER BY r.title";
+  private static final String GET_RECIPE_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image, r.created_date FROM chow.recipes r ORDER BY r.title";
+  private static final String GET_RECIPE_TAGS_SQL = "SELECT rt.recipe_id, t.id, t.name, t.background_colour, t.text_colour "
+      + "FROM chow.recipe_tags rt "
+      + "INNER JOIN chow.tags t "
+      + "  ON t.id = rt.tag_id;";
   private static final String POST_RECIPE_BODY_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
       + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
   private static final String POST_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
       + "VALUES (DEFAULT, :quantity, :unitId::uuid, :ingredientId::uuid, :recipeId::uuid) RETURNING id";
+  private static final String PUT_RECIPE_TAG_UPDATE_SQL = "INSERT INTO chow.recipe_tags (id, tag_id, recipe_id) "
+      + "VALUES (DEFAULT, :tagId::uuid, :recipeId::uuid) RETURNING id";
 
   private AWSRDSData rdsData;
 
@@ -40,7 +46,12 @@ public class RecipeRepository {
 
   public ExecuteStatementResult getRecipes() {
     return this.rdsData.executeStatement(new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
-        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_SQL));
+        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_RECIPE_SQL));
+  }
+
+  public ExecuteStatementResult getRecipeTags() {
+    return this.rdsData.executeStatement(new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
+        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_RECIPE_TAGS_SQL));
   }
 
   public ExecuteStatementResult postRecipe(final Recipe recipe) {
