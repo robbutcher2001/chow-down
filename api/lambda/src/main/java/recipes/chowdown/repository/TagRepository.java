@@ -37,9 +37,10 @@ public class TagRepository {
     Collection<SqlParameter> parameters = new ArrayList<>();
 
     try {
-      // TODO: unit test .toLowerCase().trim()
+      // TODO: unit test .toLowerCase().trim() and capitalise
+      final String tagName = tag.getName().toLowerCase().trim();
       parameters.add(new SqlParameter().withName("name")
-          .withValue(new Field().withStringValue(tag.getName().toLowerCase().trim())));
+          .withValue(new Field().withStringValue(tagName.substring(0, 1).toUpperCase() + tagName.substring(1))));
       parameters.add(new SqlParameter().withName("background_colour")
           .withValue(new Field().withStringValue(tag.getColours().getBackground().toLowerCase().trim())));
       parameters.add(new SqlParameter().withName("text_colour")

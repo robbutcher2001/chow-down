@@ -247,5 +247,5 @@ ALTER TABLE chow.recipe_tags OWNER to chow_admin;
 GRANT ALL ON TABLE chow.recipe_tags to chow_admin;
 GRANT SELECT, INSERT ON TABLE chow.recipe_tags to chow_create_only;
 GRANT SELECT ON TABLE chow.recipe_tags to chow_read_only;
-GRANT SELECT, UPDATE, DELETE ON TABLE chow.recipe_tags to chow_update_only;
+GRANT SELECT, INSERT, DELETE ON TABLE chow.recipe_tags to chow_update_only;
 GRANT SELECT, DELETE ON TABLE chow.recipe_tags to chow_delete_only;

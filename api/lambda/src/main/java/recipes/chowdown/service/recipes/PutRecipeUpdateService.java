@@ -50,18 +50,6 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
     try {
       LOGGER = context.getLogger();
 
-      // recipe.setId(null);
-      // OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-      // recipe.setCreatedDate(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(now));
-
-      // final String recipeImage = recipe.getImage();
-      // if (recipeImage != null) {
-      //   final DataUrl imageDataUrl = this.dataUrlService.decodeDataUrl(recipeImage);
-      //   final String imageUuid = this.s3Repository.putRecipeImage(imageDataUrl.getData(), imageDataUrl.getMimeType());
-      //   LOGGER.log("Recipe image persisted with id [" + imageUuid + "]");
-      //   recipe.setImage(imageUuid);
-      // }
-
       // TODO: need getRecipeById service
       final List<Recipe> existingRecipes = this.getRecipesService.getRecipes(context);
       final Recipe updatedRecipe = existingRecipes.stream()
@@ -80,6 +68,7 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
         System.out.println(toDeleteIds);
         System.out.println("adding");
         System.out.println(toAddIds);
+        // TODO: test that if this causes an exception then the next line will not execute
         this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
 
         updatedRecipe.setTags(newRecipeData.getTags());
