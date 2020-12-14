@@ -27,7 +27,7 @@ exports[`ColourPicker basic snapshot render 1`] = `
       Tag name
     </label>
     <label
-      className="sc-AxirZ eLxcIf"
+      className="sc-AxirZ fYtpvU"
       htmlFor="colour_1"
     >
       <input

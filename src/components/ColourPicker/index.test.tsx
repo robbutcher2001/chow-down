@@ -1,5 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { ThemeProvider } from 'styled-components';
 
 import theme from '../../themes';
@@ -20,7 +21,7 @@ test('ColourPicker basic snapshot render', () => {
           text: 'white'
         }, {
           background: 'blue',
-          text: 'red'
+          text: 'pink'
         }]}
         validator={() => true}
         form={mockFormState}
@@ -31,4 +32,29 @@ test('ColourPicker basic snapshot render', () => {
   );
 
   expect(colourPicker.toJSON()).toMatchSnapshot();
+});
+
+test('ColourPicker correct tag content assertion', () => {
+  const { getByText, getAllByText } = render(
+    <ThemeProvider theme={theme}>
+      <ColourPicker
+        name='colours'
+        label='Pick a colour'
+        colours={[{
+          background: 'red',
+          text: 'white'
+        }, {
+          background: 'blue',
+          text: 'pink'
+        }]}
+        validator={() => true}
+        form={mockFormState}
+        validFields={{}}
+        setValidationState={jest.fn}
+      />
+    </ThemeProvider>
+  );
+
+  expect(getByText(/Pick a colour/i)).toBeTruthy();
+  expect(getAllByText(/Tag name/i).length).toEqual(2);
 });
