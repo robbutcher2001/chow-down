@@ -84,8 +84,16 @@ public class RecipeRepository {
   public void putRecipeTags(final String recipeId, final List<String> toDeleteIds, final List<String> toAddIds) {
     final String transactionId = beginTransaction();
 
-    deleteRecipeTags(recipeId, toDeleteIds, transactionId);
-    putRecipeTags(recipeId, toAddIds, transactionId);
+    if (transactionId == null || transactionId.isEmpty()) {
+      throw new IllegalArgumentException("transactionId cannot be null or empty");
+    }
+
+    if (recipeId == null || recipeId.equals("")) {
+      throw new IllegalArgumentException("recipeId cannot be null or empty");
+    }
+
+    executeRecipeTagsSql(recipeId, toDeleteIds, DELETE_RECIPE_TAG_SQL, transactionId);
+    executeRecipeTagsSql(recipeId, toAddIds, PUT_RECIPE_TAG_SQL, transactionId);
 
     commitTransaction(transactionId);
   }
@@ -153,21 +161,21 @@ public class RecipeRepository {
     return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
   }
 
-  private BatchExecuteStatementResult putRecipeTags(final String recipeId, final List<String> toAddIds,
-      final String transactionId) {
+  private BatchExecuteStatementResult executeRecipeTagsSql(final String recipeId, final List<String> tagIds,
+      final String sql, final String transactionId) {
     if (transactionId == null || transactionId.isEmpty()) {
       throw new IllegalArgumentException("transactionId cannot be null or empty");
     }
 
-    Collection<List<SqlParameter>> newRecipeTagParameters = new ArrayList<>();
+    Collection<List<SqlParameter>> recipeTagParameters = new ArrayList<>();
 
     try {
-      for (String tagId : toAddIds) {
+      for (String tagId : tagIds) {
         List<SqlParameter> parameters = new ArrayList<>();
         parameters.add(new SqlParameter().withName("tagId").withValue(new Field().withStringValue(tagId)));
         parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(recipeId)));
 
-        newRecipeTagParameters.add(parameters);
+        recipeTagParameters.add(parameters);
       }
     } catch (NullPointerException npe) {
       throw new ResourceNotPersistedException("part or all of the input Recipe Tag was null");
@@ -175,34 +183,7 @@ public class RecipeRepository {
 
     final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
         .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
-        .withSql(PUT_RECIPE_TAG_SQL).withParameterSets(newRecipeTagParameters);
-
-    return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
-  }
-
-  private BatchExecuteStatementResult deleteRecipeTags(final String recipeId, final List<String> toDeleteIds,
-      final String transactionId) {
-    if (transactionId == null || transactionId.isEmpty()) {
-      throw new IllegalArgumentException("transactionId cannot be null or empty");
-    }
-
-    Collection<List<SqlParameter>> deleteRecipeTagParameters = new ArrayList<>();
-
-    try {
-      for (String tagId : toDeleteIds) {
-        List<SqlParameter> parameters = new ArrayList<>();
-        parameters.add(new SqlParameter().withName("tagId").withValue(new Field().withStringValue(tagId)));
-        parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(recipeId)));
-
-        deleteRecipeTagParameters.add(parameters);
-      }
-    } catch (NullPointerException npe) {
-      throw new ResourceNotPersistedException("part or all of the input Recipe Tag was null");
-    }
-
-    final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
-        .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
-        .withSql(DELETE_RECIPE_TAG_SQL).withParameterSets(deleteRecipeTagParameters);
+        .withSql(sql).withParameterSets(recipeTagParameters);
 
     return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
   }
