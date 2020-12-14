@@ -22,7 +22,7 @@ export function* queuePutRecipeTagSaga() {
       const action: PutRecipeUpdateTagApiRequest = yield take(requestChannel);
       yield putApi(URL, successCallback, failCallback, action.recipe, action.updatedTagId);
       // TODO: fix in backend - db call is too delayed for quick calls to adding recipe tags
-      yield delay(2000);
+      yield delay(3000);
     }
 };
 
