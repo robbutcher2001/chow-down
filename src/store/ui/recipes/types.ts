@@ -9,10 +9,13 @@ export enum RecipeUiActionTypes {
     CLEAR_PUT_RECIPE_TAG_PENDING = '@@recipes/CLEAR_PUT_TAG_PENDING'
 }
 
+type RecipeId = string;
+type TagId = string;
+
 export interface RecipesUiState {
     readonly getPending: boolean,
     readonly postPending: boolean,
-    readonly putPending: string[]
+    readonly putPending: Map<RecipeId, TagId[]>
 }
 
 export interface RecipesUiChange extends Action {
@@ -21,6 +24,7 @@ export interface RecipesUiChange extends Action {
 
 export interface UpdateRecipeTagUiChange extends Action {
     type: RecipeUiActionTypes,
+    recipeId: string,
     updatedTagId: string
 }
 

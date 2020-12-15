@@ -16,12 +16,14 @@ export const clearPendingPostRecipe = (): RecipesUiChange => ({
     type: RecipeUiActionTypes.CLEAR_POST_RECIPE_PENDING
 });
 
-export const pendingPutRecipeTag = (updatedTagId: string): UpdateRecipeTagUiChange => ({
+export const pendingPutRecipeTag = (recipeId: string, updatedTagId: string): UpdateRecipeTagUiChange => ({
   type: RecipeUiActionTypes.PUT_RECIPE_TAG_PENDING,
+  recipeId,
   updatedTagId
 });
 
-export const clearPendingPutRecipeTag = (updatedTagId: string): UpdateRecipeTagUiChange => ({
+export const clearPendingPutRecipeTag = (recipeId: string, updatedTagId: string): UpdateRecipeTagUiChange => ({
   type: RecipeUiActionTypes.CLEAR_PUT_RECIPE_TAG_PENDING,
+  recipeId,
   updatedTagId
 });

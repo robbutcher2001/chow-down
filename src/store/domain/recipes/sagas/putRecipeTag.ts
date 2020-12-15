@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { put, take, actionChannel } from 'redux-saga/effects';
 
 import { Recipe, PutRecipeUpdateTagApiRequest, RecipeActionTypes } from '../types';
@@ -9,7 +10,7 @@ const URL = `${process.env.API_BASE}/api/recipes`;
 
 export default function* putRecipeTagSaga(action: PutRecipeUpdateTagApiRequest) {
   yield put(clearRecipeUpdateTagFailure(action.updatedTagId));
-  yield put(pendingPutRecipeTag(action.updatedTagId));
+  yield put(pendingPutRecipeTag(action.recipe.id, action.updatedTagId));
   yield put({
     ...action,
     type: RecipeActionTypes.PUT_RECIPE_UPDATE_TAG_QUEUE_REQUEST
@@ -20,22 +21,20 @@ export function* queuePutRecipeTagSaga() {
     const requestChannel = yield actionChannel(RecipeActionTypes.PUT_RECIPE_UPDATE_TAG_QUEUE_REQUEST);
     while (true) {
       const action: PutRecipeUpdateTagApiRequest = yield take(requestChannel);
-      yield putApi(URL, successCallback, failCallback, action.recipe, action.updatedTagId);
+      yield putApi(URL, successCallback, failCallback, action.recipe, action);
     }
 };
 
-function* successCallback(recipe: Recipe, ...updatedTagIds: string[]) {
+function* successCallback(recipe: Recipe, actionPassThrough: Action) {
     console.log('Calling putRecipeUpdateTagSuccessCallback');
-    for (let i = 0; i < updatedTagIds.length; i++) {
-      yield put(putRecipeUpdateTagSuccess(recipe, updatedTagIds[i]));
-      yield put(clearPendingPutRecipeTag(updatedTagIds[i]));
-    }
+    const action = actionPassThrough as PutRecipeUpdateTagApiRequest;
+    yield put(putRecipeUpdateTagSuccess(recipe, action.updatedTagId));
+    yield put(clearPendingPutRecipeTag(recipe.id, action.updatedTagId));
 };
 
-function* failCallback(code: number, json: object, ...updatedTagIds: string[]) {
+function* failCallback(code: number, json: object, actionPassThrough: Action) {
     console.log('Calling putRecipeUpdateTagFailCallback');
-    for (let i = 0; i < updatedTagIds.length; i++) {
-      yield put(putRecipeUpdateTagFailure(code, updatedTagIds[i], json));
-      yield put(clearPendingPutRecipeTag(updatedTagIds[i]));
-    }
+    const action = actionPassThrough as PutRecipeUpdateTagApiRequest;
+    yield put(putRecipeUpdateTagFailure(code, action.updatedTagId, json));
+    yield put(clearPendingPutRecipeTag(action.recipe.id, action.updatedTagId));
 };

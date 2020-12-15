@@ -288,7 +288,7 @@ const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDeta
                   }
                 </HorizontalScroller>
               </div> :
-              props.recipe.tags ?
+              props.recipe.tags && props.recipe.tags.length ?
                 <button className='selector' onClick={editMode} >
                   {props.recipe.tags.map((tag, index) =>
                     <TagComponent

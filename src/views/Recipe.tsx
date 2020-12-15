@@ -31,7 +31,7 @@ interface StateProps {
       },
       puts: {
         recipe: {
-          tags: string[]
+          tags: Map<string, string[]>
         },
         tags: boolean
       }
@@ -123,7 +123,7 @@ class RecipePage extends Component<CombinedProps, OwnState> {
           recipe={this.state.recipe}
           tag={{initialLoading: this.state.tag.loading, tags: this.state.tag.tags}}
           updateRecipe={this.updateRecipe}
-          recipeTagUpdateLoading={this.props.ui.pending.puts.recipe.tags}
+          recipeTagUpdateLoading={this.props.ui.pending.puts.recipe.tags.get(this.state.recipe && this.state.recipe.id) || []}
           recipeTagUpdateFailures={this.props.failures.recipes.tags}
         />
       }

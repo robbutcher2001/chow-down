@@ -5,10 +5,15 @@ import { RecipesUiState, RecipeUiActionTypes, AnyRecipeUiChange, UpdateRecipeTag
 const initialState: RecipesUiState = {
     getPending: false,
     postPending: false,
-    putPending: []
+    putPending: new Map()
 }
 
 export const recipesUiReducer: Reducer<RecipesUiState, AnyRecipeUiChange> = (state = initialState, action: AnyRecipeUiChange) => {
+    const { recipeId, updatedTagId } = action as UpdateRecipeTagUiChange;
+    if (recipeId && !state.putPending.has(recipeId)) {
+        state.putPending.set(recipeId, []);
+    }
+
     switch (action.type) {
 
         case RecipeUiActionTypes.GET_RECIPES_PENDING:
@@ -24,11 +29,13 @@ export const recipesUiReducer: Reducer<RecipesUiState, AnyRecipeUiChange> = (sta
             };
 
         case RecipeUiActionTypes.PUT_RECIPE_TAG_PENDING:
+            if (!state.putPending.get(recipeId).includes(updatedTagId)) {
+                state.putPending.set(recipeId, state.putPending.get(recipeId).concat(updatedTagId));
+            }
+
             return {
                 ...state,
-                putPending: !state.putPending.includes((action as UpdateRecipeTagUiChange).updatedTagId) ?
-                  state.putPending.concat((action as UpdateRecipeTagUiChange).updatedTagId) :
-                  state.putPending
+                putPending: state.putPending
             };
 
         case RecipeUiActionTypes.CLEAR_GET_RECIPES_PENDING:
@@ -44,9 +51,11 @@ export const recipesUiReducer: Reducer<RecipesUiState, AnyRecipeUiChange> = (sta
             };
 
         case RecipeUiActionTypes.CLEAR_PUT_RECIPE_TAG_PENDING:
+            state.putPending.set(recipeId, state.putPending.get(recipeId).filter(pendingDate => pendingDate !== updatedTagId));
+
             return {
                 ...state,
-                putPending: state.putPending.filter(pendingDate => pendingDate !== (action as UpdateRecipeTagUiChange).updatedTagId)
+                putPending: state.putPending
             };
 
         default:

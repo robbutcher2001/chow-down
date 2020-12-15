@@ -94,7 +94,7 @@ class RecipesPage extends Component<CombinedProps, OwnState> {
     }
   };
 
-  fakeLoadingTags = () => [0, 1, 2, 3, 4].map(index =>
+  fakeLoadingTags = () => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(index =>
     <TagButton
       key={index}
       loading={true}>
