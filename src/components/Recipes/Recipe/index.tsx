@@ -213,11 +213,15 @@ const RecipeDetail = styled.span<{ image: string }>`
 `
 
 const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDetailProps) => {
+  const [mounted, setMounted] = useState<boolean>(false);
   const [editTags, setEditTags] = useState<boolean>(false);
   const [recipeTags, setRecipeTags] = useState<Tag[]>([]);
 
   useEffect(() => {
-    props.recipe && props.recipe.tags && setRecipeTags(props.recipe.tags);
+    if (props.recipe && props.recipe.tags && !mounted) {
+      setMounted(true);
+      setRecipeTags(props.recipe.tags);
+    }
   }, [props.recipe]);
 
   const stopPropagation = (event: MouseEvent<any>) => event.stopPropagation();

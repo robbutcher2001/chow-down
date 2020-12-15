@@ -1,4 +1,4 @@
-import { put, take, actionChannel, delay } from 'redux-saga/effects';
+import { put, take, actionChannel } from 'redux-saga/effects';
 
 import { Recipe, PutRecipeUpdateTagApiRequest, RecipeActionTypes } from '../types';
 import { putRecipeUpdateTagSuccess, putRecipeUpdateTagFailure, clearRecipeUpdateTagFailure } from '../actions';
@@ -21,8 +21,6 @@ export function* queuePutRecipeTagSaga() {
     while (true) {
       const action: PutRecipeUpdateTagApiRequest = yield take(requestChannel);
       yield putApi(URL, successCallback, failCallback, action.recipe, action.updatedTagId);
-      // TODO: fix in backend - db call is too delayed for quick calls to adding recipe tags
-      yield delay(3000);
     }
 };
 
