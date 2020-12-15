@@ -5,6 +5,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,10 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC));
         final String localZoneCreatedDate = zonedCreatedDate.withZoneSameInstant(ZoneId.of("Europe/London"))
             .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        final List<Tag> tags = recipeTags.get(fields.get(0).getStringValue()) != null ?
+          recipeTags.get(fields.get(0).getStringValue()) :
+          Collections.emptyList();
+        tags.sort((Tag tag1, Tag tag2) -> tag1.getName().compareTo(tag2.getName()));
 
         recipes.add(Recipe.builder()
             .id(fields.get(0).getStringValue())
@@ -60,7 +65,7 @@ public class GetRecipesService implements RequestHandler<Object, List<Recipe>> {
             .rating(fields.get(3).getLongValue())
             .url(fields.get(4).getStringValue())
             .image(fields.get(5).getStringValue())
-            .tags(recipeTags.get(fields.get(0).getStringValue()))
+            .tags(tags)
             .createdDate(localZoneCreatedDate)
             .build());
       }
