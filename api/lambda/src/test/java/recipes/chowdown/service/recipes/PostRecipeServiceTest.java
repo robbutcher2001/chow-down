@@ -37,7 +37,7 @@ import recipes.chowdown.service.images.DataUrlService;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class PutRecipeServiceTest {
+public class PostRecipeServiceTest {
 
   @Mock
   private Context context;
@@ -65,7 +65,7 @@ public class PutRecipeServiceTest {
   }
 
   @Test
-  void handleRequest_shouldReturnPopulatedRecipe_whenNewRecipePut() throws Exception {
+  void handleRequest_shouldReturnPopulatedRecipe_whenNewRecipePost() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -83,7 +83,7 @@ public class PutRecipeServiceTest {
   }
 
   @Test
-  void handleRequest_shouldThrowException_whenMultipleRecipePut() throws Exception {
+  void handleRequest_shouldThrowException_whenMultipleRecipePost() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
     Field mockField = Mockito.mock(Field.class);
     List<Field> columns = Collections.singletonList(mockField);
@@ -101,7 +101,7 @@ public class PutRecipeServiceTest {
   }
 
   @Test
-  void handleRequest_shouldThrowException_whenNoRecipePut() throws Exception {
+  void handleRequest_shouldThrowException_whenNoRecipePost() throws Exception {
     ExecuteStatementResult mockResult = Mockito.mock(ExecuteStatementResult.class);
 
     when(this.context.getLogger()).thenReturn(this.logger);
@@ -165,7 +165,7 @@ public class PutRecipeServiceTest {
   }
 
   @Test
-  void handleRequest_shouldThrowException_whenNullRecipePut() throws Exception {
+  void handleRequest_shouldThrowException_whenNullRecipePost() throws Exception {
     when(this.context.getLogger()).thenReturn(this.logger);
 
     assertThrows(ServerException.class, () -> this.service.handleRequest(null, this.context));

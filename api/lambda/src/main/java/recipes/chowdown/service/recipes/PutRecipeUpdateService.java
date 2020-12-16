@@ -55,6 +55,7 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
       final Recipe updatedRecipe = existingRecipes.stream()
           .filter(existingRecipe -> existingRecipe.getId().equals(newRecipeData.getId())).findAny().orElse(null);
 
+      System.out.println("just before check");
       if (updatedRecipe != null) {
         final List<Tag> existingTags = updatedRecipe.getTags();
         List<String> existingTagIds = existingTags != null ?
@@ -68,9 +69,12 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
         System.out.println(toDeleteIds);
         System.out.println("adding");
         System.out.println(toAddIds);
+        System.out.println("id");
+        System.out.println(newRecipeData.getId());
         // TODO: test that if this causes an exception then the next line will not execute
         this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
 
+        //sort tags here
         updatedRecipe.setTags(newRecipeData.getTags());
       }
 
