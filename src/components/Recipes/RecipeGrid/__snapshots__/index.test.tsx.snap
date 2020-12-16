@@ -2,10 +2,10 @@
 
 exports[`RecipeGrid basic isLoading snapshot render 1`] = `
 <ul
-  className="sc-AxmLO iclHBY spinner spinning"
+  className="sc-fzozJi dRjLCd spinner spinning"
 >
   <li
-    className="sc-AxirZ fjMSrX"
+    className="sc-AxiKw jXQYCi"
   >
     <a
       href="/recipe/123"
@@ -16,6 +16,13 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
           alt="fake_title1 image"
           src="fake_alt_text1"
         />
+        <div>
+          <span
+            className="sc-AxjAm bvsuMB"
+          >
+            Chicken
+          </span>
+        </div>
         <figcaption>
           <h3>
             fake_title1
@@ -23,7 +30,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fbYiwZ"
+        className="sc-AxirZ jBBJVq"
       >
         <mark>
           ★
@@ -44,7 +51,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-AxirZ fjMSrX"
+    className="sc-AxiKw jXQYCi"
   >
     <a
       href="/recipe/124"
@@ -55,6 +62,13 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
           alt="fake_title2 image"
           src="fake_alt_text2"
         />
+        <div>
+          <span
+            className="sc-AxjAm llrtcd"
+          >
+            Beef
+          </span>
+        </div>
         <figcaption>
           <h3>
             fake_title2
@@ -62,7 +76,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fbYiwZ"
+        className="sc-AxirZ jBBJVq"
       >
         <mark>
           ★
@@ -84,10 +98,10 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
 
 exports[`RecipeGrid basic snapshot render 1`] = `
 <ul
-  className="sc-AxmLO iclHBY spinner"
+  className="sc-fzozJi dRjLCd spinner"
 >
   <li
-    className="sc-AxirZ fjMSrX"
+    className="sc-AxiKw jXQYCi"
   >
     <a
       href="/recipe/123"
@@ -98,6 +112,13 @@ exports[`RecipeGrid basic snapshot render 1`] = `
           alt="fake_title1 image"
           src="fake_alt_text1"
         />
+        <div>
+          <span
+            className="sc-AxjAm bvsuMB"
+          >
+            Chicken
+          </span>
+        </div>
         <figcaption>
           <h3>
             fake_title1
@@ -105,7 +126,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fbYiwZ"
+        className="sc-AxirZ jBBJVq"
       >
         <mark>
           ★
@@ -126,7 +147,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-AxirZ fjMSrX"
+    className="sc-AxiKw jXQYCi"
   >
     <a
       href="/recipe/124"
@@ -137,6 +158,13 @@ exports[`RecipeGrid basic snapshot render 1`] = `
           alt="fake_title2 image"
           src="fake_alt_text2"
         />
+        <div>
+          <span
+            className="sc-AxjAm llrtcd"
+          >
+            Beef
+          </span>
+        </div>
         <figcaption>
           <h3>
             fake_title2
@@ -144,7 +172,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
         </figcaption>
       </figure>
       <section
-        className="sc-AxjAm fbYiwZ"
+        className="sc-AxirZ jBBJVq"
       >
         <mark>
           ★

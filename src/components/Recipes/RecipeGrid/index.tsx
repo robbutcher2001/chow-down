@@ -50,7 +50,7 @@ export default (props: RecipeGridProps) =>
       </UserInstruction>
     }
     {!props.isLoading && props.recipes.length === 0 ?
-      <NegativeBox message='Nothing found &#x2639;' /> :
+      <NegativeBox message='No recipes found' /> :
       <RecipeGrid className={props.isLoading ? 'spinner spinning' : 'spinner'} >
         {props.recipes.map((recipe, i) =>
           <RecipeCard

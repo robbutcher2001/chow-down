@@ -150,7 +150,7 @@ const StyledDay = styled.section<{ image: string }>`
         flex-basis: 48%;
         margin: 0 0.2rem 0.5rem 0;
         font-size: ${props =>
-          props.theme.typography.fontSize.small
+          props.theme.typography.fontSize.xsmall
         };
         line-height: 1rem;
 
@@ -199,7 +199,7 @@ const Day: FunctionComponent<DayProps> = (props: DayProps) => {
     recipeIngredients.map((recipeIngredient, index) =>
       <li
         key={index}
-        className={strikethroughIndexes.includes(index) ? 'strikethrough' : ''}
+        className={strikethroughIndexes.includes(index) ? 'strikethrough' : undefined}
         onClick={() => setStrikethrough(index)}
       >
         <div>

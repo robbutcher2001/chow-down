@@ -82,7 +82,7 @@ class Textarea extends Component<TextareaProps, {}> {
         id={this.props.name}
         name={this.props.name}
         rows={5}
-        value={this.props.form[this.props.name] ? this.props.form[this.props.name] : ''}
+        value={this.props.form[this.props.name] ? (this.props.form[this.props.name] as string) : ''}
         onChange={event => this.onChange(event)}
         onBlur={event => this.props.setValidationState(
           this.props.name,

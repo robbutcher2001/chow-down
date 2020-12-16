@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { FunctionComponent, useState, useEffect, MouseEvent } from 'react';
 
 import styled, { css } from 'styled-components';
 import { xsmall, small, medium } from '../../../themes/breakpoints';
 import Stars from '../../Stars';
 import placeholderImg from '../../../themes/placeholder.svg';
 
-import { Recipe } from '../../../store/domain/recipes/types';
+import { Recipe, PutRecipeUpdateTagApiRequest } from '../../../store/domain/recipes/types';
+import { Tag } from '../../../store/domain/tags/types';
 
+import HorizontalScroller from '../../HorizontalScroller';
+import { Button, TagButton } from '../../Clickable';
+import TagComponent from '../../Tags/Tag';
 import { NegativeBox } from '../../MessageBox';
 
 interface RecipeDetailProps {
-  recipe: Recipe
+  recipe: Recipe;
+  tag: {
+    initialLoading: boolean;
+    tags: Tag[];
+  };
+  updateRecipe: (recipe: Recipe, updatedTagId: string) => PutRecipeUpdateTagApiRequest;
+  recipeTagUpdateLoading: string[];
+  recipeTagUpdateFailures: string[];
 };
 
 const largeBackgroundMixin = (image: string) => css`
@@ -93,6 +104,43 @@ const RecipeDetail = styled.span<{ image: string }>`
       text-align: right;
     }
 
+    > .tags {
+      position: absolute;
+      right: 1rem;
+      max-width: 50%;
+
+      ${medium`
+        max-width: 75%;
+      `}
+
+      &.edit {
+        max-width: 70%;
+
+        ${medium`
+          max-width: unset;
+          margin-left: 1rem;
+        `}
+      }
+
+      > .selector {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        border: none;
+        background: transparent;
+        padding: 0;
+        cursor: copy;
+
+        > * {
+          margin: 0 0 4px 10px;
+  
+          ${medium`
+            margin: 0 0 4px 4px;
+          `}
+        }
+      }
+    }
+
     > section {
       box-shadow: 0 5px 20px 0 rgba(0,0,0,0.2);
       border-radius: 8px;
@@ -164,22 +212,119 @@ const RecipeDetail = styled.span<{ image: string }>`
   }
 `
 
-export default (props: RecipeDetailProps) =>
-  props.recipe ?
-    <RecipeDetail image={props.recipe.image} >
-      <div>
-        <h3>{props.recipe.title}</h3>
-        <section className='ingredients' >
-          <div>Recipe ingredients coming soon!</div>
-          {props.recipe.rating > 0 &&
-            <span>
-              <Stars rating={props.recipe.rating} />
-            </span>
-          }
-        </section>
-        <section className='method' >
-          Recipe methods coming soon!
-        </section>
-      </div>
-    </RecipeDetail> :
-    <NegativeBox message='Direct recipe retrieval not implemented yet.' />;
+const RecipeComponent: FunctionComponent<RecipeDetailProps> = (props: RecipeDetailProps) => {
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [editTags, setEditTags] = useState<boolean>(false);
+  const [recipeTags, setRecipeTags] = useState<Tag[]>([]);
+
+  useEffect(() => {
+    if (props.recipe && props.recipe.tags && !mounted) {
+      setMounted(true);
+      setRecipeTags(props.recipe.tags);
+    }
+  }, [props.recipe]);
+
+  const stopPropagation = (event: MouseEvent<any>) => event.stopPropagation();
+
+  const editMode = (event: MouseEvent<any>) => {
+    setEditTags(true);
+    stopPropagation(event);
+  };
+
+  const readMode = () => setEditTags(false);
+
+  const updateRecipeTags = (newTag: Tag) => {
+    const remove = recipeTags.map(recipeTag => recipeTag.id).includes(newTag.id);
+
+    const newRecipeTags = remove ?
+      recipeTags.filter(recipeTag => recipeTag.id !== newTag.id) :
+      [...recipeTags, newTag];
+
+    setRecipeTags(newRecipeTags);
+    updateRecipe(newRecipeTags, newTag.id);
+  };
+
+  const updateRecipe = (tags: Tag[], updatedTagId: string) =>
+    props.updateRecipe({
+      id: props.recipe.id,
+      tags
+    }, updatedTagId);
+
+  const fakeLoadingTags = () => [0, 1, 2, 3, 4].map(index =>
+    <TagButton
+      key={index}
+      loading={true}>
+      Tags loading..
+    </TagButton>
+  );
+
+  return (
+    props.recipe ?
+      <RecipeDetail image={props.recipe.image} onClick={readMode} >
+        <div>
+          <h3>{props.recipe.title}</h3>
+          <div className={editTags ? 'tags edit' : 'tags'} >
+            {editTags ?
+              <div onClick={stopPropagation} >
+                <HorizontalScroller small>
+                  {props.tag.initialLoading ?
+                    fakeLoadingTags() :
+                    props.tag.tags.map(tag =>
+                      <TagButton
+                        key={tag.id}
+                        backgroundColour={tag.colours.background}
+                        textColour={tag.colours.text}
+                        loading={props.recipeTagUpdateLoading.includes(tag.id)}
+                        selected={
+                          props.recipe.tags &&
+                          !props.recipeTagUpdateLoading.includes(tag.id) &&
+                          props.recipe.tags.map(tag => tag.id).includes(tag.id)
+                        }
+                        loadFailure={props.recipeTagUpdateFailures.includes(tag.id)}
+                        onClick={() => updateRecipeTags(tag)}>
+                        {tag.name}
+                      </TagButton>
+                    )
+                  }
+                </HorizontalScroller>
+              </div> :
+              props.recipe.tags && props.recipe.tags.length ?
+                <button className='selector' onClick={editMode} >
+                  {props.recipe.tags.map((tag, index) =>
+                    <TagComponent
+                      key={index}
+                      $backgroundColour={tag.colours.background}
+                      $textColour={tag.colours.text}
+                    >
+                      {tag.name}
+                    </TagComponent>
+                  )}
+                </button> :
+                <Button
+                  $bold
+                  $inline
+                  $xsmallFont
+                  onClick={editMode}
+                >
+                  Add tags
+                </Button>
+            }
+          </div>
+          <section className='ingredients' >
+            <div>Recipe ingredients coming soon!</div>
+            {props.recipe.rating > 0 &&
+              <span>
+                <Stars rating={props.recipe.rating} />
+              </span>
+            }
+          </section>
+          <section className='method' >
+            Recipe methods coming soon!
+          </section>
+        </div>
+      </RecipeDetail> :
+      <NegativeBox message='Direct recipe retrieval not implemented yet.' />
+  );
+};
+
+export default RecipeComponent;

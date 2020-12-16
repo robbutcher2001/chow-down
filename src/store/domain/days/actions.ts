@@ -28,7 +28,7 @@ export const putDaySuccess = (day: Day): PutDaySuccessApiResponse => ({
   day
 });
 
-export const putDayFailure = (code: number,failedDay: string, json: object): DayFailureApiResponse => ({
+export const putDayFailure = (code: number, failedDay: string, json: object): DayFailureApiResponse => ({
   type: DayActionTypes.PUT_DAY_FAILURE,
   code,
   failedDay,

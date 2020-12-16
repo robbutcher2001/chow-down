@@ -15,41 +15,43 @@ import ingredientsSaga from './domain/ingredients/sagas';
 import recipesSaga from './domain/recipes/sagas';
 import unitsSaga from './domain/units/sagas';
 import daysSaga from './domain/days/sagas';
+import tagsSaga from './domain/tags/sagas';
 
 export interface GlobalState {
-    app: AppState,
-    domain: DomainState,
-    ui: UiState,
-    router: RouterState
+  app: AppState,
+  domain: DomainState,
+  ui: UiState,
+  router: RouterState
 }
 
 const createRootReducer = (history: History) => combineReducers<GlobalState>({
-    app: createAppReducer(),
-    domain: createDomainReducer(),
-    ui: createUiReducer(),
-    router: connectRouter(history)
+  app: createAppReducer(),
+  domain: createDomainReducer(),
+  ui: createUiReducer(),
+  router: connectRouter(history)
 });
 
 function* createRootSaga() {
-    yield all([
-        fork(ingredientsSaga),
-        fork(recipesSaga),
-        fork(unitsSaga),
-        fork(daysSaga)
-    ]);
+  yield all([
+    fork(ingredientsSaga),
+    fork(recipesSaga),
+    fork(unitsSaga),
+    fork(daysSaga),
+    fork(tagsSaga)
+  ]);
 
-    console.log('[rootSaga] App started');
+  console.log('[rootSaga] App started');
 }
 
 export const configureStore = (history: History): Store<GlobalState> => {
-    const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware();
 
-    const store = createStore(
-        createRootReducer(history),
-        applyMiddleware(routerMiddleware(history), sagaMiddleware)
-    );
+  const store = createStore(
+    createRootReducer(history),
+    applyMiddleware(routerMiddleware(history), sagaMiddleware)
+  );
 
-    sagaMiddleware.run(createRootSaga);
+  sagaMiddleware.run(createRootSaga);
 
-    return store;
+  return store;
 };

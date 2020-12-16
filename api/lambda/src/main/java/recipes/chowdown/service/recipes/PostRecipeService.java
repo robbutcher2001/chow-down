@@ -20,7 +20,7 @@ import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
 import recipes.chowdown.service.images.DataUrlService;
 
-public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
+public class PostRecipeService implements RequestHandler<Recipe, Recipe> {
 
   private static LambdaLogger LOGGER;
 
@@ -32,7 +32,7 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
 
   private DataUrlService dataUrlService;
 
-  public PutRecipeService() {
+  public PostRecipeService() {
     this.recipeRepository = new RecipeRepository();
     this.s3Repository = new S3Repository();
     this.cacheInvalidator = new CacheInvalidator();
@@ -55,7 +55,7 @@ public class PutRecipeService implements RequestHandler<Recipe, Recipe> {
         recipe.setImage(imageUuid);
       }
 
-      ExecuteStatementResult result = this.recipeRepository.putRecipe(recipe);
+      ExecuteStatementResult result = this.recipeRepository.postRecipe(recipe);
 
       if (result.getRecords().size() != 1) {
         throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");

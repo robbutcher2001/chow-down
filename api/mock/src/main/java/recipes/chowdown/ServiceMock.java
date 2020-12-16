@@ -28,29 +28,57 @@ import org.springframework.web.bind.annotation.RestController;
 import recipes.chowdown.schema.ApiApi;
 import recipes.chowdown.schema.Day;
 import recipes.chowdown.schema.Ingredient;
+import recipes.chowdown.schema.NewRecipe;
 import recipes.chowdown.schema.Recipe;
 import recipes.chowdown.schema.RecipeIngredient;
 import recipes.chowdown.schema.RecipeIngredientIngredient;
 import recipes.chowdown.schema.RecipeIngredientUnit;
+import recipes.chowdown.schema.Tag;
+import recipes.chowdown.schema.TagColours;
 import recipes.chowdown.schema.Unit;
+import recipes.chowdown.schema.UpdateRecipe;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 public class ServiceMock implements ApiApi {
 
   static final String IMAGE_URL = "https://source.unsplash.com/random";
+  static final String[][] COLOURS = new String[10][2];
 
   final Faker faker;
   final List<Unit> units = new ArrayList<>();
   final List<Ingredient> ingredients = new ArrayList<>();
+  final List<Tag> tags = new ArrayList<>();
   final List<Recipe> recipes = new ArrayList<>();
   final List<Day> days = new ArrayList<>();
   boolean initRequest = true;
   final int TOTAL_UNITS = 12;
   final int TOTAL_INGREDIENTS = 120;
+  final int TOTAL_TAGS = 10;
 
   public ServiceMock() {
     this.faker = new Faker();
+
+    COLOURS[0][0] = "#005ea5";
+    COLOURS[0][1] = "#ffffffd4";
+    COLOURS[1][0] = "#17a2b8";
+    COLOURS[1][1] = "#000000d4";
+    COLOURS[2][0] = "#008672";
+    COLOURS[2][1] = "#fff";
+    COLOURS[3][0] = "#88b04b";
+    COLOURS[3][1] = "#fff";
+    COLOURS[4][0] = "#efc050";
+    COLOURS[4][1] = "#000000e0";
+    COLOURS[5][0] = "#d73a49";
+    COLOURS[5][1] = "#fff";
+    COLOURS[6][0] = "#c3447a";
+    COLOURS[6][1] = "#fff";
+    COLOURS[7][0] = "#d876e3";
+    COLOURS[7][1] = "#000";
+    COLOURS[8][0] = "#ff6f61";
+    COLOURS[8][1] = "#000000e0";
+    COLOURS[9][0] = "#6f42c1";
+    COLOURS[9][1] = "#fff";
 
     for (int i = 0; i < this.TOTAL_UNITS; i++) {
       Unit unit = new Unit();
@@ -75,6 +103,19 @@ public class ServiceMock implements ApiApi {
       this.ingredients.add(ingredient);
     }
 
+    for (int i = 0; i < this.TOTAL_TAGS; i++) {
+      Tag tag = new Tag();
+      tag.setId(this.faker.internet().uuid());
+      tag.setName(this.faker.funnyName().name());
+
+      TagColours colours = new TagColours();
+      colours.setBackground(COLOURS[i][0]);
+      colours.setText(COLOURS[i][1]);
+      tag.setColours(colours);
+
+      this.tags.add(tag);
+    }
+
     for (int i = 0; i < 20; i++) {
       Recipe recipe = new Recipe();
       recipe.setId(this.faker.internet().uuid());
@@ -86,7 +127,7 @@ public class ServiceMock implements ApiApi {
       // recipe.setImage(this.faker.internet().image());
       recipe.setCreatedDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
-      List<RecipeIngredient> ingredients = new ArrayList<>();
+      List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
       for (int j = 0; j < new Random().nextInt(40); j++) {
         RecipeIngredient recipeIngredient = new RecipeIngredient();
@@ -106,10 +147,14 @@ public class ServiceMock implements ApiApi {
         newRecipeIngredient.setName(ingredient.getName());
         recipeIngredient.setIngredient(newRecipeIngredient);
 
-        ingredients.add(recipeIngredient);
+        recipeIngredients.add(recipeIngredient);
       }
 
-      recipe.setIngredients(ingredients);
+      recipe.setIngredients(recipeIngredients);
+
+      for (int j = 0; j < new Random().nextInt(7); j++) {
+        recipe.addTagsItem(this.tags.get(new Random().nextInt(this.TOTAL_TAGS)));
+      }
 
       this.recipes.add(recipe);
     }
@@ -219,11 +264,11 @@ public class ServiceMock implements ApiApi {
   }
 
   @Override
-  public ResponseEntity<Recipe> apiRecipesPost(@Valid Recipe recipe) {
+  public ResponseEntity<NewRecipe> apiRecipesPost(@Valid NewRecipe newRecipe) {
     List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-    recipe.setId(this.faker.internet().uuid());
-    recipe.getIngredients().forEach(payloadIngredient -> {
+    newRecipe.setId(this.faker.internet().uuid());
+    newRecipe.getIngredients().forEach(payloadIngredient -> {
       RecipeIngredientUnit newRecipeUnit = new RecipeIngredientUnit();
       Unit existingUnit = this.units.stream().filter(unit -> unit.getId().equals(payloadIngredient.getUnit().getId()))
           .findFirst().orElse(null);
@@ -247,12 +292,37 @@ public class ServiceMock implements ApiApi {
 
       recipeIngredients.add(recipeIngredient);
     });
-    recipe.setIngredients(recipeIngredients);
-    this.recipes.add(recipe);
+    newRecipe.setIngredients(recipeIngredients);
+    this.recipes.add(newRecipe);
 
     randomSleep(2);
 
-    return new ResponseEntity<>(recipe, HttpStatus.CREATED);
+    return new ResponseEntity<>(newRecipe, HttpStatus.CREATED);
+  }
+
+  @Override
+  public ResponseEntity<UpdateRecipe> apiRecipesPut(@Valid UpdateRecipe updateRecipe) {
+    UpdateRecipe updatedDatabaseGet = new UpdateRecipe();
+    Optional<Recipe> existingRecipe = this.recipes.stream().filter(recipe -> recipe.getId().equals(updateRecipe.getId())).findFirst();
+
+    if (!existingRecipe.isPresent()) {
+      return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    else {
+      existingRecipe.get().setTags(updateRecipe.getTags());
+      updatedDatabaseGet.setId(existingRecipe.get().getId());
+      updatedDatabaseGet.setTitle(existingRecipe.get().getTitle());
+      updatedDatabaseGet.setDescription(existingRecipe.get().getDescription());
+      updatedDatabaseGet.setRating(existingRecipe.get().getRating());
+      updatedDatabaseGet.setUrl(existingRecipe.get().getUrl());
+      updatedDatabaseGet.setImage(existingRecipe.get().getImage());
+      updatedDatabaseGet.setIngredients(existingRecipe.get().getIngredients());
+      updatedDatabaseGet.setTags(existingRecipe.get().getTags());
+      updatedDatabaseGet.setCreatedDate(existingRecipe.get().getCreatedDate());
+    }
+
+    randomSleep(5);
+    return new ResponseEntity<>(updatedDatabaseGet, HttpStatus.OK);
   }
 
   @Override
@@ -313,5 +383,27 @@ public class ServiceMock implements ApiApi {
     }
 
     return new ResponseEntity<Day>(subsequentDatabaseGet.get(), HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<List<Tag>> apiTagsGet() {
+    if (initRequest) {
+      initRequest = !initRequest;
+      return new ResponseEntity<List<Tag>>(Collections.emptyList(), HttpStatus.OK);
+    }
+
+    randomSleep(2);
+
+    return new ResponseEntity<List<Tag>>(this.tags, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<Tag> apiTagsPut(@Valid Tag tag) {
+    tag.setId(this.faker.internet().uuid());
+    this.tags.add(tag);
+
+    randomSleep(2);
+
+    return new ResponseEntity<>(tag, HttpStatus.CREATED);
   }
 }

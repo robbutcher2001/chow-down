@@ -26,11 +26,19 @@ public class RecipeRepository {
   private static final String SECRET_ARN = System.getenv("SECRET_ARN");
   private static final String DATABASE = System.getenv("DATABASE_NAME");
 
-  private static final String GET_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image, r.created_date FROM chow.recipes r ORDER BY r.title";
-  private static final String PUT_RECIPE_BODY_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
+  private static final String GET_RECIPE_SQL = "SELECT r.id, r.title, r.description, r.rating, r.url, r.image, r.created_date FROM chow.recipes r ORDER BY r.title";
+  private static final String GET_RECIPE_TAGS_SQL = "SELECT rt.recipe_id, t.id, t.name, t.background_colour, t.text_colour "
+      + "FROM chow.recipe_tags rt "
+      + "INNER JOIN chow.tags t "
+      + "  ON t.id = rt.tag_id";
+  private static final String POST_RECIPE_BODY_SQL = "INSERT INTO chow.recipes (id, title, description, rating, url, image, created_date) "
       + "VALUES (DEFAULT, :title, :description, :rating, :url, :image, :createdDate) RETURNING id";
-  private static final String PUT_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
+  private static final String POST_RECIPE_INGREDIENTS_SQL = "INSERT INTO chow.recipe_ingredients (id, quantity, unit_id, ingredient_id, recipe_id) "
       + "VALUES (DEFAULT, :quantity, :unitId::uuid, :ingredientId::uuid, :recipeId::uuid) RETURNING id";
+  private static final String PUT_RECIPE_TAG_SQL = "INSERT INTO chow.recipe_tags (id, tag_id, recipe_id) "
+      + "VALUES (DEFAULT, :tagId::uuid, :recipeId::uuid)";
+  private static final String DELETE_RECIPE_TAG_SQL = "DELETE FROM chow.recipe_tags rt "
+      + "WHERE rt.tag_id = :tagId::uuid AND rt.recipe_id = :recipeId::uuid";
 
   private AWSRDSData rdsData;
 
@@ -40,13 +48,18 @@ public class RecipeRepository {
 
   public ExecuteStatementResult getRecipes() {
     return this.rdsData.executeStatement(new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
-        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_SQL));
+        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_RECIPE_SQL));
   }
 
-  public ExecuteStatementResult putRecipe(final Recipe recipe) {
+  public ExecuteStatementResult getRecipeTags() {
+    return this.rdsData.executeStatement(new ExecuteStatementRequest().withResourceArn(RESOURCE_ARN)
+        .withSecretArn(SECRET_ARN).withDatabase(DATABASE).withSql(GET_RECIPE_TAGS_SQL));
+  }
+
+  public ExecuteStatementResult postRecipe(final Recipe recipe) {
     final String transactionId = beginTransaction();
 
-    final ExecuteStatementResult executeStatementResult = putRecipeBody(recipe, transactionId);
+    final ExecuteStatementResult executeStatementResult = postRecipeBody(recipe, transactionId);
 
     final int rowIndex = 0;
     final int columnIndex = 0;
@@ -57,7 +70,7 @@ public class RecipeRepository {
     }
 
     recipe.setId(returnedId);
-    putRecipeIngredients(recipe, transactionId);
+    postRecipeIngredients(recipe, transactionId);
 
     commitTransaction(transactionId);
 
@@ -68,7 +81,24 @@ public class RecipeRepository {
     return executeStatementResult;
   }
 
-  private ExecuteStatementResult putRecipeBody(final Recipe recipe, final String transactionId) {
+  public void putRecipeTags(final String recipeId, final List<String> toDeleteIds, final List<String> toAddIds) {
+    final String transactionId = beginTransaction();
+
+    if (transactionId == null || transactionId.isEmpty()) {
+      throw new IllegalArgumentException("transactionId cannot be null or empty");
+    }
+
+    if (recipeId == null || recipeId.equals("")) {
+      throw new IllegalArgumentException("recipeId cannot be null or empty");
+    }
+
+    executeRecipeTagsSql(recipeId, toDeleteIds, DELETE_RECIPE_TAG_SQL, transactionId);
+    executeRecipeTagsSql(recipeId, toAddIds, PUT_RECIPE_TAG_SQL, transactionId);
+
+    commitTransaction(transactionId);
+  }
+
+  private ExecuteStatementResult postRecipeBody(final Recipe recipe, final String transactionId) {
     if (transactionId == null || transactionId.isEmpty()) {
       throw new IllegalArgumentException("transactionId cannot be null or empty");
     }
@@ -94,12 +124,12 @@ public class RecipeRepository {
 
     final ExecuteStatementRequest executeStatementRequest = new ExecuteStatementRequest()
         .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
-        .withSql(PUT_RECIPE_BODY_SQL).withParameters(parameters);
+        .withSql(POST_RECIPE_BODY_SQL).withParameters(parameters);
 
     return this.rdsData.executeStatement(executeStatementRequest);
   }
 
-  private BatchExecuteStatementResult putRecipeIngredients(final Recipe recipe, final String transactionId) {
+  private BatchExecuteStatementResult postRecipeIngredients(final Recipe recipe, final String transactionId) {
     if (transactionId == null || transactionId.isEmpty()) {
       throw new IllegalArgumentException("transactionId cannot be null or empty");
     }
@@ -126,7 +156,34 @@ public class RecipeRepository {
 
     final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
         .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
-        .withSql(PUT_RECIPE_INGREDIENTS_SQL).withParameterSets(recipeIngredientParameters);
+        .withSql(POST_RECIPE_INGREDIENTS_SQL).withParameterSets(recipeIngredientParameters);
+
+    return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
+  }
+
+  private BatchExecuteStatementResult executeRecipeTagsSql(final String recipeId, final List<String> tagIds,
+      final String sql, final String transactionId) {
+    if (transactionId == null || transactionId.isEmpty()) {
+      throw new IllegalArgumentException("transactionId cannot be null or empty");
+    }
+
+    Collection<List<SqlParameter>> recipeTagParameters = new ArrayList<>();
+
+    try {
+      for (String tagId : tagIds) {
+        List<SqlParameter> parameters = new ArrayList<>();
+        parameters.add(new SqlParameter().withName("tagId").withValue(new Field().withStringValue(tagId)));
+        parameters.add(new SqlParameter().withName("recipeId").withValue(new Field().withStringValue(recipeId)));
+
+        recipeTagParameters.add(parameters);
+      }
+    } catch (NullPointerException npe) {
+      throw new ResourceNotPersistedException("part or all of the input Recipe Tag was null");
+    }
+
+    final BatchExecuteStatementRequest batchExecuteStatementRequest = new BatchExecuteStatementRequest()
+        .withTransactionId(transactionId).withResourceArn(RESOURCE_ARN).withSecretArn(SECRET_ARN).withDatabase(DATABASE)
+        .withSql(sql).withParameterSets(recipeTagParameters);
 
     return this.rdsData.batchExecuteStatement(batchExecuteStatementRequest);
   }

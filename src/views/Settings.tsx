@@ -5,6 +5,9 @@ import SettingsLink from '../components/SettingsLink';
 
 const SettingsPage: FunctionComponent = () => (
     <Main title='Settings'>
+        <SettingsLink to='/tags/new'>
+            New tag
+        </SettingsLink>
         <SettingsLink to='/units/new'>
             New unit
         </SettingsLink>

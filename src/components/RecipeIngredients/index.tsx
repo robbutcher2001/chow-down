@@ -104,7 +104,7 @@ const RecipeIngredients: FunctionComponent<RecipeIngredientsProps> = (props: Rec
           $bold
           $inline
           type='button'
-          onClick={event => newRecipeIngredient(event)}
+          onClick={(event: MouseEvent<HTMLButtonElement>) => newRecipeIngredient(event)}
         >
           Add Ingredient
         </Button>

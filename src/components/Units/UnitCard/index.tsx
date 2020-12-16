@@ -27,7 +27,7 @@ const UnitCard = styled.li`
 
   aside {
     font-size: ${props =>
-      props.theme.typography.fontSize.small
+      props.theme.typography.fontSize.xsmall
     };
     font-style: italic;
     margin-top: 0.5rem;

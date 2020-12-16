@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { call, put as putSideEffect } from 'redux-saga/effects';
 
 import { unexpectedServerError, unexpectedResponse, clearError } from './app/error/actions';
@@ -25,15 +26,15 @@ interface ResponseBody {
 
 //TODO: need to type the return of the callbacks, any is not good
 export interface SuccessCallback {
-    (json: object, ...passThrough: string[]): any
+    (json: object, actionPassThrough: Action): any
 };
 
 export interface FailCallback {
-    (code: number, json: object, ...passThrough: string[]): any
+    (code: number, json: object, actionPassThrough: Action): any
 };
 
 //TODO: need to type the response from fetch, any is not good
-function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback, ...passThrough: string[]) {
+function* handleResponse(response: any, success: SuccessCallback, failure: FailCallback, actionPassThrough: Action) {
     try {
         if (response.status && response.status >= 200 && response.status <= 504) {
             const json: ResponseBody = {
@@ -41,11 +42,11 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
             };
 
             if (response.status < 300) {
-                yield* success(json.data, ...passThrough);
+                yield* success(json.data, actionPassThrough);
             }
             //TODO: does json.data.message actually get parsed in failure reducer? don't know until we return error >=400 && <500
             else if (response.status >= 400 && response.status < 500 || response.status > 500) {
-                yield* failure(response.status, json.data, ...passThrough);
+                yield* failure(response.status, json.data, actionPassThrough);
             }
             else if (response.status === 500) {
                 const error = { ...json.data } as ErrorMessageApiResponse;
@@ -74,7 +75,7 @@ function* handleResponse(response: any, success: SuccessCallback, failure: FailC
     }
 };
 
-function* doFetch(method: Method, url: string, success: SuccessCallback, failure: FailCallback, payload?: object, ...passThrough: string[]) {
+function* doFetch(method: Method, url: string, success: SuccessCallback, failure: FailCallback, payload?: object, actionPassThrough?: Action) {
     const headers: RequestHeaders = {
         'Accept': Headers.ACCEPT
     };
@@ -95,14 +96,14 @@ function* doFetch(method: Method, url: string, success: SuccessCallback, failure
             yield call(fetch, url, init),
             success,
             failure,
-            ...passThrough
+            actionPassThrough
         );
     } catch (err) {
         yield* handleResponse(
             err,
             success,
             failure,
-            ...passThrough
+            actionPassThrough
         );
     }
 };
@@ -112,31 +113,31 @@ export const post = (
     successCallback: SuccessCallback,
     failCallback: FailCallback,
     payload: object,
-    ...passThrough: string[]
+    actionPassThrough?: Action
 ) =>
-    doFetch(Method.POST, url, successCallback, failCallback, payload, ...passThrough);
+    doFetch(Method.POST, url, successCallback, failCallback, payload, actionPassThrough);
 
 export const get = (
     url: string,
     successCallback: SuccessCallback,
     failCallback: FailCallback,
-    ...passThrough: string[]
+    actionPassThrough?: Action
 ) =>
-    doFetch(Method.GET, url, successCallback, failCallback, null, ...passThrough);
+    doFetch(Method.GET, url, successCallback, failCallback, null, actionPassThrough);
 
 export const put = (
     url: string,
     successCallback: SuccessCallback,
     failCallback: FailCallback,
     payload: object,
-    ...passThrough: string[]
+    actionPassThrough?: Action
 ) =>
-    doFetch(Method.PUT, url, successCallback, failCallback, payload, ...passThrough);
+    doFetch(Method.PUT, url, successCallback, failCallback, payload, actionPassThrough);
 
 export const del = (
     url: string,
     successCallback: SuccessCallback,
     failCallback: FailCallback,
-    ...passThrough: string[]
+    actionPassThrough?: Action
 ) =>
-    doFetch(Method.DELETE, url, successCallback, failCallback, null, ...passThrough);
+    doFetch(Method.DELETE, url, successCallback, failCallback, null, actionPassThrough);

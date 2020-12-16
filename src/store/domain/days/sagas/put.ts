@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { put } from 'redux-saga/effects';
 
 import { Day, PutDayApiRequest } from '../types';
@@ -9,19 +10,18 @@ const URL = `${process.env.API_BASE}/api/days`;
 
 export default function* putSaga(action: PutDayApiRequest) {
     yield put(pendingPutDay(action.day.date));
-    yield putApi(URL, successCallback, failCallback, action.day, action.day.date);
+    yield putApi(URL, successCallback, failCallback, action.day, action);
 };
 
 function* successCallback(day: Day) {
     console.log('Calling putDaySuccessCallback');
-    yield put(clearPendingPutDay(day.date));
     yield put(putDaySuccess(day));
+    yield put(clearPendingPutDay(day.date));
 };
 
-function* failCallback(code: number, json: object, ...dates: string[]) {
+function* failCallback(code: number, json: object, actionPassThrough: Action) {
     console.log('Calling putDayFailCallback');
-    for (let i = 0; i < dates.length; i++) {
-      yield put(clearPendingPutDay(dates[i]));
-      yield put(putDayFailure(code, dates[i], json));
-    }
+    const action = actionPassThrough as PutDayApiRequest;
+    yield put(putDayFailure(code, action.day.date, json));
+    yield put(clearPendingPutDay(action.day.date));
 };

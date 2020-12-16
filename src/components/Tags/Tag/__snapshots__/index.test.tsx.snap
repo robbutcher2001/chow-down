@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tag basic snapshot render 1`] = `
+<span
+  className="sc-AxjAm hJJxwF"
+>
+  <div>
+    a child node
+  </div>
+</span>
+`;

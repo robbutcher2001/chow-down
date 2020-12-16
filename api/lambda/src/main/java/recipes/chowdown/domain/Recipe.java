@@ -20,6 +20,7 @@ public class Recipe {
   private Long rating;
   private String url;
   private String image;
+  private List<Tag> tags;
   private List<RecipeIngredient> ingredients;
   private String createdDate;
 }

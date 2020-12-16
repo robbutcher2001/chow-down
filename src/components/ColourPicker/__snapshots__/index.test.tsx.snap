@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ColourPicker basic snapshot render 1`] = `
+<label
+  className="sc-AxjAm WzsEu"
+  htmlFor="colours"
+>
+  <span>
+    Pick a colour
+  </span>
+  <div
+    id="colours"
+  >
+    <label
+      className="sc-AxirZ IurLa"
+      htmlFor="colour_0"
+    >
+      <input
+        checked={false}
+        hidden={true}
+        id="colour_0"
+        name="colours"
+        onChange={[Function]}
+        type="radio"
+        value="red"
+      />
+      Tag name
+    </label>
+    <label
+      className="sc-AxirZ fYtpvU"
+      htmlFor="colour_1"
+    >
+      <input
+        checked={false}
+        hidden={true}
+        id="colour_1"
+        name="colours"
+        onChange={[Function]}
+        type="radio"
+        value="blue"
+      />
+      Tag name
+    </label>
+  </div>
+</label>
+`;

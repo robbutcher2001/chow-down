@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HorizontalScroller basic snapshot render 1`] = `
+<div
+  className="sc-AxjAm cWHdfF"
+>
+  <div
+    className="scroller"
+  >
+    <div>
+      a child node
+    </div>
+  </div>
+</div>
+`;

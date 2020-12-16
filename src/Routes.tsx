@@ -13,6 +13,7 @@ import NewAlternateDay from './views/NewAlternateDay';
 import NewRecipe from './views/NewRecipe';
 import NewUnit from './views/NewUnit';
 import NewIngredient from './views/NewIngredient';
+import NewTag from './views/NewTag';
 import Settings from './views/Settings';
 import NotFound from './views/NotFound';
 
@@ -29,6 +30,7 @@ const Routes: FunctionComponent = () => (
         <Route exact path='/recipes/new' component={NewRecipe} />
         <Route exact path='/units/new' component={NewUnit} />
         <Route exact path='/ingredients/new' component={NewIngredient} />
+        <Route exact path='/tags/new' component={NewTag} />
         <Route exact path='/settings' component={Settings} />
         <Route path='*' component={NotFound} />
       </Switch>

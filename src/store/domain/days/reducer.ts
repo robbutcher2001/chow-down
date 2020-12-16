@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 
-import { Day, DayActionTypes, DayFailureApiResponse, DaysState, GetDayApiResponse, GetDaySuccessApiResponse, PutDaySuccessApiResponse } from './types';
+import { DayActionTypes, DayFailureApiResponse, DaysState, GetDayApiResponse, GetDaySuccessApiResponse, PutDaySuccessApiResponse } from './types';
 
 const initialState: DaysState = {
     failures: {},

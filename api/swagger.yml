@@ -196,7 +196,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Recipe"
+              $ref: "#/components/schemas/NewRecipe"
         required: true
       responses:
         201:
@@ -208,14 +208,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Recipe"
+                $ref: "#/components/schemas/NewRecipe"
         500:
           description: "500 response"
           content: {}
       x-amazon-apigateway-request-validator: "Validate body"
       x-amazon-apigateway-integration:
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutRecipeFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PostRecipeFunction.Arn}/invocations"
         responses:
           .*ServerException.*:
             statusCode: "500"
@@ -224,6 +224,47 @@ paths:
                 {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
           default:
             statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "$input.body"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateRecipe"
+        required: true
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdateRecipe"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutRecipeUpdateFunction.Arn}/invocations"
+        responses:
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "200"
             responseParameters:
               method.response.header.Content-Type: "'application/json'"
         httpMethod: "POST"
@@ -325,6 +366,82 @@ paths:
           application/json: "$input.body"
         contentHandling: "CONVERT_TO_TEXT"
         type: "aws"
+  # Tags
+  /api/tags:
+    get:
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetTagsFunction.Arn}/invocations"
+        responses:
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "when_no_match"
+        type: "aws"
+    put:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+        required: true
+      responses:
+        201:
+          description: "201 response"
+          headers:
+            Content-Type:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        500:
+          description: "500 response"
+          content: {}
+      x-amazon-apigateway-request-validator: "Validate body"
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${PutTagFunction.Arn}/invocations"
+        responses:
+          .*ServerException.*:
+            statusCode: "500"
+            responseTemplates:
+              application/json: "#set ($errorMessageObj = $util.parseJson($input.json('$')))\n\
+                {\n  \"message\" : \"$errorMessageObj.errorMessage\"\n}"
+          default:
+            statusCode: "201"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        httpMethod: "POST"
+        passthroughBehavior: "never"
+        requestTemplates:
+          application/json: "$input.body"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
 components:
   schemas:
     Unit:
@@ -396,14 +513,30 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RecipeIngredient"
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
         createdDate:
           type: string
-      required:
-      - title
-      - description
-      - url
-      - image
-      - ingredients
+    UpdateRecipe:
+      allOf:
+      - $ref: "#/components/schemas/Recipe"
+      - type: object
+        title: "Update recipe schema"
+        required:
+        - id
+    NewRecipe:
+      allOf:
+      - $ref: "#/components/schemas/Recipe"
+      - type: object
+        title: "New recipe schema"
+        required:
+        - title
+        - description
+        - url
+        - image
+        - ingredients
     Day:
       title: "Day schema"
       type: object
@@ -418,6 +551,26 @@ components:
           $ref: "#/components/schemas/Recipe"
       required:
       - date
+    Tag:
+      title: "Tag schema"
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          minLength: 3
+          maxLength: 20
+        colours:
+          type: object
+          properties:
+            background:
+              type: string
+            text:
+              type: string
+      required:
+      - name
+      - colours
 x-amazon-apigateway-request-validators:
   Validate body:
     validateRequestParameters: false

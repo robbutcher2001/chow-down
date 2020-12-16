@@ -2,7 +2,7 @@
 
 exports[`RecipeCard basic snapshot render 1`] = `
 <li
-  className="sc-AxirZ fjMSrX"
+  className="sc-AxiKw jXQYCi"
 >
   <a
     href="/recipe/fake_id"
@@ -13,6 +13,13 @@ exports[`RecipeCard basic snapshot render 1`] = `
         alt="fake_title image"
         src="fake_image"
       />
+      <div>
+        <span
+          className="sc-AxjAm bvsuMB"
+        >
+          Chicken
+        </span>
+      </div>
       <figcaption>
         <h3>
           fake_title
@@ -20,7 +27,7 @@ exports[`RecipeCard basic snapshot render 1`] = `
       </figcaption>
     </figure>
     <section
-      className="sc-AxjAm fbYiwZ"
+      className="sc-AxirZ jBBJVq"
     >
       <mark>
         ★

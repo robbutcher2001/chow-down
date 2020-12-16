@@ -9,7 +9,7 @@ const Footer = styled.footer`
   flex-direction: column;
   justify-content: center;
   font-size: ${props =>
-    props.theme.typography.fontSize.small
+    props.theme.typography.fontSize.xsmall
   };
   padding: 3rem 0;
   color: ${props => props.theme.isDark ?
@@ -35,7 +35,7 @@ export default () => (
       <RawLink
         $inline
         $underline
-        $small
+        $xsmallFont
         href='https://unsplash.com/'
         target='_blank'>
         Unsplash
