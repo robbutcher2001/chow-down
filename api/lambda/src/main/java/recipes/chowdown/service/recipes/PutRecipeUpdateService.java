@@ -1,8 +1,5 @@
 package recipes.chowdown.service.recipes;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,87 +8,73 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.rdsdata.model.ExecuteStatementResult;
 
-import eu.maxschuster.dataurl.DataUrl;
 import recipes.chowdown.domain.Recipe;
 import recipes.chowdown.domain.Tag;
-import recipes.chowdown.exceptions.ResourceNotPersistedException;
 import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
-import recipes.chowdown.repository.S3Repository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
-import recipes.chowdown.service.images.DataUrlService;
 
 public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
 
   private static LambdaLogger LOGGER;
 
-  private RecipeRepository recipeRepository;
+  private GetRecipesService getRecipesService;
 
-  private S3Repository s3Repository;
+  private RecipeRepository recipeRepository;
 
   private CacheInvalidator cacheInvalidator;
 
-  private DataUrlService dataUrlService;
-
-  private GetRecipesService getRecipesService;
-
   public PutRecipeUpdateService() {
-    this.recipeRepository = new RecipeRepository();
-    this.s3Repository = new S3Repository();
-    this.cacheInvalidator = new CacheInvalidator();
-    this.dataUrlService = new DataUrlService();
     this.getRecipesService = new GetRecipesService();
+    this.recipeRepository = new RecipeRepository();
+    this.cacheInvalidator = new CacheInvalidator();
   }
 
   public Recipe handleRequest(final Recipe newRecipeData, final Context context) throws RuntimeException {
     try {
       LOGGER = context.getLogger();
 
+      if (newRecipeData == null || newRecipeData.getId() == null || newRecipeData.getId().isEmpty() || newRecipeData.getTags() == null) {
+        throw new IllegalArgumentException("recipeId or tags cannot be null or empty");
+      }
+
+      newRecipeData.getTags().stream().forEach(tag -> {
+        if (tag == null || tag.getId() == null || tag.getId().isEmpty()) {
+          throw new IllegalArgumentException("new recipe tagId cannot be null or empty");
+        }
+      });
+
       // TODO: need getRecipeById service
       final List<Recipe> existingRecipes = this.getRecipesService.getRecipes(context);
       final Recipe updatedRecipe = existingRecipes.stream()
           .filter(existingRecipe -> existingRecipe.getId().equals(newRecipeData.getId())).findAny().orElse(null);
 
-      System.out.println("just before check");
-      if (updatedRecipe != null) {
-        final List<Tag> existingTags = updatedRecipe.getTags();
-        List<String> existingTagIds = existingTags != null ?
-          existingTags.stream().map(existingTag -> existingTag.getId()).collect(Collectors.toList()) :
-          Collections.emptyList();
-        List<String> newTagIds = newRecipeData.getTags().stream().map(newTag -> newTag.getId()).collect(Collectors.toList());
-
-        final List<String> toDeleteIds = existingTagIds.stream().filter(existingTagId -> !newTagIds.contains(existingTagId)).collect(Collectors.toList());
-        final List<String> toAddIds = newTagIds.stream().filter(newTagId -> !existingTagIds.contains(newTagId)).collect(Collectors.toList());
-        System.out.println("deleting");
-        System.out.println(toDeleteIds);
-        System.out.println("adding");
-        System.out.println(toAddIds);
-        System.out.println("id");
-        System.out.println(newRecipeData.getId());
-        // TODO: test that if this causes an exception then the next line will not execute
-        this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
-
-        //sort tags here
-        updatedRecipe.setTags(newRecipeData.getTags());
+      if (updatedRecipe == null || updatedRecipe.getId() == null || updatedRecipe.getId().isEmpty() || updatedRecipe.getTags() == null) {
+        throw new IllegalArgumentException("existing recipe not found with matching ID or populated tags");
       }
 
-      // if (result.getRecords().size() != 1) {
-      //   throw new ResourceNotPersistedException("inconsistent number of rows returned after PUT");
-      // }
+      updatedRecipe.getTags().stream().forEach(tag -> {
+        if (tag == null || tag.getId() == null || tag.getId().isEmpty()) {
+          throw new IllegalArgumentException("existing recipe tagId cannot be null or empty");
+        }
+      });
 
-      // final int rowIndex = 0;
-      // final int columnIndex = 0;
-      // final String returnedId = result.getRecords().get(rowIndex).get(columnIndex).getStringValue();
+      final List<Tag> existingTags = updatedRecipe.getTags();
+      final List<String> existingTagIds = existingTags != null ?
+        existingTags.stream().map(existingTag -> existingTag.getId()).collect(Collectors.toList()) :
+        Collections.emptyList();
+      final List<String> newTagIds = newRecipeData.getTags().stream().map(newTag -> newTag.getId()).collect(Collectors.toList());
 
-      // if (returnedId.isEmpty()) {
-      //   throw new ResourceNotPersistedException("no ID returned from database");
-      // }
+      final List<String> toDeleteIds = existingTagIds.stream().filter(existingTagId -> !newTagIds.contains(existingTagId)).collect(Collectors.toList());
+      final List<String> toAddIds = newTagIds.stream().filter(newTagId -> !existingTagIds.contains(newTagId)).collect(Collectors.toList());
 
-      // LOGGER.log("New recipe persisted with id [" + returnedId + "]");
-      // recipe.setId(returnedId);
+      this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
+
+      LOGGER.log("New recipe tags persisted with id [" + toAddIds + "]");
+      // TODO: sort tags here
+      updatedRecipe.setTags(newRecipeData.getTags());
 
       String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
       LOGGER.log("Recipe cache purge status [" + response + "]");

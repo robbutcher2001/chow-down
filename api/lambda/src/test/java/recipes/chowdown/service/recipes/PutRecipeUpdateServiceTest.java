@@ -2,7 +2,6 @@ package recipes.chowdown.service.recipes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
@@ -38,7 +37,6 @@ import recipes.chowdown.exceptions.ServerException;
 import recipes.chowdown.repository.RecipeRepository;
 import recipes.chowdown.service.cache.CacheInvalidator;
 import recipes.chowdown.service.cache.Endpoint;
-import recipes.chowdown.service.images.DataUrlService;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -55,9 +53,6 @@ public class PutRecipeUpdateServiceTest {
 
   @Mock
   private CacheInvalidator cacheInvalidator;
-
-  @Mock
-  private DataUrlService dataUrlService;
 
   @Mock
   private GetRecipesService getRecipesService;
@@ -318,15 +313,12 @@ public class PutRecipeUpdateServiceTest {
     when(this.context.getLogger()).thenReturn(this.logger);
     when(this.getRecipesService.getRecipes(Mockito.any(Context.class)))
         .thenReturn(Arrays.asList(existingOne, existingTwo));
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
 
     final Recipe recipe = Recipe.builder().id("not_found").tags(Collections.emptyList()).build();
 
-    final Recipe returnedRecipe = this.service.handleRequest(recipe, this.context);
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
     verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
         addIdsCaptor.capture());
-
-    assertNull(returnedRecipe);
   }
 
   @Test
@@ -335,30 +327,121 @@ public class PutRecipeUpdateServiceTest {
 
     when(this.context.getLogger()).thenReturn(this.logger);
     when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
 
     final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
 
-    ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(recipe, this.context));
-    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
     verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
         addIdsCaptor.capture());
   }
 
   @Test
   void handleRequest_shouldThrowException_whenNullTagsReturnedInPassedRecipe() throws Exception {
-    final Recipe existing = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
-
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
-    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
 
     final Recipe recipe = Recipe.builder().id("recipeId123").build();
 
-    ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(recipe, this.context));
-    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenNullRecipeIdReturnedInExistingRecipe() throws Exception {
+    final Recipe existing = Recipe.builder().tags(Collections.emptyList()).build();
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
+
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenNullRecipeIdReturnedInPassedRecipe() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+
+    final Recipe recipe = Recipe.builder().tags(Collections.emptyList()).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenEmptyRecipeIdReturnedInExistingRecipe() throws Exception {
+    final Recipe existing = Recipe.builder().id("").tags(Collections.emptyList()).build();
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
+
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenEmptyRecipeIdReturnedInPassedRecipe() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+
+    final Recipe recipe = Recipe.builder().id("").tags(Collections.emptyList()).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenNullTagIdReturnedInExistingRecipe() throws Exception {
+    final Tag oldTag = Tag.builder().build();
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Collections.singletonList(oldTag)).build();
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
+
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenNullTagIdReturnedInPassedRecipe() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+
+    final Tag newTag = Tag.builder().build();
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.singletonList(newTag)).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenEmptyTagIdReturnedInExistingRecipe() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
+    verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
+        addIdsCaptor.capture());
+  }
+
+  @Test
+  void handleRequest_shouldThrowException_whenEmptyTagIdReturnedInPassedRecipe() throws Exception {
+    when(this.context.getLogger()).thenReturn(this.logger);
+
+    final Tag newTag = Tag.builder().id("").build();
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.singletonList(newTag)).build();
+
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
     verify(this.repository, never()).putRecipeTags(recipeIdCaptor.capture(), deleteIdsCaptor.capture(),
         addIdsCaptor.capture());
   }
@@ -370,23 +453,21 @@ public class PutRecipeUpdateServiceTest {
 
     final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
 
-    ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(recipe, this.context));
-    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
   }
 
   @Test
   void handleRequest_shouldThrowException_whenRepositoryThrowsExceptionPuttingTags() throws Exception {
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.emptyList());
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
     doThrow(IllegalArgumentException.class).when(this.repository).putRecipeTags(Mockito.anyString(), Mockito.anyList(),
         Mockito.anyList());
 
     final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
 
-    ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(recipe, this.context));
-    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
   }
 
   @Test
@@ -396,23 +477,21 @@ public class PutRecipeUpdateServiceTest {
 
     final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
 
-    ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(recipe, this.context));
-    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
   }
 
   @Test
   void handleRequest_shouldThrowException_whenCannotCommunicateWithDbToPutTags() throws Exception {
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.emptyList());
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
     doThrow(BadRequestException.class).when(this.repository).putRecipeTags(Mockito.anyString(), Mockito.anyList(),
         Mockito.anyList());
 
     final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
 
-    ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(recipe, this.context));
-    assertTrue(returnedException.getMessage().contains("unable to complete request"));
+    assertThrows(ServerException.class, () -> this.service.handleRequest(recipe, this.context));
   }
 
   @Test
@@ -421,8 +500,10 @@ public class PutRecipeUpdateServiceTest {
     when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenThrow(new AWSRDSDataException(
         "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"));
 
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
     ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(new Recipe(), this.context));
+        () -> this.service.handleRequest(recipe, this.context));
     assertTrue(returnedException.getMessage().contains("unable to complete request"));
     assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
     assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
@@ -430,14 +511,18 @@ public class PutRecipeUpdateServiceTest {
 
   @Test
   void handleRequest_shouldThrowException_whenCannotAuthenticateWithDbToPutTags() throws Exception {
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
     when(this.context.getLogger()).thenReturn(this.logger);
-    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.emptyList());
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
     doThrow(new AWSRDSDataException(
         "arn:aws:ACCOUNT_NUMBER/role is not authorized to perform: <action> on resource: arn:aws:ACCOUNT_NUMBER/resource"))
             .when(this.repository).putRecipeTags(Mockito.anyString(), Mockito.anyList(), Mockito.anyList());
 
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
     ServerException returnedException = assertThrows(ServerException.class,
-        () -> this.service.handleRequest(new Recipe(), this.context));
+        () -> this.service.handleRequest(recipe, this.context));
     assertTrue(returnedException.getMessage().contains("unable to complete request"));
     assertFalse(returnedException.getMessage().contains("ACCOUNT_NUMBER"));
     assertFalse(returnedException.getMessage().contains("is not authorized to perform"));
