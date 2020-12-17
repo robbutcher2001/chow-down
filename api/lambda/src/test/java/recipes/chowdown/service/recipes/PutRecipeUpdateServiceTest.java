@@ -288,6 +288,103 @@ public class PutRecipeUpdateServiceTest {
   }
 
   @Test
+  void handleRequest_shouldReturnNameSortedRecipeTags_whenMultipleNewRecipeTagPutAndOneExists() throws Exception {
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+
+    final Tag newTagOne = Tag.builder().id("tagId123").name("Under 500 calories").build();
+    final Tag newTagTwo = Tag.builder().id("tagId456").name("Chicken").build();
+    final Tag newTagThree = Tag.builder().id("tagId789").name("Pasta").build();
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Arrays.asList(newTagOne, newTagTwo, newTagThree))
+        .build();
+
+    final Recipe returnedRecipe = this.service.handleRequest(recipe, this.context);
+
+    assertEquals(3, returnedRecipe.getTags().size());
+    assertEquals("tagId456", returnedRecipe.getTags().get(0).getId());
+    assertEquals("Chicken", returnedRecipe.getTags().get(0).getName());
+    assertEquals("tagId789", returnedRecipe.getTags().get(1).getId());
+    assertEquals("Pasta", returnedRecipe.getTags().get(1).getName());
+    assertEquals("tagId123", returnedRecipe.getTags().get(2).getId());
+    assertEquals("Under 500 calories", returnedRecipe.getTags().get(2).getName());
+  }
+
+  @Test
+  void handleRequest_shouldReturnNameSortedRecipeTags_whenMultipleNewRecipeTagPutAndSomeExist() throws Exception {
+    final Tag oldTagOne = Tag.builder().id("tagId123").build();
+    final Tag oldTagTwo = Tag.builder().id("tagId456").build();
+    final Tag oldTagThree = Tag.builder().id("tagId000").name("A tag").build();
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Arrays.asList(oldTagOne, oldTagTwo, oldTagThree))
+        .build();
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+
+    final Tag newTagOne = Tag.builder().id("tagId123").name("Under 500 calories").build();
+    final Tag newTagTwo = Tag.builder().id("tagId456").name("Chicken").build();
+    final Tag newTagThree = Tag.builder().id("tagId789").name("Pasta").build();
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Arrays.asList(newTagOne, newTagTwo, newTagThree))
+        .build();
+
+    final Recipe returnedRecipe = this.service.handleRequest(recipe, this.context);
+
+    assertEquals(3, returnedRecipe.getTags().size());
+    assertEquals("tagId456", returnedRecipe.getTags().get(0).getId());
+    assertEquals("Chicken", returnedRecipe.getTags().get(0).getName());
+    assertEquals("tagId789", returnedRecipe.getTags().get(1).getId());
+    assertEquals("Pasta", returnedRecipe.getTags().get(1).getName());
+    assertEquals("tagId123", returnedRecipe.getTags().get(2).getId());
+    assertEquals("Under 500 calories", returnedRecipe.getTags().get(2).getName());
+  }
+
+  @Test
+  void handleRequest_shouldReturnNoNameSortedRecipeTags_whenMultipleExistingRecipeTagPutAndNonePut() throws Exception {
+    final Tag oldTagOne = Tag.builder().id("tagId123").build();
+    final Tag oldTagTwo = Tag.builder().id("tagId456").build();
+    final Tag oldTagThree = Tag.builder().id("tagId000").name("A tag").build();
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Arrays.asList(oldTagOne, oldTagTwo, oldTagThree))
+        .build();
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
+
+    final Recipe returnedRecipe = this.service.handleRequest(recipe, this.context);
+
+    assertEquals(0, returnedRecipe.getTags().size());
+  }
+
+  @Test
+  void handleRequest_shouldReturnNameSortedRecipeTags_whenMultipleExistingRecipeTagPutAndSomePut() throws Exception {
+    final Tag oldTagOne = Tag.builder().id("tagId000").name("A tag").build();
+    final Tag oldTagTwo = Tag.builder().id("tagId001").name("Under 500 calories").build();
+    final Tag oldTagThree = Tag.builder().id("tagId001").name("Paste").build();
+    final Recipe existing = Recipe.builder().id("recipeId123").tags(Arrays.asList(oldTagOne, oldTagTwo, oldTagThree)).build();
+
+    when(this.context.getLogger()).thenReturn(this.logger);
+    when(this.getRecipesService.getRecipes(Mockito.any(Context.class))).thenReturn(Collections.singletonList(existing));
+    when(this.cacheInvalidator.invalidate(Mockito.any(Endpoint.class))).thenReturn("fake_invalidation");
+
+    final Tag newTagOne = Tag.builder().id("tagId123").name("Chicken").build();
+    final Tag newTagTwo = Tag.builder().id("tagId000").name("A tag").build();
+    final Recipe recipe = Recipe.builder().id("recipeId123").tags(Arrays.asList(newTagOne, newTagTwo)).build();
+
+    final Recipe returnedRecipe = this.service.handleRequest(recipe, this.context);
+
+    assertEquals(2, returnedRecipe.getTags().size());
+    assertEquals("tagId000", returnedRecipe.getTags().get(0).getId());
+    assertEquals("A tag", returnedRecipe.getTags().get(0).getName());
+    assertEquals("tagId123", returnedRecipe.getTags().get(1).getId());
+    assertEquals("Chicken", returnedRecipe.getTags().get(1).getName());
+  }
+
+  @Test
   void handleRequest_shouldFindCorrectRecipe_whenMultipleNewRecipesReturned() throws Exception {
     final Recipe existingOne = Recipe.builder().id("recipeId123").tags(Collections.emptyList()).build();
     final Recipe existingTwo = Recipe.builder().id("recipeId456").tags(Collections.emptyList()).build();
