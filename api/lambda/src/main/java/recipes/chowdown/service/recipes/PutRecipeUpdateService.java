@@ -73,7 +73,8 @@ public class PutRecipeUpdateService implements RequestHandler<Recipe, Recipe> {
       this.recipeRepository.putRecipeTags(newRecipeData.getId(), toDeleteIds, toAddIds);
 
       LOGGER.log("New recipe tags persisted with id [" + toAddIds + "]");
-      // TODO: sort tags here
+      newRecipeData.getTags().sort((Tag tag1, Tag tag2) -> tag1.getName() == null || tag2.getName() == null ? 0
+          : tag1.getName().compareTo(tag2.getName()));
       updatedRecipe.setTags(newRecipeData.getTags());
 
       String response = this.cacheInvalidator.invalidate(Endpoint.RECIPE);
