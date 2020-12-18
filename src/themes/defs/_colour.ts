@@ -3,6 +3,7 @@ export const lightColour = {
   lightBlack: 'rgba(0, 0, 0, 0.6)',
   grey: '#989898',
   darkGrey: '#657786', //rgb(101,119,134)
+  darkGreyWithOpacity: (opacity: string) => `rgba(101, 119, 134, ${opacity})`,
   lightGrey: '#f5f8fa', //rgb(245,248,250)
   lightestGrey: '#fafafa',
   white: '#ffffff',
@@ -29,6 +30,7 @@ export const darkColour = {
   lightBlack: 'rgba(0, 0, 0, 0.6)',
   grey: '#989898',
   darkGrey: '#201f1f', //this is the background
+  darkGreyWithOpacity: (opacity: string) => `rgba(32, 31, 31, ${opacity})`,
   lightGrey: '#2d2c2c', //this is the text box background
   lightestGrey: '#fafafa',
   white: '#ffffff',

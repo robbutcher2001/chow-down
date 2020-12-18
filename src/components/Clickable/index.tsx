@@ -82,7 +82,10 @@ const Clickable = styled.div<ClickableProps>`
       props.theme.colour.grey :
       props.theme.colour.darkGrey
     };
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: ${props => props.theme.isDark ?
+      '1px solid rgba(255, 255, 255, 0.1)' :
+      `1px solid ${props.theme.colour.darkGreyWithOpacity('0.1')}`
+    };
   }
 
   &.loading {
