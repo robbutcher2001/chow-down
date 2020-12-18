@@ -98,7 +98,10 @@ const Clickable = styled.div<ClickableProps>`
     &:after {
       content: '';
       border-radius: 50%;
-      border: 1px solid ${({ theme }) => theme.colour.white};
+      border: 1px solid ${({ theme }) => theme.isDark ?
+        theme.colour.white :
+        theme.colour.darkGrey
+      };
       border-top-color: transparent;
       width: 10px;
       height: 10px;
