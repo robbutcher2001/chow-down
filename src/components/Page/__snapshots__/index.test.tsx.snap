@@ -34,7 +34,7 @@ exports[`Page basic snapshot render 1`] = `
   >
     <h1>
       <a
-        className="sc-AxhCb iCBch"
+        className="sc-AxhCb gEdXGT"
         href="/"
         onClick={[Function]}
       >
@@ -57,7 +57,7 @@ exports[`Page basic snapshot render 1`] = `
     <p>
       Images: 
       <a
-        className="sc-AxiKw kwauIt"
+        className="sc-AxiKw dslZhD"
         href="https://unsplash.com/"
         target="_blank"
       >

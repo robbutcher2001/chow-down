@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 interface ClickableProps {
+  readonly $transparentBorder?: boolean;
   readonly $bold?: boolean;
   readonly $inline?: boolean;
   readonly $underline?: boolean;
@@ -26,7 +27,10 @@ interface TagButtonProps {
 };
 
 const Clickable = styled.div<ClickableProps>`
-  border: none;
+  border: ${props => props.$transparentBorder ?
+    '1px solid transparent' :
+    'none'
+  };
   ${props => !props.$inline ?
     props.$largeBorderRadius ?
       'border-radius: 2rem;' :
@@ -78,6 +82,10 @@ const Clickable = styled.div<ClickableProps>`
       props.theme.colour.grey :
       props.theme.colour.darkGrey
     };
+    border: ${props => props.theme.isDark ?
+      '1px solid rgba(255, 255, 255, 0.1)' :
+      `1px solid ${props.theme.colour.darkGreyWithOpacity('0.1')}`
+    };
   }
 
   &.loading {
@@ -90,7 +98,10 @@ const Clickable = styled.div<ClickableProps>`
     &:after {
       content: '';
       border-radius: 50%;
-      border: 1px solid ${({ theme }) => theme.colour.white};
+      border: 1px solid ${({ theme }) => theme.isDark ?
+        theme.colour.white :
+        theme.colour.darkGrey
+      };
       border-top-color: transparent;
       width: 10px;
       height: 10px;
@@ -133,6 +144,7 @@ export const TagButton = (props: TagButtonProps) =>
       undefined
     }
     disabled={props.loading}
+    $transparentBorder
     $smallFont
     $smallPadding
     $largeBorderRadius

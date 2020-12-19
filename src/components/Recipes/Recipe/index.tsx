@@ -130,6 +130,7 @@ const RecipeDetail = styled.span<{ image: string }>`
         background: transparent;
         padding: 0;
         cursor: copy;
+        -webkit-tap-highlight-color: transparent;
 
         > * {
           margin: 0 0 4px 10px;
