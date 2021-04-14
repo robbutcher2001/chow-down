@@ -5,7 +5,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
   className="sc-fzozJi dRjLCd spinner spinning"
 >
   <li
-    className="sc-AxiKw jXQYCi"
+    className="sc-AxiKw fzFiDE"
   >
     <a
       href="/recipe/123"
@@ -51,7 +51,7 @@ exports[`RecipeGrid basic isLoading snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-AxiKw jXQYCi"
+    className="sc-AxiKw fzFiDE"
   >
     <a
       href="/recipe/124"
@@ -101,7 +101,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
   className="sc-fzozJi dRjLCd spinner"
 >
   <li
-    className="sc-AxiKw jXQYCi"
+    className="sc-AxiKw fzFiDE"
   >
     <a
       href="/recipe/123"
@@ -147,7 +147,7 @@ exports[`RecipeGrid basic snapshot render 1`] = `
     </a>
   </li>
   <li
-    className="sc-AxiKw jXQYCi"
+    className="sc-AxiKw fzFiDE"
   >
     <a
       href="/recipe/124"
