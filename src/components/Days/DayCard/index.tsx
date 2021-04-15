@@ -31,11 +31,9 @@ const Container = styled.li`
   min-height: 320px;
   position: relative;
   border-radius: 8px;
-  box-shadow: 4px 4px 12px 2px rgba(0, 0, 0, 0.6);
 
   ${xsmall`
     margin: 1rem 0;
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.6);
   `}
 `;
 
@@ -45,6 +43,11 @@ const StyledDayCard = styled.div`
   position: relative;
   border-radius: 8px;
   box-sizing: border-box;
+  box-shadow: 4px 4px 12px 2px rgba(0, 0, 0, 0.6);
+
+  ${xsmall`
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.8);
+  `}
 
   > span {
     position: absolute;
@@ -83,12 +86,6 @@ const StyledDayCard = styled.div`
     justify-content: center;
     align-items: center;
     height: 100%;
-
-    //TODO: is this applied?
-    //TODO: any other changes needed in other files for this feature?
-    > section {
-      margin: 1rem;
-    }
   }
 
   a {
@@ -111,9 +108,8 @@ const NextWeek = styled.div`
     background-color: ${props =>
       props.theme.colour.lightBlue
     };
-    color: ${props => props.theme.isDark ?
-      props.theme.colour.lightestGrey :
-      props.theme.colour.black
+    color: ${props =>
+      props.theme.colour.lightestGrey
     };
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 12% 50%);
     animation: fadein 2s;
