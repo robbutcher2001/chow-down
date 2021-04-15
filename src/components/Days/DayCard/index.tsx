@@ -23,6 +23,11 @@ interface DayCardProps {
   setSelectingDay?: (day: string) => UserAction
 };
 
+type BannerColour = {
+  blue?: boolean;
+  pink?: boolean;
+};
+
 const Container = styled.li`
   margin: 2rem 1rem;
   width: 100%;
@@ -96,7 +101,7 @@ const StyledDayCard = styled.div`
   }
 `
 
-const NextWeek = styled.div`
+const Banner = styled.div<BannerColour>`
   > div:first-child {
     position: absolute;
     z-index: 55;
@@ -106,7 +111,11 @@ const NextWeek = styled.div`
     line-height: calc(1rem + 20px);
     padding: 0 1rem 0 2rem;
     background-color: ${props =>
-      props.theme.colour.lightBlue
+      props.blue ?
+        props.theme.colour.lightBlue :
+        props.pink ?
+          props.theme.colour.pink :
+          props.theme.colour.black
     };
     color: ${props =>
       props.theme.colour.lightestGrey
@@ -120,10 +129,20 @@ const NextWeek = styled.div`
     right: -10px;
     top: calc(1rem + 20px + 18px);
     border-top: ${props =>
-      `5px solid ${props.theme.colour.lightBlue}`
+      `5px solid ${props.blue ?
+        props.theme.colour.lightBlue :
+        props.pink ?
+          props.theme.colour.pink :
+          props.theme.colour.black}
+      `
     };
     border-left: ${props =>
-      `5px solid ${props.theme.colour.lightBlue}`
+      `5px solid ${props.blue ?
+        props.theme.colour.lightBlue :
+        props.pink ?
+          props.theme.colour.pink :
+          props.theme.colour.black}
+      `
     };
     border-right: 5px solid transparent;
     border-bottom: 5px solid transparent;
@@ -205,7 +224,8 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
   const today: string = moment().format(props.dateFormat);
   const isTonight: boolean = moment(today).isSame(props.date);
   const isTomorrow: boolean = moment(today).add(1, 'd').isSame(props.date);
-  const isNextWeek: boolean = moment(props.date).isAfter(moment().add(6, 'days'));
+  const isNextWeek: boolean = moment(props.date).isBetween(moment().day(7), moment().day(14));
+  const isFollowingWeek: boolean = moment(props.date).isAfter(moment().day(14));
   const displayDay: string = isTonight ? 'Tonight' : isTomorrow ? 'Tomorrow' : moment(props.date).format('dddd');
 
   const setSelectingDay = () => props.setSelectingDay(props.date);
@@ -215,10 +235,16 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
   return (
     <Container>
       {!props.isLoading && isNextWeek &&
-      <NextWeek>
-        <div>Next week</div>
-        <div />
-      </NextWeek>
+        <Banner blue>
+          <div>Next week</div>
+          <div />
+        </Banner>
+      }
+      {!props.isLoading && isFollowingWeek &&
+        <Banner pink>
+          <div>Week after</div>
+          <div />
+        </Banner>
       }
       <StyledDayCard className={props.isLoading ? 'spinner spinning' : 'spinner'} >
         <span />
