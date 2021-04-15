@@ -65,7 +65,7 @@ class DayPage extends Component<CombinedProps, OwnState> {
 
     this.setState({
       date,
-      displayDay: moment(date).isValid() ? moment(date).format('dddd') : ''
+      displayDay: moment(date).isValid() ? moment(date).format('dddd Do') : ''
     });
 
     if (day) {

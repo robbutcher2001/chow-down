@@ -23,21 +23,30 @@ interface DayCardProps {
   setSelectingDay?: (day: string) => UserAction
 };
 
-const StyledDayCard = styled.li`
+const Container = styled.li`
   margin: 2rem 1rem;
   width: 100%;
   max-width: 420px;
   height: 320px;
   min-height: 320px;
-  overflow: hidden;
   position: relative;
   border-radius: 8px;
-  box-shadow: 4px 4px 12px 2px rgba(0, 0, 0, 0.6);
-  box-sizing: border-box;
 
   ${xsmall`
     margin: 1rem 0;
-    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.6);
+  `}
+`;
+
+const StyledDayCard = styled.div`
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+  box-sizing: border-box;
+  box-shadow: 4px 4px 12px 2px rgba(0, 0, 0, 0.6);
+
+  ${xsmall`
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.8);
   `}
 
   > span {
@@ -77,10 +86,6 @@ const StyledDayCard = styled.li`
     justify-content: center;
     align-items: center;
     height: 100%;
-
-    > section {
-      margin: 1rem;
-    }
   }
 
   a {
@@ -90,6 +95,50 @@ const StyledDayCard = styled.li`
     text-decoration: none;
   }
 `
+
+const NextWeek = styled.div`
+  > div:first-child {
+    position: absolute;
+    z-index: 55;
+    top: 18px;
+    right: -10px;
+    height: calc(1rem + 20px);
+    line-height: calc(1rem + 20px);
+    padding: 0 1rem 0 2rem;
+    background-color: ${props =>
+      props.theme.colour.lightBlue
+    };
+    color: ${props =>
+      props.theme.colour.lightestGrey
+    };
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 12% 50%);
+    animation: fadein 2s;
+  }
+
+  > div:last-child {
+    position: absolute;
+    right: -10px;
+    top: calc(1rem + 20px + 18px);
+    border-top: ${props =>
+      `5px solid ${props.theme.colour.lightBlue}`
+    };
+    border-left: ${props =>
+      `5px solid ${props.theme.colour.lightBlue}`
+    };
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    animation: fadein 2s;
+  }
+
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
 
 const DayRecipe = styled.figure`
   height: 100%;
@@ -156,6 +205,7 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
   const today: string = moment().format(props.dateFormat);
   const isTonight: boolean = moment(today).isSame(props.date);
   const isTomorrow: boolean = moment(today).add(1, 'd').isSame(props.date);
+  const isNextWeek: boolean = moment(props.date).isAfter(moment().add(6, 'days'));
   const displayDay: string = isTonight ? 'Tonight' : isTomorrow ? 'Tomorrow' : moment(props.date).format('dddd');
 
   const setSelectingDay = () => props.setSelectingDay(props.date);
@@ -163,34 +213,42 @@ const DayCard: FunctionComponent<DayCardProps> = (props: DayCardProps) => {
   useEffect(() => void (!props.isLoading && props.getDay(props.date)), []);
 
   return (
-    <StyledDayCard className={props.isLoading ? 'spinner spinning' : 'spinner'} >
-      <span />
-      <h3>{displayDay}</h3>
-      {props.failed ?
-        <div className='failed' >
-          <Link to='/recipes' onClick={setSelectingDay}>
-            <NegativeBox message={props.failed} />
-          </Link>
-        </div> :
-        !props.day ?
-          <Link to='/recipes' onClick={setSelectingDay}>
-            <UnknownImage />
-          </Link> :
-          props.day.alternateDay ?
-            <Link to='/recipes' onClick={setSelectingDay}>
-              <AlternateDay title={props.day.alternateDay} />
-            </Link> :
-            <Link to={`/days/${props.date}`}>
-              <DayRecipe>
-                <img src={props.day.recipe.image} alt={`${props.day.recipe.title} image`} />
-                <figcaption>
-                  <h3>{props.day.recipe.title}</h3>
-                  <Stars rating={props.day.recipe.rating} />
-                </figcaption>
-              </DayRecipe>
-            </Link>
+    <Container>
+      {!props.isLoading && isNextWeek &&
+      <NextWeek>
+        <div>Next week</div>
+        <div />
+      </NextWeek>
       }
-    </StyledDayCard>
+      <StyledDayCard className={props.isLoading ? 'spinner spinning' : 'spinner'} >
+        <span />
+        <h3>{displayDay}</h3>
+        {props.failed ?
+          <div className='failed' >
+            <Link to='/recipes' onClick={setSelectingDay}>
+              <NegativeBox message={props.failed} />
+            </Link>
+          </div> :
+          !props.day ?
+            <Link to='/recipes' onClick={setSelectingDay}>
+              <UnknownImage />
+            </Link> :
+            props.day.alternateDay ?
+              <Link to='/recipes' onClick={setSelectingDay}>
+                <AlternateDay title={props.day.alternateDay} />
+              </Link> :
+              <Link to={`/days/${props.date}`}>
+                <DayRecipe>
+                  <img src={props.day.recipe.image} alt={`${props.day.recipe.title} image`} />
+                  <figcaption>
+                    <h3>{props.day.recipe.title}</h3>
+                    <Stars rating={props.day.recipe.rating} />
+                  </figcaption>
+                </DayRecipe>
+              </Link>
+        }
+      </StyledDayCard>
+    </Container>
   );
 };
 

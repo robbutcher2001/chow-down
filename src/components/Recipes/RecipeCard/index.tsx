@@ -100,7 +100,7 @@ const RecipeCard = styled.li`
 
       > figcaption {
         position: absolute;
-        bottom: 0;
+        bottom: -4px;
         background-color: rgba(0, 0, 0, .7);
         width: 100%;
 
@@ -108,7 +108,7 @@ const RecipeCard = styled.li`
           color: ${props =>
             props.theme.colour.white
           };
-          padding: 0.5rem;
+          padding: 0.5rem 0.5rem calc(0.5rem + 4px);
           margin: 0;
         }
       }

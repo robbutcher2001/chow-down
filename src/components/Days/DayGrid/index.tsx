@@ -31,7 +31,7 @@ const StyledDayGrid = styled.ul`
 
 const DayGrid: FunctionComponent<DayGridProps> = (props: DayGridProps) => {
   const [dateFormat] = useState('YYYYMMDD');
-  const [seekDays] = useState(8);
+  const [seekDays] = useState(15);
   const dayCards = [];
 
   for (let i: number = 0; i < seekDays; i++) {
